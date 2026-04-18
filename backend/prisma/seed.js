@@ -1,56 +1,110 @@
 // Seed: sample DELF B2 仿真题 (original questions matching exam format)
+//
+// Safety:
+//   - The admin user is always upserted (needed for first deploy on any env).
+//   - Demo/sample user accounts are only created in NON-production environments
+//     unless you explicitly set ALLOW_PROD_SEED=true.
+//   - Example exam sets are created only when there are no existing exam sets,
+//     so re-running this in prod won't duplicate content.
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
-async function main() {
-  console.log('🌱 Seeding database...');
+const IS_PROD = process.env.NODE_ENV === 'production';
+const ALLOW_PROD_SEED = process.env.ALLOW_PROD_SEED === 'true';
 
-  // ---- Users ----
+async function main() {
+  console.log(`🌱 Seeding database (NODE_ENV=${process.env.NODE_ENV || 'development'})...`);
+
+  // ---- Super Admin — always ensure exists ----
+  const adminInitialPwd = process.env.ADMIN_INITIAL_PASSWORD || 'DELFluent$Admin@2026!Prod';
+  if (IS_PROD && !process.env.ADMIN_INITIAL_PASSWORD) {
+    console.warn('⚠️  ADMIN_INITIAL_PASSWORD not set — using default. Change it immediately after first login.');
+  }
+  const adminPwdHash = await bcrypt.hash(adminInitialPwd, 12);
+  await prisma.user.upsert({
+    where: { email: 'alzy1210@163.com' },
+    update: { role: 'SUPER_ADMIN', status: 'ACTIVE', emailVerified: true },
+    create: {
+      email: 'alzy1210@163.com',
+      passwordHash: adminPwdHash,
+      name: 'Super Admin',
+      plan: 'AI_UNLIMITED',
+      role: 'SUPER_ADMIN',
+      status: 'ACTIVE',
+      emailVerified: true,
+      emailVerifiedAt: new Date(),
+    },
+  });
+  console.log(`✅ Super admin ready: alzy1210@163.com`);
+  console.log('⚠️  Change this password IMMEDIATELY after first login!');
+
+  // ---- Demo users — dev/staging only ----
+  if (IS_PROD && !ALLOW_PROD_SEED) {
+    console.log('⏭️  Skipping demo users + sample exam sets (NODE_ENV=production).');
+    console.log('   To force-create them, set ALLOW_PROD_SEED=true. Not recommended.');
+    return;
+  }
+
   const demoPwd = await bcrypt.hash('demo1234', 12);
   await prisma.user.upsert({
     where: { email: 'demo@delfluent.com' },
-    update: {},
+    update: { emailVerified: true },
     create: {
       email: 'demo@delfluent.com',
       passwordHash: demoPwd,
       name: '演示用户',
       plan: 'STANDARD',
+      emailVerified: true,
+      emailVerifiedAt: new Date(),
     },
   });
   await prisma.user.upsert({
     where: { email: 'free@delfluent.com' },
-    update: {},
+    update: { emailVerified: true },
     create: {
       email: 'free@delfluent.com',
       passwordHash: demoPwd,
       name: '免费用户',
       plan: 'FREE',
+      emailVerified: true,
+      emailVerifiedAt: new Date(),
     },
   });
   const oneYearLater = new Date(Date.now() + 365 * 24 * 3600 * 1000);
   await prisma.user.upsert({
     where: { email: 'ai@delfluent.com' },
-    update: { plan: 'AI', subscriptionEnd: oneYearLater },
+    update: { plan: 'AI', subscriptionEnd: oneYearLater, emailVerified: true },
     create: {
       email: 'ai@delfluent.com',
       passwordHash: demoPwd,
       name: 'AI版用户',
       plan: 'AI',
       subscriptionEnd: oneYearLater,
+      emailVerified: true,
+      emailVerifiedAt: new Date(),
     },
   });
   await prisma.user.upsert({
     where: { email: 'ai-unlimited@delfluent.com' },
-    update: { plan: 'AI_UNLIMITED', subscriptionEnd: oneYearLater },
+    update: { plan: 'AI_UNLIMITED', subscriptionEnd: oneYearLater, emailVerified: true },
     create: {
       email: 'ai-unlimited@delfluent.com',
       passwordHash: demoPwd,
       name: 'AI无限版用户',
       plan: 'AI_UNLIMITED',
       subscriptionEnd: oneYearLater,
+      emailVerified: true,
+      emailVerifiedAt: new Date(),
     },
   });
+
+  // Idempotency — don't duplicate sample exams on re-run.
+  const existingExamCount = await prisma.examSet.count();
+  if (existingExamCount > 0) {
+    console.log(`⏭️  ${existingExamCount} exam set(s) already exist — skipping sample content.`);
+    return;
+  }
 
   // ---- Exam Set 1: 免费体验套题 ----
   const freeSet = await prisma.examSet.create({

@@ -1,4 +1,4 @@
-// DELF B2 Platform - Prisma Schema (SQLite for local MVP)
+// DELF B2 Platform - Prisma Schema (SQLite for local dev / PostgreSQL for prod)
 
 generator client {
   provider = "prisma-client-js"
@@ -14,15 +14,132 @@ model User {
   email             String    @unique
   passwordHash      String
   name              String?
-  plan              String    @default("FREE") // FREE | STANDARD | AI | AI_UNLIMITED
+  plan              String    @default("FREE")   // FREE | STANDARD | AI | AI_UNLIMITED
   subscriptionEnd   DateTime?
+
+  // --- RBAC & Account status ---
+  role              String    @default("USER")   // USER | ADMIN | SUPER_ADMIN
+  status            String    @default("ACTIVE") // ACTIVE | SUSPENDED | DELETED
+  deletedAt         DateTime?                    // soft-delete timestamp
+
+  // --- Email verification ---
+  emailVerified     Boolean   @default(false)
+  emailVerifiedAt   DateTime?
+
+  // --- Login telemetry ---
+  loginCount        Int       @default(0)
+  lastLoginAt       DateTime?
+  lastLoginIp       String?
+  failedLoginCount  Int       @default(0)
+  lockedUntil       DateTime?
+
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
-  attempts          UserAttempt[]
-  sessions          ExamSession[]
-  essays            Essay[]
+  attempts              UserAttempt[]
+  sessions              ExamSession[]
+  essays                Essay[]
+  loginHistory          LoginHistory[]
+  resetTokens           PasswordResetToken[]
+  twoFactorTokens       TwoFactorToken[]
+  refreshTokens         RefreshToken[]
+  emailVerifications    EmailVerificationToken[]
+  adminLogs             AdminLog[]            @relation("AdminActor")
+
+  @@index([role, status])
+  @@index([plan, subscriptionEnd])
 }
+
+model RefreshToken {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash     String    @unique   // sha256 of raw refresh token
+  scope         String                // "user" | "admin"
+  parentId      String?               // previous token in rotation chain
+  ip            String?
+  userAgent     String?
+  expiresAt     DateTime
+  revokedAt     DateTime?
+  revokedReason String?               // LOGOUT | ROTATED | REUSE_DETECTED | ADMIN_REVOKE | LOCKOUT
+  createdAt     DateTime  @default(now())
+
+  @@index([userId, scope, revokedAt])
+  @@index([expiresAt])
+}
+
+model EmailVerificationToken {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  usedAt     DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+// ---------------- Admin & Security ----------------
+
+model AdminLog {
+  id         String   @id @default(cuid())
+  adminId    String
+  admin      User     @relation("AdminActor", fields: [adminId], references: [id])
+  action     String   // USER_UPDATE | PLAN_CHANGE | PASSWORD_RESET | SUSPEND | DELETE | IMPERSONATE | LOGIN_2FA_OK ...
+  targetType String   // USER | EXAM | SESSION | SYSTEM
+  targetId   String?
+  payload    String?  // JSON: before/after diff
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([adminId, createdAt])
+  @@index([targetType, targetId])
+}
+
+model LoginHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ip        String?
+  userAgent String?
+  success   Boolean  @default(true)
+  reason    String?  // BAD_PASSWORD | LOCKED | SUSPENDED | OK | TWO_FA_REQUIRED
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model PasswordResetToken {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String   @unique            // sha256 of token; raw only sent via email
+  expiresAt  DateTime
+  usedAt     DateTime?
+  requestedBy String?                    // USER | ADMIN:<adminId>
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model TwoFactorToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash  String                        // sha256 of 6-digit code
+  purpose   String   @default("ADMIN_LOGIN") // ADMIN_LOGIN | SENSITIVE_ACTION
+  expiresAt DateTime
+  usedAt    DateTime?
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([userId, purpose, expiresAt])
+}
+
+// ---------------- Existing models (unchanged) ----------------
 
 model ExamSet {
   id           String     @id @default(cuid())
@@ -41,8 +158,8 @@ model Question {
   id            String       @id @default(cuid())
   examSetId     String
   examSet       ExamSet      @relation(fields: [examSetId], references: [id], onDelete: Cascade)
-  skill         String       // CO | CE | PE | PO
-  type          String       // SINGLE | MULTIPLE | TRUE_FALSE | FILL | ESSAY | SPEAKING
+  skill         String
+  type          String
   order         Int          @default(0)
   prompt        String
   passage       String?
@@ -72,7 +189,7 @@ model ExamSession {
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   examSetId    String
   examSet      ExamSet    @relation(fields: [examSetId], references: [id])
-  mode         String     @default("PRACTICE") // PRACTICE | EXAM
+  mode         String     @default("PRACTICE")
   startedAt    DateTime   @default(now())
   completedAt  DateTime?
   totalScore   Int?
@@ -107,7 +224,7 @@ model Essay {
   questionId  String
   content     String
   wordCount   Int      @default(0)
-  aiFeedback  String?  // JSON string
+  aiFeedback  String?
   aiScore     Int?
   createdAt   DateTime @default(now())
 
