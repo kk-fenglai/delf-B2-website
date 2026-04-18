@@ -67,7 +67,7 @@ npm install
 npm run dev                       # → http://localhost:5173
 ```
 
-### 测试账号
+### 测试账号（仅 `NODE_ENV=development` 下由 seed 创建）
 
 | 邮箱 | 密码 | 套餐 |
 |------|------|------|
@@ -75,6 +75,8 @@ npm run dev                       # → http://localhost:5173
 | `demo@delfluent.com` | `demo1234` | 标准版 |
 | `ai@delfluent.com` | `demo1234` | AI 版 |
 | `ai-unlimited@delfluent.com` | `demo1234` | AI 无限版 |
+
+> ⚠️ 这些账户在 `NODE_ENV=production` 时**不会被创建**（除非显式设置 `ALLOW_PROD_SEED=true`）。生产部署只会 upsert `alzy1210@163.com` 超级管理员。
 
 ---
 
@@ -104,9 +106,49 @@ delf-b2-website/
 
 ---
 
+## 🛡️ 生产级部署清单
+
+完成本迭代后，系统已具备以下生产级安全能力（详见 `backend/.env.example`）：
+
+| 能力 | 实现 |
+|------|------|
+| **启动时强制校验 env** | `src/config/env.js`：JWT 密钥 <32 字符、等同 `.env.example` 占位、生产缺 SMTP 都会 `exit(1)` |
+| **Refresh token 轮换 + 撤销** | 每次 `/refresh` 旋转，旧 token 被重放时自动撤销整条链；管理员可 `POST /admin/users/:id/revoke-sessions` 强制下线 |
+| **账户状态实时校验** | `requireAuth` 异步查 DB，被停用/软删除用户立即拒绝，不再等 JWT 到期 |
+| **邮箱验证** | 注册后必须点击邮件链接激活才能登录；未验证状态下仅开放白名单路径 |
+| **密码策略** | 长度 ≥ 10 + 至少 3 类字符 + 常见弱密码黑名单，前后端一致 |
+| **结构化日志** | pino，内置 requestId、密码/token 字段自动脱敏 |
+| **生产错误处理** | 生产环境不泄露堆栈，Prisma/Zod/JWT 错误显式映射 |
+| **管理员 2FA** | 密码 → 邮件 6 位验证码 → 签发 admin token |
+| **管理员敏感操作二次确认** | 直接改密/硬删除需重新输入管理员密码（`X-Admin-Password` 头） |
+| **IP 白名单** | `ADMIN_IP_ALLOWLIST` 环境变量限制 `/api/admin/*` 来源 |
+| **速率限制** | 登录 30/15min、管理员登录 10/15min、密码重置 5/1h、admin API 200/min |
+| **Helmet CSP + HSTS** | 生产自动开启 HSTS（2 年 + includeSubDomains + preload） |
+| **软删除优先** | 默认软删除（可恢复）；硬删除仅超管 + 密码二次确认 |
+| **Graceful shutdown** | SIGTERM/SIGINT 触发 Prisma 断连再 exit，15s 安全保底 |
+| **健康探活** | `GET /api/health` 含 DB 连通检查（503 on failure） |
+| **审计日志** | 所有管理员动作写入 `AdminLog` 表，前端可查 |
+
+### 部署前 Checklist
+
+1. `cp backend/.env.example backend/.env` 并：
+   - `openssl rand -hex 48` 生成两个**不同**的 JWT 密钥
+   - 填入真实 `DATABASE_URL`（生产用 PostgreSQL）
+   - 填入 163.com 授权码到 `SMTP_PASS`
+   - 设置 `ADMIN_INITIAL_PASSWORD` 为强密码
+   - **将 `NODE_ENV=production`**
+2. `cd backend && vi prisma/schema.prisma` 把 `provider = "sqlite"` 改为 `"postgresql"`
+3. `npx prisma migrate deploy`（生产用 deploy 不用 dev）
+4. `npm run seed`（仅超管上线，不会创建演示账户）
+5. `pm2 start src/index.js --name delfluent-api`（或 systemd / Docker）
+6. 首次登录超管后**立即改密码**
+7. 前端：`cd frontend && npm run build` 产物部署到 CDN / Nginx
+8. 建议前置 Nginx 或 CDN 统一 TLS + HTTP/2，以及 WAF 防 CC
+
 ## 🗺️ 路线图
 
 - [x] **v0.1 MVP** — 注册登录 · 听力/阅读练习 · 自动批改 · 学习中心
+- [x] **v0.2 生产级安全** — 邮箱验证 · refresh rotation · 状态守卫 · 管理后台 · 审计日志
 - [ ] **v1.0 标准版** — 完整模拟考试 · 错题本 · PDF 成绩单
 - [ ] **v1.5 AI 版 Beta** — Claude API 写作批改 · AI 学习助手
 - [ ] **v2.0 AI 版正式** — AI 口语评测 · 备考计划生成 · 移动端优化
