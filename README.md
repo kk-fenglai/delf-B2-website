@@ -1,102 +1,127 @@
-# DELFluent · DELF B2 真题训练平台 (MVP)
+# 🇫🇷 DELFluent · DELF B2 真题训练平台
 
-基于 PRD v1.0 的 MVP 实现。包含用户注册登录、题库浏览、听力/阅读练习、答案核对、基础学习统计。
+[![Status](https://img.shields.io/badge/status-MVP%20v0.1-green)](https://github.com/kk-fenglai/delf-B2-webiste)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](#)
+[![Node](https://img.shields.io/badge/node-%E2%89%A520-brightgreen)](https://nodejs.org)
+[![React](https://img.shields.io/badge/react-18-61dafb?logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/typescript-5-3178c6?logo=typescript)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/prisma-5-2D3748?logo=prisma)](https://www.prisma.io)
+[![Ant Design](https://img.shields.io/badge/ant%20design-5-0170FE?logo=antdesign)](https://ant.design)
+[![i18n](https://img.shields.io/badge/i18n-zh%20%7C%20en%20%7C%20fr-yellow)](#)
+
+> 面向 DELF B2 考生的系统化在线训练平台：**听 · 说 · 读 · 写** 四项全真模拟，AI 智能批改，月订阅制商业化。
+
+---
+
+## ✨ 主要特性
+
+| 模块 | 说明 |
+|------|------|
+| 🎧 **听力 (CO)** | 内嵌音频播放器 + 浏览器 TTS 备用朗读 · 速度调节 · 限次播放 |
+| 📖 **阅读 (CE)** | 长文 + 题目同屏展示 · 支持单选/多选/判断/填空 |
+| ✍️ **写作 (PE)** | 富文本编辑 · 字数统计 · AI 批改（v1.5）|
+| 🎙️ **口语 (PO)** | 录音上传 · AI 评测（v2.0）|
+| 🔐 **账户系统** | JWT 双令牌 · bcrypt 哈希 · 多订阅套餐权限 |
+| 📊 **学习中心** | 四项能力雷达图 · 练习历史追踪 |
+| 🌐 **多语言** | 中文 · English · Français 一键切换 |
+| 💳 **订阅方案** | FREE / STANDARD / AI / AI_UNLIMITED 四档 |
+
+---
 
 ## 📦 技术栈
 
-- **前端**: React 18 + TypeScript + Vite + Ant Design + Tailwind CSS + Zustand + ECharts
-- **后端**: Node.js + Express + Prisma + PostgreSQL
-- **认证**: JWT (access + refresh tokens)
-- **AI (Phase 2)**: Anthropic Claude API
-
-## 📁 目录结构
-
+### Frontend
 ```
-delf B2 website/
-├── PRD.md                  # 产品需求文档
-├── backend/                # 后端 API
-│   ├── prisma/
-│   │   ├── schema.prisma   # 数据库模型
-│   │   └── seed.js         # 种子数据（仿真题）
-│   └── src/
-│       ├── index.js
-│       ├── routes/         # auth / exams / sessions / user
-│       ├── services/       # grader (自动批改)
-│       ├── middleware/     # auth / errorHandler
-│       └── utils/          # jwt
-└── frontend/               # 前端应用
-    └── src/
-        ├── pages/          # Landing / Login / Register / Dashboard / Practice / ExamRunner / ReviewResult / Pricing
-        ├── components/     # AppLayout
-        ├── api/            # axios client
-        ├── stores/         # Zustand 认证 store
-        └── types/          # TS 类型
+React 18 · TypeScript · Vite · Ant Design · Tailwind CSS
+Zustand · React Router · ECharts · react-i18next · Axios
 ```
+
+### Backend
+```
+Node.js · Express · Prisma ORM · SQLite (dev) / PostgreSQL (prod)
+JWT · bcryptjs · Zod · @anthropic-ai/sdk (v1.5)
+```
+
+---
 
 ## 🚀 本地运行
 
-### 1. 准备 PostgreSQL
+### 准备
+- Node.js ≥ 20
+- （生产环境用 PostgreSQL，开发环境 SQLite 开箱即用）
 
-```bash
-# 使用 Docker 快速启动
-docker run --name delfluent-pg -e POSTGRES_PASSWORD=password -e POSTGRES_DB=delfluent -p 5432:5432 -d postgres:16
-```
-
-### 2. 启动后端
-
+### 后端
 ```bash
 cd backend
-cp .env.example .env            # 编辑填入 JWT 密钥
+cp .env.example .env              # 填入 JWT 密钥
 npm install
-npx prisma generate
 npx prisma migrate dev --name init
-npm run seed                    # 注入仿真题数据
-npm run dev                     # → http://localhost:4000
+npm run seed                      # 导入仿真题种子数据
+npm run dev                       # → http://localhost:4000
 ```
 
-### 3. 启动前端
-
+### 前端
 ```bash
 cd frontend
 npm install
-npm run dev                     # → http://localhost:5173
+npm run dev                       # → http://localhost:5173
 ```
 
-### 🧪 测试账号
+### 测试账号
 
 | 邮箱 | 密码 | 套餐 |
 |------|------|------|
-| `demo@delfluent.com` | `demo1234` | 标准版（可访问全部题目）|
-| `free@delfluent.com` | `demo1234` | 免费版（仅免费体验套题）|
+| `free@delfluent.com` | `demo1234` | 免费版 |
+| `demo@delfluent.com` | `demo1234` | 标准版 |
+| `ai@delfluent.com` | `demo1234` | AI 版 |
+| `ai-unlimited@delfluent.com` | `demo1234` | AI 无限版 |
 
-## 🎯 MVP 已实现功能
+---
 
-- [x] 邮箱注册 / 登录 / JWT 鉴权
-- [x] 题库列表 + 按技能筛选
-- [x] 免费/付费访问控制（access control）
-- [x] 听力 (CO) 题目 + 内嵌音频播放器
-- [x] 阅读 (CE) 题目 + 原文展示
-- [x] 写作 (PE) 输入区（字数统计，AI批改待 v1.5）
-- [x] 自动批改（单选/多选/判断/填空）
-- [x] 结果回顾：用户答案 vs 正确答案 + 解析
-- [x] 学习中心：四项能力雷达图 + 练习历史
-- [x] 订阅方案展示页（支付接入 TODO）
-- [x] 中文界面 + 响应式布局 + 法国主色调 `#1A3A5C`
+## 📂 目录结构
 
-## 📋 后续路线图（按 PRD）
+```
+delf-b2-website/
+├── PRD.md                    # 产品需求文档（英文）
+├── README.md                 # 本文件
+├── backend/                  # Express + Prisma
+│   ├── prisma/
+│   │   ├── schema.prisma     # 数据模型
+│   │   └── seed.js           # 种子数据（仿真题）
+│   └── src/
+│       ├── routes/           # auth / exams / sessions / user
+│       ├── services/         # grader (自动批改)
+│       ├── middleware/       # auth / errorHandler
+│       └── utils/            # jwt
+└── frontend/                 # React + TS
+    └── src/
+        ├── pages/            # 8 个页面
+        ├── components/       # AppLayout / AudioPlayer / LanguageSwitcher
+        ├── i18n/             # zh / en / fr 翻译
+        ├── api/              # axios client
+        └── stores/           # Zustand
+```
 
-- **v1.0 标准版**（6周）：完整模拟考试模式 · 错题本 · PDF 成绩单 · 更多题库
-- **v1.5 AI版 Beta**（6周）：Claude API 写作批改 · AI 学习助手 · 个性化推荐
-- **v2.0 AI版正式**（8周）：AI 口语评测（阿里云语音识别）· 备考计划生成 · 移动端优化
+---
 
-## ⚠️ 重要提示
+## 🗺️ 路线图
 
-- **题库内容**：MVP 全部使用**原创仿真题**（格式对齐 DELF B2 真题，规避版权风险）
-- **支付接入**：微信支付 / 支付宝将在 v1.0 接入
-- **AI批改**：Phase 2 接入 Claude API，当前写作题暂不自动评分
-- **合规**：上线前需补充隐私政策、用户协议、ICP备案（中国大陆部署）
+- [x] **v0.1 MVP** — 注册登录 · 听力/阅读练习 · 自动批改 · 学习中心
+- [ ] **v1.0 标准版** — 完整模拟考试 · 错题本 · PDF 成绩单
+- [ ] **v1.5 AI 版 Beta** — Claude API 写作批改 · AI 学习助手
+- [ ] **v2.0 AI 版正式** — AI 口语评测 · 备考计划生成 · 移动端优化
+- [ ] **v2.5** — 社区 · 教师版 · B2B API
 
-## 📄 相关文档
+---
 
-- `PRD.md` - 完整产品需求文档（英文版）
-- 用户提供的 `DELFB2_PRD.docx` - 中文产品需求文档（已作为最终方案依据）
+## ⚠️ 法律与合规声明
+
+- 本平台题目均为**原创仿真题**，题型格式对齐 DELF B2 真题但内容完全原创，规避版权风险
+- DELF B2 官方真题版权归 **France Éducation international (CIEP)** 所有，商用需官方授权
+- 上线前需补充：隐私政策 · 用户协议 · ICP 备案（中国大陆部署）
+
+---
+
+## 📜 License
+
+MIT © 2026 kk-fenglai
