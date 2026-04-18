@@ -1,0 +1,175 @@
+{
+  "app": {
+    "name": "DELFluent",
+    "tagline": "DELF B2 真题训练平台",
+    "footer": "DELFluent © {{year}} · DELF B2 真题训练平台 · 本站题目均为原创仿真题"
+  },
+  "nav": {
+    "home": "首页",
+    "practice": "题库练习",
+    "dashboard": "学习中心",
+    "pricing": "订阅方案",
+    "login": "登录",
+    "register": "免费注册",
+    "logout": "退出登录"
+  },
+  "plan": {
+    "FREE": "免费版",
+    "STANDARD": "标准版",
+    "AI": "AI版",
+    "AI_UNLIMITED": "AI无限版"
+  },
+  "skill": {
+    "CO": "听力",
+    "CE": "阅读",
+    "PE": "写作",
+    "PO": "口语"
+  },
+  "landing": {
+    "title": "DELF B2 专项真题训练平台",
+    "subtitle": "系统化的听、说、读、写四项专项训练 · AI 智能批改 · 真实考场模拟",
+    "ctaStart": "免费开始练习",
+    "ctaPricing": "查看订阅方案",
+    "features": {
+      "co": { "title": "听力 CO", "desc": "完整听力原声，模拟真实考场节奏" },
+      "ce": { "title": "阅读 CE", "desc": "论证性长文本，配原文定位答案" },
+      "pe": { "title": "写作 PE", "desc": "250字论证文，AI智能批改（AI版）" },
+      "po": { "title": "口语 PO", "desc": "录音练习，AI扮演考官对话（AI版）" }
+    },
+    "examStructure": "DELF B2 考试结构",
+    "minutes": "分钟",
+    "points": "分",
+    "passRule": "通过标准：总分 ≥ 50 且每项 ≥ 5 分"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "免费注册",
+    "email": "邮箱",
+    "password": "密码",
+    "nickname": "昵称",
+    "nicknameOptional": "选填",
+    "passwordHint": "至少6位",
+    "submitLogin": "登录",
+    "submitRegister": "创建账号",
+    "toRegister": "还没有账号？立即注册",
+    "toLogin": "已有账号？直接登录",
+    "loginSuccess": "登录成功",
+    "loginFail": "登录失败",
+    "registerSuccess": "注册成功，欢迎加入 DELFluent！",
+    "registerFail": "注册失败"
+  },
+  "dashboard": {
+    "greeting": "你好，{{name}} 👋",
+    "attemptsDone": "完成练习题目",
+    "setsDone": "完成套题数",
+    "nextStep": "下一步",
+    "startToday": "开始今日练习",
+    "enterPractice": "进入题库",
+    "radarTitle": "四项能力雷达图",
+    "recentSessions": "最近练习记录",
+    "noData": "还没有练习数据",
+    "noSessions": "还没有练习记录",
+    "viewDetail": "查看详情",
+    "score": "得分",
+    "loading": "加载中..."
+  },
+  "practice": {
+    "title": "题库练习",
+    "subtitle": "选择一套真题开始练习。免费用户可体验标注「免费体验」的套题。",
+    "all": "全部",
+    "freePreview": "免费体验",
+    "startPractice": "开始练习 →",
+    "totalQuestions": "共 {{count}} 题",
+    "questionsCount": "{{count}}题",
+    "empty": "没有可用的套题",
+    "year": "年份"
+  },
+  "exam": {
+    "questionN": "第 {{n}} 题",
+    "prev": "上一题",
+    "next": "下一题",
+    "submit": "提交答卷",
+    "submitFail": "提交失败",
+    "audioNotSupported": "您的浏览器不支持音频播放",
+    "fillPlaceholder": "输入答案",
+    "essayPlaceholder": "请在此处撰写作文（至少250字）...",
+    "essayAITip": "💡 MVP阶段写作题暂不自动评分，升级AI版可获得 AI 智能批改",
+    "unsupported": "该题型暂不支持作答（口语需录音功能，即将上线）",
+    "loadFail": "加载失败",
+    "blockedTitle": "需要订阅",
+    "blockedCta": "查看订阅方案",
+    "notFound": "套题不存在",
+    "points": "分"
+  },
+  "review": {
+    "title": "练习结果",
+    "correct": "✓ 正确",
+    "wrong": "✗ 错误",
+    "pendingAI": "待AI批改",
+    "yourAnswer": "你的答案：",
+    "correctAnswer": "正确答案：",
+    "notAnswered": "（未作答）",
+    "explanation": "题目解析",
+    "backToPractice": "返回题库",
+    "toDashboard": "查看学习中心",
+    "noResult": "未找到结果。请返回题库重新练习。"
+  },
+  "pricing": {
+    "title": "选择适合你的订阅方案",
+    "subtitle": "支持微信支付 / 支付宝 · 随时取消 · 7天无理由退款",
+    "popular": "最受欢迎",
+    "paymentNote": "💳 订阅支付功能将在 MVP 上线后接入（微信支付 / 支付宝）",
+    "plans": {
+      "free": {
+        "name": "免费版",
+        "price": "¥0",
+        "period": "",
+        "cta": "免费注册",
+        "features": [
+          "每月限 5 次完整练习",
+          "基础听力与阅读练习",
+          "基础答案核对"
+        ]
+      },
+      "standard": {
+        "name": "标准版",
+        "price": "¥29",
+        "period": "/月 或 ¥198/年",
+        "cta": "开通标准版",
+        "features": [
+          "无限次练习",
+          "完整历年仿真题库",
+          "全技能项练习（听说读写）",
+          "模拟考试 + PDF成绩单",
+          "错题本与学习报告"
+        ]
+      },
+      "ai": {
+        "name": "AI 版",
+        "price": "¥69",
+        "period": "/月 或 ¥498/年",
+        "cta": "开通 AI 版",
+        "features": [
+          "标准版全部功能",
+          "AI 写作批改（50次/月）",
+          "AI 学习助手对话",
+          "个性化学习路径",
+          "AI 口语评测（即将上线）"
+        ]
+      },
+      "ai_unlimited": {
+        "name": "AI 无限",
+        "price": "¥99",
+        "period": "/月 或 ¥798/年",
+        "cta": "开通 AI 无限",
+        "features": [
+          "AI 版全部功能",
+          "AI 批改无次数限制",
+          "AI 备考计划生成",
+          "AI 综合诊断报告",
+          "优先体验新功能"
+        ]
+      }
+    }
+  }
+}

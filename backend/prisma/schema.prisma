@@ -1,0 +1,115 @@
+// DELF B2 Platform - Prisma Schema (SQLite for local MVP)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  passwordHash      String
+  name              String?
+  plan              String    @default("FREE") // FREE | STANDARD | AI | AI_UNLIMITED
+  subscriptionEnd   DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  attempts          UserAttempt[]
+  sessions          ExamSession[]
+  essays            Essay[]
+}
+
+model ExamSet {
+  id           String     @id @default(cuid())
+  title        String
+  year         Int
+  description  String?
+  isPublished  Boolean    @default(true)
+  isFreePreview Boolean   @default(false)
+  createdAt    DateTime   @default(now())
+
+  questions    Question[]
+  sessions     ExamSession[]
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  examSetId     String
+  examSet       ExamSet      @relation(fields: [examSetId], references: [id], onDelete: Cascade)
+  skill         String       // CO | CE | PE | PO
+  type          String       // SINGLE | MULTIPLE | TRUE_FALSE | FILL | ESSAY | SPEAKING
+  order         Int          @default(0)
+  prompt        String
+  passage       String?
+  audioUrl      String?
+  explanation   String?
+  points        Int          @default(1)
+
+  options       QuestionOption[]
+  attempts      UserAttempt[]
+
+  @@index([examSetId, skill])
+}
+
+model QuestionOption {
+  id          String   @id @default(cuid())
+  questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  label       String
+  text        String
+  isCorrect   Boolean  @default(false)
+  order       Int      @default(0)
+}
+
+model ExamSession {
+  id           String     @id @default(cuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examSetId    String
+  examSet      ExamSet    @relation(fields: [examSetId], references: [id])
+  mode         String     @default("PRACTICE") // PRACTICE | EXAM
+  startedAt    DateTime   @default(now())
+  completedAt  DateTime?
+  totalScore   Int?
+  maxScore     Int?
+
+  attempts     UserAttempt[]
+
+  @@index([userId, completedAt])
+}
+
+model UserAttempt {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId   String?
+  session     ExamSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  questionId  String
+  question    Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer      String
+  isCorrect   Boolean?
+  score       Int?
+  timeSpent   Int?
+  createdAt   DateTime     @default(now())
+
+  @@index([userId, questionId])
+}
+
+model Essay {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionId  String
+  content     String
+  wordCount   Int      @default(0)
+  aiFeedback  String?  // JSON string
+  aiScore     Int?
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+}

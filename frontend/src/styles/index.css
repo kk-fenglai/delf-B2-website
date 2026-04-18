@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #F7F9FC;
+  color: #1F2937;
+}
+
+.passage {
+  font-family: 'Source Serif Pro', Georgia, serif;
+  line-height: 1.75;
+}

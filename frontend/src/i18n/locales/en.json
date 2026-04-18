@@ -1,0 +1,175 @@
+{
+  "app": {
+    "name": "DELFluent",
+    "tagline": "DELF B2 Practice Platform",
+    "footer": "DELFluent © {{year}} · DELF B2 Practice Platform · All questions are original simulations"
+  },
+  "nav": {
+    "home": "Home",
+    "practice": "Practice",
+    "dashboard": "Dashboard",
+    "pricing": "Pricing",
+    "login": "Sign in",
+    "register": "Sign up",
+    "logout": "Sign out"
+  },
+  "plan": {
+    "FREE": "Free",
+    "STANDARD": "Standard",
+    "AI": "AI",
+    "AI_UNLIMITED": "AI Unlimited"
+  },
+  "skill": {
+    "CO": "Listening",
+    "CE": "Reading",
+    "PE": "Writing",
+    "PO": "Speaking"
+  },
+  "landing": {
+    "title": "DELF B2 Exam Practice Platform",
+    "subtitle": "Systematic practice for Listening, Reading, Writing, Speaking · AI correction · Real exam simulation",
+    "ctaStart": "Start free practice",
+    "ctaPricing": "View pricing",
+    "features": {
+      "co": { "title": "Listening", "desc": "Full audio tracks simulating real exam conditions" },
+      "ce": { "title": "Reading", "desc": "Argumentative long-form texts with answer locations" },
+      "pe": { "title": "Writing", "desc": "250-word essays with AI correction (AI plan)" },
+      "po": { "title": "Speaking", "desc": "Recording practice with AI examiner (AI plan)" }
+    },
+    "examStructure": "DELF B2 Exam Structure",
+    "minutes": "min",
+    "points": "pts",
+    "passRule": "Pass: total ≥ 50 and each section ≥ 5"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "nickname": "Nickname",
+    "nicknameOptional": "Optional",
+    "passwordHint": "At least 6 characters",
+    "submitLogin": "Sign in",
+    "submitRegister": "Create account",
+    "toRegister": "No account? Sign up",
+    "toLogin": "Have an account? Sign in",
+    "loginSuccess": "Signed in successfully",
+    "loginFail": "Sign in failed",
+    "registerSuccess": "Welcome to DELFluent!",
+    "registerFail": "Sign up failed"
+  },
+  "dashboard": {
+    "greeting": "Hello, {{name}} 👋",
+    "attemptsDone": "Questions completed",
+    "setsDone": "Sets completed",
+    "nextStep": "Next step",
+    "startToday": "Start today's practice",
+    "enterPractice": "Go to practice",
+    "radarTitle": "Skills radar",
+    "recentSessions": "Recent sessions",
+    "noData": "No practice data yet",
+    "noSessions": "No sessions yet",
+    "viewDetail": "View details",
+    "score": "Score",
+    "loading": "Loading..."
+  },
+  "practice": {
+    "title": "Practice Library",
+    "subtitle": "Choose a set to begin. Free users can try sets marked 'Free preview'.",
+    "all": "All",
+    "freePreview": "Free preview",
+    "startPractice": "Start →",
+    "totalQuestions": "{{count}} questions total",
+    "questionsCount": "{{count}} Q",
+    "empty": "No sets available",
+    "year": "Year"
+  },
+  "exam": {
+    "questionN": "Q {{n}}",
+    "prev": "Previous",
+    "next": "Next",
+    "submit": "Submit",
+    "submitFail": "Submission failed",
+    "audioNotSupported": "Your browser does not support audio playback",
+    "fillPlaceholder": "Enter your answer",
+    "essayPlaceholder": "Write your essay here (250 words minimum)...",
+    "essayAITip": "💡 Writing is not auto-graded in MVP. Upgrade to AI plan for AI correction.",
+    "unsupported": "This question type requires recording (coming soon)",
+    "loadFail": "Load failed",
+    "blockedTitle": "Subscription required",
+    "blockedCta": "View pricing",
+    "notFound": "Exam set not found",
+    "points": "pts"
+  },
+  "review": {
+    "title": "Results",
+    "correct": "✓ Correct",
+    "wrong": "✗ Wrong",
+    "pendingAI": "Pending AI review",
+    "yourAnswer": "Your answer: ",
+    "correctAnswer": "Correct answer: ",
+    "notAnswered": "(not answered)",
+    "explanation": "Explanation",
+    "backToPractice": "Back to practice",
+    "toDashboard": "Go to dashboard",
+    "noResult": "No results found. Return to practice and try again."
+  },
+  "pricing": {
+    "title": "Choose your plan",
+    "subtitle": "WeChat Pay / Alipay · Cancel anytime · 7-day refund",
+    "popular": "Most popular",
+    "paymentNote": "💳 Payment integration will be activated after MVP launch (WeChat Pay / Alipay / Stripe)",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "period": "",
+        "cta": "Sign up free",
+        "features": [
+          "5 full practices per month",
+          "Basic listening & reading",
+          "Basic answer check"
+        ]
+      },
+      "standard": {
+        "name": "Standard",
+        "price": "$4.9",
+        "period": "/month or $29/year",
+        "cta": "Get Standard",
+        "features": [
+          "Unlimited practice",
+          "Complete historical question bank",
+          "All 4 skills (L/R/W/S)",
+          "Full mock exams + PDF report",
+          "Mistake book & learning reports"
+        ]
+      },
+      "ai": {
+        "name": "AI",
+        "price": "$9.9",
+        "period": "/month or $69/year",
+        "cta": "Get AI Plan",
+        "features": [
+          "All Standard features",
+          "AI writing correction (50/month)",
+          "AI study assistant chat",
+          "Personalized learning path",
+          "AI speaking evaluation (soon)"
+        ]
+      },
+      "ai_unlimited": {
+        "name": "AI Unlimited",
+        "price": "$14.9",
+        "period": "/month or $99/year",
+        "cta": "Get Unlimited",
+        "features": [
+          "All AI features",
+          "Unlimited AI correction",
+          "AI study plan generation",
+          "AI diagnostic report",
+          "Early access to new features"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "app": {
+    "name": "DELFluent",
+    "tagline": "Plateforme d'entraînement DELF B2",
+    "footer": "DELFluent © {{year}} · Plateforme d'entraînement DELF B2 · Toutes les questions sont des simulations originales"
+  },
+  "nav": {
+    "home": "Accueil",
+    "practice": "Entraînement",
+    "dashboard": "Tableau de bord",
+    "pricing": "Tarifs",
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "logout": "Déconnexion"
+  },
+  "plan": {
+    "FREE": "Gratuit",
+    "STANDARD": "Standard",
+    "AI": "IA",
+    "AI_UNLIMITED": "IA Illimité"
+  },
+  "skill": {
+    "CO": "Compréhension orale",
+    "CE": "Compréhension écrite",
+    "PE": "Production écrite",
+    "PO": "Production orale"
+  },
+  "landing": {
+    "title": "Plateforme d'entraînement DELF B2",
+    "subtitle": "Entraînement systématique aux quatre compétences · Correction IA · Simulation d'examen réel",
+    "ctaStart": "Commencer gratuitement",
+    "ctaPricing": "Voir les tarifs",
+    "features": {
+      "co": { "title": "Compréhension orale", "desc": "Pistes audio complètes reproduisant les conditions réelles" },
+      "ce": { "title": "Compréhension écrite", "desc": "Textes argumentatifs avec localisation des réponses" },
+      "pe": { "title": "Production écrite", "desc": "Rédaction de 250 mots avec correction IA (plan IA)" },
+      "po": { "title": "Production orale", "desc": "Enregistrement avec examinateur IA (plan IA)" }
+    },
+    "examStructure": "Structure de l'examen DELF B2",
+    "minutes": "min",
+    "points": "pts",
+    "passRule": "Réussite : total ≥ 50 et chaque épreuve ≥ 5"
+  },
+  "auth": {
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "nickname": "Pseudo",
+    "nicknameOptional": "Facultatif",
+    "passwordHint": "Au moins 6 caractères",
+    "submitLogin": "Se connecter",
+    "submitRegister": "Créer un compte",
+    "toRegister": "Pas de compte ? Inscrivez-vous",
+    "toLogin": "Déjà un compte ? Connectez-vous",
+    "loginSuccess": "Connexion réussie",
+    "loginFail": "Échec de la connexion",
+    "registerSuccess": "Bienvenue sur DELFluent !",
+    "registerFail": "Échec de l'inscription"
+  },
+  "dashboard": {
+    "greeting": "Bonjour, {{name}} 👋",
+    "attemptsDone": "Questions terminées",
+    "setsDone": "Sessions terminées",
+    "nextStep": "Étape suivante",
+    "startToday": "Commencer l'entraînement du jour",
+    "enterPractice": "Accéder à l'entraînement",
+    "radarTitle": "Radar des compétences",
+    "recentSessions": "Sessions récentes",
+    "noData": "Pas encore de données",
+    "noSessions": "Aucune session pour l'instant",
+    "viewDetail": "Voir les détails",
+    "score": "Score",
+    "loading": "Chargement..."
+  },
+  "practice": {
+    "title": "Banque de sujets",
+    "subtitle": "Choisissez un sujet pour commencer. Les utilisateurs gratuits peuvent essayer les sujets marqués « Aperçu gratuit ».",
+    "all": "Tous",
+    "freePreview": "Aperçu gratuit",
+    "startPractice": "Commencer →",
+    "totalQuestions": "{{count}} questions au total",
+    "questionsCount": "{{count}} Q",
+    "empty": "Aucun sujet disponible",
+    "year": "Année"
+  },
+  "exam": {
+    "questionN": "Question {{n}}",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "submit": "Soumettre",
+    "submitFail": "Échec de l'envoi",
+    "audioNotSupported": "Votre navigateur ne prend pas en charge la lecture audio",
+    "fillPlaceholder": "Saisir votre réponse",
+    "essayPlaceholder": "Rédigez votre essai ici (250 mots minimum)...",
+    "essayAITip": "💡 La rédaction n'est pas corrigée automatiquement en MVP. Passez au plan IA pour la correction IA.",
+    "unsupported": "Ce type de question nécessite l'enregistrement (bientôt disponible)",
+    "loadFail": "Échec du chargement",
+    "blockedTitle": "Abonnement requis",
+    "blockedCta": "Voir les tarifs",
+    "notFound": "Sujet introuvable",
+    "points": "pts"
+  },
+  "review": {
+    "title": "Résultats",
+    "correct": "✓ Correct",
+    "wrong": "✗ Incorrect",
+    "pendingAI": "Correction IA en attente",
+    "yourAnswer": "Votre réponse : ",
+    "correctAnswer": "Bonne réponse : ",
+    "notAnswered": "(non répondu)",
+    "explanation": "Explication",
+    "backToPractice": "Retour à l'entraînement",
+    "toDashboard": "Tableau de bord",
+    "noResult": "Aucun résultat trouvé. Retournez à l'entraînement pour réessayer."
+  },
+  "pricing": {
+    "title": "Choisissez votre formule",
+    "subtitle": "WeChat Pay / Alipay · Annulable à tout moment · Remboursement sous 7 jours",
+    "popular": "Le plus choisi",
+    "paymentNote": "💳 Le paiement sera activé après le lancement du MVP (WeChat Pay / Alipay / Stripe)",
+    "plans": {
+      "free": {
+        "name": "Gratuit",
+        "price": "0 €",
+        "period": "",
+        "cta": "Inscription gratuite",
+        "features": [
+          "5 sessions complètes par mois",
+          "Compréhension orale et écrite de base",
+          "Vérification de base des réponses"
+        ]
+      },
+      "standard": {
+        "name": "Standard",
+        "price": "4,90 €",
+        "period": "/mois ou 29 €/an",
+        "cta": "Choisir Standard",
+        "features": [
+          "Entraînement illimité",
+          "Banque complète de sujets",
+          "Les 4 compétences (CO/CE/PE/PO)",
+          "Examens blancs + rapport PDF",
+          "Carnet d'erreurs & rapports"
+        ]
+      },
+      "ai": {
+        "name": "IA",
+        "price": "9,90 €",
+        "period": "/mois ou 69 €/an",
+        "cta": "Choisir IA",
+        "features": [
+          "Toutes les fonctions Standard",
+          "Correction IA de rédaction (50/mois)",
+          "Assistant d'étude IA",
+          "Parcours personnalisé",
+          "Évaluation orale IA (bientôt)"
+        ]
+      },
+      "ai_unlimited": {
+        "name": "IA Illimité",
+        "price": "14,90 €",
+        "period": "/mois ou 99 €/an",
+        "cta": "Choisir Illimité",
+        "features": [
+          "Toutes les fonctions IA",
+          "Correction IA illimitée",
+          "Plan d'étude IA",
+          "Rapport diagnostique IA",
+          "Accès anticipé aux nouveautés"
+        ]
+      }
+    }
+  }
+}
