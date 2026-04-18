@@ -48,15 +48,61 @@
     "password": "Mot de passe",
     "nickname": "Pseudo",
     "nicknameOptional": "Facultatif",
-    "passwordHint": "Au moins 6 caractères",
+    "passwordHint": "Au moins 10 caractères, mélange de majuscules/minuscules/chiffres/symboles",
     "submitLogin": "Se connecter",
     "submitRegister": "Créer un compte",
     "toRegister": "Pas de compte ? Inscrivez-vous",
     "toLogin": "Déjà un compte ? Connectez-vous",
+    "forgotPassword": "Mot de passe oublié ?",
+    "useAdminLogin": "Les comptes administrateurs doivent se connecter via la console admin",
     "loginSuccess": "Connexion réussie",
     "loginFail": "Échec de la connexion",
     "registerSuccess": "Bienvenue sur DELFluent !",
-    "registerFail": "Échec de l'inscription"
+    "registerFail": "Échec de l'inscription",
+    "common": { "cancel": "Annuler" },
+    "forgot": {
+      "title": "Réinitialiser le mot de passe",
+      "subtitle": "Saisissez votre e-mail et nous enverrons un lien de réinitialisation",
+      "submit": "Envoyer le lien",
+      "sentTitle": "E-mail envoyé",
+      "sentDesc": "Si cet e-mail est enregistré, un lien de réinitialisation a été envoyé. Il expire dans 30 minutes.",
+      "backToLogin": "← Retour à la connexion",
+      "fail": "Échec de l'envoi"
+    },
+    "reset": {
+      "title": "Définir un nouveau mot de passe",
+      "subtitle": "Au moins 10 caractères ; au moins 3 types parmi minuscule/majuscule/chiffre/symbole",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "mismatch": "Les mots de passe ne correspondent pas",
+      "submit": "Valider",
+      "success": "Mot de passe réinitialisé. Connectez-vous avec le nouveau.",
+      "fail": "Échec — le lien est peut-être expiré",
+      "missingToken": "Lien invalide ou expiré",
+      "requestNew": "Demander un nouveau lien"
+    },
+    "verify": {
+      "verifying": "Vérification...",
+      "successTitle": "E-mail vérifié 🎉",
+      "successDesc": "Votre compte est activé. Vous pouvez vous connecter.",
+      "expiredTitle": "Lien expiré",
+      "expiredDesc": "Le lien de vérification n'est plus valable. Demandez-en un nouveau.",
+      "invalidTitle": "Lien invalide",
+      "invalidDesc": "Ce lien de vérification n'est pas reconnu.",
+      "toLogin": "Se connecter",
+      "requiredTitle": "Vérifiez votre e-mail",
+      "requiredDesc": "Un e-mail de vérification a été envoyé à {{email}}. Cliquez sur le lien pour activer votre compte, ou renvoyez-en un ci-dessous."
+    },
+    "sent": {
+      "title": "E-mail de vérification envoyé",
+      "desc": "Un e-mail de vérification a été envoyé à {{email}}.",
+      "hint": "Cliquez sur le lien sous 24 heures pour activer votre compte. Vérifiez aussi les spams.",
+      "resend": "Renvoyer",
+      "toLogin": "Se connecter",
+      "noEmail": "Adresse e-mail introuvable",
+      "resent": "E-mail renvoyé",
+      "resendFail": "Échec du renvoi, réessayez plus tard"
+    }
   },
   "dashboard": {
     "greeting": "Bonjour, {{name}} 👋",

@@ -48,15 +48,61 @@
     "password": "Password",
     "nickname": "Nickname",
     "nicknameOptional": "Optional",
-    "passwordHint": "At least 6 characters",
+    "passwordHint": "At least 10 characters, mix of upper/lower/digit/symbol",
     "submitLogin": "Sign in",
     "submitRegister": "Create account",
     "toRegister": "No account? Sign up",
     "toLogin": "Have an account? Sign in",
+    "forgotPassword": "Forgot password?",
+    "useAdminLogin": "Admin accounts must sign in via the admin console",
     "loginSuccess": "Signed in successfully",
     "loginFail": "Sign in failed",
     "registerSuccess": "Welcome to DELFluent!",
-    "registerFail": "Sign up failed"
+    "registerFail": "Sign up failed",
+    "common": { "cancel": "Cancel" },
+    "forgot": {
+      "title": "Reset password",
+      "subtitle": "Enter your account email and we'll send a reset link",
+      "submit": "Send reset link",
+      "sentTitle": "Email sent",
+      "sentDesc": "If this email is registered, a reset link has been sent. It will expire in 30 minutes.",
+      "backToLogin": "← Back to sign in",
+      "fail": "Failed to send"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "subtitle": "At least 10 characters; include at least 3 of lower/upper/digit/symbol",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "mismatch": "Passwords do not match",
+      "submit": "Submit",
+      "success": "Password reset. Please sign in with your new password.",
+      "fail": "Reset failed — link may have expired",
+      "missingToken": "Link invalid or expired",
+      "requestNew": "Request a new reset link"
+    },
+    "verify": {
+      "verifying": "Verifying…",
+      "successTitle": "Email verified 🎉",
+      "successDesc": "Your account is active. You can now sign in.",
+      "expiredTitle": "Link expired",
+      "expiredDesc": "The verification link is no longer valid. Please request a new one after signing in.",
+      "invalidTitle": "Link invalid",
+      "invalidDesc": "We couldn't recognize this verification link.",
+      "toLogin": "Go to sign in",
+      "requiredTitle": "Please verify your email",
+      "requiredDesc": "We sent a verification email to {{email}}. Click the link inside to activate your account, or press the button below to resend."
+    },
+    "sent": {
+      "title": "Verification email sent",
+      "desc": "We've sent a verification email to {{email}}.",
+      "hint": "Click the link within 24 hours to activate your account. Check your spam folder if you don't see it.",
+      "resend": "Resend",
+      "toLogin": "Go to sign in",
+      "noEmail": "No email address detected",
+      "resent": "Verification email resent",
+      "resendFail": "Failed to resend, please try later"
+    }
   },
   "dashboard": {
     "greeting": "Hello, {{name}} 👋",

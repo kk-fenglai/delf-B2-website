@@ -1,7 +1,8 @@
-import { Form, Input, Button, Card, Typography, message } from 'antd';
+import { Form, Input, Button, Card, Typography, message, Modal } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/auth';
+import { api } from '../api/client';
 
 const { Title } = Typography;
 
@@ -16,7 +17,30 @@ export default function Login() {
       message.success(t('auth.loginSuccess'));
       navigate('/dashboard');
     } catch (e: any) {
-      message.error(e.response?.data?.error || t('auth.loginFail'));
+      const status = e.response?.status;
+      const code = e.response?.data?.code;
+      if (status === 403 && code === 'EMAIL_NOT_VERIFIED') {
+        const email = e.response?.data?.email || values.email;
+        Modal.confirm({
+          title: t('auth.verify.requiredTitle'),
+          content: t('auth.verify.requiredDesc', { email }),
+          okText: t('auth.sent.resend'),
+          cancelText: t('auth.common.cancel'),
+          onOk: async () => {
+            try {
+              await api.post('/auth/resend-verification', { email });
+              message.success(t('auth.sent.resent'));
+            } catch (err: any) {
+              message.error(err.response?.data?.error || t('auth.sent.resendFail'));
+            }
+          },
+        });
+      } else if (status === 403 && code === 'USE_ADMIN_LOGIN') {
+        message.info(e.response?.data?.error || t('auth.useAdminLogin'));
+        navigate('/admin/login');
+      } else {
+        message.error(e.response?.data?.error || t('auth.loginFail'));
+      }
     }
   };
 
@@ -26,17 +50,18 @@ export default function Login() {
         <Title level={3} className="text-center">{t('auth.login')}</Title>
         <Form layout="vertical" onFinish={onSubmit}>
           <Form.Item label={t('auth.email')} name="email" rules={[{ required: true, type: 'email' }]}>
-            <Input placeholder="demo@delfluent.com" />
+            <Input placeholder="your@email.com" />
           </Form.Item>
-          <Form.Item label={t('auth.password')} name="password" rules={[{ required: true, min: 6 }]}>
-            <Input.Password placeholder="demo1234" />
+          <Form.Item label={t('auth.password')} name="password" rules={[{ required: true }]}>
+            <Input.Password />
           </Form.Item>
           <Button type="primary" htmlType="submit" block loading={loading}>
             {t('auth.submitLogin')}
           </Button>
         </Form>
-        <div className="text-center mt-4 text-sm">
+        <div className="flex justify-between items-center mt-4 text-sm">
           <Link to="/register">{t('auth.toRegister')}</Link>
+          <Link to="/forgot-password">{t('auth.forgotPassword')}</Link>
         </div>
       </Card>
     </div>
