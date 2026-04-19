@@ -29,9 +29,10 @@ requireEnv('FRONTEND_URL');
 
 // AI writing grader: required in production (feature is a paid-tier entitlement).
 // In dev we only warn — the feature will 503 at call time, not at boot.
-requireEnv('ANTHROPIC_API_KEY', { minLength: 40, prodOnly: true });
-if (!IS_PROD && !process.env.ANTHROPIC_API_KEY) {
-  warnings.push('ANTHROPIC_API_KEY is not set — AI essay grading will return 503 until configured');
+// Provider is DeepSeek (see planMatrix.js). Keys are prefixed `sk-` and ~35+ chars.
+requireEnv('DEEPSEEK_API_KEY', { minLength: 30, prodOnly: true });
+if (!IS_PROD && !process.env.DEEPSEEK_API_KEY) {
+  warnings.push('DEEPSEEK_API_KEY is not set — AI essay grading will return 503 until configured');
 }
 
 // Hard-block boilerplate placeholder secrets from .env.example
@@ -79,5 +80,6 @@ module.exports = {
   PORT: Number(process.env.PORT || 4000),
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_PROD ? 'info' : 'debug'),
   FRONTEND_URL: process.env.FRONTEND_URL,
-  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || '',
+  DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY || '',
+  DEEPSEEK_BASE_URL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
 };

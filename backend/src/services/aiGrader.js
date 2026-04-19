@@ -1,20 +1,29 @@
 // AI essay grader for DELF B2 Production Écrite.
 //
+// Provider: DeepSeek (api.deepseek.com). We use the `openai` SDK because
+// DeepSeek exposes an OpenAI-compatible chat-completions endpoint. If you
+// later want to swap providers (Mistral, Qwen, OpenAI itself), only the
+// baseURL + model IDs in planMatrix.js need to change.
+//
 // Contract: gradeEssay({ essay, question, modelKey, locale }) → structured
 // rubric result. Caller (essayQueue) is responsible for persistence — this
-// module is pure I/O: Claude in, parsed + validated JSON out.
+// module is pure I/O: DeepSeek in, parsed + validated JSON out.
 //
-// Design notes:
-//  - tool_use with tool_choice forces a single JSON call; no parsing free text
-//  - system prompt is marked with cache_control: ephemeral so the rubric +
-//    few-shot examples hit the 5-min Anthropic prompt cache (~90% discount on
-//    input token cost) after the first call in a 5-min window
-//  - total aiScore is recomputed server-side from dimensions; we never trust
-//    a model-claimed total
-//  - 3 retries with exponential backoff for 429 / 5xx; surfaces a typed error
-//    for essayQueue to classify (transient vs terminal)
+// Why fan-out (3 parallel calls instead of one):
+//   Output-token generation dominates latency. Splitting into 3 smaller
+//   calls run in parallel keeps wall time well under the target. DeepSeek
+//   auto-caches the prompt prefix across requests (no explicit cache_control
+//   needed — just keep the system message identical).
+//
+// The three sub-calls:
+//   - scoreCall       → 10 dimensions with brief feedback (≤ 25 words/dim)
+//   - correctionsCall → 3-8 inline corrections
+//   - summaryCall     → strengths[] + globalFeedback
+//
+// All three use the SAME system prompt → same cache prefix across the 3
+// calls and across essays within the cache window.
 
-const Anthropic = require('@anthropic-ai/sdk');
+const OpenAI = require('openai');
 const { z } = require('zod');
 const env = require('../config/env');
 const { logger } = require('../utils/logger');
@@ -34,13 +43,16 @@ const {
 // ---- Singleton client ----------------------------------------------------
 let _client = null;
 function getClient() {
-  if (!env.ANTHROPIC_API_KEY) {
-    const e = new Error('ANTHROPIC_API_KEY not configured');
+  if (!env.DEEPSEEK_API_KEY) {
+    const e = new Error('DEEPSEEK_API_KEY not configured');
     e.code = 'AI_NOT_CONFIGURED';
     throw e;
   }
   if (!_client) {
-    _client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+    _client = new OpenAI({
+      apiKey: env.DEEPSEEK_API_KEY,
+      baseURL: env.DEEPSEEK_BASE_URL, // https://api.deepseek.com
+    });
   }
   return _client;
 }
@@ -69,9 +81,9 @@ function normaliseLocale(loc) {
   return LOCALES[l] ? l : 'fr';
 }
 
-// ---- System prompt (cached) ---------------------------------------------
-// Kept stable so the cache key survives between calls. If you change this
-// string you invalidate the cache — plan rollouts accordingly.
+// ---- System prompt (auto-cached by DeepSeek) -----------------------------
+// Kept stable across all 3 sub-calls so DeepSeek's prefix cache can hit. If
+// you change this string you invalidate the cache — plan rollouts accordingly.
 function buildSystemPrompt() {
   const rubricBlock = DIMENSIONS.map(
     (d) =>
@@ -87,13 +99,8 @@ PROTOCOLE DE NOTATION :
  1. Lisez d'abord le texte en entier avant de noter.
  2. Notez chaque dimension indépendamment, en vous appuyant sur le critère ci-dessus.
  3. Un score partiel (0.5, 1, 1.5…) est acceptable, mais toujours ≤ au max de la dimension.
- 4. Identifiez 3 à 8 erreurs précises à corriger (corrections[]). Pour chaque :
-      - excerpt : citation EXACTE (≤ 10 mots) extraite du texte original, sans reformulation
-      - issue   : nature de l'erreur
-      - suggestion : correction proposée
-      - type : grammar | lexique | orthographe | syntaxe
- 5. Listez 2 à 4 points forts concrets (strengths[]) en citant des formulations réussies du texte.
- 6. Rédigez un retour global (globalFeedback) de 80 à 180 mots — constructif, hiérarchisé (forces → axes de progrès).
+ 4. Pour les corrections : citation EXACTE (≤ 10 mots) du texte original, sans reformulation.
+ 5. Type de correction : grammar | lexique | orthographe | syntaxe.
 
 INTERDIT :
  - Ne paraphrasez pas la grille dans les feedbacks.
@@ -101,31 +108,31 @@ INTERDIT :
  - N'inventez PAS des citations qui ne sont pas dans le texte.
  - Ne calculez PAS de note globale — le système la recompose.
 
-SORTIE : vous devez appeler l'outil "submit_grade" une seule fois avec un JSON valide. Pas de texte libre avant ou après.
+EXEMPLE — copie solide (18/25) :
+  "Force est de constater que les algorithmes enferment les internautes dans des bulles cognitives…"
+  → consigne 2/2, argumentation 3/4, coherence 3/3, lexique_etendue 2/2, morphosyntaxe_maitrise 1/2.
 
-EXEMPLE ABRÉGÉ — copie solide (18/25) :
-  Sujet : "Les réseaux sociaux nuisent-ils au débat démocratique ?"
-  Extrait : "Force est de constater que les algorithmes enferment les internautes dans des bulles cognitives…"
-  → consigne 2/2, argumentation 3/4 (exemples variés mais 1 argument peu développé), coherence 3/3, lexique_etendue 2/2, morphosyntaxe_maitrise 1/2 (2 erreurs d'accord).
+EXEMPLE — copie limite (12/25) :
+  "Je pense que c'est mal parce que les gens ils regardent leur téléphone."
+  → argumentation 1/4, coherence 1/3, lexique_etendue 0/2, morphosyntaxe_maitrise 0/2.
 
-EXEMPLE ABRÉGÉ — copie limite (12/25) :
-  Extrait : "Je pense que c'est mal parce que les gens ils regardent leur téléphone."
-  → argumentation 1/4 (argument non développé), coherence 1/3 (pas de connecteurs), lexique_etendue 0/2 (registre oral), morphosyntaxe_maitrise 0/2 (reprise pronominale fautive).`;
+L'utilisateur vous demandera l'une de trois tâches ciblées (notation, corrections, ou synthèse). Concentrez-vous UNIQUEMENT sur la tâche demandée et appelez l'outil correspondant une seule fois.`;
 }
 
-// Lazy-build + memoize (same string across calls ⇒ same cache key).
 let _systemPrompt = null;
 function getSystemPrompt() {
   if (!_systemPrompt) _systemPrompt = buildSystemPrompt();
   return _systemPrompt;
 }
 
-// ---- Tool schema ---------------------------------------------------------
-const GRADE_TOOL = {
-  name: 'submit_grade',
+// ---- Tool schemas (one per sub-call) -------------------------------------
+// Wrapped in OpenAI function-calling envelope at call time; the `parameters`
+// field below is plain JSON Schema.
+const SCORE_TOOL_DEF = {
+  name: 'submit_scores',
   description:
-    "Soumettre l'évaluation détaillée d'une copie de DELF B2 Production Écrite selon la grille officielle.",
-  input_schema: {
+    "Soumettre la notation des 10 dimensions de la grille DELF B2. Feedback bref (≤ 25 mots par dimension).",
+  parameters: {
     type: 'object',
     properties: {
       dimensions: {
@@ -138,15 +145,27 @@ const GRADE_TOOL = {
             key: { type: 'string', enum: DIMENSION_KEYS },
             score: { type: 'number', minimum: 0 },
             max: { type: 'number', minimum: 0 },
-            feedback: { type: 'string', minLength: 20 },
+            feedback: { type: 'string', minLength: 10, maxLength: 200 },
           },
           required: ['key', 'score', 'max', 'feedback'],
         },
       },
+    },
+    required: ['dimensions'],
+  },
+};
+
+const CORRECTIONS_TOOL_DEF = {
+  name: 'submit_corrections',
+  description:
+    "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots), nature de l'erreur, suggestion, type.",
+  parameters: {
+    type: 'object',
+    properties: {
       corrections: {
         type: 'array',
         minItems: 0,
-        maxItems: 20,
+        maxItems: 12,
         items: {
           type: 'object',
           properties: {
@@ -158,31 +177,45 @@ const GRADE_TOOL = {
           required: ['excerpt', 'issue', 'suggestion', 'type'],
         },
       },
-      strengths: {
-        type: 'array',
-        minItems: 1,
-        maxItems: 6,
-        items: { type: 'string', minLength: 5 },
-      },
-      globalFeedback: { type: 'string', minLength: 80 },
     },
-    required: ['dimensions', 'corrections', 'strengths', 'globalFeedback'],
+    required: ['corrections'],
   },
 };
 
-// Zod mirrors the tool schema for defence-in-depth: even if Anthropic ever
-// relaxes tool validation, we reject malformed output locally.
-const ToolOutputSchema = z.object({
+const SUMMARY_TOOL_DEF = {
+  name: 'submit_summary',
+  description:
+    "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
+  parameters: {
+    type: 'object',
+    properties: {
+      strengths: {
+        type: 'array',
+        minItems: 1,
+        maxItems: 4,
+        items: { type: 'string', minLength: 5 },
+      },
+      globalFeedback: { type: 'string', minLength: 80, maxLength: 1200 },
+    },
+    required: ['strengths', 'globalFeedback'],
+  },
+};
+
+// Per-task Zod schemas mirror the tool parameters for defence-in-depth.
+const ScoreSchema = z.object({
   dimensions: z
     .array(
       z.object({
         key: z.enum(DIMENSION_KEYS),
         score: z.number().min(0),
         max: z.number().min(0),
-        feedback: z.string().min(20),
+        feedback: z.string().min(10),
       })
     )
     .length(DIMENSIONS.length),
+});
+
+const CorrectionsSchema = z.object({
   corrections: z
     .array(
       z.object({
@@ -192,35 +225,38 @@ const ToolOutputSchema = z.object({
         type: z.enum(CORRECTION_TYPES),
       })
     )
-    .max(20),
-  strengths: z.array(z.string().min(5)).min(1).max(6),
+    .max(12),
+});
+
+const SummarySchema = z.object({
+  strengths: z.array(z.string().min(5)).min(1).max(4),
   globalFeedback: z.string().min(80),
 });
 
 // ---- Cost calculator -----------------------------------------------------
+// DeepSeek usage fields (OpenAI-compatible + extras):
+//   prompt_tokens, completion_tokens                       — total counts
+//   prompt_cache_hit_tokens, prompt_cache_miss_tokens      — cache split
 function computeCostUsd(modelKey, usage) {
   const m = MODEL_CATALOG[modelKey];
   if (!m) return 0;
-  const freshIn = usage.input_tokens || 0;
-  const cachedIn =
-    (usage.cache_read_input_tokens || 0) +
-    // cache_creation_input_tokens is billed at 1.25x, but Anthropic reports
-    // it separately; for now we bill it at 1.25x to match invoicing.
-    (usage.cache_creation_input_tokens || 0) * 1.25;
-  const out = usage.output_tokens || 0;
+  const cachedIn = usage.prompt_cache_hit_tokens || 0;
+  const freshIn =
+    (usage.prompt_cache_miss_tokens != null
+      ? usage.prompt_cache_miss_tokens
+      : Math.max(0, (usage.prompt_tokens || 0) - cachedIn));
+  const out = usage.completion_tokens || 0;
 
   const inRate = m.inputUsdPerM / 1_000_000;
   const outRate = m.outputUsdPerM / 1_000_000;
 
-  return (
-    freshIn * inRate +
-    cachedIn * inRate * CACHED_INPUT_MULTIPLIER +
-    out * outRate
-  );
+  return freshIn * inRate + cachedIn * inRate * CACHED_INPUT_MULTIPLIER + out * outRate;
 }
 
 // ---- Retry wrapper -------------------------------------------------------
-async function withRetry(fn, { attempts = 3, baseMs = 800 } = {}) {
+// Tight budget: 1 retry max, short backoff. Each sub-call must fit in ~8s
+// wall time for the fan-out to land under 10s.
+async function withRetry(fn, { attempts = 2, baseMs = 400 } = {}) {
   let lastErr;
   for (let i = 0; i < attempts; i++) {
     try {
@@ -228,14 +264,140 @@ async function withRetry(fn, { attempts = 3, baseMs = 800 } = {}) {
     } catch (err) {
       lastErr = err;
       const status = err?.status || err?.response?.status;
-      // 4xx other than 429 are terminal — don't retry.
       if (status && status >= 400 && status < 500 && status !== 429) throw err;
       if (i === attempts - 1) break;
-      const wait = baseMs * Math.pow(2, i) + Math.random() * 300;
+      const wait = baseMs + Math.random() * 200;
       await new Promise((r) => setTimeout(r, wait));
     }
   }
   throw lastErr;
+}
+
+// ---- Sub-call runner -----------------------------------------------------
+// Single per-model timeout map. With a single DeepSeek tier today, just one
+// entry — but the shape is kept for future multi-model support.
+const SUBCALL_TIMEOUT_MS = {
+  'deepseek-chat': 10_000,
+};
+
+const TASK_HINTS = {
+  scores:
+    "TÂCHE : notez les 10 dimensions de la grille. Pour chaque dimension, un feedback BREF de ≤ 25 mots. Appelez submit_scores une seule fois.",
+  corrections:
+    "TÂCHE : identifiez 3 à 8 erreurs précises. Pour chaque erreur : citation EXACTE (≤10 mots) du texte, nature, suggestion, type. Appelez submit_corrections une seule fois.",
+  summary:
+    "TÂCHE : listez 2 à 4 points forts concrets (citez des formulations réussies) et rédigez un retour global de 80 à 150 mots (forces → axes de progrès). Appelez submit_summary une seule fois.",
+};
+
+const TASK_TOOL_DEFS = {
+  scores: SCORE_TOOL_DEF,
+  corrections: CORRECTIONS_TOOL_DEF,
+  summary: SUMMARY_TOOL_DEF,
+};
+
+const TASK_MAX_TOKENS = {
+  scores: 1200,
+  corrections: 1000,
+  summary: 600,
+};
+
+// With a single DeepSeek tier, every sub-call uses the same model. Shape kept
+// for when we add deepseek-reasoner (R1) as a premium tier later.
+function modelForTask(_task, userModelKey) {
+  return userModelKey;
+}
+
+function buildUserContent(essay, question, loc, task) {
+  return `Consigne (sujet) :
+"""
+${String(question.prompt || '').trim()}
+"""
+
+Copie du candidat (${essay.wordCount} mots) :
+"""
+${essay.content.trim()}
+"""
+
+${TASK_HINTS[task]}
+
+Langue du retour : ${LOCALES[loc].label}.
+${LOCALES[loc].instruction}`;
+}
+
+async function runSubCall({ client, userModelKey, task, essay, question, loc }) {
+  const toolDef = TASK_TOOL_DEFS[task];
+  const taskModelKey = modelForTask(task, userModelKey);
+  const taskModel = MODEL_CATALOG[taskModelKey];
+
+  const call = () =>
+    client.chat.completions.create(
+      {
+        model: taskModel.providerId,
+        max_tokens: TASK_MAX_TOKENS[task],
+        // Force the model to call exactly this tool — structured output
+        // guaranteed, no free-text parsing needed.
+        tools: [{ type: 'function', function: toolDef }],
+        tool_choice: { type: 'function', function: { name: toolDef.name } },
+        messages: [
+          { role: 'system', content: getSystemPrompt() },
+          { role: 'user', content: buildUserContent(essay, question, loc, task) },
+        ],
+      },
+      { timeout: SUBCALL_TIMEOUT_MS[taskModelKey] || 10_000 }
+    );
+
+  const resp = await withRetry(call);
+
+  const choice = resp.choices?.[0];
+  if (!choice) {
+    const e = new Error(`No choices returned for task=${task}`);
+    e.code = 'AI_NO_TOOL_USE';
+    throw e;
+  }
+  if (choice.finish_reason === 'length') {
+    const e = new Error(`Output truncated for task=${task}: hit max_tokens`);
+    e.code = 'AI_OUTPUT_TRUNCATED';
+    throw e;
+  }
+
+  const toolCalls = choice.message?.tool_calls;
+  const tc = toolCalls && toolCalls[0];
+  if (!tc || tc.type !== 'function' || tc.function?.name !== toolDef.name) {
+    const e = new Error(`Expected tool_call=${toolDef.name} for task=${task}, got ${tc?.function?.name || 'none'}`);
+    e.code = 'AI_NO_TOOL_USE';
+    throw e;
+  }
+
+  // OpenAI-format tool calls always deliver `arguments` as a JSON string.
+  let rawInput;
+  try {
+    rawInput = JSON.parse(tc.function.arguments || '{}');
+  } catch (err) {
+    const e = new Error(`tool_call arguments not valid JSON for task=${task}: ${err.message}`);
+    e.code = 'AI_BAD_OUTPUT'; e.cause = err;
+    throw e;
+  }
+
+  return {
+    rawInput,
+    usage: resp.usage || {},
+    stopReason: choice.finish_reason,
+    modelKey: taskModelKey,
+  };
+}
+
+function wrapProviderError(err, task) {
+  if (err?.code && typeof err.code === 'string' && err.code.startsWith('AI_')) return err;
+  const status = err?.status;
+  const code =
+    status === 429                     ? 'AI_RATE_LIMITED' :
+    status >= 500                      ? 'AI_PROVIDER_DOWN' :
+    status >= 400 && status < 500      ? 'AI_BAD_REQUEST'   :
+    'AI_CALL_FAILED';
+  const wrapped = new Error(`DeepSeek call failed (task=${task}): ${err?.message || err}`);
+  wrapped.code = code;
+  wrapped.cause = err;
+  return wrapped;
 }
 
 // ---- Public API ----------------------------------------------------------
@@ -261,118 +423,99 @@ async function gradeEssay({ essay, question, modelKey, locale }) {
 
   const client = getClient();
   const loc = normaliseLocale(locale);
-  const model = MODEL_CATALOG[modelKey];
   const started = Date.now();
 
-  const userContent = `Consigne (sujet) :
-"""
-${String(question.prompt || '').trim()}
-"""
+  // Fan out: 3 sub-calls in parallel. Wall time ≈ max of the three.
+  const tasks = ['scores', 'corrections', 'summary'];
+  const results = await Promise.all(
+    tasks.map((task) =>
+      runSubCall({ client, userModelKey: modelKey, task, essay, question, loc })
+        .catch((err) => { throw wrapProviderError(err, task); })
+    )
+  );
 
-Copie du candidat (${essay.wordCount} mots) :
-"""
-${essay.content.trim()}
-"""
+  const [scoreRes, corrRes, sumRes] = results;
 
-Langue du retour : ${LOCALES[loc].label}.
-${LOCALES[loc].instruction}`;
-
-  const call = () =>
-    client.messages.create({
-      model: model.anthropicId,
-      max_tokens: 2500,
-      temperature: 0.2,
-      system: [
-        {
-          type: 'text',
-          text: getSystemPrompt(),
-          cache_control: { type: 'ephemeral' },
-        },
-      ],
-      tools: [GRADE_TOOL],
-      tool_choice: { type: 'tool', name: GRADE_TOOL.name },
-      messages: [{ role: 'user', content: userContent }],
-    });
-
-  let resp;
-  try {
-    resp = await withRetry(call);
-  } catch (err) {
-    const code =
-      err?.status === 429 ? 'AI_RATE_LIMITED' :
-      err?.status >= 500   ? 'AI_PROVIDER_DOWN' :
-      'AI_CALL_FAILED';
-    const wrapped = new Error(`Claude call failed: ${err?.message || err}`);
-    wrapped.code = code;
-    wrapped.cause = err;
-    throw wrapped;
+  let scoreParsed, corrParsed, sumParsed;
+  try { scoreParsed = ScoreSchema.parse(scoreRes.rawInput); }
+  catch (err) {
+    const e = new Error(`scores tool output invalid: ${err.message}`);
+    e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
+  }
+  try { corrParsed = CorrectionsSchema.parse(corrRes.rawInput); }
+  catch (err) {
+    const e = new Error(`corrections tool output invalid: ${err.message}`);
+    e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
+  }
+  try { sumParsed = SummarySchema.parse(sumRes.rawInput); }
+  catch (err) {
+    const e = new Error(`summary tool output invalid: ${err.message}`);
+    e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }
 
-  // Extract the tool_use block. stop_reason should be 'tool_use'.
-  const toolUse = (resp.content || []).find((b) => b.type === 'tool_use');
-  if (!toolUse) {
-    const e = new Error('Claude returned no tool_use block');
-    e.code = 'AI_NO_TOOL_USE';
-    throw e;
-  }
-
-  // Validate shape. If this throws, the queue will mark as error (terminal).
-  let parsed;
-  try {
-    parsed = ToolOutputSchema.parse(toolUse.input);
-  } catch (err) {
-    const e = new Error(`Tool output failed Zod validation: ${err.message}`);
-    e.code = 'AI_BAD_OUTPUT';
-    e.cause = err;
-    throw e;
-  }
-
-  // Per-dim: clamp score to [0, max]; reorder to canonical dimension order so
-  // frontend can zip against DIMENSIONS by index.
-  const byKey = new Map(parsed.dimensions.map((d) => [d.key, d]));
+  // Per-dim: clamp score to [0, max]; reorder to canonical dimension order.
+  const byKey = new Map(scoreParsed.dimensions.map((d) => [d.key, d]));
   const canonical = DIMENSIONS.map((ref) => {
     const got = byKey.get(ref.key);
     const score = Math.max(0, Math.min(ref.max, got?.score ?? 0));
     return {
       key: ref.key,
       score,
-      max: ref.max, // enforce the authoritative max
+      max: ref.max,
       feedback: got?.feedback ?? '',
     };
   });
 
-  // Server-side total (ignore any model-claimed total).
   const aiScore = Math.round(canonical.reduce((s, d) => s + d.score, 0));
 
-  const usage = resp.usage || {};
-  const tokensCached =
-    (usage.cache_read_input_tokens || 0) +
-    (usage.cache_creation_input_tokens || 0);
-  const costUsd = computeCostUsd(modelKey, usage);
+  // Aggregate usage. Each sub-call reports its own DeepSeek usage.
+  const usageSum = { prompt_tokens: 0, completion_tokens: 0, prompt_cache_hit_tokens: 0, prompt_cache_miss_tokens: 0 };
+  let costUsd = 0;
+  const perTask = {};
+  for (let i = 0; i < tasks.length; i++) {
+    const task = tasks[i];
+    const r = results[i];
+    const u = r.usage;
+    usageSum.prompt_tokens += u.prompt_tokens || 0;
+    usageSum.completion_tokens += u.completion_tokens || 0;
+    usageSum.prompt_cache_hit_tokens += u.prompt_cache_hit_tokens || 0;
+    usageSum.prompt_cache_miss_tokens += u.prompt_cache_miss_tokens || 0;
+    const taskCost = computeCostUsd(r.modelKey, u);
+    costUsd += taskCost;
+    perTask[task] = {
+      model: r.modelKey,
+      tokensIn: u.prompt_tokens || 0,
+      tokensOut: u.completion_tokens || 0,
+      cacheHit: u.prompt_cache_hit_tokens || 0,
+      costUsd: Number(taskCost.toFixed(6)),
+    };
+  }
+  const tokensCached = usageSum.prompt_cache_hit_tokens;
 
   logger.info(
     {
       essayId: essay.id,
       model: modelKey,
+      provider: 'deepseek',
       latencyMs: Date.now() - started,
-      tokensIn: usage.input_tokens,
-      tokensOut: usage.output_tokens,
+      tokensIn: usageSum.prompt_tokens,
+      tokensOut: usageSum.completion_tokens,
       tokensCached,
       costUsd: Number(costUsd.toFixed(6)),
-      stopReason: resp.stop_reason,
+      perTask,
     },
     'ai_grader.done'
   );
 
   return {
     aiScore,
-    aiFeedback: parsed.globalFeedback,
+    aiFeedback: sumParsed.globalFeedback,
     rubric: canonical,
-    corrections: parsed.corrections,
-    strengths: parsed.strengths,
+    corrections: corrParsed.corrections,
+    strengths: sumParsed.strengths,
     model: modelKey,
-    tokensIn: usage.input_tokens || 0,
-    tokensOut: usage.output_tokens || 0,
+    tokensIn: usageSum.prompt_tokens,
+    tokensOut: usageSum.completion_tokens,
     tokensCached,
     costUsd,
   };
@@ -381,5 +524,15 @@ ${LOCALES[loc].instruction}`;
 module.exports = {
   gradeEssay,
   // exported for tests
-  _internal: { ToolOutputSchema, GRADE_TOOL, computeCostUsd, normaliseLocale },
+  _internal: {
+    ScoreSchema,
+    CorrectionsSchema,
+    SummarySchema,
+    SCORE_TOOL_DEF,
+    CORRECTIONS_TOOL_DEF,
+    SUMMARY_TOOL_DEF,
+    computeCostUsd,
+    normaliseLocale,
+    SUBCALL_TIMEOUT_MS,
+  },
 };

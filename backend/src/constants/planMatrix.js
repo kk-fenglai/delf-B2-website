@@ -3,10 +3,15 @@
 //   - services/aiGrader.js       (model validation + pricing)
 //   - routes/essays.js           (quota enforcement + regrade check)
 //   - frontend (echoed via API, never hardcoded client-side)
+//
+// Provider: DeepSeek (OpenAI-compatible API at api.deepseek.com).
+// Rationale for the switch: domestic-accessible from mainland China (no VPN
+// needed), ~30× cheaper than Claude Opus, ~2-5s typical latency. French
+// quality is sufficient for DELF B2 rubric grading.
 
-// Canonical model keys exposed to users. These are stable API identifiers;
-// the concrete Anthropic model IDs live next to them in MODEL_CATALOG below.
-const MODEL_KEYS = ['haiku-4-5', 'sonnet-4-6', 'opus-4-7'];
+// Canonical model keys exposed to users. Stable API identifiers; the concrete
+// provider model IDs live next to them in MODEL_CATALOG below.
+const MODEL_KEYS = ['deepseek-chat'];
 
 // Tier ordering. Index = tier rank; used by requirePlan(minPlan).
 const PLAN_ORDER = ['FREE', 'STANDARD', 'AI', 'AI_UNLIMITED'];
@@ -20,38 +25,26 @@ function planAtLeast(userPlan, minPlan) {
   return planRank(userPlan) >= planRank(minPlan);
 }
 
-// Concrete Anthropic model IDs + per-call pricing (USD per 1M tokens).
+// Concrete DeepSeek model IDs + per-call pricing (USD per 1M tokens).
 // Prices as of 2026-04 — update here only; all cost math pulls from this table.
-// Cached input is 10% of the base input rate (5-min TTL ephemeral cache).
+// DeepSeek auto-caches the prompt prefix; cached input is billed at ~25% of
+// the fresh input rate (no short TTL like some providers' ephemeral caches).
 const MODEL_CATALOG = {
-  'haiku-4-5': {
-    anthropicId: 'claude-haiku-4-5-20251001',
-    label: 'Haiku 4.5',
-    inputUsdPerM: 1,
-    outputUsdPerM: 5,
+  'deepseek-chat': {
+    providerId: 'deepseek-chat',  // DeepSeek V3
+    label: 'DeepSeek V3',
+    inputUsdPerM: 0.27,
+    outputUsdPerM: 1.10,
     tier: 'fast',
-  },
-  'sonnet-4-6': {
-    anthropicId: 'claude-sonnet-4-6',
-    label: 'Sonnet 4.6',
-    inputUsdPerM: 3,
-    outputUsdPerM: 15,
-    tier: 'balanced',
-  },
-  'opus-4-7': {
-    anthropicId: 'claude-opus-4-7',
-    label: 'Opus 4.7',
-    inputUsdPerM: 15,
-    outputUsdPerM: 75,
-    tier: 'precise',
   },
 };
 
-// Cached-input discount vs base input rate. Anthropic prompt caching (ephemeral).
-const CACHED_INPUT_MULTIPLIER = 0.1;
+// Cached-input discount vs base input rate. DeepSeek: $0.07 / $0.27 ≈ 0.26.
+const CACHED_INPUT_MULTIPLIER = 0.26;
 
 // Plan → which models the user may pick + monthly essay cap.
 // FREE is intentionally locked out of AI grading entirely.
+// With a single model, tiers differ purely by quota — simpler upsell story.
 const PLAN_CAPS = {
   FREE: {
     models: [],
@@ -59,29 +52,25 @@ const PLAN_CAPS = {
     dailyEssays: 0,
   },
   STANDARD: {
-    models: ['haiku-4-5'],
+    models: ['deepseek-chat'],
     monthlyEssays: 20,
     dailyEssays: 10,
   },
   AI: {
-    models: ['haiku-4-5', 'sonnet-4-6'],
+    models: ['deepseek-chat'],
     monthlyEssays: 50,
     dailyEssays: 15,
   },
   AI_UNLIMITED: {
-    models: ['haiku-4-5', 'sonnet-4-6', 'opus-4-7'],
-    monthlyEssays: 200, // soft cap to protect margin on Opus abusers
+    models: ['deepseek-chat'],
+    monthlyEssays: 200,
     dailyEssays: 20,
   },
 };
 
 function defaultModelForPlan(plan) {
   const caps = PLAN_CAPS[plan] || PLAN_CAPS.FREE;
-  // Prefer the best model the user can access (last in MODEL_KEYS they have).
-  for (let i = MODEL_KEYS.length - 1; i >= 0; i--) {
-    if (caps.models.includes(MODEL_KEYS[i])) return MODEL_KEYS[i];
-  }
-  return null;
+  return caps.models[0] || null;
 }
 
 function modelAllowedForPlan(plan, modelKey) {

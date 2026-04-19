@@ -273,7 +273,16 @@
       "modelUsed": "Graded by {{model}}",
       "gradedAt": "Graded {{time}}",
       "pollingHint": "This page refreshes automatically once grading completes.",
-      "empty": "No essay submitted for this question."
+      "empty": "No essay submitted for this question.",
+      "slowWarning": "AI grading is taking longer than usual — Claude may be busy. You can keep waiting or click Rewrite to retry.",
+      "errNotConfigured": "AI grading is not configured. Please contact the administrator.",
+      "errTruncated": "AI output was truncated. Please re-grade or try again later.",
+      "errBadOutput": "AI returned malformed output. Please re-grade.",
+      "errProviderDown": "Claude service is temporarily unavailable. Please try again later.",
+      "errRateLimited": "Too many requests — please wait a moment and try again.",
+      "errBadRequest": "Grading request was rejected. Please contact the administrator.",
+      "errCallFailed": "Network or connection issue. Please retry.",
+      "errTimeout": "Grading timed out (>25s). Please re-grade or edit and resubmit."
     },
     "rubric": {
       "consigne": "Task response",
@@ -311,6 +320,13 @@
       "resetAt": "Resets {{date}}",
       "title": "AI grading quota",
       "plan": "Plan: {{plan}}"
+    },
+    "rewrite": {
+      "button": "Rewrite essay",
+      "modalTitle": "Edit and resubmit",
+      "submit": "Submit rewrite",
+      "placeholder": "Edit your essay here…",
+      "wordCount": "Word count: {{count}}"
     }
   }
 }

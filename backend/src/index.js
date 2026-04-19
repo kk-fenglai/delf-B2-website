@@ -136,7 +136,7 @@ app.use(errorHandler);
 
 const server = app.listen(env.PORT, () => {
   logger.info({ port: env.PORT, env: env.NODE_ENV }, 'DELFluent backend started');
-  // Kick off the AI essay grader worker. Missing ANTHROPIC_API_KEY is tolerated
+  // Kick off the AI essay grader worker. Missing DEEPSEEK_API_KEY is tolerated
   // in dev (env.js only warns): worker will try to claim rows, aiGrader will
   // throw AI_NOT_CONFIGURED, the queue will mark them 'error' with a clear
   // message. Production startup already failed in env.js if key was missing.

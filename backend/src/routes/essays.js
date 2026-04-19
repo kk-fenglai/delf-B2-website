@@ -4,7 +4,7 @@
 //   GET  /api/user/essays/quota       — current month usage vs cap
 //
 // All routes require auth + at least STANDARD plan (FREE is blocked entirely).
-// Rate-limited separately from auth to protect the Anthropic bill.
+// Rate-limited separately from auth to protect the DeepSeek bill.
 
 const express = require('express');
 const { z } = require('zod');
@@ -32,7 +32,7 @@ const {
 const router = express.Router();
 
 // Hourly ceiling regardless of monthly cap — protects against a runaway
-// frontend loop (or a compromised token) draining the Anthropic budget.
+// frontend loop (or a compromised token) draining the DeepSeek budget.
 const aiGradeLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 30,
@@ -203,6 +203,104 @@ router.post(
           locale: locale || essay.locale || 'fr',
           errorMessage: null,
           // Preserve prior result visible via gradedAt until new one lands.
+        },
+      });
+      enqueue(updated.id);
+      res.json({ essay: serialiseEssay(updated) });
+    } catch (e) { next(e); }
+  }
+);
+
+// -------------------------------------------------------------------------
+// POST /api/user/essays/:id/rewrite — edit content, re-queue
+// -------------------------------------------------------------------------
+const rewriteSchema = z.object({
+  content: z.string().min(1).max(20_000),
+  model: z.enum(MODEL_KEYS).optional(),
+  locale: z.enum(['fr', 'en', 'zh']).optional(),
+});
+
+function countWords(text) {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+router.post(
+  '/:id/rewrite',
+  requireAuth,
+  requirePlan('STANDARD'),
+  aiGradeLimiter,
+  async (req, res, next) => {
+    try {
+      const { content, model, locale } = rewriteSchema.parse(req.body);
+      const newWordCount = countWords(content);
+
+      if (newWordCount < MIN_WORDS) {
+        return res.status(400).json({
+          error: `Essay too short (need ≥ ${MIN_WORDS} words, got ${newWordCount})`,
+          code: 'ESSAY_TOO_SHORT',
+          minWords: MIN_WORDS,
+        });
+      }
+
+      const plan = req.userPlan || 'FREE';
+      const chosenModel = model || null;
+      if (chosenModel && !modelAllowedForPlan(plan, chosenModel)) {
+        return res.status(403).json({
+          error: 'This model is not included in your current plan',
+          code: 'MODEL_NOT_ALLOWED',
+          requiresUpgrade: true,
+        });
+      }
+
+      const caps = PLAN_CAPS[plan];
+      const used = await currentUsage(req.userId);
+      if (used.month >= caps.monthlyEssays) {
+        return res.status(402).json({
+          error: 'Monthly AI grading quota reached',
+          code: 'QUOTA_EXCEEDED',
+          used: used.month,
+          cap: caps.monthlyEssays,
+        });
+      }
+      if (used.day >= caps.dailyEssays) {
+        return res.status(402).json({
+          error: 'Daily AI grading limit reached',
+          code: 'DAILY_LIMIT',
+          used: used.day,
+          cap: caps.dailyEssays,
+        });
+      }
+
+      const essay = await prisma.essay.findUnique({ where: { id: req.params.id } });
+      if (!essay || essay.userId !== req.userId) {
+        return res.status(404).json({ error: 'Essay not found' });
+      }
+      if (essay.status === 'queued' || essay.status === 'grading') {
+        return res.status(409).json({
+          error: 'Essay is already being graded',
+          code: 'ALREADY_GRADING',
+        });
+      }
+
+      const updated = await prisma.essay.update({
+        where: { id: essay.id },
+        data: {
+          content,
+          wordCount: newWordCount,
+          status: 'queued',
+          model: chosenModel || (MODEL_KEYS.includes(essay.model) ? essay.model : MODEL_KEYS[0]),
+          locale: locale || essay.locale || 'fr',
+          aiScore: null,
+          aiFeedback: null,
+          rubric: null,
+          corrections: null,
+          strengths: null,
+          tokensIn: null,
+          tokensOut: null,
+          tokensCached: null,
+          costUsd: null,
+          errorMessage: null,
+          gradedAt: null,
         },
       });
       enqueue(updated.id);

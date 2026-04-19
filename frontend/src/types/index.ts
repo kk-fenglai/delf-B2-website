@@ -132,7 +132,11 @@ export interface Prediction {
 
 // --- AI essay grading -----------------------------------------------------
 
-export type ClaudeModelKey = 'haiku-4-5' | 'sonnet-4-6' | 'opus-4-7';
+// Historically this was `ClaudeModelKey`; kept the name to avoid a project-wide
+// rename, but the values are now DeepSeek model keys. Legacy essay rows in DB
+// may still carry 'haiku-4-5' etc. — render-side fallbacks in EssayGradeCard
+// handle those labels.
+export type ClaudeModelKey = 'deepseek-chat';
 
 export type ModelTier = 'fast' | 'balanced' | 'precise';
 

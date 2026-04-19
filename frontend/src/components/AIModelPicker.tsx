@@ -9,9 +9,7 @@ const { Text } = Typography;
 // Canonical ordering. Any model not in `allowedModels` is shown disabled so
 // the user can still see the upgrade path.
 const ALL_MODELS: Array<{ key: ClaudeModelKey; label: string; tier: ModelTier }> = [
-  { key: 'haiku-4-5',  label: 'Haiku 4.5',  tier: 'fast' },
-  { key: 'sonnet-4-6', label: 'Sonnet 4.6', tier: 'balanced' },
-  { key: 'opus-4-7',   label: 'Opus 4.7',   tier: 'precise' },
+  { key: 'deepseek-chat', label: 'DeepSeek V3', tier: 'fast' },
 ];
 
 const TIER_ICON: Record<ModelTier, React.ReactNode> = {

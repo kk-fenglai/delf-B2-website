@@ -273,7 +273,16 @@
       "modelUsed": "Corrigé par {{model}}",
       "gradedAt": "Corrigé {{time}}",
       "pollingHint": "Cette page se rafraîchit automatiquement une fois la correction terminée.",
-      "empty": "Aucune rédaction soumise pour cette question."
+      "empty": "Aucune rédaction soumise pour cette question.",
+      "slowWarning": "La correction IA prend plus de temps que d'habitude — Claude est peut-être surchargé. Vous pouvez patienter ou cliquer sur « Réécrire » pour réessayer.",
+      "errNotConfigured": "Le service de correction IA n'est pas configuré. Contactez l'administrateur.",
+      "errTruncated": "La sortie IA a été tronquée. Veuillez relancer la correction ou réessayer plus tard.",
+      "errBadOutput": "L'IA a renvoyé un format invalide. Veuillez relancer la correction.",
+      "errProviderDown": "Le service Claude est temporairement indisponible. Réessayez plus tard.",
+      "errRateLimited": "Trop de requêtes — patientez un instant et réessayez.",
+      "errBadRequest": "La requête de correction a été rejetée. Contactez l'administrateur.",
+      "errCallFailed": "Problème de réseau ou de connexion. Veuillez réessayer.",
+      "errTimeout": "Délai de correction dépassé (>25s). Relancez ou modifiez la rédaction et soumettez à nouveau."
     },
     "rubric": {
       "consigne": "Respect de la consigne",
@@ -311,6 +320,13 @@
       "resetAt": "Réinitialisation le {{date}}",
       "title": "Quota de correction IA",
       "plan": "Formule : {{plan}}"
+    },
+    "rewrite": {
+      "button": "Réécrire la rédaction",
+      "modalTitle": "Modifier et resoumettre",
+      "submit": "Soumettre la réécriture",
+      "placeholder": "Modifiez votre rédaction ici…",
+      "wordCount": "Nombre de mots : {{count}}"
     }
   }
 }

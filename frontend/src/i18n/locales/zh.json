@@ -275,7 +275,16 @@
       "modelUsed": "由 {{model}} 批改",
       "gradedAt": "批改于 {{time}}",
       "pollingHint": "批改完成后本页会自动刷新。",
-      "empty": "此题未提交作文。"
+      "empty": "此题未提交作文。",
+      "slowWarning": "AI 批改响应较慢，可能是 Claude 服务繁忙，请继续等待或点击「重写作文」重试。",
+      "errNotConfigured": "AI 批改服务未配置，请联系管理员。",
+      "errTruncated": "AI 输出被截断，请重新批改或稍后重试。",
+      "errBadOutput": "AI 返回的评分格式异常，请重新批改。",
+      "errProviderDown": "Claude 服务暂时不可用，请稍后重试。",
+      "errRateLimited": "请求过于频繁，请稍后再试。",
+      "errBadRequest": "批改请求被拒，请联系管理员。",
+      "errCallFailed": "网络或连接异常，请重试。",
+      "errTimeout": "批改超时（超过 25 秒未完成），请重新批改或修改作文后提交。"
     },
     "rubric": {
       "consigne": "遵守题目要求",
@@ -313,6 +322,13 @@
       "resetAt": "{{date}} 重置",
       "title": "AI 批改配额",
       "plan": "套餐：{{plan}}"
+    },
+    "rewrite": {
+      "button": "重写作文",
+      "modalTitle": "修改并重新批改",
+      "submit": "提交重写",
+      "placeholder": "在此处修改您的作文…",
+      "wordCount": "当前字数：{{count}} 词"
     }
   }
 }

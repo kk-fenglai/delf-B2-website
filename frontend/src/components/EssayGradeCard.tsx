@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Card, Progress, Tag, Typography, Button, Alert, Divider, Space, message } from 'antd';
-import { ReloadOutlined, RightOutlined } from '@ant-design/icons';
+import { Card, Progress, Tag, Typography, Button, Alert, Divider, Space, message, Modal, Input } from 'antd';
+import { ReloadOutlined, RightOutlined, EditOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
@@ -15,7 +15,9 @@ import type {
 
 const { Title, Paragraph, Text } = Typography;
 
-const POLL_MS = 3000;
+const POLL_MS = 1000;
+const STUCK_WARN_MS = 12_000;   // "taking longer than usual" hint (typical p95 ~10s)
+const STUCK_TIMEOUT_MS = 25_000; // stop polling, show timeout error (covers 1 retry of slowest sub-call)
 
 type Props = {
   essayId: string;
@@ -25,11 +27,13 @@ type Props = {
   questionPrompt?: string;
 };
 
-function localeTag(model: ClaudeModelKey | null) {
+function localeTag(model: ClaudeModelKey | string | null) {
   if (!model) return '';
-  if (model.startsWith('haiku')) return 'Haiku 4.5';
-  if (model.startsWith('sonnet')) return 'Sonnet 4.6';
-  if (model.startsWith('opus')) return 'Opus 4.7';
+  if (model === 'deepseek-chat') return 'DeepSeek V3';
+  // Legacy rows graded with Claude before the DeepSeek switch.
+  if (model.startsWith('haiku')) return 'Haiku 4.5 (legacy)';
+  if (model.startsWith('sonnet')) return 'Sonnet 4.6 (legacy)';
+  if (model.startsWith('opus')) return 'Opus 4.7 (legacy)';
   return model;
 }
 
@@ -39,7 +43,12 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
   const [quota, setQuota] = useState<EssayQuota | null>(null);
   const [regrading, setRegrading] = useState(false);
   const [regradeModel, setRegradeModel] = useState<ClaudeModelKey | null>(null);
+  const [rewriting, setRewriting] = useState(false);
+  const [rewriteOpen, setRewriteOpen] = useState(false);
+  const [rewriteContent, setRewriteContent] = useState('');
+  const [elapsedMs, setElapsedMs] = useState(0);
   const pollTimer = useRef<number | null>(null);
+  const pollStartRef = useRef<number | null>(null);
 
   async function fetchOnce() {
     const { data } = await api.get(`/user/essays/${essayId}`);
@@ -54,7 +63,23 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
         const cur = await fetchOnce();
         if (cancelled) return;
         if (cur.status === 'queued' || cur.status === 'grading') {
+          if (pollStartRef.current == null) pollStartRef.current = Date.now();
+          const waited = Date.now() - pollStartRef.current;
+          setElapsedMs(waited);
+          if (waited >= STUCK_TIMEOUT_MS) {
+            // Force the UI into an error state so the user sees a clear
+            // message and the rewrite/retry buttons — the backend row may
+            // still complete later, but we stop polling.
+            setEssay({
+              ...cur,
+              status: 'error',
+              errorMessage: 'FRONTEND_TIMEOUT: grading took longer than 90s',
+            });
+            return;
+          }
           pollTimer.current = window.setTimeout(loop, POLL_MS);
+        } else {
+          pollStartRef.current = null;
         }
       } catch {
         if (!cancelled) pollTimer.current = window.setTimeout(loop, POLL_MS * 2);
@@ -100,6 +125,36 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
     }
   }
 
+  async function onRewrite() {
+    setRewriting(true);
+    try {
+      const { data } = await api.post(`/user/essays/${essayId}/rewrite`, {
+        content: rewriteContent,
+        model: regradeModel,
+        locale: i18n.language.slice(0, 2),
+      });
+      setRewriteOpen(false);
+      setEssay(data.essay);
+      const cur = data.essay as EssayGrade;
+      if (cur.status === 'queued' || cur.status === 'grading') {
+        pollTimer.current = window.setTimeout(async function tick() {
+          const fresh = await fetchOnce();
+          if (fresh.status === 'queued' || fresh.status === 'grading') {
+            pollTimer.current = window.setTimeout(tick, POLL_MS);
+          }
+        }, POLL_MS);
+      }
+    } catch (e: any) {
+      message.error(e?.response?.data?.error || t('essay.grade.error'));
+    } finally {
+      setRewriting(false);
+    }
+  }
+
+  function wordCount(s: string) {
+    return s.trim().split(/\s+/).filter(Boolean).length;
+  }
+
   const status = essay?.status || initialStatus || 'queued';
 
   // ---- Early states ------------------------------------------------------
@@ -112,6 +167,7 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
   }
 
   if (status === 'queued' || status === 'grading') {
+    const slow = elapsedMs >= STUCK_WARN_MS;
     return (
       <Card className="mb-3">
         <div className="flex items-center gap-3">
@@ -124,25 +180,43 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
             </Title>
             <Text type="secondary" className="text-xs">
               {t('essay.grade.pollingHint')}
+              {elapsedMs > 0 && ` · ${Math.round(elapsedMs / 1000)}s`}
             </Text>
           </div>
         </div>
+        {slow && (
+          <Alert
+            className="mt-3"
+            type="warning"
+            showIcon
+            message={t('essay.grade.slowWarning')}
+          />
+        )}
       </Card>
     );
   }
 
   if (status === 'error') {
     const reason = essay.errorMessage || '';
-    const msg =
-      reason.startsWith('ESSAY_TOO_SHORT')
-        ? t('essay.grade.tooShort', { count: essay.wordCount, min: quota?.thresholds.minWords ?? 50 })
-        : reason.startsWith('PLAN_UPGRADE_REQUIRED')
-          ? t('essay.grade.planRequired')
-          : reason.startsWith('QUOTA_EXCEEDED')
-            ? t('essay.grade.quotaExceeded')
-            : reason.startsWith('AI_NOT_CONFIGURED')
-              ? t('essay.grade.error')
-              : reason || t('essay.grade.error');
+    const ERROR_MAP: Array<[string, string]> = [
+      ['ESSAY_TOO_SHORT', 'essay.grade.tooShort'],
+      ['PLAN_UPGRADE_REQUIRED', 'essay.grade.planRequired'],
+      ['QUOTA_EXCEEDED', 'essay.grade.quotaExceeded'],
+      ['DAILY_LIMIT', 'essay.grade.quotaExceeded'],
+      ['AI_NOT_CONFIGURED', 'essay.grade.errNotConfigured'],
+      ['AI_OUTPUT_TRUNCATED', 'essay.grade.errTruncated'],
+      ['AI_BAD_OUTPUT', 'essay.grade.errBadOutput'],
+      ['AI_NO_TOOL_USE', 'essay.grade.errBadOutput'],
+      ['AI_PROVIDER_DOWN', 'essay.grade.errProviderDown'],
+      ['AI_RATE_LIMITED', 'essay.grade.errRateLimited'],
+      ['AI_BAD_REQUEST', 'essay.grade.errBadRequest'],
+      ['AI_CALL_FAILED', 'essay.grade.errCallFailed'],
+      ['FRONTEND_TIMEOUT', 'essay.grade.errTimeout'],
+    ];
+    const matched = ERROR_MAP.find(([code]) => reason.startsWith(code));
+    const msg = matched
+      ? t(matched[1], { count: essay.wordCount, min: quota?.thresholds.minWords ?? 50 })
+      : reason || t('essay.grade.error');
 
     const canRetry = quota && quota.allowedModels.length > 0 && !reason.startsWith('PLAN_UPGRADE_REQUIRED');
 
@@ -180,6 +254,13 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
             >
               {t('essay.grade.retry')}
             </Button>
+            <Button
+              icon={<EditOutlined />}
+              className="mt-2 ml-2"
+              onClick={() => { setRewriteContent(essay.content); setRewriteOpen(true); }}
+            >
+              {t('essay.rewrite.button')}
+            </Button>
           </div>
         )}
         {reason.startsWith('PLAN_UPGRADE_REQUIRED') && (
@@ -187,6 +268,26 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
             <Button type="primary">{t('exam.blockedCta')}</Button>
           </Link>
         )}
+        <Modal
+          open={rewriteOpen}
+          title={t('essay.rewrite.modalTitle')}
+          onCancel={() => setRewriteOpen(false)}
+          onOk={onRewrite}
+          okText={t('essay.rewrite.submit')}
+          confirmLoading={rewriting}
+          okButtonProps={{ disabled: wordCount(rewriteContent) < (quota?.thresholds.minWords ?? 50) }}
+          width={700}
+        >
+          <div className="mb-2 text-sm text-gray-500">
+            {t('essay.rewrite.wordCount', { count: wordCount(rewriteContent) })}
+          </div>
+          <Input.TextArea
+            value={rewriteContent}
+            onChange={(e) => setRewriteContent(e.target.value)}
+            rows={12}
+            placeholder={t('essay.rewrite.placeholder')}
+          />
+        </Modal>
       </Card>
     );
   }
@@ -296,6 +397,37 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
           </Button>
         </>
       )}
+      {quota && quota.allowedModels.length > 0 && (
+        <>
+          <Divider className="!my-3" />
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => { setRewriteContent(essay.content); setRewriteOpen(true); }}
+          >
+            {t('essay.rewrite.button')}
+          </Button>
+        </>
+      )}
+      <Modal
+        open={rewriteOpen}
+        title={t('essay.rewrite.modalTitle')}
+        onCancel={() => setRewriteOpen(false)}
+        onOk={onRewrite}
+        okText={t('essay.rewrite.submit')}
+        confirmLoading={rewriting}
+        okButtonProps={{ disabled: wordCount(rewriteContent) < (quota?.thresholds.minWords ?? 50) }}
+        width={700}
+      >
+        <div className="mb-2 text-sm text-gray-500">
+          {t('essay.rewrite.wordCount', { count: wordCount(rewriteContent) })}
+        </div>
+        <Input.TextArea
+          value={rewriteContent}
+          onChange={(e) => setRewriteContent(e.target.value)}
+          rows={12}
+          placeholder={t('essay.rewrite.placeholder')}
+        />
+      </Modal>
     </Card>
   );
 }

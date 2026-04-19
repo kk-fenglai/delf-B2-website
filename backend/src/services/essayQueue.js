@@ -15,7 +15,7 @@ const { gradeEssay } = require('./aiGrader');
 const { MODEL_KEYS } = require('../constants/planMatrix');
 
 const CONCURRENCY = 3;
-const POLL_MS = 1500;
+const POLL_MS = 800;
 const STUCK_MS = 5 * 60 * 1000;    // rows in 'grading' older than this are orphaned
 const RETRY_DELAY_MS = 30 * 1000;  // after AI_RATE_LIMITED, re-queue with a short cooldown
 
@@ -70,7 +70,9 @@ async function processOne(essayRow) {
 
   // The model + locale were recorded on the Essay row at enqueue time
   // (or by regrade). Fall back to sensible defaults to avoid dead rows.
-  const modelKey = MODEL_KEYS.includes(essayRow.model) ? essayRow.model : 'haiku-4-5';
+  // Legacy rows may carry a pre-DeepSeek model string (e.g. 'haiku-4-5').
+  // Snap them to the current default so gradeEssay doesn't throw AI_BAD_MODEL.
+  const modelKey = MODEL_KEYS.includes(essayRow.model) ? essayRow.model : MODEL_KEYS[0];
   const locale = essayRow.locale || 'fr';
 
   try {
