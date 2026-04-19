@@ -39,7 +39,9 @@
     "examStructure": "Structure de l'examen DELF B2",
     "minutes": "min",
     "points": "pts",
-    "passRule": "Réussite : total ≥ 50 et chaque épreuve ≥ 5"
+    "passRule": "Réussite : total ≥ 50 et chaque épreuve ≥ 5",
+    "mockTitle": "Examen blanc complet · 4 compétences",
+    "mockDesc": "Reproduit l'examen réel : CO, CE, PE, PO en séquence"
   },
   "auth": {
     "login": "Se connecter",
@@ -128,7 +130,31 @@
     "totalQuestions": "{{count}} questions au total",
     "questionsCount": "{{count}} Q",
     "empty": "Aucun sujet disponible",
-    "year": "Année"
+    "year": "Année",
+    "hub": {
+      "title": "Choisir un mode d'entraînement",
+      "subtitle": "Entraînez-vous compétence par compétence, ou passez un examen blanc complet.",
+      "skillListTitle": "Entraînement ciblé",
+      "coDesc": "CO ciblée · Rythme d'examen",
+      "ceDesc": "CE ciblée · Textes argumentatifs longs",
+      "peDesc": "PE ciblée · Rédaction 250 mots",
+      "poDesc": "PO ciblée · Enregistrement (en cours)",
+      "mockTitle": "Examen blanc complet",
+      "mockDesc": "Les 4 compétences en séquence · Flux d'examen complet",
+      "mockSectionTitle": "Examen blanc complet",
+      "mockTag": "4 compétences",
+      "comingSoonTag": "Bientôt"
+    },
+    "po": {
+      "comingSoonDesc": "L'enregistrement oral et la notation IA sont en cours de développement (v2.0). En attendant, préparez-vous avec CO, CE et PE.",
+      "backToHub": "Retour au hub",
+      "seePricing": "Voir les tarifs",
+      "previewTitle": "Ce qui arrive",
+      "previewDesc": "La PO inclura à sa sortie :",
+      "bullet1": "Enregistrement dans le navigateur (monologue + jeu de rôle)",
+      "bullet2": "Notation IA : prononciation, fluidité, grammaire (plan IA)",
+      "bullet3": "Aligné sur la grille officielle de l'examinateur B2"
+    }
   },
   "exam": {
     "questionN": "Question {{n}}",
@@ -216,6 +242,75 @@
           "Accès anticipé aux nouveautés"
         ]
       }
+    },
+    "modelsRow": {
+      "label": "Modèles IA de correction",
+      "none": "—",
+      "haiku": "Haiku (rapide)",
+      "sonnet": "Sonnet (équilibré)",
+      "opus": "Opus (précis)"
+    }
+  },
+  "essay": {
+    "grade": {
+      "title": "Correction IA de la rédaction",
+      "queued": "En file d'attente pour correction IA…",
+      "grading": "Correction en cours avec {{model}}…",
+      "done": "Corrigé",
+      "error": "Échec de la correction",
+      "tooShort": "Rédaction trop courte ({{count}} mots) — minimum {{min}} mots requis",
+      "planRequired": "Passez à Standard ou supérieur pour débloquer la correction IA",
+      "quotaExceeded": "Vous avez utilisé toutes vos corrections IA ce mois-ci",
+      "retry": "Réessayer",
+      "regradeWith": "Recorriger avec {{model}}",
+      "regrade": "Recorriger",
+      "totalScore": "Total",
+      "globalFeedback": "Retour de l'examinateur",
+      "strengths": "Points forts",
+      "corrections": "Corrections",
+      "annotationsTitle": "Votre texte annoté",
+      "wordCount": "{{count}} mots",
+      "modelUsed": "Corrigé par {{model}}",
+      "gradedAt": "Corrigé {{time}}",
+      "pollingHint": "Cette page se rafraîchit automatiquement une fois la correction terminée.",
+      "empty": "Aucune rédaction soumise pour cette question."
+    },
+    "rubric": {
+      "consigne": "Respect de la consigne",
+      "sociolinguistique": "Correction sociolinguistique",
+      "faits": "Présenter des faits",
+      "argumentation": "Argumentation",
+      "coherence": "Cohérence et cohésion",
+      "lexique_etendue": "Étendue du vocabulaire",
+      "lexique_maitrise": "Maîtrise du vocabulaire",
+      "orthographe": "Orthographe",
+      "morphosyntaxe_etendue": "Étendue morphosyntaxique",
+      "morphosyntaxe_maitrise": "Maîtrise morphosyntaxique"
+    },
+    "correctionType": {
+      "grammar": "Grammaire",
+      "lexique": "Lexique",
+      "orthographe": "Orthographe",
+      "syntaxe": "Syntaxe"
+    },
+    "model": {
+      "pickerTitle": "Choisir le modèle de correction IA",
+      "pickerSubtitle": "Niveau supérieur = plus précis, mais aussi plus coûteux. Vous pouvez recorriger ultérieurement.",
+      "tier": {
+        "fast": "Rapide",
+        "balanced": "Équilibré",
+        "precise": "Le plus précis"
+      },
+      "locked": "Non inclus dans votre plan",
+      "upgrade": "Passer à un plan supérieur",
+      "default": "Par défaut"
+    },
+    "quota": {
+      "monthly": "{{used}} / {{cap}} ce mois-ci",
+      "daily": "{{used}} / {{cap}} aujourd'hui",
+      "resetAt": "Réinitialisation le {{date}}",
+      "title": "Quota de correction IA",
+      "plan": "Formule : {{plan}}"
     }
   }
 }

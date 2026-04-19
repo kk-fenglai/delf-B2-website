@@ -222,11 +222,34 @@ model Essay {
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   questionId  String
+  sessionId   String?                        // links back to the ExamSession for review join
   content     String
   wordCount   Int      @default(0)
-  aiFeedback  String?
-  aiScore     Int?
+
+  // --- AI grading state machine ---
+  // queued   : just inserted, worker will pick up
+  // grading  : worker claimed, Anthropic call in-flight
+  // done     : rubric / corrections / aiScore populated
+  // error    : errorMessage populated; user may retry via regrade
+  status        String   @default("queued")
+  model         String?                      // haiku-4-5 | sonnet-4-6 | opus-4-7
+  locale        String?                      // fr | en | zh — feedback language chosen at submit
+  aiScore       Int?                         // 0..25, recomputed server-side from rubric
+  aiFeedback    String?                      // global narrative feedback
+  rubric        String?                      // JSON: [{ key, score, max, feedback }] × 10
+  corrections   String?                      // JSON: [{ excerpt, issue, suggestion, type }]
+  strengths     String?                      // JSON: string[]
+  tokensIn      Int?
+  tokensOut     Int?
+  tokensCached  Int?
+  costUsd       Float?
+  errorMessage  String?
+  gradedAt      DateTime?
+
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([userId, createdAt])
+  @@index([status, createdAt])              // worker scans queued/grading
+  @@index([sessionId])
 }

@@ -7,7 +7,9 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import Practice from './pages/Practice';
+import PracticeHub from './pages/PracticeHub';
+import SkillPractice from './pages/SkillPractice';
+import SpeakingPlaceholder from './pages/SpeakingPlaceholder';
 import ExamRunner from './pages/ExamRunner';
 import ReviewResult from './pages/ReviewResult';
 import Pricing from './pages/Pricing';
@@ -60,8 +62,23 @@ export default function App() {
         <Route path="/verification-sent" element={<VerificationSent />} />
 
         <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
-        <Route path="/practice" element={<RequireAuth><Practice /></RequireAuth>} />
+
+        {/* Practice hub + per-skill entries */}
+        <Route path="/practice" element={<RequireAuth><PracticeHub /></RequireAuth>} />
+        <Route path="/practice/listening" element={<RequireAuth><SkillPractice skill="CO" /></RequireAuth>} />
+        <Route path="/practice/reading" element={<RequireAuth><SkillPractice skill="CE" /></RequireAuth>} />
+        <Route path="/practice/writing" element={<RequireAuth><SkillPractice skill="PE" /></RequireAuth>} />
+        <Route path="/practice/speaking" element={<RequireAuth><SpeakingPlaceholder /></RequireAuth>} />
+        <Route path="/practice/mock" element={<RequireAuth><SkillPractice mockMode /></RequireAuth>} />
+
+        {/* Runner routes — skill-scoped and mock */}
+        <Route path="/practice/listening/:examId" element={<RequireAuth><ExamRunner skill="CO" /></RequireAuth>} />
+        <Route path="/practice/reading/:examId" element={<RequireAuth><ExamRunner skill="CE" /></RequireAuth>} />
+        <Route path="/practice/writing/:examId" element={<RequireAuth><ExamRunner skill="PE" /></RequireAuth>} />
+        <Route path="/practice/mock/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
+        {/* Legacy: /practice/:examId preserved for old session links (full mock) */}
         <Route path="/practice/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
+
         <Route path="/review/:sessionId" element={<RequireAuth><ReviewResult /></RequireAuth>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />

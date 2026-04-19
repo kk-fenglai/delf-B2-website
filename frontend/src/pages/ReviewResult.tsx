@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, Typography, Tag, Progress, Button, Alert } from 'antd';
 import { useTranslation } from 'react-i18next';
+import EssayGradeCard from '../components/EssayGradeCard';
 import type { SubmitResult, ExamSetDetail } from '../types';
 
 const { Title, Paragraph } = Typography;
@@ -25,6 +26,7 @@ export default function ReviewResult() {
   const { result, exam } = data;
   const pct = result.maxScore ? Math.round((result.totalScore / result.maxScore) * 100) : 0;
   const questionMap = new Map(exam.questions.map((q) => [q.id, q]));
+  const essayByQuestion = new Map((result.essays || []).map((e) => [e.questionId, e]));
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -45,6 +47,7 @@ export default function ReviewResult() {
       {result.details.map((d, i) => {
         const q = questionMap.get(d.questionId);
         if (!q) return null;
+        const essay = essayByQuestion.get(d.questionId) || null;
         const correctness =
           d.isCorrect === null ? 'pending' : d.isCorrect ? 'correct' : 'wrong';
 
@@ -73,8 +76,15 @@ export default function ReviewResult() {
                 </div>
               </>
             )}
-            {q.explanation && (
-              <Alert type="info" message={t('review.explanation')} description={q.explanation} className="mt-2" />
+            {q.type === 'ESSAY' && essay && (
+              <EssayGradeCard
+                essayId={essay.essayId}
+                initialStatus={essay.status}
+                questionPrompt={q.prompt}
+              />
+            )}
+            {d.explanation && (
+              <Alert type="info" message={t('review.explanation')} description={d.explanation} className="mt-2" />
             )}
           </Card>
         );

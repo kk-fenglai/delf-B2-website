@@ -27,6 +27,13 @@ requireEnv('JWT_ACCESS_SECRET', { minLength: 32 });
 requireEnv('JWT_REFRESH_SECRET', { minLength: 32 });
 requireEnv('FRONTEND_URL');
 
+// AI writing grader: required in production (feature is a paid-tier entitlement).
+// In dev we only warn — the feature will 503 at call time, not at boot.
+requireEnv('ANTHROPIC_API_KEY', { minLength: 40, prodOnly: true });
+if (!IS_PROD && !process.env.ANTHROPIC_API_KEY) {
+  warnings.push('ANTHROPIC_API_KEY is not set — AI essay grading will return 503 until configured');
+}
+
 // Hard-block boilerplate placeholder secrets from .env.example
 const placeholderMatchers = [/^change_?me/i, /xxx+/i];
 ['JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET'].forEach((k) => {
@@ -72,4 +79,5 @@ module.exports = {
   PORT: Number(process.env.PORT || 4000),
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_PROD ? 'info' : 'debug'),
   FRONTEND_URL: process.env.FRONTEND_URL,
+  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || '',
 };

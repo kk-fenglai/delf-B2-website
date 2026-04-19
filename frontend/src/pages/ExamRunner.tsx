@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Card, Typography, Radio, Checkbox, Input, Button, message, Steps, Tag, Spin, Result,
@@ -6,12 +6,15 @@ import {
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import AudioPlayer from '../components/AudioPlayer';
-import type { ExamSetDetail, Question } from '../types';
+import AIModelPicker from '../components/AIModelPicker';
+import type { ExamSetDetail, Question, Skill, EssayQuota, ClaudeModelKey } from '../types';
 
 const { Title, Paragraph } = Typography;
 
-export default function ExamRunner() {
-  const { t } = useTranslation();
+type Props = { skill?: Skill };
+
+export default function ExamRunner({ skill }: Props = {}) {
+  const { t, i18n } = useTranslation();
   const { examId } = useParams();
   const navigate = useNavigate();
   const [exam, setExam] = useState<ExamSetDetail | null>(null);
@@ -21,11 +24,19 @@ export default function ExamRunner() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [blocked, setBlocked] = useState<string | null>(null);
+  const [quota, setQuota] = useState<EssayQuota | null>(null);
+  const [aiModel, setAiModel] = useState<ClaudeModelKey | null>(null);
+
+  const hasEssay = useMemo(
+    () => !!exam?.questions.some((q) => q.type === 'ESSAY'),
+    [exam]
+  );
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await api.get(`/exams/${examId}`);
+        const url = skill ? `/exams/${examId}?skill=${skill}` : `/exams/${examId}`;
+        const { data } = await api.get(url);
         setExam(data);
         const session = await api.post('/sessions', { examSetId: examId, mode: 'PRACTICE' });
         setSessionId(session.data.session.id);
@@ -39,7 +50,23 @@ export default function ExamRunner() {
         setLoading(false);
       }
     })();
-  }, [examId, t]);
+  }, [examId, skill, t]);
+
+  // Fetch essay quota once we know the exam has a writing task. 403/404 is
+  // swallowed — the server will still accept the submission and fall back to
+  // the plan's default model.
+  useEffect(() => {
+    if (!hasEssay) return;
+    let cancelled = false;
+    api.get('/user/essays/quota')
+      .then((r) => {
+        if (cancelled) return;
+        setQuota(r.data);
+        if (r.data?.defaultModel) setAiModel(r.data.defaultModel);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [hasEssay]);
 
   if (loading) return <div className="flex justify-center pt-20"><Spin size="large" /></div>;
 
@@ -69,7 +96,13 @@ export default function ExamRunner() {
         questionId: qq.id,
         answer: answers[qq.id] ?? (qq.type === 'MULTIPLE' ? [] : ''),
       }));
-      const { data } = await api.post(`/sessions/${sessionId}/submit`, { answers: payload });
+      const body: Record<string, unknown> = { answers: payload };
+      if (hasEssay) {
+        const loc = (i18n.language || 'fr').slice(0, 2);
+        body.aiLocale = (['fr', 'en', 'zh'] as const).includes(loc as any) ? loc : 'fr';
+        if (aiModel) body.aiModel = aiModel;
+      }
+      const { data } = await api.post(`/sessions/${sessionId}/submit`, body);
       sessionStorage.setItem(`result-${sessionId}`, JSON.stringify({ result: data, exam }));
       navigate(`/review/${sessionId}`);
     } catch (e: any) {
@@ -119,7 +152,17 @@ export default function ExamRunner() {
             placeholder={t('exam.essayPlaceholder')}
             showCount
           />
-          <div className="mt-2 text-xs text-gray-500">{t('exam.essayAITip')}</div>
+          {quota && quota.allowedModels.length > 0 ? (
+            <AIModelPicker
+              allowedModels={quota.allowedModels}
+              models={quota.models}
+              defaultModel={quota.defaultModel}
+              value={aiModel}
+              onChange={setAiModel}
+            />
+          ) : (
+            <div className="mt-2 text-xs text-gray-500">{t('exam.essayAITip')}</div>
+          )}
         </div>
       );
     }

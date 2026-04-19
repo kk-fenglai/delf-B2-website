@@ -5,6 +5,7 @@ import ReactECharts from 'echarts-for-react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
+import ScorePredictionCard from '../components/ScorePredictionCard';
 
 const { Title } = Typography;
 

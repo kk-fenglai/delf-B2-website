@@ -39,7 +39,9 @@
     "examStructure": "DELF B2 Exam Structure",
     "minutes": "min",
     "points": "pts",
-    "passRule": "Pass: total ≥ 50 and each section ≥ 5"
+    "passRule": "Pass: total ≥ 50 and each section ≥ 5",
+    "mockTitle": "Full Mock Exam · All 4 skills",
+    "mockDesc": "Simulate the real exam: listening, reading, writing, speaking in sequence"
   },
   "auth": {
     "login": "Sign in",
@@ -128,7 +130,31 @@
     "totalQuestions": "{{count}} questions total",
     "questionsCount": "{{count}} Q",
     "empty": "No sets available",
-    "year": "Year"
+    "year": "Year",
+    "hub": {
+      "title": "Choose practice mode",
+      "subtitle": "Practice each skill on its own, or take a full mock exam.",
+      "skillListTitle": "Skill drill",
+      "coDesc": "Listening drill · Exam-like pacing",
+      "ceDesc": "Reading drill · Argumentative long-form",
+      "peDesc": "Writing drill · 250-word essay",
+      "poDesc": "Speaking drill · Recording (in dev)",
+      "mockTitle": "Full mock exam",
+      "mockDesc": "All 4 skills in sequence · Full exam flow",
+      "mockSectionTitle": "Full mock exam",
+      "mockTag": "4 skills",
+      "comingSoonTag": "Coming soon"
+    },
+    "po": {
+      "comingSoonDesc": "Speaking recording & AI scoring are in development and planned for v2.0. In the meantime, prepare via listening, reading and writing.",
+      "backToHub": "Back to practice hub",
+      "seePricing": "See pricing",
+      "previewTitle": "What's coming",
+      "previewDesc": "Once speaking ships, you'll get:",
+      "bullet1": "In-browser recording (monologue + interactive roleplay)",
+      "bullet2": "AI scoring of pronunciation, fluency, grammar (AI plan)",
+      "bullet3": "Aligned with the official B2 examiner grid"
+    }
   },
   "exam": {
     "questionN": "Q {{n}}",
@@ -216,6 +242,75 @@
           "Early access to new features"
         ]
       }
+    },
+    "modelsRow": {
+      "label": "AI grading models",
+      "none": "—",
+      "haiku": "Haiku (fast)",
+      "sonnet": "Sonnet (balanced)",
+      "opus": "Opus (precise)"
+    }
+  },
+  "essay": {
+    "grade": {
+      "title": "AI essay grade",
+      "queued": "Queued for AI grading…",
+      "grading": "Grading with {{model}}…",
+      "done": "Graded",
+      "error": "Grading failed",
+      "tooShort": "Essay is too short ({{count}} words) — minimum {{min}} words required",
+      "planRequired": "Upgrade to Standard or higher to unlock AI grading",
+      "quotaExceeded": "You've used all AI gradings for this month",
+      "retry": "Retry",
+      "regradeWith": "Re-grade with {{model}}",
+      "regrade": "Re-grade",
+      "totalScore": "Total",
+      "globalFeedback": "Examiner feedback",
+      "strengths": "What worked",
+      "corrections": "Corrections",
+      "annotationsTitle": "Your text with annotations",
+      "wordCount": "{{count}} words",
+      "modelUsed": "Graded by {{model}}",
+      "gradedAt": "Graded {{time}}",
+      "pollingHint": "This page refreshes automatically once grading completes.",
+      "empty": "No essay submitted for this question."
+    },
+    "rubric": {
+      "consigne": "Task response",
+      "sociolinguistique": "Register",
+      "faits": "Presenting facts",
+      "argumentation": "Argumentation",
+      "coherence": "Coherence & cohesion",
+      "lexique_etendue": "Vocabulary range",
+      "lexique_maitrise": "Vocabulary control",
+      "orthographe": "Spelling",
+      "morphosyntaxe_etendue": "Syntactic range",
+      "morphosyntaxe_maitrise": "Syntactic control"
+    },
+    "correctionType": {
+      "grammar": "Grammar",
+      "lexique": "Vocabulary",
+      "orthographe": "Spelling",
+      "syntaxe": "Syntax"
+    },
+    "model": {
+      "pickerTitle": "Choose AI grading model",
+      "pickerSubtitle": "Higher tier = more accurate, also more expensive. You can re-grade later.",
+      "tier": {
+        "fast": "Fast",
+        "balanced": "Balanced",
+        "precise": "Most precise"
+      },
+      "locked": "Not in your plan",
+      "upgrade": "Upgrade to unlock",
+      "default": "Default"
+    },
+    "quota": {
+      "monthly": "{{used}} / {{cap}} this month",
+      "daily": "{{used}} / {{cap}} today",
+      "resetAt": "Resets {{date}}",
+      "title": "AI grading quota",
+      "plan": "Plan: {{plan}}"
     }
   }
 }

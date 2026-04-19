@@ -4,6 +4,7 @@ const env = require('./config/env');
 const { logger, httpLogger } = require('./utils/logger');
 
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -13,12 +14,14 @@ const authRoutes = require('./routes/auth');
 const examRoutes = require('./routes/exams');
 const sessionRoutes = require('./routes/sessions');
 const userRoutes = require('./routes/user');
+const essayRoutes = require('./routes/essays');
 const passwordResetRoutes = require('./routes/passwordReset');
 const adminAuthRoutes = require('./routes/adminAuth');
 const adminUserRoutes = require('./routes/adminUsers');
 const adminStatsRoutes = require('./routes/adminStats');
 const { ipAllowlist } = require('./middleware/admin');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
+const essayQueue = require('./services/essayQueue');
 
 const app = express();
 
@@ -88,6 +91,19 @@ const adminApiLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// --- Static audio (FEI sample exam MP3s and future CDN fallback) ---
+// Mounted under /api/* so the Vite dev proxy forwards it automatically.
+// Files live outside git (see .gitignore). No auth — this is public study material.
+app.use(
+  '/api/audio/fei',
+  express.static(path.join(__dirname, '..', 'content', 'fei-samples'), {
+    fallthrough: false,
+    setHeaders: (res) => {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    },
+  })
+);
+
 // --- Health ---
 app.get('/api/health', async (_req, res) => {
   const health = { status: 'ok', service: 'delfluent-backend', ts: Date.now(), db: 'unknown' };
@@ -107,6 +123,7 @@ app.use('/api/auth', passwordResetLimiter, passwordResetRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/user/essays', essayRoutes);
 
 // --- Admin APIs ---
 app.use('/api/admin', ipAllowlist);
@@ -119,6 +136,13 @@ app.use(errorHandler);
 
 const server = app.listen(env.PORT, () => {
   logger.info({ port: env.PORT, env: env.NODE_ENV }, 'DELFluent backend started');
+  // Kick off the AI essay grader worker. Missing ANTHROPIC_API_KEY is tolerated
+  // in dev (env.js only warns): worker will try to claim rows, aiGrader will
+  // throw AI_NOT_CONFIGURED, the queue will mark them 'error' with a clear
+  // message. Production startup already failed in env.js if key was missing.
+  essayQueue.startWorker().catch((err) => {
+    logger.error({ err }, 'essayQueue.startWorker.fail');
+  });
 });
 
 // --- Graceful shutdown ---
@@ -130,6 +154,12 @@ function shutdown(signal) {
   // Stop accepting new connections.
   server.close(async (err) => {
     if (err) logger.error({ err }, 'error while closing http server');
+    // Let in-flight AI grading finish (or time out at 12s) before tearing
+    // down the DB connection — otherwise prisma.update in processOne would
+    // race with prisma.disconnect.
+    await essayQueue.drain({ timeoutMs: 12000 }).catch((e) => {
+      logger.error({ err: e }, 'essayQueue.drain.fail');
+    });
     await prisma.disconnect();
     logger.info('shutdown complete');
     process.exit(err ? 1 : 0);

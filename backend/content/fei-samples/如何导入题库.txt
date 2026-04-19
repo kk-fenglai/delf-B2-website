@@ -1,0 +1,214 @@
+===============================================================
+  DELF B2 题库导入指南 —— 给 Claude 丢 PDF/Word，它自动入库
+===============================================================
+
+这个项目的题库是 Prisma + SQLite。你不用自己敲 JSON。
+你只要把真题文件放到指定目录，然后告诉 Claude 一句话，剩下的由它干。
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  工作流程（3 步）                                              │
+└─────────────────────────────────────────────────────────────┘
+
+第 1 步：把文件放到 incoming 目录
+----------------------------------
+路径：backend/content/fei-samples/incoming/
+
+支持格式：
+  ✓ PDF      —— 首选，Claude 可以直接读，最多 20 页一次
+  ✓ TXT      —— 你手动敲的题，或从 PDF 复制粘贴的纯文本
+  ✓ Markdown —— 同上
+  △ DOCX     —— 需要先转成 PDF 或另存为 TXT（见文末「Word 处理」）
+
+命名建议（不强制）：
+  - fei-b2-exemple1-candidat.pdf      考生题册
+  - fei-b2-exemple1-correcteur.pdf    批改册（含答案）
+  - fei-b2-exemple1-audio1.mp3        听力音频（音频直接丢对应 exemple 目录即可）
+
+可以一次丢多个文件，Claude 会关联识别。
+
+
+第 2 步：告诉 Claude 一句话
+-------------------------
+在 Claude Code 里发消息，类似：
+
+  "incoming 目录下有 FEI 样卷 1 的考生册和批改册，请导入题库"
+
+或者更宽松：
+
+  "我把 PDF 放好了，帮我处理一下"
+
+Claude 会自动：
+  a) 用 Read 工具读每个 PDF 的内容（分页读，20 页/次）
+  b) 识别 4 个技能板块：
+        CO (Compréhension orale)    → 听力
+        CE (Compréhension écrite)    → 阅读
+        PE (Production écrite)       → 写作
+        PO (Production orale)        → 口语
+  c) 识别题型：
+        单选 SINGLE  · 多选 MULTIPLE  · 判断 TRUE_FALSE
+        填空 FILL    · 作文 ESSAY     · 口语 SPEAKING
+  d) 把答案从 correcteur 册对应到题目里
+  e) 生成 parsed.json 存到 backend/content/fei-samples/<套题目录>/
+  f) 跑 node scripts/importFeiSample.js <套题目录>  灌库
+  g) 告诉你结果（新增多少套题 / 多少题 / 有没有识别失败的）
+
+
+第 3 步：验证
+-------------
+Claude 导完会提示你跑一下：
+
+  cd backend
+  npm run dev      （启动后端）
+
+然后打开浏览器：
+  http://localhost:4000/api/exams         → 应该能看到新套题
+  http://localhost:5173/practice/listening → 应能看到听力套题列表
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  每套题应该放哪里                                             │
+└─────────────────────────────────────────────────────────────┘
+
+建议一套题一个子目录，名字表达来源 + 编号：
+
+  backend/content/fei-samples/
+    ├── incoming/                ← 你先把文件丢这里
+    ├── b2-tp-exemple1/          ← Claude 会把 FEI 样卷 1 整理到这里
+    │     ├── candidat.pdf       （考生册原件，归档用）
+    │     ├── correcteur.pdf     （批改册原件）
+    │     ├── audio-1.mp3        （音频文件，前端通过 /api/audio/fei/... 访问）
+    │     ├── audio-2.mp3
+    │     └── parsed.json        （Claude 生成，已结构化，用于灌库）
+    ├── b2-tp-exemple2/          ← 样卷 2
+    └── b2-tp-exemple-po/        ← 口语样卷
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  你想手敲 TXT 题？这样写就行                                    │
+└─────────────────────────────────────────────────────────────┘
+
+不一定要用 PDF。你也可以自己敲 TXT 丢进 incoming/，格式如下
+（Claude 会识别这种格式自动转 JSON）：
+
+===== 样例 start =====
+
+# 套题
+标题: DELF B2 自编练习 001
+年份: 2026
+来源: 原创仿真题
+免费体验: 是
+
+---
+
+# 题目
+技能: CO
+题型: SINGLE
+分值: 2
+音频: /api/audio/fei/my-custom/audio-1.mp3
+背景: [听完录音后回答]
+题干: La journaliste parle principalement de quoi ?
+解析: 录音中 0:35 处提到「le développement urbain durable」
+
+选项:
+A. Les transports en commun
+B. (*)Le développement urbain durable
+C. L'économie locale
+
+---
+
+# 题目
+技能: CE
+题型: MULTIPLE
+分值: 3
+背景: Lisez le texte suivant et répondez.
+  (可以写很长的阅读原文，换行不影响，只要不出现「# 题目」「---」就算同一道题的背景)
+题干: Selon l'auteur, quels sont les avantages mentionnés ? (plusieurs réponses)
+解析: 选项 B 和 D 在第 2、4 段出现。
+
+选项:
+A. Réduction des coûts
+B. (*)Meilleure efficacité
+C. Simplicité d'usage
+D. (*)Impact environnemental positif
+
+===== 样例 end =====
+
+规则：
+  - 用 `---` 分隔套题头和每道题
+  - (*)  放在选项 `A.` 后表示正确答案
+  - 多选题可以标多个 (*)
+  - 作文题 / 口语题不需要「选项」区，把题干和评分要点写在「题干」「解析」即可
+  - 行首关键词：标题/年份/来源/免费体验/技能/题型/分值/音频/背景/题干/解析/选项
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  Word (.docx) 文件怎么办                                      │
+└─────────────────────────────────────────────────────────────┘
+
+Claude 的 Read 工具不支持 docx。三个办法（任选）：
+
+1) 在 Word 里另存为 PDF（菜单 → 文件 → 另存为 → PDF），丢 incoming/
+2) 在 Word 里全选复制（Ctrl+A, Ctrl+C），粘贴到记事本存成 .txt
+3) 用命令行转（如果你装了 pandoc）：
+     pandoc your-file.docx -o your-file.txt
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  手动跑导入脚本（备用，正常不用）                                │
+└─────────────────────────────────────────────────────────────┘
+
+如果 Claude 已经帮你生成了 parsed.json 但没自动灌库，可以自己跑：
+
+  cd backend
+  unset DATABASE_URL            # 避开 Neon Postgres 覆盖问题（见 CLAUDE.md #1）
+  node scripts/importFeiSample.js b2-tp-exemple1
+
+脚本是幂等的：同名套题会先清空旧题再重新插入，不会产生重复。
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  版权红线                                                    │
+└─────────────────────────────────────────────────────────────┘
+
+只有 FEI 官网公开的 sujets d'exemple（免费样卷）可以转录入库，
+且必须：
+  - 在描述里标注 "Source: France Éducation International"
+  - 放在免费层（isFreePreview: true）
+  - 不能作为付费订阅专属内容
+
+❌ 禁止：
+  - 从盗版网站抓的真题扫描件
+  - 出版社教材（Didier / Hachette / ABC DELF 等）扫描内容
+  - 付费课程泄露的题目
+
+付费层应该是：原创仿真题 + 平台服务（AI 批改、学习追踪、模拟考界面）
+
+
+===============================================================
+  常见问题
+===============================================================
+
+Q: PDF 是扫描件（图片），Claude 能读吗？
+A: Read 工具读 PDF 文字层；纯图片扫描件读出来是空的。需要先 OCR
+   （比如用 ABBYY / Adobe Acrobat 的「识别文字」功能）再丢。
+
+Q: 一个 PDF 里既有题目也有答案，Claude 分得清吗？
+A: 能。答案通常在「CORRIGÉ」「BARÈME」「Réponses」这类小标题下，
+   Claude 会识别并把答案对应到题目。如果 candidat.pdf 和 correcteur.pdf
+   分开给更稳。
+
+Q: 如果某道题 Claude 识别错了怎么办？
+A: 它会先生成 parsed.json，你看一眼里面内容不对的话，告诉 Claude
+   「第 3 题答案错了，应该是 C」，它会改 parsed.json 然后重跑导入。
+
+Q: 听力音频不放本地可以吗？
+A: 可以。audioUrl 填 FEI 官网的完整 URL 也行（有 CORS 的话要在 CSP
+   里加白名单，见 backend/src/index.js 里 Helmet 配置）。
+
+Q: 套题已经存在，再导入会重复吗？
+A: 不会。importFeiSample.js 按 title 查重，同名的会先清掉旧题和选项
+   再重新插入（ExamSet 本身保留，id 不变）。
+
+
+===============================================================

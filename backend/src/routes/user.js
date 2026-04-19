@@ -1,6 +1,7 @@
 const express = require('express');
 const prisma = require('../prisma');
 const { requireAuth } = require('../middleware/auth');
+const { predictScore } = require('../services/prediction');
 
 const router = express.Router();
 
@@ -67,6 +68,40 @@ router.get('/progress', requireAuth, async (req, res, next) => {
       })),
       skillStats,
       totalAttempts: attempts.length,
+    });
+  } catch (e) { next(e); }
+});
+
+// GET /api/user/prediction - exam score & pass-probability forecast
+router.get('/prediction', requireAuth, async (req, res, next) => {
+  try {
+    // Pull all attempts with question skill/type/points. We de-dup to the most
+    // recent attempt per question so re-practising doesn't double-count.
+    const raw = await prisma.userAttempt.findMany({
+      where: { userId: req.userId },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        question: { select: { skill: true, type: true, points: true } },
+      },
+    });
+
+    const seen = new Set();
+    const latest = [];
+    for (const a of raw) {
+      if (seen.has(a.questionId)) continue;
+      seen.add(a.questionId);
+      latest.push(a);
+    }
+
+    const prediction = predictScore(latest);
+
+    const lastPracticeAt = raw.length > 0 ? raw[0].createdAt : null;
+
+    res.json({
+      ...prediction,
+      totalAttempts: raw.length,
+      uniqueQuestions: latest.length,
+      lastPracticeAt,
     });
   } catch (e) { next(e); }
 });

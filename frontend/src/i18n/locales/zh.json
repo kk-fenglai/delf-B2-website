@@ -39,7 +39,9 @@
     "examStructure": "DELF B2 考试结构",
     "minutes": "分钟",
     "points": "分",
-    "passRule": "通过标准：总分 ≥ 50 且每项 ≥ 5 分"
+    "passRule": "通过标准：总分 ≥ 50 且每项 ≥ 5 分",
+    "mockTitle": "全真模拟 · 4 技能连做",
+    "mockDesc": "按真实考试流程连续作答听、读、写、说 · 体验完整考场节奏"
   },
   "auth": {
     "login": "登录",
@@ -130,7 +132,31 @@
     "totalQuestions": "共 {{count}} 题",
     "questionsCount": "{{count}}题",
     "empty": "没有可用的套题",
-    "year": "年份"
+    "year": "年份",
+    "hub": {
+      "title": "选择练习模式",
+      "subtitle": "四项专项训练分开练习，或选择全真模拟体验完整考场节奏。",
+      "skillListTitle": "单项练习",
+      "coDesc": "听力单项精练 · 模拟考试节奏",
+      "ceDesc": "阅读长文精练 · 论证性文本理解",
+      "peDesc": "写作单项练习 · 250 字论证文",
+      "poDesc": "口语单项 · 录音作答（开发中）",
+      "mockTitle": "全真模拟",
+      "mockDesc": "4 技能连续作答 · 完整考试流程",
+      "mockSectionTitle": "完整模拟考",
+      "mockTag": "4 技能连做",
+      "comingSoonTag": "即将上线"
+    },
+    "po": {
+      "comingSoonDesc": "口语录音 / AI 评测功能正在开发中，计划在 v2.0 上线。现阶段可先通过听、读、写模块进行备考。",
+      "backToHub": "返回练习中心",
+      "seePricing": "查看订阅方案",
+      "previewTitle": "即将推出的功能",
+      "previewDesc": "口语模块上线后将支持：",
+      "bullet1": "浏览器录音作答（独白 + 互动角色扮演）",
+      "bullet2": "AI 发音、流利度、语法综合评分（AI 版）",
+      "bullet3": "官方考官评分表 B2 标准对齐"
+    }
   },
   "exam": {
     "questionN": "第 {{n}} 题",
@@ -218,6 +244,75 @@
           "优先体验新功能"
         ]
       }
+    },
+    "modelsRow": {
+      "label": "AI 批改模型",
+      "none": "—",
+      "haiku": "Haiku（快速）",
+      "sonnet": "Sonnet（均衡）",
+      "opus": "Opus（精准）"
+    }
+  },
+  "essay": {
+    "grade": {
+      "title": "AI 作文批改",
+      "queued": "已进入批改队列…",
+      "grading": "正在使用 {{model}} 批改…",
+      "done": "批改完成",
+      "error": "批改失败",
+      "tooShort": "作文过短（{{count}} 词）— 至少需要 {{min}} 词",
+      "planRequired": "升级到标准版或更高才能使用 AI 批改",
+      "quotaExceeded": "本月 AI 批改次数已用尽",
+      "retry": "重试",
+      "regradeWith": "使用 {{model}} 重新批改",
+      "regrade": "重新批改",
+      "totalScore": "总分",
+      "globalFeedback": "考官整体反馈",
+      "strengths": "亮点",
+      "corrections": "修改建议",
+      "annotationsTitle": "原文标注",
+      "wordCount": "{{count}} 词",
+      "modelUsed": "由 {{model}} 批改",
+      "gradedAt": "批改于 {{time}}",
+      "pollingHint": "批改完成后本页会自动刷新。",
+      "empty": "此题未提交作文。"
+    },
+    "rubric": {
+      "consigne": "遵守题目要求",
+      "sociolinguistique": "社会语言适切性",
+      "faits": "事实陈述",
+      "argumentation": "立论与论证",
+      "coherence": "连贯与衔接",
+      "lexique_etendue": "词汇广度",
+      "lexique_maitrise": "词汇精度",
+      "orthographe": "拼写",
+      "morphosyntaxe_etendue": "句法广度",
+      "morphosyntaxe_maitrise": "句法精度"
+    },
+    "correctionType": {
+      "grammar": "语法",
+      "lexique": "词汇",
+      "orthographe": "拼写",
+      "syntaxe": "句法"
+    },
+    "model": {
+      "pickerTitle": "选择 AI 批改模型",
+      "pickerSubtitle": "等级越高越精准，成本也越高。提交后仍可切换模型重批。",
+      "tier": {
+        "fast": "快速",
+        "balanced": "均衡",
+        "precise": "最精准"
+      },
+      "locked": "当前套餐不包含",
+      "upgrade": "升级解锁",
+      "default": "默认"
+    },
+    "quota": {
+      "monthly": "本月已用 {{used}} / {{cap}}",
+      "daily": "今日已用 {{used}} / {{cap}}",
+      "resetAt": "{{date}} 重置",
+      "title": "AI 批改配额",
+      "plan": "套餐：{{plan}}"
     }
   }
 }

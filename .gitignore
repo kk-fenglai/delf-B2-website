@@ -12,5 +12,18 @@ build/
 backend/prisma/dev.db
 backend/prisma/dev.db-journal
 
+# FEI sample exam raw files (downloaded PDFs + MP3s - don't commit binaries or copyrighted material)
+backend/content/fei-samples/**/*.pdf
+backend/content/fei-samples/**/*.mp3
+# Keep parsed.json and READMEs tracked for reproducibility
+!backend/content/fei-samples/**/parsed.json
+!backend/content/fei-samples/**/README.md
+
 # OS
 Thumbs.db
+
+# Build artifacts
+frontend/tsconfig.tsbuildinfo
+
+# Local test-account credentials (contains admin / demo passwords)
+注意事项.txt
