@@ -1,6 +1,6 @@
 # 🇫🇷 DELFluent · DELF B2 真题训练平台
 
-[![Status](https://img.shields.io/badge/status-MVP%20v0.1-green)](https://github.com/kk-fenglai/delf-B2-webiste)
+[![Status](https://img.shields.io/badge/status-Beta%20v1.5-blue)](https://github.com/kk-fenglai/delf-B2-webiste)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](#)
 [![Node](https://img.shields.io/badge/node-%E2%89%A520-brightgreen)](https://nodejs.org)
 [![React](https://img.shields.io/badge/react-18-61dafb?logo=react)](https://react.dev)
@@ -19,7 +19,7 @@
 |------|------|
 | 🎧 **听力 (CO)** | 内嵌音频播放器 + 浏览器 TTS 备用朗读 · 速度调节 · 限次播放 |
 | 📖 **阅读 (CE)** | 长文 + 题目同屏展示 · 支持单选/多选/判断/填空 |
-| ✍️ **写作 (PE)** | 富文本编辑 · 字数统计 · AI 批改（v1.5）|
+| ✍️ **写作 (PE)** | 富文本编辑 · 字数统计 · AI 批改（DeepSeek V3 · 并行 fan-out）|
 | 🎙️ **口语 (PO)** | 录音上传 · AI 评测（v2.0）|
 | 🔐 **账户系统** | JWT 双令牌 · bcrypt 哈希 · 多订阅套餐权限 |
 | 📊 **学习中心** | 四项能力雷达图 · 练习历史追踪 |
@@ -39,7 +39,7 @@ Zustand · React Router · ECharts · react-i18next · Axios
 ### Backend
 ```
 Node.js · Express · Prisma ORM · SQLite (dev) / PostgreSQL (prod)
-JWT · bcryptjs · Zod · @anthropic-ai/sdk (v1.5)
+JWT · bcryptjs · Zod · openai SDK → DeepSeek V3 (AI grading)
 ```
 
 ---
@@ -53,12 +53,14 @@ JWT · bcryptjs · Zod · @anthropic-ai/sdk (v1.5)
 ### 后端
 ```bash
 cd backend
-cp .env.example .env              # 填入 JWT 密钥
+cp .env.example .env              # 填入 JWT 密钥 + DEEPSEEK_API_KEY
 npm install
 npx prisma migrate dev --name init
 npm run seed                      # 导入仿真题种子数据
 npm run dev                       # → http://localhost:4000
 ```
+
+> 获取 DeepSeek API key：[platform.deepseek.com](https://platform.deepseek.com/api_keys)（国内直连，无需 VPN）。测试阶段充 10 元约够几千篇作文。
 
 ### 前端
 ```bash
@@ -150,7 +152,7 @@ delf-b2-website/
 - [x] **v0.1 MVP** — 注册登录 · 听力/阅读练习 · 自动批改 · 学习中心
 - [x] **v0.2 生产级安全** — 邮箱验证 · refresh rotation · 状态守卫 · 管理后台 · 审计日志
 - [ ] **v1.0 标准版** — 完整模拟考试 · 错题本 · PDF 成绩单
-- [ ] **v1.5 AI 版 Beta** — Claude API 写作批改 · AI 学习助手
+- [x] **v1.5 AI 版 Beta** — DeepSeek V3 写作批改（并行 fan-out，单篇 <¥0.05） · AI 学习助手
 - [ ] **v2.0 AI 版正式** — AI 口语评测 · 备考计划生成 · 移动端优化
 - [ ] **v2.5** — 社区 · 教师版 · B2B API
 

@@ -14,6 +14,14 @@
 
 ## 6. Windows 下 bash `&` 后的 cwd 不跟随
 
+## 7. DeepSeek 迁移（2026-04-20）
+
+- `.env` 里 `ANTHROPIC_API_KEY` 要手动改名 `DEEPSEEK_API_KEY`，我不会自动迁移
+- DeepSeek 的 usage 字段是 `prompt_tokens` / `completion_tokens` / `prompt_cache_hit_tokens`，不是 Claude 的 `input_tokens` / `output_tokens` / `cache_read_input_tokens`
+- DeepSeek 自动按前缀缓存，**不需要**手动加 `cache_control: ephemeral`，也没有 5 分钟 TTL
+- tool 调用响应格式不同：`message.tool_calls[0].function.arguments` 是**字符串**，要 `JSON.parse`；Claude 是结构化 `input` 对象
+- 老 Essay 行的 `model` 字段仍是 `haiku-4-5` / `sonnet-4-6` / `opus-4-7`，读端兜底渲染为 "(legacy)"，不做数据迁移
+
 ---
 
 > 本文件只列"我踩过的坑"，不是项目文档。架构和 API 看 `README.md`。
