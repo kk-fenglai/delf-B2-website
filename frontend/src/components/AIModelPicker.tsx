@@ -9,7 +9,9 @@ const { Text } = Typography;
 // Canonical ordering. Any model not in `allowedModels` is shown disabled so
 // the user can still see the upgrade path.
 const ALL_MODELS: Array<{ key: ClaudeModelKey; label: string; tier: ModelTier }> = [
-  { key: 'deepseek-chat', label: 'DeepSeek V3', tier: 'fast' },
+  { key: 'qwen-turbo',    label: 'Qwen Turbo',   tier: 'fast' },
+  { key: 'deepseek-chat', label: 'DeepSeek V3',  tier: 'balanced' },
+  { key: 'qwen-plus',     label: 'Qwen Plus',    tier: 'precise' },
 ];
 
 const TIER_ICON: Record<ModelTier, React.ReactNode> = {

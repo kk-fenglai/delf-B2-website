@@ -30,7 +30,9 @@ type Props = {
 function localeTag(model: ClaudeModelKey | string | null) {
   if (!model) return '';
   if (model === 'deepseek-chat') return 'DeepSeek V3';
-  // Legacy rows graded with Claude before the DeepSeek switch.
+  if (model === 'qwen-turbo') return 'Qwen Turbo';
+  if (model === 'qwen-plus') return 'Qwen Plus';
+  // Legacy rows graded with Claude before the DeepSeek/Qwen switch.
   if (model.startsWith('haiku')) return 'Haiku 4.5 (legacy)';
   if (model.startsWith('sonnet')) return 'Sonnet 4.6 (legacy)';
   if (model.startsWith('opus')) return 'Opus 4.7 (legacy)';

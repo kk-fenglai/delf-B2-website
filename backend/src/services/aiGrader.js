@@ -1,9 +1,10 @@
 // AI essay grader for DELF B2 Production Écrite.
 //
-// Provider: DeepSeek (api.deepseek.com). We use the `openai` SDK because
-// DeepSeek exposes an OpenAI-compatible chat-completions endpoint. If you
-// later want to swap providers (Mistral, Qwen, OpenAI itself), only the
-// baseURL + model IDs in planMatrix.js need to change.
+// Providers: DeepSeek (api.deepseek.com) + Qwen/DashScope (dashscope.aliyuncs.com).
+// Both expose an OpenAI-compatible chat-completions endpoint, so we use the
+// `openai` SDK with two baseURL/apiKey instances and dispatch by model. Adding
+// another OpenAI-compatible provider later is a one-entry addition to
+// PROVIDERS below + a MODEL_CATALOG row in planMatrix.js.
 //
 // Contract: gradeEssay({ essay, question, modelKey, locale }) → structured
 // rubric result. Caller (essayQueue) is responsible for persistence — this
@@ -40,21 +41,39 @@ const {
   CACHED_INPUT_MULTIPLIER,
 } = require('../constants/planMatrix');
 
-// ---- Singleton client ----------------------------------------------------
-let _client = null;
-function getClient() {
-  if (!env.DEEPSEEK_API_KEY) {
-    const e = new Error('DEEPSEEK_API_KEY not configured');
-    e.code = 'AI_NOT_CONFIGURED';
+// ---- Provider registry + lazy singletons --------------------------------
+// Each provider entry knows how to extract its own env config. Adding a new
+// OpenAI-compatible provider: append an entry here and a MODEL_CATALOG row.
+const PROVIDERS = {
+  deepseek: {
+    apiKeyEnv: 'DEEPSEEK_API_KEY',
+    baseUrlEnv: 'DEEPSEEK_BASE_URL',
+  },
+  qwen: {
+    apiKeyEnv: 'DASHSCOPE_API_KEY',
+    baseUrlEnv: 'DASHSCOPE_BASE_URL',
+  },
+};
+
+const _clients = {};
+function getClient(provider) {
+  if (!PROVIDERS[provider]) {
+    const e = new Error(`Unknown provider: ${provider}`);
+    e.code = 'AI_BAD_MODEL';
     throw e;
   }
-  if (!_client) {
-    _client = new OpenAI({
-      apiKey: env.DEEPSEEK_API_KEY,
-      baseURL: env.DEEPSEEK_BASE_URL, // https://api.deepseek.com
-    });
+  if (!_clients[provider]) {
+    const { apiKeyEnv, baseUrlEnv } = PROVIDERS[provider];
+    const apiKey = env[apiKeyEnv];
+    const baseURL = env[baseUrlEnv];
+    if (!apiKey) {
+      const e = new Error(`${apiKeyEnv} not configured`);
+      e.code = 'AI_NOT_CONFIGURED';
+      throw e;
+    }
+    _clients[provider] = new OpenAI({ apiKey, baseURL });
   }
-  return _client;
+  return _clients[provider];
 }
 
 // ---- Response locale -----------------------------------------------------
@@ -233,24 +252,36 @@ const SummarySchema = z.object({
   globalFeedback: z.string().min(80),
 });
 
-// ---- Cost calculator -----------------------------------------------------
-// DeepSeek usage fields (OpenAI-compatible + extras):
-//   prompt_tokens, completion_tokens                       — total counts
-//   prompt_cache_hit_tokens, prompt_cache_miss_tokens      — cache split
+// ---- Usage parsing -------------------------------------------------------
+// DeepSeek:      prompt_cache_hit_tokens / prompt_cache_miss_tokens
+// Qwen (OpenAI): prompt_tokens_details.cached_tokens
+// Both:          prompt_tokens, completion_tokens
+function extractUsage(usage) {
+  const promptTotal = usage.prompt_tokens || 0;
+  const outTotal = usage.completion_tokens || 0;
+  // DeepSeek surfaces cache split at top level.
+  if (typeof usage.prompt_cache_hit_tokens === 'number' ||
+      typeof usage.prompt_cache_miss_tokens === 'number') {
+    const cached = usage.prompt_cache_hit_tokens || 0;
+    const fresh =
+      usage.prompt_cache_miss_tokens != null
+        ? usage.prompt_cache_miss_tokens
+        : Math.max(0, promptTotal - cached);
+    return { promptTotal, outTotal, cached, fresh };
+  }
+  // OpenAI-standard shape (Qwen compatible-mode uses this).
+  const cached = usage.prompt_tokens_details?.cached_tokens || 0;
+  const fresh = Math.max(0, promptTotal - cached);
+  return { promptTotal, outTotal, cached, fresh };
+}
+
 function computeCostUsd(modelKey, usage) {
   const m = MODEL_CATALOG[modelKey];
   if (!m) return 0;
-  const cachedIn = usage.prompt_cache_hit_tokens || 0;
-  const freshIn =
-    (usage.prompt_cache_miss_tokens != null
-      ? usage.prompt_cache_miss_tokens
-      : Math.max(0, (usage.prompt_tokens || 0) - cachedIn));
-  const out = usage.completion_tokens || 0;
-
+  const { outTotal, cached, fresh } = extractUsage(usage);
   const inRate = m.inputUsdPerM / 1_000_000;
   const outRate = m.outputUsdPerM / 1_000_000;
-
-  return freshIn * inRate + cachedIn * inRate * CACHED_INPUT_MULTIPLIER + out * outRate;
+  return fresh * inRate + cached * inRate * CACHED_INPUT_MULTIPLIER + outTotal * outRate;
 }
 
 // ---- Retry wrapper -------------------------------------------------------
@@ -274,10 +305,13 @@ async function withRetry(fn, { attempts = 2, baseMs = 400 } = {}) {
 }
 
 // ---- Sub-call runner -----------------------------------------------------
-// Single per-model timeout map. With a single DeepSeek tier today, just one
-// entry — but the shape is kept for future multi-model support.
+// Per-model SDK timeout. Aimed slightly above the p95 generation time per
+// model so legit slow responses still land; tighter than the old Anthropic
+// budget because both providers are fast.
 const SUBCALL_TIMEOUT_MS = {
+  'qwen-turbo': 8_000,
   'deepseek-chat': 10_000,
+  'qwen-plus': 12_000,
 };
 
 const TASK_HINTS = {
@@ -324,10 +358,12 @@ Langue du retour : ${LOCALES[loc].label}.
 ${LOCALES[loc].instruction}`;
 }
 
-async function runSubCall({ client, userModelKey, task, essay, question, loc }) {
+async function runSubCall({ userModelKey, task, essay, question, loc }) {
   const toolDef = TASK_TOOL_DEFS[task];
   const taskModelKey = modelForTask(task, userModelKey);
   const taskModel = MODEL_CATALOG[taskModelKey];
+  // Dispatch to the right provider client based on the model's provider tag.
+  const client = getClient(taskModel.provider);
 
   const call = () =>
     client.chat.completions.create(
@@ -394,7 +430,7 @@ function wrapProviderError(err, task) {
     status >= 500                      ? 'AI_PROVIDER_DOWN' :
     status >= 400 && status < 500      ? 'AI_BAD_REQUEST'   :
     'AI_CALL_FAILED';
-  const wrapped = new Error(`DeepSeek call failed (task=${task}): ${err?.message || err}`);
+  const wrapped = new Error(`Provider call failed (task=${task}): ${err?.message || err}`);
   wrapped.code = code;
   wrapped.cause = err;
   return wrapped;
@@ -421,15 +457,15 @@ async function gradeEssay({ essay, question, modelKey, locale }) {
     throw e;
   }
 
-  const client = getClient();
   const loc = normaliseLocale(locale);
   const started = Date.now();
 
-  // Fan out: 3 sub-calls in parallel. Wall time ≈ max of the three.
+  // Fan out: 3 sub-calls in parallel. Each sub-call resolves its own client
+  // via the model's provider tag (DeepSeek or Qwen).
   const tasks = ['scores', 'corrections', 'summary'];
   const results = await Promise.all(
     tasks.map((task) =>
-      runSubCall({ client, userModelKey: modelKey, task, essay, question, loc })
+      runSubCall({ userModelKey: modelKey, task, essay, question, loc })
         .catch((err) => { throw wrapProviderError(err, task); })
     )
   );
@@ -468,38 +504,37 @@ async function gradeEssay({ essay, question, modelKey, locale }) {
 
   const aiScore = Math.round(canonical.reduce((s, d) => s + d.score, 0));
 
-  // Aggregate usage. Each sub-call reports its own DeepSeek usage.
-  const usageSum = { prompt_tokens: 0, completion_tokens: 0, prompt_cache_hit_tokens: 0, prompt_cache_miss_tokens: 0 };
-  let costUsd = 0;
+  // Aggregate usage across sub-calls. Each provider's usage shape differs;
+  // extractUsage normalises to { promptTotal, outTotal, cached, fresh }.
+  let tokensIn = 0, tokensOut = 0, tokensCached = 0, costUsd = 0;
   const perTask = {};
   for (let i = 0; i < tasks.length; i++) {
     const task = tasks[i];
     const r = results[i];
-    const u = r.usage;
-    usageSum.prompt_tokens += u.prompt_tokens || 0;
-    usageSum.completion_tokens += u.completion_tokens || 0;
-    usageSum.prompt_cache_hit_tokens += u.prompt_cache_hit_tokens || 0;
-    usageSum.prompt_cache_miss_tokens += u.prompt_cache_miss_tokens || 0;
-    const taskCost = computeCostUsd(r.modelKey, u);
+    const ext = extractUsage(r.usage);
+    tokensIn += ext.promptTotal;
+    tokensOut += ext.outTotal;
+    tokensCached += ext.cached;
+    const taskCost = computeCostUsd(r.modelKey, r.usage);
     costUsd += taskCost;
     perTask[task] = {
       model: r.modelKey,
-      tokensIn: u.prompt_tokens || 0,
-      tokensOut: u.completion_tokens || 0,
-      cacheHit: u.prompt_cache_hit_tokens || 0,
+      provider: MODEL_CATALOG[r.modelKey]?.provider,
+      tokensIn: ext.promptTotal,
+      tokensOut: ext.outTotal,
+      cacheHit: ext.cached,
       costUsd: Number(taskCost.toFixed(6)),
     };
   }
-  const tokensCached = usageSum.prompt_cache_hit_tokens;
 
   logger.info(
     {
       essayId: essay.id,
       model: modelKey,
-      provider: 'deepseek',
+      provider: MODEL_CATALOG[modelKey]?.provider,
       latencyMs: Date.now() - started,
-      tokensIn: usageSum.prompt_tokens,
-      tokensOut: usageSum.completion_tokens,
+      tokensIn,
+      tokensOut,
       tokensCached,
       costUsd: Number(costUsd.toFixed(6)),
       perTask,
@@ -514,8 +549,8 @@ async function gradeEssay({ essay, question, modelKey, locale }) {
     corrections: corrParsed.corrections,
     strengths: sumParsed.strengths,
     model: modelKey,
-    tokensIn: usageSum.prompt_tokens,
-    tokensOut: usageSum.completion_tokens,
+    tokensIn,
+    tokensOut,
     tokensCached,
     costUsd,
   };

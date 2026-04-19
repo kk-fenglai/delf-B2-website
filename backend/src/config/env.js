@@ -27,12 +27,17 @@ requireEnv('JWT_ACCESS_SECRET', { minLength: 32 });
 requireEnv('JWT_REFRESH_SECRET', { minLength: 32 });
 requireEnv('FRONTEND_URL');
 
-// AI writing grader: required in production (feature is a paid-tier entitlement).
-// In dev we only warn — the feature will 503 at call time, not at boot.
-// Provider is DeepSeek (see planMatrix.js). Keys are prefixed `sk-` and ~35+ chars.
+// AI writing graders: required in production (feature is a paid-tier entitlement).
+// In dev we only warn — calls to a missing provider return 503 at call time, not at boot.
+// At least ONE provider must be configured in prod, but we check each independently so
+// the error message is clear (we don't try to short-circuit "either one is fine").
 requireEnv('DEEPSEEK_API_KEY', { minLength: 30, prodOnly: true });
+requireEnv('DASHSCOPE_API_KEY', { minLength: 30, prodOnly: true });
 if (!IS_PROD && !process.env.DEEPSEEK_API_KEY) {
-  warnings.push('DEEPSEEK_API_KEY is not set — AI essay grading will return 503 until configured');
+  warnings.push('DEEPSEEK_API_KEY is not set — DeepSeek essay grading will 503 until configured');
+}
+if (!IS_PROD && !process.env.DASHSCOPE_API_KEY) {
+  warnings.push('DASHSCOPE_API_KEY is not set — Qwen essay grading will 503 until configured');
 }
 
 // Hard-block boilerplate placeholder secrets from .env.example
@@ -82,4 +87,6 @@ module.exports = {
   FRONTEND_URL: process.env.FRONTEND_URL,
   DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY || '',
   DEEPSEEK_BASE_URL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
+  DASHSCOPE_API_KEY: process.env.DASHSCOPE_API_KEY || '',
+  DASHSCOPE_BASE_URL: process.env.DASHSCOPE_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1',
 };

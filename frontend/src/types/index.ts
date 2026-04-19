@@ -133,10 +133,10 @@ export interface Prediction {
 // --- AI essay grading -----------------------------------------------------
 
 // Historically this was `ClaudeModelKey`; kept the name to avoid a project-wide
-// rename, but the values are now DeepSeek model keys. Legacy essay rows in DB
-// may still carry 'haiku-4-5' etc. — render-side fallbacks in EssayGradeCard
-// handle those labels.
-export type ClaudeModelKey = 'deepseek-chat';
+// rename, but the values are now provider-agnostic (DeepSeek + Qwen). Legacy
+// essay rows in DB may still carry 'haiku-4-5' etc. — render-side fallbacks
+// in EssayGradeCard handle those labels.
+export type ClaudeModelKey = 'qwen-turbo' | 'deepseek-chat' | 'qwen-plus';
 
 export type ModelTier = 'fast' | 'balanced' | 'precise';
 
