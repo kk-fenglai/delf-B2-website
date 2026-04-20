@@ -1,0 +1,255 @@
+// DELF B2 Platform - Prisma Schema (SQLite for local dev / PostgreSQL for prod)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  passwordHash      String
+  name              String?
+  plan              String    @default("FREE")   // FREE | STANDARD | AI | AI_UNLIMITED
+  subscriptionEnd   DateTime?
+
+  // --- RBAC & Account status ---
+  role              String    @default("USER")   // USER | ADMIN | SUPER_ADMIN
+  status            String    @default("ACTIVE") // ACTIVE | SUSPENDED | DELETED
+  deletedAt         DateTime?                    // soft-delete timestamp
+
+  // --- Email verification ---
+  emailVerified     Boolean   @default(false)
+  emailVerifiedAt   DateTime?
+
+  // --- Login telemetry ---
+  loginCount        Int       @default(0)
+  lastLoginAt       DateTime?
+  lastLoginIp       String?
+  failedLoginCount  Int       @default(0)
+  lockedUntil       DateTime?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  attempts              UserAttempt[]
+  sessions              ExamSession[]
+  essays                Essay[]
+  loginHistory          LoginHistory[]
+  resetTokens           PasswordResetToken[]
+  twoFactorTokens       TwoFactorToken[]
+  refreshTokens         RefreshToken[]
+  emailVerifications    EmailVerificationToken[]
+  adminLogs             AdminLog[]            @relation("AdminActor")
+
+  @@index([role, status])
+  @@index([plan, subscriptionEnd])
+}
+
+model RefreshToken {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash     String    @unique   // sha256 of raw refresh token
+  scope         String                // "user" | "admin"
+  parentId      String?               // previous token in rotation chain
+  ip            String?
+  userAgent     String?
+  expiresAt     DateTime
+  revokedAt     DateTime?
+  revokedReason String?               // LOGOUT | ROTATED | REUSE_DETECTED | ADMIN_REVOKE | LOCKOUT
+  createdAt     DateTime  @default(now())
+
+  @@index([userId, scope, revokedAt])
+  @@index([expiresAt])
+}
+
+model EmailVerificationToken {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  usedAt     DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+// ---------------- Admin & Security ----------------
+
+model AdminLog {
+  id         String   @id @default(cuid())
+  adminId    String
+  admin      User     @relation("AdminActor", fields: [adminId], references: [id])
+  action     String   // USER_UPDATE | PLAN_CHANGE | PASSWORD_RESET | SUSPEND | DELETE | IMPERSONATE | LOGIN_2FA_OK ...
+  targetType String   // USER | EXAM | SESSION | SYSTEM
+  targetId   String?
+  payload    String?  // JSON: before/after diff
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([adminId, createdAt])
+  @@index([targetType, targetId])
+}
+
+model LoginHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ip        String?
+  userAgent String?
+  success   Boolean  @default(true)
+  reason    String?  // BAD_PASSWORD | LOCKED | SUSPENDED | OK | TWO_FA_REQUIRED
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model PasswordResetToken {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String   @unique            // sha256 of token; raw only sent via email
+  expiresAt  DateTime
+  usedAt     DateTime?
+  requestedBy String?                    // USER | ADMIN:<adminId>
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model TwoFactorToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash  String                        // sha256 of 6-digit code
+  purpose   String   @default("ADMIN_LOGIN") // ADMIN_LOGIN | SENSITIVE_ACTION
+  expiresAt DateTime
+  usedAt    DateTime?
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([userId, purpose, expiresAt])
+}
+
+// ---------------- Existing models (unchanged) ----------------
+
+model ExamSet {
+  id           String     @id @default(cuid())
+  title        String
+  year         Int
+  description  String?
+  isPublished  Boolean    @default(true)
+  isFreePreview Boolean   @default(false)
+  createdAt    DateTime   @default(now())
+
+  questions    Question[]
+  sessions     ExamSession[]
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  examSetId     String
+  examSet       ExamSet      @relation(fields: [examSetId], references: [id], onDelete: Cascade)
+  skill         String
+  type          String
+  order         Int          @default(0)
+  prompt        String
+  passage       String?
+  audioUrl      String?
+  explanation   String?
+  points        Int          @default(1)
+
+  options       QuestionOption[]
+  attempts      UserAttempt[]
+
+  @@index([examSetId, skill])
+}
+
+model QuestionOption {
+  id          String   @id @default(cuid())
+  questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  label       String
+  text        String
+  isCorrect   Boolean  @default(false)
+  order       Int      @default(0)
+}
+
+model ExamSession {
+  id           String     @id @default(cuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examSetId    String
+  examSet      ExamSet    @relation(fields: [examSetId], references: [id])
+  mode         String     @default("PRACTICE")
+  startedAt    DateTime   @default(now())
+  completedAt  DateTime?
+  totalScore   Int?
+  maxScore     Int?
+
+  attempts     UserAttempt[]
+
+  @@index([userId, completedAt])
+}
+
+model UserAttempt {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId   String?
+  session     ExamSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  questionId  String
+  question    Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer      String
+  isCorrect   Boolean?
+  score       Int?
+  timeSpent   Int?
+  createdAt   DateTime     @default(now())
+
+  @@index([userId, questionId])
+}
+
+model Essay {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionId  String
+  sessionId   String?                        // links back to the ExamSession for review join
+  content     String
+  wordCount   Int      @default(0)
+
+  // --- AI grading state machine ---
+  // queued   : just inserted, worker will pick up
+  // grading  : worker claimed, Anthropic call in-flight
+  // done     : rubric / corrections / aiScore populated
+  // error    : errorMessage populated; user may retry via regrade
+  status        String   @default("queued")
+  model         String?                      // haiku-4-5 | sonnet-4-6 | opus-4-7
+  locale        String?                      // fr | en | zh — feedback language chosen at submit
+  aiScore       Int?                         // 0..25, recomputed server-side from rubric
+  aiFeedback    String?                      // global narrative feedback
+  rubric        String?                      // JSON: [{ key, score, max, feedback }] × 10
+  corrections   String?                      // JSON: [{ excerpt, issue, suggestion, type }]
+  strengths     String?                      // JSON: string[]
+  tokensIn      Int?
+  tokensOut     Int?
+  tokensCached  Int?
+  costUsd       Float?
+  errorMessage  String?
+  gradedAt      DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])              // worker scans queued/grading
+  @@index([sessionId])
+}

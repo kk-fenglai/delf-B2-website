@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pandoc --track-changes=all \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\DELFB2_PRD.docx\" -o \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\DELFB2_PRD_output.md\")",
+      "Read(//c/Users/lenovo/Desktop/**)",
+      "Bash(python3 \"C:\\\\Users\\\\lenovo\\\\AppData\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\skills-plugin\\\\6c26b897-6586-4099-975e-f3dedfcbf2e8\\\\be75e00c-66d4-471b-ad04-b0f666836f91\\\\skills\\\\docx\\\\scripts\\\\office\\\\unpack.py\" \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\DELFB2_PRD.docx\" \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\DELFB2_unpacked\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python \"C:\\\\Users\\\\lenovo\\\\AppData\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\skills-plugin\\\\6c26b897-6586-4099-975e-f3dedfcbf2e8\\\\be75e00c-66d4-471b-ad04-b0f666836f91\\\\skills\\\\docx\\\\scripts\\\\office\\\\unpack.py\" \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\DELFB2_PRD.docx\" \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\DELFB2_unpacked\")",
+      "Bash(python -c ' *)",
+      "Bash(npm -v)",
+      "Bash(docker --version)",
+      "Bash(psql --version)",
+      "Bash(npm install *)",
+      "Bash(npx prisma *)",
+      "Bash(DATABASE_URL=\"file:./dev.db\" npx prisma migrate dev --name init)",
+      "Bash(DATABASE_URL=\"file:./dev.db\" npm run seed)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:4000/api/health)",
+      "Bash(curl -s -X POST http://localhost:4000/api/auth/login -H \"Content-Type: application/json\" -d '{\"email\":\"demo@delfluent.com\",\"password\":\"demo1234\"}')",
+      "Bash(node -e \"require\\('dotenv'\\).config\\(\\); console.log\\('DB_URL:', JSON.stringify\\(process.env.DATABASE_URL\\)\\);\")",
+      "Bash(curl -s -w \"HTTP %{http_code}\\\\n\" http://localhost:4000/api/health)",
+      "Bash(curl -s -m 2 http://localhost:4000/api/health)",
+      "Bash(curl -s -m 2 http://localhost:5173)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(node -e ' *)",
+      "Bash(gh --version)",
+      "Bash(set \"DATABASE_URL=file:./dev.db\")",
+      "Bash(cmd /c \"set DATABASE_URL=file:./dev.db&& npx prisma migrate dev --name admin_panel --skip-seed\")",
+      "Bash(DATABASE_URL=\"file:./dev.db\" npx prisma migrate dev --name admin_panel --skip-seed)",
+      "Bash(DATABASE_URL=\"file:./dev.db\" npx prisma generate)",
+      "Bash(DATABASE_URL=\"file:./dev.db\" node prisma/seed.js)",
+      "Bash(timeout 5 node src/index.js)",
+      "Bash(node -e \"require\\('./src/config/env'\\); console.log\\('env OK'\\);\")"
+    ]
+  }
+}

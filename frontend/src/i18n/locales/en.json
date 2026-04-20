@@ -1,0 +1,359 @@
+{
+  "app": {
+    "name": "DELFluent",
+    "tagline": "DELF B2 Practice Platform",
+    "footer": "DELFluent © {{year}} · DELF B2 Practice Platform · All questions are original simulations"
+  },
+  "nav": {
+    "home": "Home",
+    "practice": "Practice",
+    "mistakes": "Mistake Notebook",
+    "dashboard": "Dashboard",
+    "pricing": "Pricing",
+    "login": "Sign in",
+    "register": "Sign up",
+    "logout": "Sign out"
+  },
+  "plan": {
+    "FREE": "Free",
+    "STANDARD": "Standard",
+    "AI": "AI",
+    "AI_UNLIMITED": "AI Unlimited"
+  },
+  "skill": {
+    "CO": "Listening",
+    "CE": "Reading",
+    "PE": "Writing",
+    "PO": "Speaking"
+  },
+  "landing": {
+    "title": "DELF B2 Exam Practice Platform",
+    "subtitle": "Systematic practice for Listening, Reading, Writing, Speaking · AI correction · Real exam simulation",
+    "ctaStart": "Start free practice",
+    "ctaPricing": "View pricing",
+    "features": {
+      "co": { "title": "Listening", "desc": "Full audio tracks simulating real exam conditions" },
+      "ce": { "title": "Reading", "desc": "Argumentative long-form texts with answer locations" },
+      "pe": { "title": "Writing", "desc": "250-word essays with AI correction (AI plan)" },
+      "po": { "title": "Speaking", "desc": "Recording practice with AI examiner (AI plan)" }
+    },
+    "examStructure": "DELF B2 Exam Structure",
+    "minutes": "min",
+    "points": "pts",
+    "passRule": "Pass: total ≥ 50 and each section ≥ 5",
+    "mockTitle": "Full Mock Exam · All 4 skills",
+    "mockDesc": "Simulate the real exam: listening, reading, writing, speaking in sequence"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "nickname": "Nickname",
+    "nicknameOptional": "Optional",
+    "passwordHint": "At least 10 characters, mix of upper/lower/digit/symbol",
+    "submitLogin": "Sign in",
+    "submitRegister": "Create account",
+    "toRegister": "No account? Sign up",
+    "toLogin": "Have an account? Sign in",
+    "forgotPassword": "Forgot password?",
+    "useAdminLogin": "Admin accounts must sign in via the admin console",
+    "loginSuccess": "Signed in successfully",
+    "loginFail": "Sign in failed",
+    "registerSuccess": "Welcome to DELFluent!",
+    "registerFail": "Sign up failed",
+    "common": { "cancel": "Cancel" },
+    "forgot": {
+      "title": "Reset password",
+      "subtitle": "Enter your account email and we'll send a reset link",
+      "submit": "Send reset link",
+      "sentTitle": "Email sent",
+      "sentDesc": "If this email is registered, a reset link has been sent. It will expire in 30 minutes.",
+      "backToLogin": "← Back to sign in",
+      "fail": "Failed to send"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "subtitle": "At least 10 characters; include at least 3 of lower/upper/digit/symbol",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "mismatch": "Passwords do not match",
+      "submit": "Submit",
+      "success": "Password reset. Please sign in with your new password.",
+      "fail": "Reset failed — link may have expired",
+      "missingToken": "Link invalid or expired",
+      "requestNew": "Request a new reset link"
+    },
+    "verify": {
+      "verifying": "Verifying…",
+      "successTitle": "Email verified 🎉",
+      "successDesc": "Your account is active. You can now sign in.",
+      "expiredTitle": "Link expired",
+      "expiredDesc": "The verification link is no longer valid. Please request a new one after signing in.",
+      "invalidTitle": "Link invalid",
+      "invalidDesc": "We couldn't recognize this verification link.",
+      "toLogin": "Go to sign in",
+      "requiredTitle": "Please verify your email",
+      "requiredDesc": "We sent a verification email to {{email}}. Click the link inside to activate your account, or press the button below to resend."
+    },
+    "sent": {
+      "title": "Verification email sent",
+      "desc": "We've sent a verification email to {{email}}.",
+      "hint": "Click the link within 24 hours to activate your account. Check your spam folder if you don't see it.",
+      "resend": "Resend",
+      "toLogin": "Go to sign in",
+      "noEmail": "No email address detected",
+      "resent": "Verification email resent",
+      "resendFail": "Failed to resend, please try later"
+    }
+  },
+  "dashboard": {
+    "greeting": "Hello, {{name}} 👋",
+    "attemptsDone": "Questions completed",
+    "setsDone": "Sets completed",
+    "nextStep": "Next step",
+    "startToday": "Start today's practice",
+    "enterPractice": "Go to practice",
+    "radarTitle": "Skills radar",
+    "recentSessions": "Recent sessions",
+    "noData": "No practice data yet",
+    "noSessions": "No sessions yet",
+    "viewDetail": "View details",
+    "score": "Score",
+    "loading": "Loading..."
+  },
+  "practice": {
+    "title": "Practice Library",
+    "subtitle": "Choose a set to begin. Free users can try sets marked 'Free preview'.",
+    "all": "All",
+    "freePreview": "Free preview",
+    "startPractice": "Start →",
+    "totalQuestions": "{{count}} questions total",
+    "questionsCount": "{{count}} Q",
+    "empty": "No sets available",
+    "year": "Year",
+    "hub": {
+      "title": "Choose practice mode",
+      "subtitle": "Practice each skill on its own, or take a full mock exam.",
+      "skillListTitle": "Skill drill",
+      "coDesc": "Listening drill · Exam-like pacing",
+      "ceDesc": "Reading drill · Argumentative long-form",
+      "peDesc": "Writing drill · 250-word essay",
+      "poDesc": "Speaking drill · Recording (in dev)",
+      "mockTitle": "Full mock exam",
+      "mockDesc": "All 4 skills in sequence · Full exam flow",
+      "mockSectionTitle": "Full mock exam",
+      "mockTag": "4 skills",
+      "comingSoonTag": "Coming soon"
+    },
+    "po": {
+      "comingSoonDesc": "Speaking recording & AI scoring are in development and planned for v2.0. In the meantime, prepare via listening, reading and writing.",
+      "backToHub": "Back to practice hub",
+      "seePricing": "See pricing",
+      "previewTitle": "What's coming",
+      "previewDesc": "Once speaking ships, you'll get:",
+      "bullet1": "In-browser recording (monologue + interactive roleplay)",
+      "bullet2": "AI scoring of pronunciation, fluency, grammar (AI plan)",
+      "bullet3": "Aligned with the official B2 examiner grid"
+    }
+  },
+  "exam": {
+    "questionN": "Q {{n}}",
+    "prev": "Previous",
+    "next": "Next",
+    "submit": "Submit",
+    "submitFail": "Submission failed",
+    "audioNotSupported": "Your browser does not support audio playback",
+    "fillPlaceholder": "Enter your answer",
+    "essayPlaceholder": "Write your essay here (250 words minimum)...",
+    "essayAITip": "💡 Writing is not auto-graded in MVP. Upgrade to AI plan for AI correction.",
+    "unsupported": "This question type requires recording (coming soon)",
+    "loadFail": "Load failed",
+    "blockedTitle": "Subscription required",
+    "blockedCta": "View pricing",
+    "notFound": "Exam set not found",
+    "points": "pts",
+    "mockBadge": "Full Mock Exam",
+    "fiveMinWarning": "⏰ 5 minutes remaining — please finalize your answers.",
+    "timeUp": "Time is up — submitting your answers automatically.",
+    "autoSubmitted": "Your exam was auto-submitted because time expired.",
+    "progressLabel": "Answered: {{done}} / {{total}}",
+    "passCriteriaTitle": "DELF B2 passing standards",
+    "passCriteriaInline": "Total ≥ {{total}}/100 · each section ≥ {{skillMin}}/{{skillMax}} · duration {{duration}} min",
+    "passTotal": "Total score must be ≥ {{min}}/100",
+    "passPerSkill": "Each of the 4 sections must score ≥ {{min}}/{{max}}",
+    "confirmTitle": "Submit your exam?",
+    "confirmAnswered": "You have answered {{done}} of {{total}} questions.",
+    "confirmUnanswered": "{{n}} unanswered",
+    "confirmOk": "Submit",
+    "confirmCancel": "Keep reviewing"
+  },
+  "review": {
+    "title": "Results",
+    "correct": "✓ Correct",
+    "wrong": "✗ Wrong",
+    "pendingAI": "Pending AI review",
+    "yourAnswer": "Your answer: ",
+    "correctAnswer": "Correct answer: ",
+    "notAnswered": "(not answered)",
+    "explanation": "Explanation",
+    "backToPractice": "Back to practice",
+    "toDashboard": "Go to dashboard",
+    "noResult": "No results found. Return to practice and try again."
+  },
+  "mistakes": {
+    "title": "Mistake Notebook",
+    "totalCount": "{{n}} to review",
+    "infoTitle": "How it works",
+    "infoDesc": "Questions you answered incorrectly are collected here. Re-practice them — once you answer correctly, they are automatically removed.",
+    "tabAll": "All",
+    "yourAnswer": "Your answer",
+    "correctAnswer": "Correct answer",
+    "explanation": "Explanation",
+    "practiceAgain": "Practice again",
+    "empty": "No mistakes yet — keep practising and any wrong answers will appear here."
+  },
+  "pricing": {
+    "title": "Choose your plan",
+    "subtitle": "WeChat Pay / Alipay · Cancel anytime · 7-day refund",
+    "popular": "Most popular",
+    "paymentNote": "💳 Payment integration will be activated after MVP launch (WeChat Pay / Alipay / Stripe)",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "period": "",
+        "cta": "Sign up free",
+        "features": [
+          "5 full practices per month",
+          "Basic listening & reading",
+          "Basic answer check"
+        ]
+      },
+      "standard": {
+        "name": "Standard",
+        "price": "$4.9",
+        "period": "/month or $29/year",
+        "cta": "Get Standard",
+        "features": [
+          "Unlimited practice",
+          "Complete historical question bank",
+          "All 4 skills (L/R/W/S)",
+          "Full mock exams + PDF report",
+          "Mistake book & learning reports"
+        ]
+      },
+      "ai": {
+        "name": "AI",
+        "price": "$9.9",
+        "period": "/month or $69/year",
+        "cta": "Get AI Plan",
+        "features": [
+          "All Standard features",
+          "AI writing correction (50/month)",
+          "AI study assistant chat",
+          "Personalized learning path",
+          "AI speaking evaluation (soon)"
+        ]
+      },
+      "ai_unlimited": {
+        "name": "AI Unlimited",
+        "price": "$14.9",
+        "period": "/month or $99/year",
+        "cta": "Get Unlimited",
+        "features": [
+          "All AI features",
+          "Unlimited AI correction",
+          "AI study plan generation",
+          "AI diagnostic report",
+          "Early access to new features"
+        ]
+      }
+    },
+    "modelsRow": {
+      "label": "AI grading models",
+      "none": "—",
+      "haiku": "Haiku (fast)",
+      "sonnet": "Sonnet (balanced)",
+      "opus": "Opus (precise)"
+    }
+  },
+  "essay": {
+    "grade": {
+      "title": "AI essay grade",
+      "queued": "Queued for AI grading…",
+      "grading": "Grading with {{model}}…",
+      "done": "Graded",
+      "error": "Grading failed",
+      "tooShort": "Essay is too short ({{count}} words) — minimum {{min}} words required",
+      "planRequired": "Upgrade to Standard or higher to unlock AI grading",
+      "quotaExceeded": "You've used all AI gradings for this month",
+      "retry": "Retry",
+      "regradeWith": "Re-grade with {{model}}",
+      "regrade": "Re-grade",
+      "totalScore": "Total",
+      "globalFeedback": "Examiner feedback",
+      "strengths": "What worked",
+      "corrections": "Corrections",
+      "annotationsTitle": "Your text with annotations",
+      "wordCount": "{{count}} words",
+      "modelUsed": "Graded by {{model}}",
+      "gradedAt": "Graded {{time}}",
+      "pollingHint": "This page refreshes automatically once grading completes.",
+      "empty": "No essay submitted for this question.",
+      "slowWarning": "AI grading is taking longer than usual — Claude may be busy. You can keep waiting or click Rewrite to retry.",
+      "errNotConfigured": "AI grading is not configured. Please contact the administrator.",
+      "errTruncated": "AI output was truncated. Please re-grade or try again later.",
+      "errBadOutput": "AI returned malformed output. Please re-grade.",
+      "errProviderDown": "Claude service is temporarily unavailable. Please try again later.",
+      "errRateLimited": "Too many requests — please wait a moment and try again.",
+      "errBadRequest": "Grading request was rejected. Please contact the administrator.",
+      "errCallFailed": "Network or connection issue. Please retry.",
+      "errTimeout": "Grading timed out (>25s). Please re-grade or edit and resubmit."
+    },
+    "rubric": {
+      "consigne": "Task response",
+      "sociolinguistique": "Register",
+      "faits": "Presenting facts",
+      "argumentation": "Argumentation",
+      "coherence": "Coherence & cohesion",
+      "lexique_etendue": "Vocabulary range",
+      "lexique_maitrise": "Vocabulary control",
+      "orthographe": "Spelling",
+      "morphosyntaxe_etendue": "Syntactic range",
+      "morphosyntaxe_maitrise": "Syntactic control"
+    },
+    "correctionType": {
+      "grammar": "Grammar",
+      "lexique": "Vocabulary",
+      "orthographe": "Spelling",
+      "syntaxe": "Syntax"
+    },
+    "model": {
+      "pickerTitle": "Choose AI grading model",
+      "pickerSubtitle": "Higher tier = more accurate, also more expensive. You can re-grade later.",
+      "tier": {
+        "fast": "Fast",
+        "balanced": "Balanced",
+        "precise": "Most precise"
+      },
+      "locked": "Not in your plan",
+      "upgrade": "Upgrade to unlock",
+      "default": "Default"
+    },
+    "quota": {
+      "monthly": "{{used}} / {{cap}} this month",
+      "daily": "{{used}} / {{cap}} today",
+      "resetAt": "Resets {{date}}",
+      "title": "AI grading quota",
+      "plan": "Plan: {{plan}}"
+    },
+    "rewrite": {
+      "button": "Rewrite essay",
+      "modalTitle": "Edit and resubmit",
+      "submit": "Submit rewrite",
+      "placeholder": "Edit your essay here…",
+      "wordCount": "Word count: {{count}}"
+    }
+  }
+}

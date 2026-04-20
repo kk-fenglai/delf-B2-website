@@ -1,0 +1,359 @@
+{
+  "app": {
+    "name": "DELFluent",
+    "tagline": "Plateforme d'entraînement DELF B2",
+    "footer": "DELFluent © {{year}} · Plateforme d'entraînement DELF B2 · Toutes les questions sont des simulations originales"
+  },
+  "nav": {
+    "home": "Accueil",
+    "practice": "Entraînement",
+    "mistakes": "Cahier d'erreurs",
+    "dashboard": "Tableau de bord",
+    "pricing": "Tarifs",
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "logout": "Déconnexion"
+  },
+  "plan": {
+    "FREE": "Gratuit",
+    "STANDARD": "Standard",
+    "AI": "IA",
+    "AI_UNLIMITED": "IA Illimité"
+  },
+  "skill": {
+    "CO": "Compréhension orale",
+    "CE": "Compréhension écrite",
+    "PE": "Production écrite",
+    "PO": "Production orale"
+  },
+  "landing": {
+    "title": "Plateforme d'entraînement DELF B2",
+    "subtitle": "Entraînement systématique aux quatre compétences · Correction IA · Simulation d'examen réel",
+    "ctaStart": "Commencer gratuitement",
+    "ctaPricing": "Voir les tarifs",
+    "features": {
+      "co": { "title": "Compréhension orale", "desc": "Pistes audio complètes reproduisant les conditions réelles" },
+      "ce": { "title": "Compréhension écrite", "desc": "Textes argumentatifs avec localisation des réponses" },
+      "pe": { "title": "Production écrite", "desc": "Rédaction de 250 mots avec correction IA (plan IA)" },
+      "po": { "title": "Production orale", "desc": "Enregistrement avec examinateur IA (plan IA)" }
+    },
+    "examStructure": "Structure de l'examen DELF B2",
+    "minutes": "min",
+    "points": "pts",
+    "passRule": "Réussite : total ≥ 50 et chaque épreuve ≥ 5",
+    "mockTitle": "Examen blanc complet · 4 compétences",
+    "mockDesc": "Reproduit l'examen réel : CO, CE, PE, PO en séquence"
+  },
+  "auth": {
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "nickname": "Pseudo",
+    "nicknameOptional": "Facultatif",
+    "passwordHint": "Au moins 10 caractères, mélange de majuscules/minuscules/chiffres/symboles",
+    "submitLogin": "Se connecter",
+    "submitRegister": "Créer un compte",
+    "toRegister": "Pas de compte ? Inscrivez-vous",
+    "toLogin": "Déjà un compte ? Connectez-vous",
+    "forgotPassword": "Mot de passe oublié ?",
+    "useAdminLogin": "Les comptes administrateurs doivent se connecter via la console admin",
+    "loginSuccess": "Connexion réussie",
+    "loginFail": "Échec de la connexion",
+    "registerSuccess": "Bienvenue sur DELFluent !",
+    "registerFail": "Échec de l'inscription",
+    "common": { "cancel": "Annuler" },
+    "forgot": {
+      "title": "Réinitialiser le mot de passe",
+      "subtitle": "Saisissez votre e-mail et nous enverrons un lien de réinitialisation",
+      "submit": "Envoyer le lien",
+      "sentTitle": "E-mail envoyé",
+      "sentDesc": "Si cet e-mail est enregistré, un lien de réinitialisation a été envoyé. Il expire dans 30 minutes.",
+      "backToLogin": "← Retour à la connexion",
+      "fail": "Échec de l'envoi"
+    },
+    "reset": {
+      "title": "Définir un nouveau mot de passe",
+      "subtitle": "Au moins 10 caractères ; au moins 3 types parmi minuscule/majuscule/chiffre/symbole",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "mismatch": "Les mots de passe ne correspondent pas",
+      "submit": "Valider",
+      "success": "Mot de passe réinitialisé. Connectez-vous avec le nouveau.",
+      "fail": "Échec — le lien est peut-être expiré",
+      "missingToken": "Lien invalide ou expiré",
+      "requestNew": "Demander un nouveau lien"
+    },
+    "verify": {
+      "verifying": "Vérification...",
+      "successTitle": "E-mail vérifié 🎉",
+      "successDesc": "Votre compte est activé. Vous pouvez vous connecter.",
+      "expiredTitle": "Lien expiré",
+      "expiredDesc": "Le lien de vérification n'est plus valable. Demandez-en un nouveau.",
+      "invalidTitle": "Lien invalide",
+      "invalidDesc": "Ce lien de vérification n'est pas reconnu.",
+      "toLogin": "Se connecter",
+      "requiredTitle": "Vérifiez votre e-mail",
+      "requiredDesc": "Un e-mail de vérification a été envoyé à {{email}}. Cliquez sur le lien pour activer votre compte, ou renvoyez-en un ci-dessous."
+    },
+    "sent": {
+      "title": "E-mail de vérification envoyé",
+      "desc": "Un e-mail de vérification a été envoyé à {{email}}.",
+      "hint": "Cliquez sur le lien sous 24 heures pour activer votre compte. Vérifiez aussi les spams.",
+      "resend": "Renvoyer",
+      "toLogin": "Se connecter",
+      "noEmail": "Adresse e-mail introuvable",
+      "resent": "E-mail renvoyé",
+      "resendFail": "Échec du renvoi, réessayez plus tard"
+    }
+  },
+  "dashboard": {
+    "greeting": "Bonjour, {{name}} 👋",
+    "attemptsDone": "Questions terminées",
+    "setsDone": "Sessions terminées",
+    "nextStep": "Étape suivante",
+    "startToday": "Commencer l'entraînement du jour",
+    "enterPractice": "Accéder à l'entraînement",
+    "radarTitle": "Radar des compétences",
+    "recentSessions": "Sessions récentes",
+    "noData": "Pas encore de données",
+    "noSessions": "Aucune session pour l'instant",
+    "viewDetail": "Voir les détails",
+    "score": "Score",
+    "loading": "Chargement..."
+  },
+  "practice": {
+    "title": "Banque de sujets",
+    "subtitle": "Choisissez un sujet pour commencer. Les utilisateurs gratuits peuvent essayer les sujets marqués « Aperçu gratuit ».",
+    "all": "Tous",
+    "freePreview": "Aperçu gratuit",
+    "startPractice": "Commencer →",
+    "totalQuestions": "{{count}} questions au total",
+    "questionsCount": "{{count}} Q",
+    "empty": "Aucun sujet disponible",
+    "year": "Année",
+    "hub": {
+      "title": "Choisir un mode d'entraînement",
+      "subtitle": "Entraînez-vous compétence par compétence, ou passez un examen blanc complet.",
+      "skillListTitle": "Entraînement ciblé",
+      "coDesc": "CO ciblée · Rythme d'examen",
+      "ceDesc": "CE ciblée · Textes argumentatifs longs",
+      "peDesc": "PE ciblée · Rédaction 250 mots",
+      "poDesc": "PO ciblée · Enregistrement (en cours)",
+      "mockTitle": "Examen blanc complet",
+      "mockDesc": "Les 4 compétences en séquence · Flux d'examen complet",
+      "mockSectionTitle": "Examen blanc complet",
+      "mockTag": "4 compétences",
+      "comingSoonTag": "Bientôt"
+    },
+    "po": {
+      "comingSoonDesc": "L'enregistrement oral et la notation IA sont en cours de développement (v2.0). En attendant, préparez-vous avec CO, CE et PE.",
+      "backToHub": "Retour au hub",
+      "seePricing": "Voir les tarifs",
+      "previewTitle": "Ce qui arrive",
+      "previewDesc": "La PO inclura à sa sortie :",
+      "bullet1": "Enregistrement dans le navigateur (monologue + jeu de rôle)",
+      "bullet2": "Notation IA : prononciation, fluidité, grammaire (plan IA)",
+      "bullet3": "Aligné sur la grille officielle de l'examinateur B2"
+    }
+  },
+  "exam": {
+    "questionN": "Question {{n}}",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "submit": "Soumettre",
+    "submitFail": "Échec de l'envoi",
+    "audioNotSupported": "Votre navigateur ne prend pas en charge la lecture audio",
+    "fillPlaceholder": "Saisir votre réponse",
+    "essayPlaceholder": "Rédigez votre essai ici (250 mots minimum)...",
+    "essayAITip": "💡 La rédaction n'est pas corrigée automatiquement en MVP. Passez au plan IA pour la correction IA.",
+    "unsupported": "Ce type de question nécessite l'enregistrement (bientôt disponible)",
+    "loadFail": "Échec du chargement",
+    "blockedTitle": "Abonnement requis",
+    "blockedCta": "Voir les tarifs",
+    "notFound": "Sujet introuvable",
+    "points": "pts",
+    "mockBadge": "Examen blanc complet",
+    "fiveMinWarning": "⏰ Il reste 5 minutes — finalisez vos réponses.",
+    "timeUp": "Temps écoulé — soumission automatique de vos réponses.",
+    "autoSubmitted": "Votre examen a été soumis automatiquement (temps écoulé).",
+    "progressLabel": "Répondues : {{done}} / {{total}}",
+    "passCriteriaTitle": "Critères de réussite DELF B2",
+    "passCriteriaInline": "Total ≥ {{total}}/100 · chaque épreuve ≥ {{skillMin}}/{{skillMax}} · durée {{duration}} min",
+    "passTotal": "Score total ≥ {{min}}/100",
+    "passPerSkill": "Chacune des 4 épreuves ≥ {{min}}/{{max}}",
+    "confirmTitle": "Soumettre votre examen ?",
+    "confirmAnswered": "Vous avez répondu à {{done}} question(s) sur {{total}}.",
+    "confirmUnanswered": "{{n}} sans réponse",
+    "confirmOk": "Soumettre",
+    "confirmCancel": "Continuer"
+  },
+  "review": {
+    "title": "Résultats",
+    "correct": "✓ Correct",
+    "wrong": "✗ Incorrect",
+    "pendingAI": "Correction IA en attente",
+    "yourAnswer": "Votre réponse : ",
+    "correctAnswer": "Bonne réponse : ",
+    "notAnswered": "(non répondu)",
+    "explanation": "Explication",
+    "backToPractice": "Retour à l'entraînement",
+    "toDashboard": "Tableau de bord",
+    "noResult": "Aucun résultat trouvé. Retournez à l'entraînement pour réessayer."
+  },
+  "mistakes": {
+    "title": "Cahier d'erreurs",
+    "totalCount": "{{n}} à revoir",
+    "infoTitle": "Fonctionnement",
+    "infoDesc": "Les questions auxquelles vous avez mal répondu s'accumulent ici. Refaites-les : une fois la bonne réponse donnée, elles disparaissent automatiquement.",
+    "tabAll": "Tout",
+    "yourAnswer": "Votre réponse",
+    "correctAnswer": "Bonne réponse",
+    "explanation": "Explication",
+    "practiceAgain": "Refaire l'exercice",
+    "empty": "Aucune erreur pour l'instant — continuez à vous entraîner, les mauvaises réponses apparaîtront ici."
+  },
+  "pricing": {
+    "title": "Choisissez votre formule",
+    "subtitle": "WeChat Pay / Alipay · Annulable à tout moment · Remboursement sous 7 jours",
+    "popular": "Le plus choisi",
+    "paymentNote": "💳 Le paiement sera activé après le lancement du MVP (WeChat Pay / Alipay / Stripe)",
+    "plans": {
+      "free": {
+        "name": "Gratuit",
+        "price": "0 €",
+        "period": "",
+        "cta": "Inscription gratuite",
+        "features": [
+          "5 sessions complètes par mois",
+          "Compréhension orale et écrite de base",
+          "Vérification de base des réponses"
+        ]
+      },
+      "standard": {
+        "name": "Standard",
+        "price": "4,90 €",
+        "period": "/mois ou 29 €/an",
+        "cta": "Choisir Standard",
+        "features": [
+          "Entraînement illimité",
+          "Banque complète de sujets",
+          "Les 4 compétences (CO/CE/PE/PO)",
+          "Examens blancs + rapport PDF",
+          "Carnet d'erreurs & rapports"
+        ]
+      },
+      "ai": {
+        "name": "IA",
+        "price": "9,90 €",
+        "period": "/mois ou 69 €/an",
+        "cta": "Choisir IA",
+        "features": [
+          "Toutes les fonctions Standard",
+          "Correction IA de rédaction (50/mois)",
+          "Assistant d'étude IA",
+          "Parcours personnalisé",
+          "Évaluation orale IA (bientôt)"
+        ]
+      },
+      "ai_unlimited": {
+        "name": "IA Illimité",
+        "price": "14,90 €",
+        "period": "/mois ou 99 €/an",
+        "cta": "Choisir Illimité",
+        "features": [
+          "Toutes les fonctions IA",
+          "Correction IA illimitée",
+          "Plan d'étude IA",
+          "Rapport diagnostique IA",
+          "Accès anticipé aux nouveautés"
+        ]
+      }
+    },
+    "modelsRow": {
+      "label": "Modèles IA de correction",
+      "none": "—",
+      "haiku": "Haiku (rapide)",
+      "sonnet": "Sonnet (équilibré)",
+      "opus": "Opus (précis)"
+    }
+  },
+  "essay": {
+    "grade": {
+      "title": "Correction IA de la rédaction",
+      "queued": "En file d'attente pour correction IA…",
+      "grading": "Correction en cours avec {{model}}…",
+      "done": "Corrigé",
+      "error": "Échec de la correction",
+      "tooShort": "Rédaction trop courte ({{count}} mots) — minimum {{min}} mots requis",
+      "planRequired": "Passez à Standard ou supérieur pour débloquer la correction IA",
+      "quotaExceeded": "Vous avez utilisé toutes vos corrections IA ce mois-ci",
+      "retry": "Réessayer",
+      "regradeWith": "Recorriger avec {{model}}",
+      "regrade": "Recorriger",
+      "totalScore": "Total",
+      "globalFeedback": "Retour de l'examinateur",
+      "strengths": "Points forts",
+      "corrections": "Corrections",
+      "annotationsTitle": "Votre texte annoté",
+      "wordCount": "{{count}} mots",
+      "modelUsed": "Corrigé par {{model}}",
+      "gradedAt": "Corrigé {{time}}",
+      "pollingHint": "Cette page se rafraîchit automatiquement une fois la correction terminée.",
+      "empty": "Aucune rédaction soumise pour cette question.",
+      "slowWarning": "La correction IA prend plus de temps que d'habitude — Claude est peut-être surchargé. Vous pouvez patienter ou cliquer sur « Réécrire » pour réessayer.",
+      "errNotConfigured": "Le service de correction IA n'est pas configuré. Contactez l'administrateur.",
+      "errTruncated": "La sortie IA a été tronquée. Veuillez relancer la correction ou réessayer plus tard.",
+      "errBadOutput": "L'IA a renvoyé un format invalide. Veuillez relancer la correction.",
+      "errProviderDown": "Le service Claude est temporairement indisponible. Réessayez plus tard.",
+      "errRateLimited": "Trop de requêtes — patientez un instant et réessayez.",
+      "errBadRequest": "La requête de correction a été rejetée. Contactez l'administrateur.",
+      "errCallFailed": "Problème de réseau ou de connexion. Veuillez réessayer.",
+      "errTimeout": "Délai de correction dépassé (>25s). Relancez ou modifiez la rédaction et soumettez à nouveau."
+    },
+    "rubric": {
+      "consigne": "Respect de la consigne",
+      "sociolinguistique": "Correction sociolinguistique",
+      "faits": "Présenter des faits",
+      "argumentation": "Argumentation",
+      "coherence": "Cohérence et cohésion",
+      "lexique_etendue": "Étendue du vocabulaire",
+      "lexique_maitrise": "Maîtrise du vocabulaire",
+      "orthographe": "Orthographe",
+      "morphosyntaxe_etendue": "Étendue morphosyntaxique",
+      "morphosyntaxe_maitrise": "Maîtrise morphosyntaxique"
+    },
+    "correctionType": {
+      "grammar": "Grammaire",
+      "lexique": "Lexique",
+      "orthographe": "Orthographe",
+      "syntaxe": "Syntaxe"
+    },
+    "model": {
+      "pickerTitle": "Choisir le modèle de correction IA",
+      "pickerSubtitle": "Niveau supérieur = plus précis, mais aussi plus coûteux. Vous pouvez recorriger ultérieurement.",
+      "tier": {
+        "fast": "Rapide",
+        "balanced": "Équilibré",
+        "precise": "Le plus précis"
+      },
+      "locked": "Non inclus dans votre plan",
+      "upgrade": "Passer à un plan supérieur",
+      "default": "Par défaut"
+    },
+    "quota": {
+      "monthly": "{{used}} / {{cap}} ce mois-ci",
+      "daily": "{{used}} / {{cap}} aujourd'hui",
+      "resetAt": "Réinitialisation le {{date}}",
+      "title": "Quota de correction IA",
+      "plan": "Formule : {{plan}}"
+    },
+    "rewrite": {
+      "button": "Réécrire la rédaction",
+      "modalTitle": "Modifier et resoumettre",
+      "submit": "Soumettre la réécriture",
+      "placeholder": "Modifiez votre rédaction ici…",
+      "wordCount": "Nombre de mots : {{count}}"
+    }
+  }
+}
