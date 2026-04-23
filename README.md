@@ -19,12 +19,13 @@
 |------|------|
 | 🎧 **听力 (CO)** | 内嵌音频播放器 + 浏览器 TTS 备用朗读 · 速度调节 · 限次播放 |
 | 📖 **阅读 (CE)** | 长文 + 题目同屏展示 · 支持单选/多选/判断/填空 |
-| ✍️ **写作 (PE)** | 富文本编辑 · 字数统计 · AI 批改（DeepSeek V3 · 并行 fan-out）|
+| ✍️ **写作 (PE)** | 富文本编辑 · 字数统计 · **照片 OCR 识别作文** · AI 批改（DeepSeek V3 · 并行 fan-out）|
 | 🎙️ **口语 (PO)** | 录音上传 · AI 评测（v2.0）|
 | 🔐 **账户系统** | JWT 双令牌 · bcrypt 哈希 · 多订阅套餐权限 |
 | 📊 **学习中心** | 四项能力雷达图 · 练习历史追踪 |
 | 🌐 **多语言** | 中文 · English · Français 一键切换 |
 | 💳 **订阅方案** | FREE / STANDARD / AI / AI_UNLIMITED 四档 |
+| 🧾 **成绩单** | PDF 成绩单下载 |
 
 ---
 
@@ -40,9 +41,28 @@ Zustand · React Router · ECharts · react-i18next · Axios
 ```
 Node.js · Express · Prisma ORM · SQLite (dev) / PostgreSQL (prod)
 JWT · bcryptjs · Zod · openai SDK → DeepSeek V3 (AI grading)
+tesseract.js → OCR（识别用户上传的作文照片）
 ```
 
 ---
+
+## 🧾 写作照片 OCR（识别作文）
+
+在写作题（PE）输入框上方可直接上传照片，将识别出的文字自动填入作文框，随后即可进行 AI 批改。
+
+### API（后端）
+
+- **接口**：`POST /api/user/essays/ocr`
+- **鉴权/套餐**：需要登录且套餐 ≥ `STANDARD`
+- **请求**：`multipart/form-data`
+  - `image`: 图片文件（PNG/JPG/WEBP，≤ 8MB）
+  - `lang`（可选）: `fr` / `en` / `zh`（默认 `fr`；也支持 `fra`/`eng`/`chi_sim` 或组合如 `fra+eng`）
+- **返回**：`{ text, confidence, lang }`
+
+### 拍照建议
+
+- 尽量正对、光线充足、对焦清晰，裁掉多余背景
+- 手写体/倾斜/反光会显著降低识别率
 
 ## 🚀 本地运行
 
@@ -151,7 +171,7 @@ delf-b2-website/
 
 - [x] **v0.1 MVP** — 注册登录 · 听力/阅读练习 · 自动批改 · 学习中心
 - [x] **v0.2 生产级安全** — 邮箱验证 · refresh rotation · 状态守卫 · 管理后台 · 审计日志
-- [ ] **v1.0 标准版** — 完整模拟考试 · 错题本 · PDF 成绩单
+- [x] **v1.0 标准版** — 完整模拟考试 · 错题本 · PDF 成绩单
 - [x] **v1.5 AI 版 Beta** — DeepSeek V3 写作批改（并行 fan-out，单篇 <¥0.05） · AI 学习助手
 - [ ] **v2.0 AI 版正式** — AI 口语评测 · 备考计划生成 · 移动端优化
 - [ ] **v2.5** — 社区 · 教师版 · B2B API

@@ -9,11 +9,13 @@
 const express = require('express');
 const { z } = require('zod');
 const rateLimit = require('express-rate-limit');
+const multer = require('multer');
 
 const prisma = require('../prisma');
 const { requireAuth } = require('../middleware/auth');
 const { requirePlan } = require('../middleware/requirePlan');
 const { enqueue } = require('../services/essayQueue');
+const { recogniseImage } = require('../services/ocr');
 const {
   MODEL_KEYS,
   MODEL_CATALOG,
@@ -41,6 +43,24 @@ const aiGradeLimiter = rateLimit({
   message: { error: 'Too many AI grading requests this hour' },
 });
 
+// OCR is CPU-heavy; keep a separate, tighter limit than AI grading.
+const ocrLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 6,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many OCR requests, please retry later' },
+});
+
+const ocrUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 8 * 1024 * 1024 }, // 8MB
+  fileFilter: (_req, file, cb) => {
+    const ok = /image\/(png|jpeg|jpg|webp)/i.test(file.mimetype);
+    cb(ok ? null : new Error('Only image files are allowed'), ok);
+  },
+});
+
 function monthStart() {
   const d = new Date();
   return new Date(d.getFullYear(), d.getMonth(), 1);
@@ -50,6 +70,33 @@ function dayStart() {
   const d = new Date();
   return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
+
+// -------------------------------------------------------------------------
+// POST /api/user/essays/ocr — upload a photo and extract plain text
+// Body: multipart/form-data with field "image"
+// Optional: lang = fr|en|zh|fra|eng|chi_sim|fra+eng
+// -------------------------------------------------------------------------
+router.post(
+  '/ocr',
+  requireAuth,
+  requirePlan('STANDARD'),
+  ocrLimiter,
+  ocrUpload.single('image'),
+  async (req, res, next) => {
+    try {
+      if (!req.file?.buffer) return res.status(400).json({ error: 'No image uploaded' });
+      const lang = String(req.body?.lang || 'fr');
+      const { text, confidence, lang: usedLang } = await recogniseImage(req.file.buffer, { lang });
+      res.json({
+        text,
+        confidence,
+        lang: usedLang,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
 
 async function currentUsage(userId) {
   const [month, day] = await Promise.all([
