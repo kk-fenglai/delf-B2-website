@@ -1,0 +1,39 @@
+# Fly.io config for delfluent-backend.
+# Region: hkg (Hong Kong) — closest to overseas Chinese students in Asia,
+# acceptable to Europe (~250ms) and North America (~180ms via SFO transit).
+# Adjust app name + region after `fly launch` if you pick something different.
+
+app = "delfluent-backend"
+primary_region = "hkg"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "4000"
+
+[http_service]
+  internal_port = 4000
+  force_https = true
+  # Keep the machine warm. The essayQueue + reconcile workers run in-process
+  # and need a live machine; auto-stopping would orphan in-flight grading.
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    grace_period = "20s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/api/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"
+
+[deploy]
+  # Apply Postgres migrations before the new release replaces the running
+  # machine. Safe because Prisma migrations are forward-only and idempotent.
+  release_command = "npx prisma migrate deploy"

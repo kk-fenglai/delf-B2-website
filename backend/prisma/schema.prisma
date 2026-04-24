@@ -1,11 +1,11 @@
-// DELF B2 Platform - Prisma Schema (SQLite for local dev / PostgreSQL for prod)
+// DELF B2 Platform - Prisma Schema (PostgreSQL — Neon in prod, local Postgres or Neon branch in dev)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.env
+.env.*
+!.env.example
+prisma/dev.db
+prisma/dev.db-journal
+content
+*.log
+.DS_Store
+.vscode
+.idea

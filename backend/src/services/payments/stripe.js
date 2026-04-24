@@ -39,8 +39,18 @@ async function createCheckoutSession({
   const currency = String(price.currency || 'USD').toLowerCase();
   const name = `DELFluent ${price.product?.name || price.product?.plan || 'Subscription'} ${price.months}m`;
 
+  // Card + WeChat Pay + Alipay through one Stripe Checkout session. WeChat/Alipay
+  // are async: confirmation arrives via checkout.session.async_payment_succeeded,
+  // which the webhook handler already listens for.
+  // Note: wechat_pay/alipay only accept specific currencies (USD/HKD/EUR/CNY/...);
+  // Stripe will reject the session at create-time if the price currency is not
+  // enabled on the account.
   const session = await client.checkout.sessions.create({
     mode: 'payment',
+    payment_method_types: ['card', 'wechat_pay', 'alipay'],
+    payment_method_options: {
+      wechat_pay: { client: 'web' },
+    },
     line_items: [
       {
         quantity: 1,

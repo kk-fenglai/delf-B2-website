@@ -158,8 +158,17 @@ app.use('/api/sessions', sessionRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/user/essays', essayRoutes);
 app.use('/api/pay/products', payProductRoutes);
-app.use('/api/pay/wechat', payUserLimiter, wechatPayRoutes);
-app.use('/api/pay/alipay', payUserLimiter, alipayRoutes);
+// China-direct channels are off by default (overseas deploy uses Stripe's
+// wechat_pay/alipay payment methods instead). Set ENABLE_DIRECT_WECHAT=true /
+// ENABLE_DIRECT_ALIPAY=true to expose these routes.
+if (env.ENABLE_DIRECT_WECHAT) {
+  app.use('/api/pay/wechat', payUserLimiter, wechatPayRoutes);
+  logger.info('payments.wechat.direct.enabled');
+}
+if (env.ENABLE_DIRECT_ALIPAY) {
+  app.use('/api/pay/alipay', payUserLimiter, alipayRoutes);
+  logger.info('payments.alipay.direct.enabled');
+}
 app.use('/api/pay/stripe', payUserLimiter, stripePayRoutes);
 app.use('/api/pay/orders', payUserLimiter, payOrderRoutes);
 app.use('/api/pay/contracts', payUserLimiter, payContractRoutes);

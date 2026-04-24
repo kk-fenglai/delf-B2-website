@@ -85,13 +85,21 @@ const STRIPE_CONFIGURED = !!(
   process.env.STRIPE_WEBHOOK_SECRET
 );
 
+// Feature flags for the China-direct channels. Default OFF — overseas deploy
+// uses Stripe (which itself supports wechat_pay/alipay payment methods), so
+// the direct WeChat V3 / Alipay routes stay dormant unless explicitly enabled.
+const ENABLE_DIRECT_WECHAT = process.env.ENABLE_DIRECT_WECHAT === 'true';
+const ENABLE_DIRECT_ALIPAY = process.env.ENABLE_DIRECT_ALIPAY === 'true';
+
 if (IS_PROD) {
   if (!WECHAT_CONFIGURED && !ALIPAY_CONFIGURED && !STRIPE_CONFIGURED) {
     errors.push('No payment channel configured — set WECHAT_*, ALIPAY_* or STRIPE_* (see .env.example)');
   }
-  if (WECHAT_CONFIGURED || ALIPAY_CONFIGURED) {
+  // Only require the public base URL if a China-direct channel is BOTH configured
+  // AND turned on — its notify callbacks need a public HTTPS URL.
+  if ((ENABLE_DIRECT_WECHAT && WECHAT_CONFIGURED) || (ENABLE_DIRECT_ALIPAY && ALIPAY_CONFIGURED)) {
     if (!process.env.PAY_PUBLIC_BASE_URL) {
-      errors.push('PAY_PUBLIC_BASE_URL is required in production (must be HTTPS, used by channel notify callbacks)');
+      errors.push('PAY_PUBLIC_BASE_URL is required when ENABLE_DIRECT_WECHAT/ALIPAY=true (must be HTTPS, used by channel notify callbacks)');
     } else if (!/^https:\/\//.test(process.env.PAY_PUBLIC_BASE_URL)) {
       errors.push('PAY_PUBLIC_BASE_URL must start with https:// (channels reject insecure notify URLs)');
     }
@@ -138,6 +146,8 @@ module.exports = {
   WECHAT_CONFIGURED,
   ALIPAY_CONFIGURED,
   STRIPE_CONFIGURED,
+  ENABLE_DIRECT_WECHAT,
+  ENABLE_DIRECT_ALIPAY,
   PAY_PUBLIC_BASE_URL: process.env.PAY_PUBLIC_BASE_URL || '',
   PAY_MOCK_ENABLED: process.env.PAY_MOCK_ENABLED === 'true',
   WECHAT: {
