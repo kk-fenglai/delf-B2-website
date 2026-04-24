@@ -23,6 +23,7 @@ const adminExamRoutes = require('./routes/adminExams');
 const adminPaymentsRoutes = require('./routes/adminPayments');
 const wechatPayRoutes = require('./routes/payments/wechat');
 const alipayRoutes = require('./routes/payments/alipay');
+const stripePayRoutes = require('./routes/payments/stripe');
 const payOrderRoutes = require('./routes/payments/orders');
 const payProductRoutes = require('./routes/payments/products');
 const payContractRoutes = require('./routes/payments/contracts');
@@ -73,6 +74,9 @@ app.use(
   express.json({
     limit: '2mb',
     verify: (req, _res, buf) => {
+      // Keep both Buffer + string. WeChat verification uses the exact string
+      // layout; Stripe webhook verification requires raw bytes.
+      req.rawBodyBuffer = buf;
       req.rawBody = buf.toString('utf8');
     },
   })
@@ -156,6 +160,7 @@ app.use('/api/user/essays', essayRoutes);
 app.use('/api/pay/products', payProductRoutes);
 app.use('/api/pay/wechat', payUserLimiter, wechatPayRoutes);
 app.use('/api/pay/alipay', payUserLimiter, alipayRoutes);
+app.use('/api/pay/stripe', payUserLimiter, stripePayRoutes);
 app.use('/api/pay/orders', payUserLimiter, payOrderRoutes);
 app.use('/api/pay/contracts', payUserLimiter, payContractRoutes);
 

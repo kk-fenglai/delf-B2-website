@@ -2,14 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme tokens (Scheme v4 restored: Studio blue + cyan + violet, light only) */
 :root {
   font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  color-scheme: light;
+
+  /* Base surfaces */
+  --bg: #f6f8ff;
+  --bgElevated: rgba(255, 255, 255, 0.86);
+  --text: #0b1220;
+  --textMuted: rgba(11, 18, 32, 0.62);
+  --border: transparent;
+
+  /* Studio accents */
+  --primary: #2563eb;            /* electric blue */
+  --primaryHover: #3b82f6;
+  --accent: #22d3ee;             /* cyan */
+  --accent2: #a78bfa;            /* violet */
+
+  /* Soft primary wash for hover / subtle fill */
+  --primarySoftA: rgba(37, 99, 235, 0.10);
+  --primarySoftB: rgba(34, 211, 238, 0.00);
+
+  /* Soft shadows — rounded surfaces separated by shadow, not lines */
+  --shadowSm: 0 6px 18px rgba(15, 23, 42, 0.06);
+  --shadowMd: 0 14px 44px rgba(15, 23, 42, 0.10);
 }
 
 body {
   margin: 0;
-  background: #F7F9FC;
-  color: #1F2937;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Rounded surfaces — no borders, separation via soft shadow */
+.app-surface {
+  background: var(--bgElevated);
+  border-radius: 12px;
+  box-shadow: var(--shadowSm);
+}
+
+.app-subtle-gradient {
+  background: linear-gradient(180deg, var(--primarySoftA) 0%, var(--primarySoftB) 55%);
+}
+
+.app-glass {
+  background: var(--bgElevated);
+  border-radius: 14px;
+  box-shadow: var(--shadowMd);
+}
+
+/* Quiet hero wash — light blue top fading to white */
+.app-hero-bg {
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(255, 255, 255, 0.5) 100%);
 }
 
 .passage {

@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const { z } = require('zod');
 const jwt = require('jsonwebtoken');
 const prisma = require('../prisma');
+const passwordPolicy = require('../utils/passwordPolicy');
 const {
   signAdminAccessToken,
   signTwoFactorPendingToken,
@@ -13,8 +14,9 @@ const {
   verifyAndRotate,
   revokeByRawToken,
 } = require('../services/refreshTokens');
-const { writeAdminLog, clientIp } = require('../middleware/admin');
-const { sendMail, renderAdmin2FAEmail } = require('../services/mailer');
+const { revokeAllForUser } = require('../services/refreshTokens');
+const { requireAdmin, writeAdminLog, clientIp } = require('../middleware/admin');
+const { sendMail, renderAdmin2FAEmail, renderAdminPasswordChangedEmail } = require('../services/mailer');
 
 const router = express.Router();
 
@@ -268,6 +270,63 @@ router.get('/me', async (req, res) => {
   } catch {
     res.status(401).json({ error: 'Invalid token' });
   }
+});
+
+// ---------------- Change password (self-service) ----------------
+// POST /api/admin/auth/change-password  { oldPassword, newPassword }
+const changePwdSchema = z.object({
+  oldPassword: z.string().min(1),
+  newPassword: z
+    .string()
+    .min(10)
+    .max(100)
+    .refine((p) => passwordPolicy.validate(p).ok, (p) => ({
+      message: passwordPolicy.validate(p).reasons.join('; ') || 'Weak password',
+    })),
+});
+
+router.post('/change-password', requireAdmin, async (req, res, next) => {
+  try {
+    const { oldPassword, newPassword } = changePwdSchema.parse(req.body);
+    const ip = clientIp(req);
+    const ua = req.headers['user-agent'] || '';
+
+    const me = await prisma.user.findUnique({
+      where: { id: req.admin.id },
+      select: { id: true, email: true, name: true, passwordHash: true, role: true, status: true, deletedAt: true },
+    });
+    if (!me || me.status !== 'ACTIVE' || me.deletedAt) return res.status(403).json({ error: '账户不可用' });
+    if (me.role !== 'ADMIN' && me.role !== 'SUPER_ADMIN') return res.status(403).json({ error: 'Not an admin' });
+
+    const ok = await bcrypt.compare(oldPassword, me.passwordHash);
+    if (!ok) return res.status(401).json({ error: '旧密码错误' });
+
+    const hash = await bcrypt.hash(newPassword, 12);
+    await prisma.user.update({
+      where: { id: me.id },
+      data: { passwordHash: hash, failedLoginCount: 0, lockedUntil: null },
+    });
+
+    // Force logout everywhere (admin + user scopes)
+    try { await revokeAllForUser(me.id, { reason: 'PASSWORD_CHANGE' }); } catch {}
+
+    // Audit log (best-effort)
+    await writeAdminLog({
+      adminId: me.id,
+      action: 'ADMIN_PASSWORD_CHANGE',
+      targetType: 'SYSTEM',
+      ip,
+      userAgent: ua,
+    });
+
+    // Notify by email (best-effort)
+    try {
+      const { subject, text, html } = renderAdminPasswordChangedEmail({ name: me.name, byAdmin: me.email });
+      await sendMail({ to: me.email, subject, text, html });
+    } catch { /* ignore */ }
+
+    res.json({ ok: true });
+  } catch (e) { next(e); }
 });
 
 module.exports = router;

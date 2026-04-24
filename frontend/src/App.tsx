@@ -15,6 +15,7 @@ import ReviewResult from './pages/ReviewResult';
 import MistakeNotebook from './pages/MistakeNotebook';
 import Pricing from './pages/Pricing';
 import Orders from './pages/Orders';
+import StripeCheckoutReturn from './pages/StripeCheckoutReturn';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import VerifyEmail from './pages/VerifyEmail';
@@ -29,6 +30,7 @@ import AdminExams from './pages/admin/AdminExams';
 import AdminExamEdit from './pages/admin/AdminExamEdit';
 import AdminExamImport from './pages/admin/AdminExamImport';
 import AdminPayments from './pages/admin/AdminPayments';
+import AdminChangePassword from './pages/admin/AdminChangePassword';
 import { useAuthStore } from './stores/auth';
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -52,6 +54,7 @@ export default function App() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="users/:id" element={<AdminUserDetail />} />
+        <Route path="change-password" element={<AdminChangePassword />} />
         <Route path="logs" element={<AdminLogs />} />
         <Route path="logins" element={<AdminLoginHistory />} />
         <Route path="exams" element={<AdminExams />} />
@@ -64,6 +67,8 @@ export default function App() {
       <Route element={<AppLayout />}>
         <Route path="/" element={<Landing />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/checkout/stripe/success" element={<RequireAuth><StripeCheckoutReturn mode="success" /></RequireAuth>} />
+        <Route path="/checkout/stripe/cancel" element={<RequireAuth><StripeCheckoutReturn mode="cancel" /></RequireAuth>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

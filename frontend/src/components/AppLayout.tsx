@@ -1,4 +1,4 @@
-import { Layout, Menu, Button, Dropdown, Avatar, Tag } from 'antd';
+import { Layout, Menu, Button, Dropdown, Avatar, Tag, theme as antdTheme } from 'antd';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ export default function AppLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
+  const { token } = antdTheme.useToken();
 
   const navItems = [
     { key: '/', label: <Link to="/">{t('nav.home')}</Link> },
@@ -38,15 +39,20 @@ export default function AppLayout() {
   };
 
   return (
-    <Layout className="min-h-screen">
-      <Header className="flex items-center px-6" style={{ background: '#1A3A5C' }}>
-        <div className="text-white font-bold text-lg mr-8">
-          <Link to="/" className="text-white hover:text-white">
+    <Layout className="min-h-screen" style={{ background: token.colorBgBase }}>
+      <Header
+        className="flex items-center px-6"
+        style={{
+          background: token.colorBgContainer,
+        }}
+      >
+        <div className="font-bold text-lg mr-8" style={{ color: token.colorText }}>
+          <Link to="/" style={{ color: 'inherit' }}>
             🇫🇷 {t('app.name')}
           </Link>
         </div>
         <Menu
-          theme="dark"
+          theme="light"
           mode="horizontal"
           selectedKeys={[location.pathname]}
           items={navItems}
@@ -57,7 +63,7 @@ export default function AppLayout() {
           <div className="flex items-center gap-3 ml-3">
             <Tag color={planColor[user.plan]}>{t(`plan.${user.plan}`)}</Tag>
             <Dropdown menu={userMenu}>
-              <div className="flex items-center gap-2 text-white cursor-pointer">
+              <div className="flex items-center gap-2 cursor-pointer" style={{ color: token.colorText }}>
                 <Avatar icon={<UserOutlined />} />
                 <span>{user.name || user.email}</span>
               </div>
@@ -70,7 +76,7 @@ export default function AppLayout() {
           </div>
         )}
       </Header>
-      <Content className="p-6">
+      <Content className="p-6" style={{ backgroundColor: token.colorBgBase }}>
         <Outlet />
       </Content>
       <Footer className="text-center text-gray-500">

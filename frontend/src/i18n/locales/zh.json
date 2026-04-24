@@ -321,9 +321,17 @@
       "autoRenew": "开启自动续费（按月续订，可随时取消）",
       "title": "扫码支付",
       "selectProvider": "选择支付方式",
+      "domestic": "国内支付",
+      "overseas": "海外支付",
+      "domesticHint": "适用于中国大陆：微信 / 支付宝扫码支付",
+      "overseasHint": "适用于海外用户：将跳转到 Stripe 安全收银台",
+      "scanPay": "扫码支付",
       "wechat": "微信支付",
       "alipay": "支付宝",
+      "stripe": "信用卡 / Link（Stripe）",
+      "stripeHint": "支持 Link / 信用卡（由 Stripe 决定展示）",
       "generateQr": "生成支付二维码",
+      "redirectToPay": "跳转到支付页面",
       "orderId": "订单号：{{id}}",
       "qrExpires": "二维码有效期 15 分钟",
       "createFailed": "下单失败，请稍后重试",
@@ -415,6 +423,15 @@
   "orders": {
     "title": "我的订单",
     "empty": "暂无订单记录",
+    "resume": {
+      "missingOrderId": "缺少订单号，无法继续查询支付结果",
+      "successTitle": "支付已完成",
+      "successBody": "我们将为你核对订单状态并开通权益（可能需要几秒钟）。",
+      "cancelTitle": "支付已取消",
+      "cancelBody": "你可以返回订单页继续支付，或回到定价页重新选择套餐。",
+      "goOrders": "去订单页",
+      "backPricing": "返回定价页"
+    },
     "col": {
       "createdAt": "时间",
       "plan": "套餐",

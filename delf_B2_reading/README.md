@@ -1,140 +1,68 @@
-# delf_B2_reading 审查报告（阅读真题 PDF）
+# delf_B2_reading（怎么用）
 
-本目录包含 DELF B2 **阅读（CE）**相关 PDF，用于后续整理为题库并导入到站点的阅读模块（后台支持 `JSON 批量导入`）。
+本文件夹用于把 DELF B2 阅读材料整理进题库，导入路径固定为后台 **JSON 批量导入**：`/admin/exams/import`（对应后端 `POST /api/admin/exams/import`）。
 
-> 重要：本项目仓库内已有明确提示（见 `backend/content/fei-samples/如何导入题库.txt` 的「版权红线」）。
-> 这些“真题/扫描件”通常存在版权风险，不建议直接**入库并作为线上付费内容发布**，更不建议把 PDF 原件提交到公开仓库。
-> 更安全的做法是：仅用于本地整理/自用练习；或只导入 FEI 官方公开的 `sujets d'exemple`（免费样卷）。
+> 版权提示：真题/扫描件通常有版权风险，不建议把 PDF 原件提交到公开仓库，也不建议直接作为线上付费内容发布；更安全做法是仅本地自用整理练习，或只使用官方公开样卷。
 
 ---
 
-## 盘点结论（高优先级问题）
+## 你要准备的两个文件
 
-- **命名与内容不一致**：至少有文件名写“2024 年 11 月中国场次”，但 PDF 内标题是“2023 年 9 月越南场次”。
-- **重复文件**：`2024年1月法国场次DELF B2阅读真题（1篇）.pdf` 与 `...(1).pdf` 内容相同（开头均为 *"Generation Y"...*）。
-- **部分 PDF 没有可提取文字层（疑似纯扫描/未 OCR）**：读取结果只剩分页标记（`-- 1 of N --`），无法自动解析原文/题目/答案。
-- **结构不完整**：个别文件只有原文，没有题目与答案（例如 2024 年 5 月法国场次那份）。
-
----
-
-## 文件清单与可用性（基于当前可提取文本）
-
-说明：
-- **可提取文本**：能直接读到法语原文/题干/选项/答案（适合转成题库 JSON）
-- **部分可提取**：有原文但缺题目/缺答案/缺第二篇等，需要补齐
-- **不可提取**：读出来几乎为空，需先 OCR
-
-| 文件名 | 可提取性 | 实际内容/问题（摘要） |
-|---|---:|---|
-| `2024年1月法国场次DELF B2阅读真题（1篇）.pdf` | 可提取文本 | 开头为 *"Generation Y": comment gérer les jeunes au travail?*，含题目 |
-| `2024年2月法国场次DELF B2阅读真题（1篇）.pdf` | 可提取文本 | 含原文、题目与答案段落 |
-| `2024年3月法国场次DELF B2阅读真题（1篇）.pdf` | 可提取文本 | 开头 *Pour l’éduction globale*，含题目（并标注与 2024/11 中国场次内容重复） |
-| `2024年5月法国场次DELF B2阅读真题（1篇）.pdf` | 部分可提取 | 明确写“只提供第二篇阅读，**只有原文没有题目与答案**” |
-| `2021年10月法国场次DELF B2阅读真题（1篇）.pdf` | 可提取文本 | *Le succès des bars à jeux de société*，含题目与答案 |
-| `2021年7月法国场次DELF B2阅读真题（2篇）.pdf` | 可提取文本 | *Économie du partage* 等两篇，含题目；与其他文件存在“复用同篇文章”的引用关系 |
-| `2021年5月中国场次DELF B2阅读真题（2篇）.pdf` | 可提取文本 | 两篇均含题目；答案区存在“部分空缺题号”但总体可用 |
-| `2021年11月中国场次DELF B2阅读真题（2篇）.pdf` | 可提取文本 | 两篇含题目；结构较完整 |
-| `2023年6月中国场次DELF B2阅读真题（2篇）.pdf` | 部分可提取 | 文档提示“只提供第二篇阅读”，第二篇含题目与答案；第一页也提示与其他场次重复 |
-| `2023年11月中国场次DELF B2阅读真题（2篇）.pdf` | 可提取文本 | 第一篇为远程教育主题，含题目与答案；后续页可能为空白占位 |
-| `2023年12月法国场次DELF B2阅读真题（1篇）.pdf` | 可提取文本 | *Plastique : une deuxième vie...*，含题目与答案 |
-| `2023年9月越南场次DELF B2阅读真题（2篇）.pdf` | 可提取文本（但需核对） | PDF 内标题显示“**2023 年 9 月越南场次**”；末尾答案区为占位（“第一篇答案/第二篇答案”为空） |
-| `2024年3月中国场次DELF B2阅读真题（2篇）.pdf` | 不可提取 | 仅能读到中文说明与分页标记，正文/题目提取不到（需 OCR） |
-| `2024年6月中国场次DELF B2阅读真题（2篇）.pdf` | 不可提取 | 仅分页标记（需 OCR） |
-| `2022年3月中国场次DELF B2阅读真题（2篇）.pdf` | 不可提取 | 仅分页标记（需 OCR） |
-| `2022年11月中国场次DELF B2阅读真题（2篇）.pdf` | 不可提取 | 仅分页标记（需 OCR） |
-| `2023年3月中国场次DELF B2阅读真题（2篇）.pdf` | 不可提取 | 仅分页标记（需 OCR） |
+- **录入模板**：`delf_B2_reading/import_template.md`
+  - 一篇文章写一次，下面多道题自动继承 `passage`
+  - `answer:`（如 `A` 或 `A,B`）会自动转换为 `options[].isCorrect`
+- **转换脚本**：`backend/scripts/convertReadingMarkdownToImportJson.js`
+  - 把你填写好的 Markdown 转成可直接导入的 JSON
+  - 本地先做严格校验（与后端规则一致），报错会提示行号
 
 ---
 
-## 建议的整理方式（用于“导入阅读模块”）
+## 推荐流程（最稳：OCR → 手动校对 → 一键导入）
 
-### 目标格式（项目当前支持的导入方式）
+### Step 1：先把扫描 PDF 变成“可复制文字层”
 
-你当前项目里已经有两种可行路径：
+目标：从 PDF 里复制出来的法语文本尽量不乱码，人工校对更快。
 
-- **方式 A（推荐）**：把阅读题整理成符合后台 `JSON 批量导入` 的结构（见 `frontend/src/pages/admin/AdminExamImport.tsx` 的模板字段）
-  - 题目对应 `skill: "CE"`
-  - 阅读原文放在 `passage`
-  - 题干放在 `prompt`
-  - 选项题用 `options`，并标注 `isCorrect`
-- **方式 B（现有脚本链路）**：参考 `backend/content/fei-samples/如何导入题库.txt` 的 “incoming → parsed.json → import 脚本” 流程
-  - 该流程当前主要面向 FEI 样卷（并包含版权提醒）
+- **推荐工具**：OCRmyPDF（开源）`https://github.com/ocrmypdf/OCRmyPDF`
 
-### 分组原则（强烈建议）
+示例命令：
 
-- **一套题 = 一个 `ExamSet`**（比如 “2024-02 法国场 CE” 或 “2021-11 中国场 CE”）
-- **一篇文章 = 多道题共享同一个 `passage`**（不要在每道题里重复粘贴整篇文章）
-- **命名与元信息一致**：文件名、题库标题、年份、地区要能互相对上
+```bash
+# 语言建议 fra，必要时 eng+fra
+ocrmypdf -l fra --deskew --clean "input.pdf" "output.ocr.pdf"
+```
 
-### OCR 处理（针对“不可提取”的 PDF）
+如果你更习惯 GUI，也可以用 Adobe Acrobat / ABBYY FineReader 做 OCR。
 
-对以下文件必须先 OCR，否则无法自动/半自动入库：
+### Step 2：按模板写 Markdown（文章 + 多题）
 
-- `2024年6月中国场次...pdf`
-- `2024年3月中国场次...pdf`
-- `2023年3月中国场次...pdf`
-- `2022年11月中国场次...pdf`
-- `2022年3月中国场次...pdf`
+复制 OCR 后 PDF 的文章/题干/选项/答案，粘贴到你自己的录入文件，例如：
 
-建议工具（任选其一）：
-- Adobe Acrobat “识别文字（OCR）”
-- ABBYY FineReader
+- `delf_B2_reading/CE_2024-02_FR.md`（你自己新建）
 
-完成 OCR 后，再次读取应能看到法语正文/题目文本；届时才适合转成 JSON。
+模板参考：`delf_B2_reading/import_template.md`
 
----
+### Step 3：Markdown → JSON（本地生成导入文件）
 
-## 命名规范建议（后续方便批量导入与维护）
-
-建议统一为（示例）：
-
-- `CE_2024-02_FR_1.pdf`
-- `CE_2021-11_CN_2.pdf`
-
-或者保留中文但统一符号：
-
-- `2024年02月_法国_阅读CE_第1篇.pdf`
-
-并避免：
-- 文件名带多余句点（如 `真题.（1篇）.pdf`）
-- 同名重复用 `(1)`（建议改为 `-dup` 或直接删除重复副本）
-
----
-
-## 已完成的清理与入库（本次执行结果）
-
-### 文件清理
-
-- **已删除重复文件**：`2024年1月法国场次DELF B2阅读真题（1篇）(1).pdf`
-- **已更名以匹配内容/统一符号**
-  - `2024年11月中国场次DELF B2阅读真题（2篇）.pdf` → `2023年9月越南场次DELF B2阅读真题（2篇）.pdf`
-  - `2024年5月法国场次DELF B2阅读真题.（1篇）.pdf` → `2024年5月法国场次DELF B2阅读真题（1篇）.pdf`
-  - `2023年3月中国场次DELF B2阅读真题 （2篇）.pdf` → `2023年3月中国场次DELF B2阅读真题（2篇）.pdf`
-  - `2022年3月中国场次DELF B2阅读真题(2篇）.pdf` → `2022年3月中国场次DELF B2阅读真题（2篇）.pdf`
-
-### 自动写入题库（阅读 CE）
-
-已新增脚本：`backend/scripts/importDelfB2ReadingFromPdfs.js`
-
-运行（SQLite 本地库示例）：
+在 PowerShell 里运行：
 
 ```bash
 cd backend
-cmd /c "set DATABASE_URL=file:./dev.db&& node scripts\importDelfB2ReadingFromPdfs.js"
+node scripts/convertReadingMarkdownToImportJson.js "..\delf_B2_reading\CE_2024-02_FR.md" -o "..\delf_B2_reading\CE_2024-02_FR.json"
 ```
 
-### 导入统计（本次执行）
+### Step 4：后台导入
 
-- **成功导入**：11 份 PDF（共导入若干道 CE 题，题型为 SINGLE / TRUE_FALSE / ESSAY 的混合）
-- **跳过**：6 份 PDF（原因：`NO_QUESTIONS_PARSED`，常见于扫描件无文字层 / 未 OCR / 或只有原文无题目）
+- 打开：`/admin/exams/import`
+- 上传（或粘贴）`CE_2024-02_FR.json`
+- 点击“提交导入”
 
-跳过列表（建议先 OCR 再重跑脚本）：
-- `2022年11月中国场次DELF B2阅读真题（2篇）.pdf`
-- `2022年3月中国场次DELF B2阅读真题（2篇）.pdf`
-- `2023年3月中国场次DELF B2阅读真题（2篇）.pdf`
-- `2024年3月中国场次DELF B2阅读真题（2篇）.pdf`
-- `2024年6月中国场次DELF B2阅读真题（2篇）.pdf`
+---
 
-仅原文、缺题目/答案（需要你补题后再导入）：
-- `2024年5月法国场次DELF B2阅读真题（1篇）.pdf`
+## 常见报错（脚本会提示行号）
 
+- **Missing YAML frontmatter**：忘了写开头的 `--- ... ---` 元信息（title/year 等）
+- **No questions parsed**：没有用 `### Q: 1` 这种题块标题
+- **CE question must have a passage**：阅读题不在 `## Passage:` 下面，也没在题块里写 `passage: ...`
+- **SINGLE/TRUE_FALSE needs exactly 1 correct option**：用 `answer:` 或在正确选项末尾加 `*`
+- **ESSAY must not have options**：作文题不要写 `options:` 和任何 `- A) ...`

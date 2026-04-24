@@ -4,14 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
+        bg: 'var(--bg)',
+        surface: 'var(--bgElevated)',
+        text: 'var(--text)',
+        muted: 'var(--textMuted)',
+        border: 'var(--border)',
+        primary: 'var(--primary)',
+        accent: 'var(--accent)',
+        accent2: 'var(--accent2)',
+        // Studio brand palette (blue / cyan / violet)
         brand: {
-          DEFAULT: '#1A3A5C',
-          light: '#2C5F8D',
-          dark: '#0F2338',
-        },
-        accent: {
-          red: '#EF4135',   // 法国国旗红
-          blue: '#0055A4',  // 法国国旗蓝
+          DEFAULT: '#2563eb',   // electric blue
+          light: '#3b82f6',
+          dark: '#1e40af',
+          ink: '#0b1220',
+          cyan: '#22d3ee',
+          violet: '#a78bfa',
         },
       },
       fontFamily: {

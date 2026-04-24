@@ -53,6 +53,9 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
           where: skill ? { skill } : undefined,
           orderBy: { order: 'asc' },
           include: {
+            readingPassage: {
+              select: { id: true, content: true },
+            },
             options: {
               orderBy: { order: 'asc' },
               select: { id: true, label: true, text: true, order: true },
@@ -79,7 +82,7 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
       type: q.type,
       order: q.order,
       prompt: q.prompt,
-      passage: q.passage,
+      passage: q.readingPassage?.content || q.passage,
       audioUrl: q.audioUrl,
       points: q.points,
       options: q.options, // isCorrect already excluded

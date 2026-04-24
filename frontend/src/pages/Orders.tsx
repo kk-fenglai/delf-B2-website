@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 import { api } from '../api/client';
 import type {
   PayProvider, OrderStatus, PaymentOrderSummary,
@@ -76,6 +77,7 @@ function formatDate(iso: string | null) {
 
 export default function Orders() {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
   const [orders, setOrders] = useState<PaymentOrderSummary[] | null>(null);
   const [contracts, setContracts] = useState<ContractRow[] | null>(null);
   const [resumeOrder, setResumeOrder] = useState<OrderDetail | null>(null);
@@ -98,6 +100,15 @@ export default function Orders() {
       setContracts([]);
     });
   }, [reload]);
+
+  // If redirected back from Stripe success/cancel, resume polling the order.
+  useEffect(() => {
+    const resume = searchParams.get('resume');
+    if (resume) {
+      openResume(resume).catch(() => null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   async function unsignContract(c: ContractRow) {
     if (c.status === 'TERMINATED') return;
@@ -208,7 +219,9 @@ export default function Orders() {
       dataIndex: 'provider',
       render: (v: PayProvider) => (v === 'wechat'
         ? t('pricing.checkout.wechat')
-        : t('pricing.checkout.alipay')),
+        : v === 'alipay'
+          ? t('pricing.checkout.alipay')
+          : t('pricing.checkout.stripe')),
     },
     {
       title: t('orders.col.status'),
@@ -319,7 +332,9 @@ export default function Orders() {
           </div>
         ) : resumeOrder?.redirectUrl ? (
           <a href={resumeOrder.redirectUrl} target="_blank" rel="noreferrer">
-            {t('pricing.checkout.alipay')}
+            {resumeOrder.provider === 'stripe'
+              ? t('pricing.checkout.stripe')
+              : t('pricing.checkout.alipay')}
           </a>
         ) : null}
       </Modal>

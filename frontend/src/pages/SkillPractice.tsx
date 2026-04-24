@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Col, Row, Tag, Typography, Button, Empty, Breadcrumb } from 'antd';
+import { Card, Col, Row, Tag, Typography, Button, Empty, Breadcrumb, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
@@ -63,7 +63,11 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
       <Title level={2}>{pageTitle}</Title>
       <Paragraph className="text-gray-500">{pageSubtitle}</Paragraph>
 
-      {loading ? null : sets.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center py-16">
+          <Spin size="large" />
+        </div>
+      ) : sets.length === 0 ? (
         <Empty description={t('practice.empty')} />
       ) : (
         <Row gutter={[16, 16]}>
@@ -72,6 +76,8 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
             return (
               <Col xs={24} md={12} lg={8} key={s.id}>
                 <Card
+                  bordered={false}
+                  className="app-surface"
                   title={s.title}
                   extra={s.isFreePreview && <Tag color="green">{t('practice.freePreview')}</Tag>}
                   actions={[
@@ -80,7 +86,7 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
                     </Link>,
                   ]}
                 >
-                  <Paragraph className="text-gray-500 mb-2">
+                  <Paragraph className="text-muted mb-2">
                     {s.description || `${t('practice.year')}: ${s.year}`}
                   </Paragraph>
                   {mockMode ? (

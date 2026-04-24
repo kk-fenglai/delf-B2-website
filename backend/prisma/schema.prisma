@@ -303,6 +303,20 @@ model ExamSet {
   sessions     ExamSession[]
 }
 
+model ReadingPassage {
+  id         String   @id @default(cuid())
+  hash       String   @unique
+  skill      String   @default("CE")
+  title      String?
+  content    String
+  sourceFile String?
+  createdAt  DateTime @default(now())
+
+  questions  Question[]
+
+  @@index([skill, createdAt])
+}
+
 model Question {
   id            String       @id @default(cuid())
   examSetId     String
@@ -312,6 +326,8 @@ model Question {
   order         Int          @default(0)
   prompt        String
   passage       String?
+  passageId     String?
+  readingPassage ReadingPassage? @relation(fields: [passageId], references: [id], onDelete: SetNull)
   audioUrl      String?
   explanation   String?
   points        Int          @default(1)
@@ -320,6 +336,7 @@ model Question {
   attempts      UserAttempt[]
 
   @@index([examSetId, skill])
+  @@index([passageId])
 }
 
 model QuestionOption {

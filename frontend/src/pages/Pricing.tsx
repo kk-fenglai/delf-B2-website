@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 import {
-  Card, Col, Row, Typography, Button, Tag, List, Modal, Segmented, QRCode,
+  Typography, Button, Modal, Segmented, QRCode,
   Space, message, Checkbox, Skeleton,
 } from 'antd';
-import { CheckOutlined } from '@ant-design/icons';
+import {
+  CheckOutlined, WechatOutlined, AlipayOutlined, SafetyCertificateOutlined, CreditCardOutlined,
+} from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
@@ -13,10 +16,13 @@ import type { CatalogProduct, CatalogPrice, CreatedOrderResponse, Plan } from '.
 const { Title, Paragraph } = Typography;
 
 type BillingCycle = 'monthly' | 'yearly';
-type Provider = 'wechat' | 'alipay';
+type Provider = 'wechat' | 'alipay' | 'stripe';
+type PayRegion = 'domestic' | 'overseas';
 
-// Free card is presentational only; paid plans come from /pay/products.
 const FREE_CARD_KEY = 'free';
+
+/** WeChat brand green (official-style) */
+const WECHAT_GREEN = '#07C160';
 
 function formatYuan(cents: number) {
   if (cents % 100 === 0) return `¥${cents / 100}`;
@@ -35,6 +41,7 @@ export default function Pricing() {
   const [open, setOpen] = useState(false);
   const [buyingProduct, setBuyingProduct] = useState<CatalogProduct | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<CatalogPrice | null>(null);
+  const [region, setRegion] = useState<PayRegion>('domestic');
   const [provider, setProvider] = useState<Provider>('wechat');
   const [enableAutoRenew, setEnableAutoRenew] = useState(false);
 
@@ -59,7 +66,6 @@ export default function Pricing() {
     return () => { cancelled = true; };
   }, []);
 
-  // Find the catalog price matching the selected cycle (months: 1 for monthly, 12 for yearly).
   function priceForCycle(product: CatalogProduct, c: BillingCycle): CatalogPrice | null {
     const months = c === 'monthly' ? 1 : 12;
     return product.prices.find((p) => p.months === months) || null;
@@ -77,16 +83,46 @@ export default function Pricing() {
     }
     setBuyingProduct(product);
     setSelectedPrice(price);
+    setRegion('domestic');
     setProvider('wechat');
     setEnableAutoRenew(false);
     setOrder(null);
     setOpen(true);
   }
 
+  function switchRegion(next: PayRegion) {
+    setRegion(next);
+    setEnableAutoRenew(false);
+    setOrder(null);
+    setPolling(false);
+    setProvider(next === 'overseas' ? 'stripe' : 'wechat');
+  }
+
+  function chooseProvider(p: Provider) {
+    setProvider(p);
+    setEnableAutoRenew(false);
+    setOrder(null);
+    setPolling(false);
+  }
+
+  const priceLabel = selectedPrice ? formatYuan(selectedPrice.amountCents) : '—';
+  const periodLabel = selectedPrice
+    ? (selectedPrice.months === 1 ? t('pricing.checkout.perMonth') : t('pricing.checkout.perYear'))
+    : '';
+
   async function doCreateOrder() {
     if (!selectedPrice) return;
     setLoading(true);
     try {
+      if (provider === 'stripe') {
+        const { data } = await api.post('/pay/stripe/checkout', { priceId: selectedPrice.id });
+        if (data?.redirectUrl) {
+          window.location.href = data.redirectUrl;
+          return;
+        }
+        message.error(t('pricing.checkout.createFailed'));
+        return;
+      }
       if (enableAutoRenew && selectedPrice.supportsAutoRenew) {
         const path = provider === 'wechat' ? '/pay/wechat/sign' : '/pay/alipay/sign';
         const { data } = await api.post(path, { priceId: selectedPrice.id });
@@ -142,7 +178,7 @@ export default function Pricing() {
           message.error(t('pricing.checkout.payClosed'));
         }
       } catch {
-        // ignore transient network errors during polling
+        // ignore transient polling errors
       }
     }, 1500);
     return () => {
@@ -151,8 +187,6 @@ export default function Pricing() {
     };
   }, [open, order?.orderId, polling, fetchMe, t]);
 
-  // Merge free (i18n-only) + paid (catalog) for display. Paid cards look up
-  // i18n translations by product.plan in lowercase (e.g. STANDARD → "standard").
   const cards = useMemo(() => {
     const free = { key: FREE_CARD_KEY, plan: 'FREE' as Plan, product: null as CatalogProduct | null };
     const paid = (products || []).map((p) => ({
@@ -170,15 +204,18 @@ export default function Pricing() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="text-center mb-6">
-        <Title level={2}>{t('pricing.title')}</Title>
-        <Paragraph className="text-gray-500">{t('pricing.subtitle')}</Paragraph>
+      <div className="text-center mb-10">
+        <Title level={2} style={{ marginBottom: 8 }}>{t('pricing.title')}</Title>
+        <Paragraph style={{ color: 'var(--textMuted)', marginBottom: 0, fontSize: 16 }}>
+          {t('pricing.subtitle')}
+        </Paragraph>
       </div>
 
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-10">
         <Segmented
           value={cycle}
           onChange={(v) => setCycle(v as BillingCycle)}
+          size="large"
           options={[
             { label: t('pricing.checkout.monthly'), value: 'monthly' },
             { label: t('pricing.checkout.yearly'), value: 'yearly' },
@@ -187,15 +224,22 @@ export default function Pricing() {
       </div>
 
       {catalogLoading ? (
-        <Row gutter={[16, 16]}>
+        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {[0, 1, 2, 3].map((i) => (
-            <Col xs={24} sm={12} lg={6} key={i}>
-              <Card><Skeleton active /></Card>
-            </Col>
+            <div
+              key={i}
+              className="rounded-2xl p-6"
+              style={{
+                background: '#ffffff',
+                boxShadow: '0 6px 18px rgba(15, 23, 42, 0.06)',
+              }}
+            >
+              <Skeleton active />
+            </div>
           ))}
-        </Row>
+        </div>
       ) : (
-        <Row gutter={[16, 16]}>
+        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
           {cards.map((c) => {
             const isFree = c.key === FREE_CARD_KEY;
             const highlight = c.key === 'ai';
@@ -203,78 +247,111 @@ export default function Pricing() {
             const features = featuresFor(c.key);
             const name = t(`pricing.plans.${c.key}.name`, c.product?.name || '');
 
+            const priceText = isFree
+              ? t('pricing.plans.free.price')
+              : price ? formatYuan(price.amountCents) : '—';
+            const periodText = isFree
+              ? t('pricing.plans.free.period')
+              : price ? (cycle === 'monthly'
+                  ? t('pricing.checkout.perMonth')
+                  : t('pricing.checkout.perYear'))
+                : '';
+
             return (
-              <Col xs={24} sm={12} lg={6} key={c.key}>
-                <Card
-                  className="h-full"
-                  style={highlight ? { border: '2px solid #1A3A5C' } : {}}
-                  title={
-                    <div className="flex items-center gap-2">
-                      {name}
-                      {highlight && <Tag color="gold">{t('pricing.popular')}</Tag>}
-                    </div>
-                  }
-                >
-                  <div className="mb-4">
-                    {isFree ? (
-                      <>
-                        <span className="text-3xl font-bold text-brand">
-                          {t('pricing.plans.free.price')}
-                        </span>
-                        <span className="text-gray-500 ml-1">
-                          {t('pricing.plans.free.period')}
-                        </span>
-                      </>
-                    ) : price ? (
-                      <>
-                        <span className="text-3xl font-bold text-brand">
-                          {formatYuan(price.amountCents)}
-                        </span>
-                        <span className="text-gray-500 ml-1">
-                          {cycle === 'monthly'
-                            ? t('pricing.checkout.perMonth')
-                            : t('pricing.checkout.perYear')}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="text-gray-400">—</span>
-                    )}
+              <div
+                key={c.key}
+                className="relative rounded-2xl p-7 flex flex-col h-full"
+                style={{
+                  background: highlight
+                    ? 'linear-gradient(180deg, #eff6ff 0%, #ffffff 40%)'
+                    : '#ffffff',
+                  boxShadow: highlight
+                    ? '0 18px 50px rgba(37, 99, 235, 0.18)'
+                    : '0 6px 18px rgba(15, 23, 42, 0.06)',
+                }}
+              >
+                {highlight && (
+                  <div
+                    className="absolute top-5 right-5 text-xs font-semibold px-2.5 py-1 rounded-full"
+                    style={{ background: '#2563eb', color: '#ffffff', letterSpacing: '0.02em' }}
+                  >
+                    {t('pricing.popular')}
                   </div>
-                  <List
-                    size="small"
-                    dataSource={features}
-                    renderItem={(f) => (
-                      <List.Item className="!px-0">
-                        <CheckOutlined className="text-green-500 mr-2" />
-                        {f}
-                      </List.Item>
-                    )}
-                  />
-                  {isFree ? (
-                    <Link to="/register">
-                      <Button block className="mt-4">
-                        {t('pricing.plans.free.cta')}
-                      </Button>
-                    </Link>
-                  ) : (
-                    <Button
-                      type={highlight ? 'primary' : 'default'}
-                      block
-                      className="mt-4"
-                      disabled={!price}
-                      onClick={() => c.product && openCheckout(c.product)}
-                    >
-                      {t('pricing.checkout.buyNow')}
-                    </Button>
+                )}
+
+                <div
+                  className="text-base font-semibold mb-4"
+                  style={{ color: 'var(--text)' }}
+                >
+                  {name}
+                </div>
+
+                <div className="mb-6 flex items-baseline gap-1">
+                  <span className="text-4xl font-bold" style={{ color: 'var(--text)' }}>
+                    {priceText}
+                  </span>
+                  {periodText && (
+                    <span className="text-sm" style={{ color: 'var(--textMuted)' }}>
+                      {periodText}
+                    </span>
                   )}
-                </Card>
-              </Col>
+                </div>
+
+                <div className="space-y-2.5 mb-6 flex-grow">
+                  {features.map((f, i) => (
+                    <div key={i} className="flex items-start gap-2 text-sm">
+                      <CheckOutlined
+                        style={{ color: '#2563eb', marginTop: 4, fontSize: 12, flexShrink: 0 }}
+                      />
+                      <span style={{ color: 'var(--text)' }}>{f}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {isFree ? (
+                  <Link to="/register">
+                    <Button
+                      block
+                      size="large"
+                      style={{
+                        background: 'rgba(37, 99, 235, 0.08)',
+                        color: '#2563eb',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {t('pricing.plans.free.cta')}
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    type={highlight ? 'primary' : 'default'}
+                    block
+                    size="large"
+                    disabled={!price}
+                    onClick={() => c.product && openCheckout(c.product)}
+                    style={
+                      highlight
+                        ? { fontWeight: 600 }
+                        : {
+                            background: 'rgba(37, 99, 235, 0.08)',
+                            color: '#2563eb',
+                            fontWeight: 600,
+                          }
+                    }
+                  >
+                    {t('pricing.checkout.buyNow')}
+                  </Button>
+                )}
+              </div>
             );
           })}
-        </Row>
+        </div>
       )}
 
-      <div className="text-center mt-8 text-gray-500 text-sm">
+      <div
+        className="text-center mt-10 text-sm"
+        style={{ color: 'var(--textMuted)' }}
+      >
         {t('pricing.paymentNote')}
       </div>
 
@@ -284,31 +361,84 @@ export default function Pricing() {
         onCancel={() => { setPolling(false); setOpen(false); }}
         footer={null}
         destroyOnClose
+        width={460}
       >
-        <Space direction="vertical" style={{ width: '100%' }} size="middle">
-          <div className="text-sm text-gray-600">
-            {buyingProduct?.name} ·{' '}
-            {selectedPrice && (
-              <>
-                {selectedPrice.months === 1
-                  ? t('pricing.checkout.perMonth')
-                  : t('pricing.checkout.perYear')}
-                {' · '}
-                <strong>{formatYuan(selectedPrice.amountCents)}</strong>
-              </>
-            )}
+        <Space direction="vertical" style={{ width: '100%' }} size="large">
+          <div
+            className="flex items-start justify-between gap-3 rounded-xl p-4"
+            style={{ background: 'rgba(37, 99, 235, 0.06)' }}
+          >
+            <div>
+              <div className="font-semibold" style={{ color: 'var(--text)' }}>
+                {buyingProduct?.name}
+              </div>
+              <div className="text-xs mt-0.5" style={{ color: 'var(--textMuted)' }}>
+                {selectedPrice ? periodLabel : ''}
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-xl font-bold" style={{ color: '#2563eb' }}>
+                {priceLabel}
+              </div>
+              <div
+                className="text-xs flex items-center justify-end gap-1 mt-0.5"
+                style={{ color: 'var(--textMuted)' }}
+              >
+                <SafetyCertificateOutlined />
+                {t('pricing.checkout.selectProvider')}
+              </div>
+            </div>
           </div>
 
           <Segmented
-            value={provider}
-            onChange={(v) => setProvider(v as Provider)}
+            block
+            value={region}
+            onChange={(v) => switchRegion(v as PayRegion)}
             options={[
-              { label: t('pricing.checkout.wechat'), value: 'wechat' },
-              { label: t('pricing.checkout.alipay'), value: 'alipay' },
+              { label: t('pricing.checkout.domestic'), value: 'domestic' },
+              { label: t('pricing.checkout.overseas'), value: 'overseas' },
             ]}
           />
 
-          {selectedPrice?.supportsAutoRenew && (
+          {region === 'domestic' ? (
+            <Space direction="vertical" style={{ width: '100%' }} size="small">
+              <div className="text-xs" style={{ color: 'var(--textMuted)' }}>
+                {t('pricing.checkout.domesticHint')}
+              </div>
+              <div className="grid grid-cols-2 gap-2.5">
+                <ProviderOption
+                  label={t('pricing.checkout.wechat')}
+                  sub={t('pricing.checkout.scanPay')}
+                  icon={<WechatOutlined />}
+                  iconColor={WECHAT_GREEN}
+                  selected={provider === 'wechat'}
+                  onClick={() => chooseProvider('wechat')}
+                />
+                <ProviderOption
+                  label={t('pricing.checkout.alipay')}
+                  sub={t('pricing.checkout.scanPay')}
+                  icon={<AlipayOutlined />}
+                  selected={provider === 'alipay'}
+                  onClick={() => chooseProvider('alipay')}
+                />
+              </div>
+            </Space>
+          ) : (
+            <Space direction="vertical" style={{ width: '100%' }} size="small">
+              <div className="text-xs" style={{ color: 'var(--textMuted)' }}>
+                {t('pricing.checkout.overseasHint')}
+              </div>
+              <ProviderOption
+                label={t('pricing.checkout.stripe')}
+                sub={t('pricing.checkout.stripeHint')}
+                icon={<CreditCardOutlined />}
+                selected={provider === 'stripe'}
+                onClick={() => chooseProvider('stripe')}
+              />
+            </Space>
+          )}
+
+          {region === 'domestic' && provider !== 'stripe' && selectedPrice?.supportsAutoRenew && (
             <Checkbox
               checked={enableAutoRenew}
               onChange={(e) => setEnableAutoRenew(e.target.checked)}
@@ -317,19 +447,34 @@ export default function Pricing() {
             </Checkbox>
           )}
 
-          <Button type="primary" loading={loading} onClick={doCreateOrder} disabled={!isLoggedIn}>
+          <Button
+            type="primary"
+            size="large"
+            block
+            loading={loading}
+            onClick={doCreateOrder}
+            disabled={!isLoggedIn}
+            style={{ fontWeight: 600 }}
+          >
             {enableAutoRenew
               ? t('pricing.checkout.autoRenew')
-              : t('pricing.checkout.generateQr')}
+              : region === 'overseas' || provider === 'stripe'
+                ? t('pricing.checkout.redirectToPay')
+                : t('pricing.checkout.generateQr')}
           </Button>
 
           {order?.codeUrl ? (
             <div className="flex flex-col items-center gap-3">
-              <QRCode value={order.codeUrl} />
-              <div className="text-xs text-gray-500">
+              <div
+                className="p-4 rounded-xl"
+                style={{ background: '#ffffff', boxShadow: '0 6px 18px rgba(15,23,42,0.06)' }}
+              >
+                <QRCode value={order.codeUrl} />
+              </div>
+              <div className="text-xs" style={{ color: 'var(--textMuted)' }}>
                 {t('pricing.checkout.orderId', { id: order.orderId })}
               </div>
-              <div className="text-xs text-gray-400">
+              <div className="text-xs" style={{ color: 'var(--textMuted)' }}>
                 {t('pricing.checkout.qrExpires')}
               </div>
               {order.mock && (
@@ -341,12 +486,62 @@ export default function Pricing() {
           ) : order?.redirectUrl ? (
             <div className="text-sm">
               <a href={order.redirectUrl} target="_blank" rel="noreferrer">
-                {t('pricing.checkout.alipay')}
+                {provider === 'stripe'
+                  ? t('pricing.checkout.stripe')
+                  : t('pricing.checkout.alipay')}
               </a>
             </div>
           ) : null}
         </Space>
       </Modal>
     </div>
+  );
+}
+
+function ProviderOption({ label, sub, icon, iconColor, selected, onClick }: {
+  label: string;
+  sub: string;
+  icon: ReactNode;
+  /** When set, icon uses this color in both selected / unselected states (e.g. WeChat green). */
+  iconColor?: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="cursor-pointer rounded-xl p-3 text-left w-full transition-all"
+      style={{
+        background: selected ? 'rgba(37, 99, 235, 0.12)' : 'rgba(37, 99, 235, 0.04)',
+        boxShadow: selected ? '0 4px 14px rgba(37, 99, 235, 0.14)' : 'none',
+        border: 'none',
+        outline: 'none',
+      }}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <div>
+          <div
+            className="font-medium text-sm"
+            style={{ color: selected ? '#2563eb' : 'var(--text)' }}
+          >
+            {label}
+          </div>
+          <div className="text-xs mt-0.5" style={{ color: 'var(--textMuted)' }}>
+            {sub}
+          </div>
+        </div>
+        <div
+          style={{
+            color: iconColor ?? (selected ? '#2563eb' : 'var(--textMuted)'),
+            fontSize: 22,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          {icon}
+        </div>
+      </div>
+    </button>
   );
 }

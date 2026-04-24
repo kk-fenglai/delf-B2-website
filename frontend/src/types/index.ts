@@ -269,7 +269,7 @@ export interface MistakeStats {
 
 // --- Subscription payments (微信 + 支付宝) --------------------------------
 
-export type PayProvider = 'wechat' | 'alipay';
+export type PayProvider = 'wechat' | 'alipay' | 'stripe';
 
 export type OrderStatus = 'CREATED' | 'PENDING' | 'PAID' | 'CLOSED' | 'REFUNDED' | 'FAILED';
 

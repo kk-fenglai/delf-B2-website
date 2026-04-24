@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, theme as antdTheme } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import enUS from 'antd/locale/en_US';
 import frFR from 'antd/locale/fr_FR';
@@ -22,9 +22,16 @@ function AppWithLocale() {
     <ConfigProvider
       locale={locale}
       theme={{
+        algorithm: antdTheme.defaultAlgorithm,
         token: {
-          colorPrimary: '#1A3A5C',
-          borderRadius: 8,
+          colorPrimary: '#2563eb',
+          colorBgBase: '#f6f8ff',
+          colorBgContainer: '#ffffff',
+          colorBorder: 'transparent',
+          colorBorderSecondary: 'transparent',
+          colorTextBase: '#0b1220',
+          colorTextSecondary: 'rgba(11, 18, 32, 0.62)',
+          borderRadius: 12,
           fontFamily: 'Inter, "Noto Sans SC", system-ui, sans-serif',
         },
       }}

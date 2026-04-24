@@ -319,9 +319,17 @@
       "autoRenew": "Enable auto-renew (billed monthly, cancel anytime)",
       "title": "Scan to pay",
       "selectProvider": "Payment method",
+      "domestic": "Domestic",
+      "overseas": "Overseas",
+      "domesticHint": "For mainland China: WeChat / Alipay QR payments",
+      "overseasHint": "For overseas users: you will be redirected to Stripe Checkout",
+      "scanPay": "Scan to pay",
       "wechat": "WeChat Pay",
       "alipay": "Alipay",
+      "stripe": "Card / Link (Stripe)",
+      "stripeHint": "Link / cards may appear depending on Stripe",
       "generateQr": "Generate payment QR",
+      "redirectToPay": "Continue to payment",
       "orderId": "Order: {{id}}",
       "qrExpires": "QR expires in 15 minutes",
       "createFailed": "Failed to create order, please retry",
@@ -413,6 +421,15 @@
   "orders": {
     "title": "My orders",
     "empty": "No orders yet",
+    "resume": {
+      "missingOrderId": "Missing order id, cannot resume payment status",
+      "successTitle": "Payment completed",
+      "successBody": "We'll verify your order and activate your plan (may take a few seconds).",
+      "cancelTitle": "Payment canceled",
+      "cancelBody": "You can continue payment from the orders page, or go back to pricing.",
+      "goOrders": "Go to orders",
+      "backPricing": "Back to pricing"
+    },
     "col": {
       "createdAt": "Date",
       "plan": "Plan",

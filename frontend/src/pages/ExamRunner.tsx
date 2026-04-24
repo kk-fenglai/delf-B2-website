@@ -61,6 +61,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const submitRef = useRef<(auto: boolean) => void>(() => {});
   const advanceRef = useRef<() => void>(() => {});
   const isMock = mockMode || !skill;
+  const isReadingListMode = !isMock && skill === 'CE';
 
   // Build the ordered section list. In skill-practice mode there's a single
   // section; in mock mode we group by skill in canonical DELF order so the
@@ -89,6 +90,27 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     () => !!exam?.questions.some((q) => q.type === 'ESSAY'),
     [exam]
   );
+
+  // Reading list mode: group questions by passage text and render all at once.
+  // Must be declared before any early returns to keep hook order stable.
+  const readingGroups = useMemo(() => {
+    if (!isReadingListMode || !exam) return [];
+    const groups: Array<{ passage: string | null; questions: Question[] }> = [];
+    const byPassage = new Map<string, Question[]>();
+    for (const qq of exam.questions.filter((x) => x.skill === 'CE')) {
+      const key = (qq.passage || '').trim();
+      const k = key.length ? key : '__NO_PASSAGE__';
+      if (!byPassage.has(k)) byPassage.set(k, []);
+      byPassage.get(k)!.push(qq);
+    }
+    for (const [k, qs] of byPassage.entries()) {
+      groups.push({
+        passage: k === '__NO_PASSAGE__' ? null : k,
+        questions: qs.sort((a, b) => a.order - b.order),
+      });
+    }
+    return groups;
+  }, [exam, isReadingListMode]);
 
   useEffect(() => {
     (async () => {
@@ -187,6 +209,13 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   }
 
   if (!exam || !currentSection) return <div>{t('exam.notFound')}</div>;
+  if (!currentSection.questions || currentSection.questions.length === 0) {
+    return (
+      <div className="max-w-4xl mx-auto">
+        <Result status="404" title={t('exam.notFound')} />
+      </div>
+    );
+  }
 
   const q: Question = sectionQuestions[current];
   const total = sectionQuestions.length;
@@ -325,7 +354,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       return (
         <Radio.Group value={value} onChange={(e) => updateAnswer(e.target.value)} className="flex flex-col gap-2">
           {q.options.map((o) => (
-            <Radio key={o.id} value={o.label} className="p-2 hover:bg-gray-50 rounded">
+            <Radio key={o.id} value={o.label} className="p-2 hover:bg-surface rounded">
               <strong>{o.label}.</strong> {o.text}
             </Radio>
           ))}
@@ -336,7 +365,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       return (
         <Checkbox.Group value={value || []} onChange={(v) => updateAnswer(v)} className="flex flex-col gap-2">
           {q.options.map((o) => (
-            <Checkbox key={o.id} value={o.label} className="p-2 hover:bg-gray-50 rounded">
+            <Checkbox key={o.id} value={o.label} className="p-2 hover:bg-surface rounded">
               <strong>{o.label}.</strong> {o.text}
             </Checkbox>
           ))}
@@ -415,9 +444,67 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
               onChange={setAiModel}
             />
           ) : (
-            <div className="mt-2 text-xs text-gray-500">{t('exam.essayAITip')}</div>
+            <div className="mt-2 text-xs text-muted">{t('exam.essayAITip')}</div>
           )}
         </div>
+      );
+    }
+    return <div>{t('exam.unsupported')}</div>;
+  };
+
+  const renderAnswerInputFor = (qq: Question) => {
+    const value = answers[qq.id];
+    const update = (val: any) => setAnswers((prev) => ({ ...prev, [qq.id]: val }));
+
+    if (qq.type === 'SINGLE' || qq.type === 'TRUE_FALSE') {
+      return (
+        <Radio.Group
+          value={value}
+          onChange={(e) => update(e.target.value)}
+          className="flex flex-col gap-2"
+        >
+          {qq.options.map((o) => (
+            <Radio key={o.id} value={o.label} className="p-2 hover:bg-surface rounded">
+              <strong>{o.label}.</strong> {o.text}
+            </Radio>
+          ))}
+        </Radio.Group>
+      );
+    }
+    if (qq.type === 'MULTIPLE') {
+      return (
+        <Checkbox.Group
+          value={value || []}
+          onChange={(v) => update(v)}
+          className="flex flex-col gap-2"
+        >
+          {qq.options.map((o) => (
+            <Checkbox key={o.id} value={o.label} className="p-2 hover:bg-surface rounded">
+              <strong>{o.label}.</strong> {o.text}
+            </Checkbox>
+          ))}
+        </Checkbox.Group>
+      );
+    }
+    if (qq.type === 'FILL') {
+      return (
+        <Input
+          value={value || ''}
+          onChange={(e) => update(e.target.value)}
+          placeholder={t('exam.fillPlaceholder')}
+        />
+      );
+    }
+    if (qq.type === 'ESSAY') {
+      // In reading list mode, treat ESSAY as short answer (no OCR upload / AI picker).
+      return (
+        <Input.TextArea
+          value={value || ''}
+          onChange={(e) => update(e.target.value)}
+          rows={4}
+          placeholder="请用自己的话作答"
+          showCount
+        />
       );
     }
     return <div>{t('exam.unsupported')}</div>;
@@ -426,6 +513,94 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const isLastQuestionOfSection = current === total - 1;
   const showFinishExamButton = !isMock || (isMock && isLastSection && isLastQuestionOfSection);
   const showAdvanceSectionButton = isMock && !isLastSection && isLastQuestionOfSection;
+
+  if (isReadingListMode && exam) {
+    const allReading = exam.questions.filter((x) => x.skill === 'CE');
+    if (allReading.length === 0) {
+      return (
+        <div className="max-w-4xl mx-auto">
+          <Result status="404" title={t('exam.notFound')} />
+        </div>
+      );
+    }
+    const answered = allReading.filter((qq) => {
+      const v = answers[qq.id];
+      if (v === undefined || v === null) return false;
+      if (Array.isArray(v)) return v.length > 0;
+      if (typeof v === 'string') return v.trim().length > 0;
+      return true;
+    }).length;
+    const unanswered = allReading.length - answered;
+
+    return (
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
+          <Title level={3} className="!mb-0">
+            {exam.title}
+          </Title>
+          <Space>
+            <Tag icon={<ClockCircleOutlined />} color="blue" className="text-base px-3 py-1">
+              {formatTime(remaining)}
+            </Tag>
+            <Tag color="blue">{t('skill.CE')}</Tag>
+          </Space>
+        </div>
+
+        <Alert
+          type="info"
+          showIcon
+          className="mb-3"
+          message={t('exam.passCriteriaTitle')}
+          description={
+            <div>
+              <div className="text-xs text-gray-600">
+                {t('exam.confirmAnswered', { done: answered, total: allReading.length })}
+                {unanswered > 0 && (
+                  <Text type="warning"> · {t('exam.confirmUnanswered', { n: unanswered })}</Text>
+                )}
+              </div>
+              <div className="text-xs text-muted mt-1">
+                {t('exam.passCriteriaInline', {
+                  total: PASS_TOTAL,
+                  skillMin: PASS_PER_SKILL,
+                  skillMax: SKILL_MAX,
+                  duration: SKILL_MINUTES.CE,
+                })}
+              </div>
+            </div>
+          }
+        />
+
+        {readingGroups.map((g, gi) => (
+          <Card key={gi} bordered={false} className="mb-4 app-surface">
+            {g.passage && (
+              <div
+                className="passage p-4 rounded mb-4 whitespace-pre-wrap"
+                style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
+              >
+                {g.passage}
+              </div>
+            )}
+            {g.questions.map((qq, qi) => (
+              <div key={qq.id} className={qi > 0 ? 'mt-4 pt-4 border-t' : ''}>
+                <Paragraph className="text-base font-semibold mb-3">
+                  {qq.order}. {qq.prompt}
+                  <Text className="ml-2" type="secondary">({qq.points} {t('exam.points')})</Text>
+                </Paragraph>
+                {renderAnswerInputFor(qq)}
+              </div>
+            ))}
+          </Card>
+        ))}
+
+        <div className="flex justify-end">
+          <Button type="primary" loading={submitting} onClick={confirmSubmit}>
+            {t('exam.submit')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -487,7 +662,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
 
       {/* Progress of answered questions in the current section */}
       <div className="mb-4">
-        <div className="flex justify-between text-xs text-gray-500 mb-1">
+        <div className="flex justify-between text-xs text-muted mb-1">
           <span>{t('exam.progressLabel', { done: answeredInSection, total })}</span>
           <span>{progressPct}%</span>
         </div>
@@ -511,7 +686,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         }))}
       />
 
-      <Card className="mb-4">
+      <Card bordered={false} className="mb-4 app-surface">
         {q.skill === 'CO' && (
           <AudioPlayer
             audioUrl={q.audioUrl}
@@ -520,7 +695,10 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           />
         )}
         {q.skill !== 'CO' && q.passage && (
-          <div className="passage bg-gray-50 p-4 rounded mb-4 border-l-4 border-brand">
+          <div
+            className="passage p-4 rounded mb-4"
+            style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
+          >
             {q.passage}
           </div>
         )}

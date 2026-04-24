@@ -16,10 +16,12 @@ const prisma = require('../../prisma');
 const { logger } = require('../../utils/logger');
 const wechat = require('./wechat');
 const alipay = require('./alipay');
+const stripe = require('./stripe');
 const { resolvePriceOrThrow } = require('../billing');
 
 const { settleOrder: wechatSettle } = require('../../routes/payments/wechat');
 const { settleOrder: alipaySettle } = require('../../routes/payments/alipay');
+const { settleOrder: stripeSettle } = require('../../routes/payments/stripe');
 
 const TICK_MS = Number(process.env.PAY_RECONCILE_INTERVAL_MS || 10 * 60 * 1000); // 10 min
 
@@ -47,6 +49,8 @@ async function closeExpired() {
         await alipay.tradeClose(o.providerOrderNo).catch((e) => {
           logger.warn({ err: e.message, orderId: o.id }, '[reconcile.close] alipay close failed');
         });
+      } else if (o.provider === 'stripe') {
+        // Stripe Checkout sessions naturally expire; no close call needed.
       }
       await prisma.paymentOrder.updateMany({
         where: { id: o.id, status: 'PENDING' },
@@ -100,6 +104,20 @@ async function recoverLostNotifies() {
             paidCents,
           });
           logger.info({ orderId: o.id }, '[reconcile.recover] alipay settled via query');
+        }
+      } else if (o.provider === 'stripe' && stripe.isEnabled()) {
+        const client = stripe.getClient();
+        if (!client) continue;
+        const session = await client.checkout.sessions.retrieve(o.providerOrderNo);
+        if (session && session.payment_status === 'paid') {
+          await stripeSettle({
+            sessionId: session.id,
+            orderId: session.metadata?.orderId || session.client_reference_id,
+            externalTradeNo: session.payment_intent || session.id,
+            paidCents: typeof session.amount_total === 'number' ? session.amount_total : null,
+            currency: session.currency ? String(session.currency).toUpperCase() : null,
+          });
+          logger.info({ orderId: o.id }, '[reconcile.recover] stripe settled via query');
         }
       }
     } catch (err) {

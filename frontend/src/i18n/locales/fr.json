@@ -319,9 +319,17 @@
       "autoRenew": "Activer le renouvellement automatique (mensuel, résiliable à tout moment)",
       "title": "Scannez pour payer",
       "selectProvider": "Moyen de paiement",
+      "domestic": "Chine",
+      "overseas": "International",
+      "domesticHint": "Pour la Chine continentale : QR WeChat / Alipay",
+      "overseasHint": "Pour l'international : redirection vers Stripe Checkout",
+      "scanPay": "Scanner pour payer",
       "wechat": "WeChat Pay",
       "alipay": "Alipay",
+      "stripe": "Carte / Link (Stripe)",
+      "stripeHint": "Link / carte selon Stripe",
       "generateQr": "Générer le QR de paiement",
+      "redirectToPay": "Continuer vers le paiement",
       "orderId": "Commande : {{id}}",
       "qrExpires": "Le QR expire dans 15 minutes",
       "createFailed": "Échec de la création de commande, réessayez",
@@ -413,6 +421,15 @@
   "orders": {
     "title": "Mes commandes",
     "empty": "Aucune commande",
+    "resume": {
+      "missingOrderId": "ID de commande manquant — impossible de reprendre le suivi",
+      "successTitle": "Paiement terminé",
+      "successBody": "Nous vérifions votre commande et activons votre abonnement (quelques secondes).",
+      "cancelTitle": "Paiement annulé",
+      "cancelBody": "Vous pouvez reprendre le paiement depuis la page des commandes, ou revenir aux tarifs.",
+      "goOrders": "Aller aux commandes",
+      "backPricing": "Retour aux tarifs"
+    },
     "col": {
       "createdAt": "Date",
       "plan": "Formule",

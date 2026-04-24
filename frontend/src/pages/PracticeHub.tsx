@@ -41,7 +41,7 @@ export default function PracticeHub() {
 
   const renderCard = (e: HubEntry) => (
     <Link to={e.to} className="block h-full">
-      <Card hoverable className="h-full text-center">
+      <Card hoverable bordered={false} className="h-full text-center app-surface">
         <div className="text-5xl mb-2">{e.icon}</div>
         <div className="flex justify-center items-center gap-2 mb-1">
           <Title level={4} style={{ marginBottom: 0 }}>
@@ -49,7 +49,7 @@ export default function PracticeHub() {
           </Title>
           {e.tagKey && <Tag color={e.tagColor}>{t(e.tagKey)}</Tag>}
         </div>
-        <Paragraph className="text-gray-500 mb-0">{t(e.descKey)}</Paragraph>
+        <Paragraph className="text-muted mb-0">{t(e.descKey)}</Paragraph>
       </Card>
     </Link>
   );

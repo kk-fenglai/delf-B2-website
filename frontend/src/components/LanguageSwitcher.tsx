@@ -20,7 +20,7 @@ export default function LanguageSwitcher() {
 
   return (
     <Dropdown menu={{ items, selectedKeys: [current] }} placement="bottomRight">
-      <Button type="text" icon={<GlobalOutlined />} style={{ color: 'white' }}>
+      <Button type="text" icon={<GlobalOutlined />} style={{ color: 'var(--text)' }}>
         {currentLang.flag} {currentLang.label}
       </Button>
     </Dropdown>

@@ -80,22 +80,34 @@ const ALIPAY_CONFIGURED = !!(
   process.env.ALIPAY_PRIVATE_KEY_PEM &&
   process.env.ALIPAY_PUBLIC_KEY_PEM
 );
+const STRIPE_CONFIGURED = !!(
+  process.env.STRIPE_SECRET_KEY &&
+  process.env.STRIPE_WEBHOOK_SECRET
+);
 
 if (IS_PROD) {
-  if (!WECHAT_CONFIGURED && !ALIPAY_CONFIGURED) {
-    errors.push('No payment channel configured — set either WECHAT_* or ALIPAY_* (see .env.example)');
+  if (!WECHAT_CONFIGURED && !ALIPAY_CONFIGURED && !STRIPE_CONFIGURED) {
+    errors.push('No payment channel configured — set WECHAT_*, ALIPAY_* or STRIPE_* (see .env.example)');
   }
-  if (!process.env.PAY_PUBLIC_BASE_URL) {
-    errors.push('PAY_PUBLIC_BASE_URL is required in production (must be HTTPS, used by channel notify callbacks)');
-  } else if (!/^https:\/\//.test(process.env.PAY_PUBLIC_BASE_URL)) {
-    errors.push('PAY_PUBLIC_BASE_URL must start with https:// (channels reject insecure notify URLs)');
+  if (WECHAT_CONFIGURED || ALIPAY_CONFIGURED) {
+    if (!process.env.PAY_PUBLIC_BASE_URL) {
+      errors.push('PAY_PUBLIC_BASE_URL is required in production (must be HTTPS, used by channel notify callbacks)');
+    } else if (!/^https:\/\//.test(process.env.PAY_PUBLIC_BASE_URL)) {
+      errors.push('PAY_PUBLIC_BASE_URL must start with https:// (channels reject insecure notify URLs)');
+    }
   }
   if (process.env.PAY_MOCK_ENABLED === 'true') {
     errors.push('PAY_MOCK_ENABLED=true is forbidden in production — remove it from .env');
   }
+  if (STRIPE_CONFIGURED) {
+    if (!process.env.STRIPE_CHECKOUT_SUCCESS_URL || !process.env.STRIPE_CHECKOUT_CANCEL_URL) {
+      warnings.push('STRIPE_CHECKOUT_SUCCESS_URL / STRIPE_CHECKOUT_CANCEL_URL not set — Stripe checkout will fall back to FRONTEND_URL based redirects');
+    }
+  }
 } else {
   if (!WECHAT_CONFIGURED) warnings.push('WECHAT_* not fully set — /api/pay/wechat/* will operate in mock mode');
   if (!ALIPAY_CONFIGURED) warnings.push('ALIPAY_* not fully set — /api/pay/alipay/* will operate in mock mode');
+  if (!STRIPE_CONFIGURED) warnings.push('STRIPE_* not fully set — /api/pay/stripe/* will 503 until configured');
 }
 
 if (errors.length) {
@@ -125,6 +137,7 @@ module.exports = {
   // Payments
   WECHAT_CONFIGURED,
   ALIPAY_CONFIGURED,
+  STRIPE_CONFIGURED,
   PAY_PUBLIC_BASE_URL: process.env.PAY_PUBLIC_BASE_URL || '',
   PAY_MOCK_ENABLED: process.env.PAY_MOCK_ENABLED === 'true',
   WECHAT: {
@@ -140,5 +153,11 @@ module.exports = {
     PRIVATE_KEY_PEM: process.env.ALIPAY_PRIVATE_KEY_PEM || '',
     PUBLIC_KEY_PEM: process.env.ALIPAY_PUBLIC_KEY_PEM || '',
     GATEWAY: process.env.ALIPAY_GATEWAY || 'https://openapi.alipay.com/gateway.do',
+  },
+  STRIPE: {
+    SECRET_KEY: process.env.STRIPE_SECRET_KEY || '',
+    WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || '',
+    CHECKOUT_SUCCESS_URL: process.env.STRIPE_CHECKOUT_SUCCESS_URL || '',
+    CHECKOUT_CANCEL_URL: process.env.STRIPE_CHECKOUT_CANCEL_URL || '',
   },
 };
