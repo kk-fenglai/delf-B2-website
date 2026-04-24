@@ -13,6 +13,7 @@ const {
 const { signAccessToken } = require('../utils/jwt');
 const { revokeAllForUser } = require('../services/refreshTokens');
 const passwordPolicy = require('../utils/passwordPolicy');
+const { applyPurchaseToUser } = require('../services/billing');
 const {
   sendMail,
   renderPasswordResetEmail,
@@ -220,14 +221,16 @@ router.post('/:id/renew', async (req, res, next) => {
     const before = await prisma.user.findUnique({ where: { id: req.params.id } });
     if (!before) return res.status(404).json({ error: 'User not found' });
 
-    const base = (before.subscriptionEnd && before.subscriptionEnd > new Date())
-      ? before.subscriptionEnd : new Date();
-    const newEnd = new Date(base.getTime() + months * 30 * 24 * 3600 * 1000);
+    // Renewing a FREE user has no entitlement semantics — refuse so admins use
+    // change-plan for that case. Billing only knows how to extend a paid plan.
+    if (!before.plan || before.plan === 'FREE') {
+      return res.status(400).json({ error: 'User has no paid plan to renew; use change-plan instead' });
+    }
 
-    const updated = await prisma.user.update({
-      where: { id: before.id },
-      data: { subscriptionEnd: newEnd },
-      select: { id: true, email: true, plan: true, subscriptionEnd: true },
+    const updated = await applyPurchaseToUser({
+      userId: before.id,
+      plan: before.plan,
+      months,
     });
 
     await writeAdminLog({
@@ -235,11 +238,16 @@ router.post('/:id/renew', async (req, res, next) => {
       action: 'RENEW',
       targetType: 'USER',
       targetId: before.id,
-      payload: { from: before.subscriptionEnd, to: newEnd, months },
+      payload: { from: before.subscriptionEnd, to: updated.subscriptionEnd, months, plan: before.plan },
       ip: clientIp(req),
     });
 
-    res.json(updated);
+    res.json({
+      id: updated.id,
+      email: before.email,
+      plan: updated.plan,
+      subscriptionEnd: updated.subscriptionEnd,
+    });
   } catch (e) { next(e); }
 });
 

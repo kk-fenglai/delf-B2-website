@@ -10,6 +10,7 @@
     "mistakes": "错题本",
     "dashboard": "学习中心",
     "pricing": "订阅方案",
+    "orders": "我的订单",
     "login": "登录",
     "register": "免费注册",
     "logout": "退出登录"
@@ -188,7 +189,17 @@
     "confirmAnswered": "已作答 {{done}} / {{total}} 题",
     "confirmUnanswered": "{{n}} 题未作答",
     "confirmOk": "确认提交",
-    "confirmCancel": "继续检查"
+    "confirmCancel": "继续检查",
+    "fiveMinSectionWarning": "⏰ 本节剩余 5 分钟 — 时间结束后将无法返回本节。",
+    "sectionTimeUp": "本节时间已到 — 自动进入下一节。",
+    "sectionBanner": "第 {{idx}} / {{total}} 节：{{skill}} · {{minutes}} 分钟",
+    "advanceSection": "结束本节",
+    "advanceTitle": "确认结束本节？",
+    "advanceAnswered": "本节已作答 {{done}} / {{total}} 题。",
+    "advanceNoReturn": "进入下一节后无法返回当前节 — 模拟真实 DELF B2 考试规则。",
+    "advanceNext": "下一节：{{skill}} · {{minutes}} 分钟。",
+    "advanceOk": "进入下一节",
+    "advanceCancel": "继续本节"
   },
   "review": {
     "title": "练习结果",
@@ -200,8 +211,18 @@
     "notAnswered": "（未作答）",
     "explanation": "题目解析",
     "backToPractice": "返回题库",
+    "downloadPdf": "下载 PDF 成绩单",
     "toDashboard": "查看学习中心",
-    "noResult": "未找到结果。请返回题库重新练习。"
+    "noResult": "未找到结果。请返回题库重新练习。",
+    "delfVerdictTitle": "DELF B2 官方判分",
+    "delfTotal": "DELF 折算：{{score}}/100",
+    "delfPassed": "通过 — {{score}}/100（合格线 {{min}}/100）。",
+    "delfFailed": "未通过 — {{score}}/100（合格线 {{min}}/100）。",
+    "delfPending": "写作仍在 AI 批改中，最终判分将在批改完成后更新。",
+    "delfGateHint": "四项单科还须各自达到 {{skillMin}}/{{skillMax}} 以上。",
+    "passGate": "达线",
+    "failGate": "未达线",
+    "rawPoints": "原始得分：{{score}} / {{max}}"
   },
   "mistakes": {
     "title": "错题本",
@@ -213,6 +234,17 @@
     "correctAnswer": "正确答案",
     "explanation": "解析",
     "practiceAgain": "再次练习",
+    "retryOpen": "重做此题",
+    "retryCancel": "取消",
+    "retrySubmit": "提交答案",
+    "retryPrompt": "请选择你的新答案：",
+    "retryFillPlaceholder": "请输入答案",
+    "retryEmpty": "请先选择或输入答案。",
+    "retryCorrect": "答对了！已从错题本移除。",
+    "retryCorrectBanner": "✓ 答对了 — 该题将从错题本中移除。",
+    "retryWrong": "还是错了，再看看解析吧。",
+    "retryWrongBanner": "仍然错误。正确答案：{{answer}}",
+    "retryFail": "提交失败，请重试。",
     "empty": "暂无错题 — 继续练习，答错的题目会自动收录于此。"
   },
   "pricing": {
@@ -275,9 +307,31 @@
     "modelsRow": {
       "label": "AI 批改模型",
       "none": "—",
-      "haiku": "Haiku（快速）",
-      "sonnet": "Sonnet（均衡）",
-      "opus": "Opus（精准）"
+      "haiku": "Qwen Turbo（快速）",
+      "sonnet": "DeepSeek Chat（均衡）",
+      "opus": "Qwen Plus（精准）"
+    },
+    "checkout": {
+      "loginFirst": "请先登录后再购买",
+      "buyNow": "立即购买",
+      "yearly": "年付",
+      "monthly": "月付",
+      "perMonth": "每月",
+      "perYear": "每年",
+      "autoRenew": "开启自动续费（按月续订，可随时取消）",
+      "title": "扫码支付",
+      "selectProvider": "选择支付方式",
+      "wechat": "微信支付",
+      "alipay": "支付宝",
+      "generateQr": "生成支付二维码",
+      "orderId": "订单号：{{id}}",
+      "qrExpires": "二维码有效期 15 分钟",
+      "createFailed": "下单失败，请稍后重试",
+      "paySuccess": "支付成功，权益已开通",
+      "payClosed": "订单已关闭或失败，请重试",
+      "mockPay": "模拟支付成功（仅 dev 环境）",
+      "mockSuccess": "已模拟支付成功",
+      "openingAlipay": "正在打开支付宝收银台…"
     }
   },
   "essay": {
@@ -303,11 +357,11 @@
       "gradedAt": "批改于 {{time}}",
       "pollingHint": "批改完成后本页会自动刷新。",
       "empty": "此题未提交作文。",
-      "slowWarning": "AI 批改响应较慢，可能是 Claude 服务繁忙，请继续等待或点击「重写作文」重试。",
+      "slowWarning": "AI 批改响应较慢，可能是服务繁忙，请继续等待或点击「重写作文」重试。",
       "errNotConfigured": "AI 批改服务未配置，请联系管理员。",
       "errTruncated": "AI 输出被截断，请重新批改或稍后重试。",
       "errBadOutput": "AI 返回的评分格式异常，请重新批改。",
-      "errProviderDown": "Claude 服务暂时不可用，请稍后重试。",
+      "errProviderDown": "AI 批改服务暂时不可用，请稍后重试。",
       "errRateLimited": "请求过于频繁，请稍后再试。",
       "errBadRequest": "批改请求被拒，请联系管理员。",
       "errCallFailed": "网络或连接异常，请重试。",
@@ -356,6 +410,48 @@
       "submit": "提交重写",
       "placeholder": "在此处修改您的作文…",
       "wordCount": "当前字数：{{count}} 词"
+    }
+  },
+  "orders": {
+    "title": "我的订单",
+    "empty": "暂无订单记录",
+    "col": {
+      "createdAt": "时间",
+      "plan": "套餐",
+      "months": "时长",
+      "amount": "金额",
+      "provider": "渠道",
+      "status": "状态",
+      "action": "操作"
+    },
+    "months": "{{count}} 个月",
+    "status": {
+      "CREATED": "已创建",
+      "PENDING": "待支付",
+      "PAID": "已支付",
+      "CLOSED": "已关闭",
+      "REFUNDED": "已退款",
+      "FAILED": "失败"
+    },
+    "continuePay": "继续支付",
+    "refundedSuffix": "（已退 {{amount}}）",
+    "contracts": {
+      "title": "我的自动续费",
+      "nextCharge": "下次扣款：{{date}}",
+      "failedCount": "已失败 {{count}} 次",
+      "unsign": "取消自动续费",
+      "unsignConfirmTitle": "确认取消自动续费？",
+      "unsignConfirmBody": "取消后将不再自动扣款，已购买的权益不受影响。",
+      "unsignConfirmOk": "确认取消",
+      "unsignSuccess": "已提交解约",
+      "unsignFailed": "解约失败，请稍后重试",
+      "status": {
+        "PENDING": "待签约",
+        "ACTIVE": "已开启",
+        "SUSPENDED": "已暂停",
+        "TERMINATED": "已解约"
+      },
+      "unsignHint": "如需取消自动续费，请在微信支付 / 支付宝 App 内操作解约。"
     }
   }
 }

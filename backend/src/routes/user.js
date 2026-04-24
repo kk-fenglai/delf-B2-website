@@ -1,25 +1,46 @@
 const express = require('express');
+const { z } = require('zod');
 const prisma = require('../prisma');
 const { requireAuth } = require('../middleware/auth');
 const { predictScore } = require('../services/prediction');
+const { gradeAnswer } = require('../services/grader');
 
 const router = express.Router();
 
 // GET /api/user/me
 router.get('/me', requireAuth, async (req, res, next) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.userId },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        plan: true,
-        subscriptionEnd: true,
-        createdAt: true,
+    const [user, activeContract] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: req.userId },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          plan: true,
+          subscriptionEnd: true,
+          createdAt: true,
+        },
+      }),
+      prisma.payContract.findFirst({
+        where: { userId: req.userId, status: 'ACTIVE' },
+        select: { id: true, provider: true, nextChargeAt: true },
+      }),
+    ]);
+    const now = Date.now();
+    const effective = user?.subscriptionEnd && new Date(user.subscriptionEnd).getTime() > now
+      ? user.plan
+      : 'FREE';
+    res.json({
+      user: {
+        ...user,
+        effectivePlan: effective,
+        autoRenewActive: !!activeContract,
+        autoRenew: activeContract
+          ? { provider: activeContract.provider, nextChargeAt: activeContract.nextChargeAt }
+          : null,
       },
     });
-    res.json({ user });
   } catch (e) { next(e); }
 });
 
@@ -198,6 +219,65 @@ router.get('/mistakes', requireAuth, async (req, res, next) => {
     });
 
     res.json({ items, total, page, pageSize });
+  } catch (e) { next(e); }
+});
+
+// POST /api/user/mistakes/:questionId/retry  { answer }
+// Re-grade a single mistake without creating an ExamSession. On a correct
+// retry the new UserAttempt row becomes the latest for that question, so
+// collectLatestWrong will drop it on next fetch — this is the mechanism
+// by which mastered mistakes auto-clear from the notebook.
+router.post('/mistakes/:questionId/retry', requireAuth, async (req, res, next) => {
+  try {
+    const schema = z.object({ answer: z.any() });
+    const { answer } = schema.parse(req.body);
+
+    const question = await prisma.question.findUnique({
+      where: { id: req.params.questionId },
+      include: { options: true },
+    });
+    if (!question) return res.status(404).json({ error: 'Question not found' });
+    // Essays/speaking don't flow through the mistake notebook — guard
+    // the endpoint so we never mint a bogus objective attempt for them.
+    if (!OBJECTIVE_TYPES.includes(question.type)) {
+      return res.status(400).json({ error: 'Question not eligible for retry' });
+    }
+
+    // Require the user to have a prior wrong attempt on this question before
+    // letting them retry — otherwise the endpoint becomes a generic "grade
+    // one question" surface that bypasses exam-session accounting.
+    const prior = await prisma.userAttempt.findFirst({
+      where: { userId: req.userId, questionId: question.id },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (!prior || prior.isCorrect !== false) {
+      return res.status(403).json({ error: 'No mistake to retry for this question' });
+    }
+
+    const { isCorrect, score } = gradeAnswer(question, answer);
+    await prisma.userAttempt.create({
+      data: {
+        userId: req.userId,
+        sessionId: null,
+        questionId: question.id,
+        answer: typeof answer === 'string' ? answer : JSON.stringify(answer),
+        isCorrect,
+        score,
+      },
+    });
+
+    const correctLabels = question.options
+      .filter((o) => o.isCorrect)
+      .map((o) => o.label);
+
+    res.json({
+      isCorrect,
+      score,
+      maxScore: question.points,
+      correctAnswer: correctLabels,
+      explanation: question.explanation || null,
+      cleared: isCorrect === true,
+    });
   } catch (e) { next(e); }
 });
 

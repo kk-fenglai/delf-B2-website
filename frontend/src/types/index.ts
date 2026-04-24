@@ -58,10 +58,23 @@ export interface SubmitResultDetail {
   essayStatus?: EssayStatus | null;
 }
 
+export interface PerSkillBreakdown {
+  score: number;
+  maxScore: number;
+  pendingAI: boolean;
+}
+
 export interface SubmitResult {
   sessionId: string;
+  mode?: 'PRACTICE' | 'EXAM';
   totalScore: number;
   maxScore: number;
+  perSkill?: Record<Skill, PerSkillBreakdown>;
+  thresholds?: {
+    passTotal: number;
+    passPerSkill: number;
+    skillMax: number;
+  };
   details: SubmitResultDetail[];
   essays?: SubmitResponseEssay[];
 }
@@ -252,4 +265,54 @@ export interface MistakesResponse {
 export interface MistakeStats {
   total: number;
   bySkill: Record<Skill, number>;
+}
+
+// --- Subscription payments (微信 + 支付宝) --------------------------------
+
+export type PayProvider = 'wechat' | 'alipay';
+
+export type OrderStatus = 'CREATED' | 'PENDING' | 'PAID' | 'CLOSED' | 'REFUNDED' | 'FAILED';
+
+export interface CatalogPrice {
+  id: string;
+  code: string;
+  months: number;
+  currency: string;
+  amountCents: number;
+  supportsAutoRenew: boolean;
+}
+
+export interface CatalogProduct {
+  id: string;
+  code: string;
+  name: string;
+  plan: Exclude<Plan, 'FREE'>;
+  prices: CatalogPrice[];
+}
+
+export interface PaymentOrderSummary {
+  id: string;
+  provider: PayProvider;
+  product: string;
+  plan: Plan;
+  months: number;
+  currency: string;
+  amountCents: number;
+  refundedCents: number;
+  status: OrderStatus;
+  paidAt: string | null;
+  expiresAt: string | null;
+  createdAt: string;
+}
+
+export interface CreatedOrderResponse {
+  orderId: string;
+  provider: PayProvider;
+  product: string;
+  amountCents: number;
+  currency: string;
+  codeUrl?: string | null;
+  redirectUrl?: string | null;
+  expiresAt?: string;
+  mock?: boolean;
 }

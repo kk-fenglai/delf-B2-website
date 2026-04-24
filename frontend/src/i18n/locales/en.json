@@ -10,6 +10,7 @@
     "mistakes": "Mistake Notebook",
     "dashboard": "Dashboard",
     "pricing": "Pricing",
+    "orders": "My Orders",
     "login": "Sign in",
     "register": "Sign up",
     "logout": "Sign out"
@@ -186,7 +187,17 @@
     "confirmAnswered": "You have answered {{done}} of {{total}} questions.",
     "confirmUnanswered": "{{n}} unanswered",
     "confirmOk": "Submit",
-    "confirmCancel": "Keep reviewing"
+    "confirmCancel": "Keep reviewing",
+    "fiveMinSectionWarning": "⏰ 5 minutes left in this section — you cannot return to it once time expires.",
+    "sectionTimeUp": "Section time is up — moving to the next section.",
+    "sectionBanner": "Section {{idx}} of {{total}}: {{skill}} · {{minutes}} min",
+    "advanceSection": "Finish section",
+    "advanceTitle": "Finish this section?",
+    "advanceAnswered": "You have answered {{done}} of {{total}} questions in this section.",
+    "advanceNoReturn": "Once you move on, you will not be able to return to this section — this mirrors the real DELF B2 exam.",
+    "advanceNext": "Next section: {{skill}} · {{minutes}} minutes.",
+    "advanceOk": "Move to next section",
+    "advanceCancel": "Stay on this section"
   },
   "review": {
     "title": "Results",
@@ -198,8 +209,18 @@
     "notAnswered": "(not answered)",
     "explanation": "Explanation",
     "backToPractice": "Back to practice",
+    "downloadPdf": "Download PDF",
     "toDashboard": "Go to dashboard",
-    "noResult": "No results found. Return to practice and try again."
+    "noResult": "No results found. Return to practice and try again.",
+    "delfVerdictTitle": "DELF B2 official verdict",
+    "delfTotal": "DELF equivalent: {{score}}/100",
+    "delfPassed": "Passed — {{score}}/100 (minimum {{min}}/100).",
+    "delfFailed": "Not passed — {{score}}/100 (minimum {{min}}/100).",
+    "delfPending": "Writing is still being graded by AI — final verdict will update once grading completes.",
+    "delfGateHint": "Each of the 4 sections must also score at least {{skillMin}}/{{skillMax}}.",
+    "passGate": "≥ gate",
+    "failGate": "< gate",
+    "rawPoints": "Raw: {{score}} / {{max}} pts"
   },
   "mistakes": {
     "title": "Mistake Notebook",
@@ -211,6 +232,17 @@
     "correctAnswer": "Correct answer",
     "explanation": "Explanation",
     "practiceAgain": "Practice again",
+    "retryOpen": "Retry this question",
+    "retryCancel": "Cancel",
+    "retrySubmit": "Check my answer",
+    "retryPrompt": "Pick your new answer:",
+    "retryFillPlaceholder": "Type your answer",
+    "retryEmpty": "Please choose or enter an answer first.",
+    "retryCorrect": "Correct! Removed from your notebook.",
+    "retryCorrectBanner": "✓ Correct — this question will be removed from your notebook.",
+    "retryWrong": "Not quite — have another look at the explanation.",
+    "retryWrongBanner": "Still wrong. Correct answer: {{answer}}",
+    "retryFail": "Failed to submit — please try again.",
     "empty": "No mistakes yet — keep practising and any wrong answers will appear here."
   },
   "pricing": {
@@ -273,9 +305,31 @@
     "modelsRow": {
       "label": "AI grading models",
       "none": "—",
-      "haiku": "Haiku (fast)",
-      "sonnet": "Sonnet (balanced)",
-      "opus": "Opus (precise)"
+      "haiku": "Qwen Turbo (fast)",
+      "sonnet": "DeepSeek Chat (balanced)",
+      "opus": "Qwen Plus (precise)"
+    },
+    "checkout": {
+      "loginFirst": "Please log in before purchasing",
+      "buyNow": "Buy now",
+      "yearly": "Yearly",
+      "monthly": "Monthly",
+      "perMonth": "per month",
+      "perYear": "per year",
+      "autoRenew": "Enable auto-renew (billed monthly, cancel anytime)",
+      "title": "Scan to pay",
+      "selectProvider": "Payment method",
+      "wechat": "WeChat Pay",
+      "alipay": "Alipay",
+      "generateQr": "Generate payment QR",
+      "orderId": "Order: {{id}}",
+      "qrExpires": "QR expires in 15 minutes",
+      "createFailed": "Failed to create order, please retry",
+      "paySuccess": "Payment successful, plan activated",
+      "payClosed": "Order closed or failed, please retry",
+      "mockPay": "Mock pay (dev only)",
+      "mockSuccess": "Mock payment success",
+      "openingAlipay": "Opening Alipay cashier…"
     }
   },
   "essay": {
@@ -301,11 +355,11 @@
       "gradedAt": "Graded {{time}}",
       "pollingHint": "This page refreshes automatically once grading completes.",
       "empty": "No essay submitted for this question.",
-      "slowWarning": "AI grading is taking longer than usual — Claude may be busy. You can keep waiting or click Rewrite to retry.",
+      "slowWarning": "AI grading is taking longer than usual — the provider may be busy. You can keep waiting or click Rewrite to retry.",
       "errNotConfigured": "AI grading is not configured. Please contact the administrator.",
       "errTruncated": "AI output was truncated. Please re-grade or try again later.",
       "errBadOutput": "AI returned malformed output. Please re-grade.",
-      "errProviderDown": "Claude service is temporarily unavailable. Please try again later.",
+      "errProviderDown": "AI grading service is temporarily unavailable. Please try again later.",
       "errRateLimited": "Too many requests — please wait a moment and try again.",
       "errBadRequest": "Grading request was rejected. Please contact the administrator.",
       "errCallFailed": "Network or connection issue. Please retry.",
@@ -354,6 +408,50 @@
       "submit": "Submit rewrite",
       "placeholder": "Edit your essay here…",
       "wordCount": "Word count: {{count}}"
+    }
+  },
+  "orders": {
+    "title": "My orders",
+    "empty": "No orders yet",
+    "col": {
+      "createdAt": "Date",
+      "plan": "Plan",
+      "months": "Duration",
+      "amount": "Amount",
+      "provider": "Channel",
+      "status": "Status",
+      "action": "Actions"
+    },
+    "months": "{{count}} month",
+    "months_other": "{{count}} months",
+    "status": {
+      "CREATED": "Created",
+      "PENDING": "Pending",
+      "PAID": "Paid",
+      "CLOSED": "Closed",
+      "REFUNDED": "Refunded",
+      "FAILED": "Failed"
+    },
+    "continuePay": "Continue",
+    "refundedSuffix": "(refunded {{amount}})",
+    "contracts": {
+      "title": "Auto-renew",
+      "nextCharge": "Next charge: {{date}}",
+      "failedCount": "{{count}} failed charge",
+      "failedCount_other": "{{count}} failed charges",
+      "unsign": "Cancel auto-renew",
+      "unsignConfirmTitle": "Cancel auto-renew?",
+      "unsignConfirmBody": "Auto charges will stop. Your current entitlement remains active until it expires.",
+      "unsignConfirmOk": "Cancel auto-renew",
+      "unsignSuccess": "Cancellation submitted",
+      "unsignFailed": "Cancellation failed, please retry",
+      "status": {
+        "PENDING": "Pending",
+        "ACTIVE": "Active",
+        "SUSPENDED": "Suspended",
+        "TERMINATED": "Cancelled"
+      },
+      "unsignHint": "To cancel auto-renew, unsign from within the WeChat Pay / Alipay app."
     }
   }
 }

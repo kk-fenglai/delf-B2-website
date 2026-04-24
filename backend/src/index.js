@@ -20,9 +20,16 @@ const adminAuthRoutes = require('./routes/adminAuth');
 const adminUserRoutes = require('./routes/adminUsers');
 const adminStatsRoutes = require('./routes/adminStats');
 const adminExamRoutes = require('./routes/adminExams');
+const adminPaymentsRoutes = require('./routes/adminPayments');
+const wechatPayRoutes = require('./routes/payments/wechat');
+const alipayRoutes = require('./routes/payments/alipay');
+const payOrderRoutes = require('./routes/payments/orders');
+const payProductRoutes = require('./routes/payments/products');
+const payContractRoutes = require('./routes/payments/contracts');
 const { ipAllowlist } = require('./middleware/admin');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const essayQueue = require('./services/essayQueue');
+const reconcile = require('./services/payments/reconcile');
 
 const app = express();
 
@@ -60,7 +67,19 @@ app.use(
   })
 );
 
-app.use(express.json({ limit: '2mb' }));
+// Capture raw body on JSON routes — required by the WeChat V3 notify handler
+// for signature verification (signed payload = timestamp\nnonce\nbody\n).
+app.use(
+  express.json({
+    limit: '2mb',
+    verify: (req, _res, buf) => {
+      req.rawBody = buf.toString('utf8');
+    },
+  })
+);
+// Alipay async-notify is application/x-www-form-urlencoded. Bounded to 1MB
+// to cap webhook abuse surface.
+app.use('/api/pay/alipay/notify', express.urlencoded({ extended: false, limit: '1mb' }));
 app.use(httpLogger);
 
 // --- Rate limiters ---
@@ -90,6 +109,15 @@ const adminApiLimiter = rateLimit({
   max: 200,
   standardHeaders: true,
   legacyHeaders: false,
+});
+// Rate limit user-facing pay endpoints (create / sign / query) per IP. Notify
+// callbacks are NOT limited — channel IPs + signature act as the rate gate.
+const payUserLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many payment requests, please retry' },
 });
 
 // --- Static audio (FEI sample exam MP3s and future CDN fallback) ---
@@ -125,6 +153,11 @@ app.use('/api/exams', examRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/user/essays', essayRoutes);
+app.use('/api/pay/products', payProductRoutes);
+app.use('/api/pay/wechat', payUserLimiter, wechatPayRoutes);
+app.use('/api/pay/alipay', payUserLimiter, alipayRoutes);
+app.use('/api/pay/orders', payUserLimiter, payOrderRoutes);
+app.use('/api/pay/contracts', payUserLimiter, payContractRoutes);
 
 // --- Admin APIs ---
 app.use('/api/admin', ipAllowlist);
@@ -132,6 +165,7 @@ app.use('/api/admin/auth', adminLoginLimiter, adminAuthRoutes);
 app.use('/api/admin/users', adminApiLimiter, adminUserRoutes);
 app.use('/api/admin/stats', adminApiLimiter, adminStatsRoutes);
 app.use('/api/admin/exams', adminApiLimiter, adminExamRoutes);
+app.use('/api/admin', adminApiLimiter, adminPaymentsRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
@@ -145,6 +179,10 @@ const server = app.listen(env.PORT, () => {
   essayQueue.startWorker().catch((err) => {
     logger.error({ err }, 'essayQueue.startWorker.fail');
   });
+  // Payment reconcile worker: close expired PENDING orders + recover orders
+  // that paid on the channel side but whose notify we never received. Runs
+  // in-process; for multi-instance deploys replace with a dedicated cron.
+  reconcile.startWorker();
 });
 
 // --- Graceful shutdown ---
@@ -161,6 +199,9 @@ function shutdown(signal) {
     // race with prisma.disconnect.
     await essayQueue.drain({ timeoutMs: 12000 }).catch((e) => {
       logger.error({ err: e }, 'essayQueue.drain.fail');
+    });
+    await reconcile.stopWorker().catch((e) => {
+      logger.error({ err: e }, 'reconcile.stopWorker.fail');
     });
     await prisma.disconnect();
     logger.info('shutdown complete');

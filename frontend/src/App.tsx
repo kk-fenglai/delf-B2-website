@@ -14,6 +14,7 @@ import ExamRunner from './pages/ExamRunner';
 import ReviewResult from './pages/ReviewResult';
 import MistakeNotebook from './pages/MistakeNotebook';
 import Pricing from './pages/Pricing';
+import Orders from './pages/Orders';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import VerifyEmail from './pages/VerifyEmail';
@@ -27,6 +28,7 @@ import AdminLoginHistory from './pages/admin/AdminLoginHistory';
 import AdminExams from './pages/admin/AdminExams';
 import AdminExamEdit from './pages/admin/AdminExamEdit';
 import AdminExamImport from './pages/admin/AdminExamImport';
+import AdminPayments from './pages/admin/AdminPayments';
 import { useAuthStore } from './stores/auth';
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -53,6 +55,7 @@ export default function App() {
         <Route path="logs" element={<AdminLogs />} />
         <Route path="logins" element={<AdminLoginHistory />} />
         <Route path="exams" element={<AdminExams />} />
+        <Route path="payments" element={<AdminPayments />} />
         <Route path="exams/import" element={<AdminExamImport />} />
         <Route path="exams/:id" element={<AdminExamEdit />} />
       </Route>
@@ -88,6 +91,7 @@ export default function App() {
 
         <Route path="/review/:sessionId" element={<RequireAuth><ReviewResult /></RequireAuth>} />
         <Route path="/mistakes" element={<RequireAuth><MistakeNotebook /></RequireAuth>} />
+        <Route path="/orders" element={<RequireAuth><Orders /></RequireAuth>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

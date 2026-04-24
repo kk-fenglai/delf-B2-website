@@ -10,6 +10,7 @@
     "mistakes": "Cahier d'erreurs",
     "dashboard": "Tableau de bord",
     "pricing": "Tarifs",
+    "orders": "Mes commandes",
     "login": "Se connecter",
     "register": "S'inscrire",
     "logout": "Déconnexion"
@@ -186,7 +187,17 @@
     "confirmAnswered": "Vous avez répondu à {{done}} question(s) sur {{total}}.",
     "confirmUnanswered": "{{n}} sans réponse",
     "confirmOk": "Soumettre",
-    "confirmCancel": "Continuer"
+    "confirmCancel": "Continuer",
+    "fiveMinSectionWarning": "⏰ 5 minutes restantes dans cette section — vous ne pourrez plus y revenir.",
+    "sectionTimeUp": "Temps écoulé pour cette section — passage à la suivante.",
+    "sectionBanner": "Section {{idx}} sur {{total}} : {{skill}} · {{minutes}} min",
+    "advanceSection": "Terminer la section",
+    "advanceTitle": "Terminer cette section ?",
+    "advanceAnswered": "Vous avez répondu à {{done}} question(s) sur {{total}} dans cette section.",
+    "advanceNoReturn": "Une fois la section terminée, vous ne pourrez plus y revenir — comme à l'examen DELF B2 réel.",
+    "advanceNext": "Section suivante : {{skill}} · {{minutes}} minutes.",
+    "advanceOk": "Passer à la section suivante",
+    "advanceCancel": "Rester sur cette section"
   },
   "review": {
     "title": "Résultats",
@@ -198,8 +209,18 @@
     "notAnswered": "(non répondu)",
     "explanation": "Explication",
     "backToPractice": "Retour à l'entraînement",
+    "downloadPdf": "Télécharger le PDF",
     "toDashboard": "Tableau de bord",
-    "noResult": "Aucun résultat trouvé. Retournez à l'entraînement pour réessayer."
+    "noResult": "Aucun résultat trouvé. Retournez à l'entraînement pour réessayer.",
+    "delfVerdictTitle": "Verdict officiel DELF B2",
+    "delfTotal": "Équivalent DELF : {{score}}/100",
+    "delfPassed": "Admis — {{score}}/100 (minimum {{min}}/100).",
+    "delfFailed": "Non admis — {{score}}/100 (minimum {{min}}/100).",
+    "delfPending": "La production écrite est encore en cours de correction IA — le verdict final sera mis à jour.",
+    "delfGateHint": "Chacune des 4 sections doit aussi obtenir au moins {{skillMin}}/{{skillMax}}.",
+    "passGate": "≥ seuil",
+    "failGate": "< seuil",
+    "rawPoints": "Brut : {{score}} / {{max}} pts"
   },
   "mistakes": {
     "title": "Cahier d'erreurs",
@@ -211,6 +232,17 @@
     "correctAnswer": "Bonne réponse",
     "explanation": "Explication",
     "practiceAgain": "Refaire l'exercice",
+    "retryOpen": "Refaire cette question",
+    "retryCancel": "Annuler",
+    "retrySubmit": "Vérifier ma réponse",
+    "retryPrompt": "Choisissez votre nouvelle réponse :",
+    "retryFillPlaceholder": "Saisissez votre réponse",
+    "retryEmpty": "Veuillez choisir ou saisir une réponse d'abord.",
+    "retryCorrect": "Correct ! Question retirée du cahier.",
+    "retryCorrectBanner": "✓ Correct — cette question va être retirée de votre cahier.",
+    "retryWrong": "Pas tout à fait — relisez l'explication.",
+    "retryWrongBanner": "Toujours faux. Bonne réponse : {{answer}}",
+    "retryFail": "Échec de l'envoi — veuillez réessayer.",
     "empty": "Aucune erreur pour l'instant — continuez à vous entraîner, les mauvaises réponses apparaîtront ici."
   },
   "pricing": {
@@ -273,9 +305,31 @@
     "modelsRow": {
       "label": "Modèles IA de correction",
       "none": "—",
-      "haiku": "Haiku (rapide)",
-      "sonnet": "Sonnet (équilibré)",
-      "opus": "Opus (précis)"
+      "haiku": "Qwen Turbo (rapide)",
+      "sonnet": "DeepSeek Chat (équilibré)",
+      "opus": "Qwen Plus (précis)"
+    },
+    "checkout": {
+      "loginFirst": "Veuillez vous connecter avant l'achat",
+      "buyNow": "Acheter",
+      "yearly": "Annuel",
+      "monthly": "Mensuel",
+      "perMonth": "par mois",
+      "perYear": "par an",
+      "autoRenew": "Activer le renouvellement automatique (mensuel, résiliable à tout moment)",
+      "title": "Scannez pour payer",
+      "selectProvider": "Moyen de paiement",
+      "wechat": "WeChat Pay",
+      "alipay": "Alipay",
+      "generateQr": "Générer le QR de paiement",
+      "orderId": "Commande : {{id}}",
+      "qrExpires": "Le QR expire dans 15 minutes",
+      "createFailed": "Échec de la création de commande, réessayez",
+      "paySuccess": "Paiement réussi, abonnement activé",
+      "payClosed": "Commande fermée ou échouée, réessayez",
+      "mockPay": "Paiement simulé (dev uniquement)",
+      "mockSuccess": "Paiement simulé réussi",
+      "openingAlipay": "Ouverture du caissier Alipay…"
     }
   },
   "essay": {
@@ -301,11 +355,11 @@
       "gradedAt": "Corrigé {{time}}",
       "pollingHint": "Cette page se rafraîchit automatiquement une fois la correction terminée.",
       "empty": "Aucune rédaction soumise pour cette question.",
-      "slowWarning": "La correction IA prend plus de temps que d'habitude — Claude est peut-être surchargé. Vous pouvez patienter ou cliquer sur « Réécrire » pour réessayer.",
+      "slowWarning": "La correction IA prend plus de temps que d'habitude — le service peut être surchargé. Vous pouvez patienter ou cliquer sur « Réécrire » pour réessayer.",
       "errNotConfigured": "Le service de correction IA n'est pas configuré. Contactez l'administrateur.",
       "errTruncated": "La sortie IA a été tronquée. Veuillez relancer la correction ou réessayer plus tard.",
       "errBadOutput": "L'IA a renvoyé un format invalide. Veuillez relancer la correction.",
-      "errProviderDown": "Le service Claude est temporairement indisponible. Réessayez plus tard.",
+      "errProviderDown": "Le service de correction IA est temporairement indisponible. Réessayez plus tard.",
       "errRateLimited": "Trop de requêtes — patientez un instant et réessayez.",
       "errBadRequest": "La requête de correction a été rejetée. Contactez l'administrateur.",
       "errCallFailed": "Problème de réseau ou de connexion. Veuillez réessayer.",
@@ -354,6 +408,48 @@
       "submit": "Soumettre la réécriture",
       "placeholder": "Modifiez votre rédaction ici…",
       "wordCount": "Nombre de mots : {{count}}"
+    }
+  },
+  "orders": {
+    "title": "Mes commandes",
+    "empty": "Aucune commande",
+    "col": {
+      "createdAt": "Date",
+      "plan": "Formule",
+      "months": "Durée",
+      "amount": "Montant",
+      "provider": "Canal",
+      "status": "Statut",
+      "action": "Actions"
+    },
+    "months": "{{count}} mois",
+    "status": {
+      "CREATED": "Créée",
+      "PENDING": "En attente",
+      "PAID": "Payée",
+      "CLOSED": "Fermée",
+      "REFUNDED": "Remboursée",
+      "FAILED": "Échouée"
+    },
+    "continuePay": "Continuer",
+    "refundedSuffix": "(remboursé : {{amount}})",
+    "contracts": {
+      "title": "Renouvellement automatique",
+      "nextCharge": "Prochain prélèvement : {{date}}",
+      "failedCount": "{{count}} échec(s)",
+      "unsign": "Résilier le renouvellement",
+      "unsignConfirmTitle": "Résilier le renouvellement automatique ?",
+      "unsignConfirmBody": "Les prélèvements automatiques s'arrêteront. Votre abonnement actuel reste valide jusqu'à expiration.",
+      "unsignConfirmOk": "Résilier",
+      "unsignSuccess": "Résiliation envoyée",
+      "unsignFailed": "Échec de la résiliation, réessayez",
+      "status": {
+        "PENDING": "En attente",
+        "ACTIVE": "Actif",
+        "SUSPENDED": "Suspendu",
+        "TERMINATED": "Résilié"
+      },
+      "unsignHint": "Pour annuler, résiliez depuis l'application WeChat Pay / Alipay."
     }
   }
 }

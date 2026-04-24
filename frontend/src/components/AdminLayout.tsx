@@ -1,7 +1,7 @@
 import { Layout, Menu, Dropdown, Avatar, Tag, Space, Typography } from 'antd';
 import {
   DashboardOutlined, UserOutlined, FileTextOutlined, LogoutOutlined,
-  SafetyCertificateOutlined, HistoryOutlined, BookOutlined,
+  SafetyCertificateOutlined, HistoryOutlined, BookOutlined, CreditCardOutlined,
 } from '@ant-design/icons';
 import { Outlet, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -34,6 +34,7 @@ export default function AdminLayout() {
     { key: '/admin/dashboard', icon: <DashboardOutlined />, label: <Link to="/admin/dashboard">Dashboard</Link> },
     { key: '/admin/users', icon: <UserOutlined />, label: <Link to="/admin/users">用户管理</Link> },
     { key: '/admin/exams', icon: <BookOutlined />, label: <Link to="/admin/exams">套题管理</Link> },
+    { key: '/admin/payments', icon: <CreditCardOutlined />, label: <Link to="/admin/payments">支付管理</Link> },
     { key: '/admin/logs', icon: <FileTextOutlined />, label: <Link to="/admin/logs">操作审计</Link> },
     { key: '/admin/logins', icon: <HistoryOutlined />, label: <Link to="/admin/logins">登录历史</Link> },
   ];

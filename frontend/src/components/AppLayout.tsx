@@ -26,11 +26,13 @@ export default function AppLayout() {
     { key: '/mistakes', label: <Link to="/mistakes">{t('nav.mistakes')}</Link> },
     { key: '/dashboard', label: <Link to="/dashboard">{t('nav.dashboard')}</Link> },
     { key: '/pricing', label: <Link to="/pricing">{t('nav.pricing')}</Link> },
+    ...(user ? [{ key: '/orders', label: <Link to="/orders">{t('nav.orders')}</Link> }] : []),
   ];
 
   const userMenu = {
     items: [
       { key: 'dashboard', label: t('nav.dashboard'), onClick: () => navigate('/dashboard') },
+      { key: 'orders', label: t('nav.orders'), onClick: () => navigate('/orders') },
       { key: 'logout', label: t('nav.logout'), onClick: () => { logout(); navigate('/'); } },
     ],
   };

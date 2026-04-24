@@ -66,6 +66,38 @@ if (IS_PROD) {
   }
 }
 
+// Payments (WeChat V3 / Alipay). In production at least one channel must be fully configured.
+const WECHAT_CONFIGURED = !!(
+  process.env.WECHAT_APP_ID &&
+  process.env.WECHAT_MCHID &&
+  process.env.WECHAT_SERIAL_NO &&
+  process.env.WECHAT_APIV3_KEY &&
+  process.env.WECHAT_PRIVATE_KEY_PEM &&
+  process.env.WECHAT_PLATFORM_CERT_PEM
+);
+const ALIPAY_CONFIGURED = !!(
+  process.env.ALIPAY_APP_ID &&
+  process.env.ALIPAY_PRIVATE_KEY_PEM &&
+  process.env.ALIPAY_PUBLIC_KEY_PEM
+);
+
+if (IS_PROD) {
+  if (!WECHAT_CONFIGURED && !ALIPAY_CONFIGURED) {
+    errors.push('No payment channel configured — set either WECHAT_* or ALIPAY_* (see .env.example)');
+  }
+  if (!process.env.PAY_PUBLIC_BASE_URL) {
+    errors.push('PAY_PUBLIC_BASE_URL is required in production (must be HTTPS, used by channel notify callbacks)');
+  } else if (!/^https:\/\//.test(process.env.PAY_PUBLIC_BASE_URL)) {
+    errors.push('PAY_PUBLIC_BASE_URL must start with https:// (channels reject insecure notify URLs)');
+  }
+  if (process.env.PAY_MOCK_ENABLED === 'true') {
+    errors.push('PAY_MOCK_ENABLED=true is forbidden in production — remove it from .env');
+  }
+} else {
+  if (!WECHAT_CONFIGURED) warnings.push('WECHAT_* not fully set — /api/pay/wechat/* will operate in mock mode');
+  if (!ALIPAY_CONFIGURED) warnings.push('ALIPAY_* not fully set — /api/pay/alipay/* will operate in mock mode');
+}
+
 if (errors.length) {
   // eslint-disable-next-line no-console
   console.error('\n❌ FATAL: environment configuration invalid:\n  - ' + errors.join('\n  - ') + '\n');
@@ -89,4 +121,24 @@ module.exports = {
   DEEPSEEK_BASE_URL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
   DASHSCOPE_API_KEY: process.env.DASHSCOPE_API_KEY || '',
   DASHSCOPE_BASE_URL: process.env.DASHSCOPE_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+
+  // Payments
+  WECHAT_CONFIGURED,
+  ALIPAY_CONFIGURED,
+  PAY_PUBLIC_BASE_URL: process.env.PAY_PUBLIC_BASE_URL || '',
+  PAY_MOCK_ENABLED: process.env.PAY_MOCK_ENABLED === 'true',
+  WECHAT: {
+    APP_ID: process.env.WECHAT_APP_ID || '',
+    MCHID: process.env.WECHAT_MCHID || '',
+    SERIAL_NO: process.env.WECHAT_SERIAL_NO || '',
+    APIV3_KEY: process.env.WECHAT_APIV3_KEY || '',
+    PRIVATE_KEY_PEM: process.env.WECHAT_PRIVATE_KEY_PEM || '',
+    PLATFORM_CERT_PEM: process.env.WECHAT_PLATFORM_CERT_PEM || '',
+  },
+  ALIPAY: {
+    APP_ID: process.env.ALIPAY_APP_ID || '',
+    PRIVATE_KEY_PEM: process.env.ALIPAY_PRIVATE_KEY_PEM || '',
+    PUBLIC_KEY_PEM: process.env.ALIPAY_PUBLIC_KEY_PEM || '',
+    GATEWAY: process.env.ALIPAY_GATEWAY || 'https://openapi.alipay.com/gateway.do',
+  },
 };
