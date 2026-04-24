@@ -25,6 +25,7 @@
 | 📊 **学习中心** | 四项能力雷达图 · 练习历史追踪 |
 | 🌐 **多语言** | 中文 · English · Français 一键切换 |
 | 💳 **订阅方案** | FREE / STANDARD / AI / AI_UNLIMITED 四档 |
+| 💰 **订阅支付** | 微信支付 V3 + 支付宝双通道 · 扫码下单 · **自动续费（签约代扣）** · 订单对账 · 管理员手动退款 |
 | 🧾 **成绩单** | PDF 成绩单下载 |
 
 ---
@@ -42,6 +43,7 @@ Zustand · React Router · ECharts · react-i18next · Axios
 Node.js · Express · Prisma ORM · SQLite (dev) / PostgreSQL (prod)
 JWT · bcryptjs · Zod · openai SDK → DeepSeek V3 (AI grading)
 tesseract.js → OCR（识别用户上传的作文照片）
+wechatpay-axios-plugin · alipay-sdk → 订阅支付（V3 / RSA2）
 ```
 
 ---
@@ -63,6 +65,55 @@ tesseract.js → OCR（识别用户上传的作文照片）
 
 - 尽量正对、光线充足、对焦清晰，裁掉多余背景
 - 手写体/倾斜/反光会显著降低识别率
+
+## 💰 订阅支付（微信 + 支付宝）
+
+国内双通道订阅支付，支持一次性购买和按月自动续费。详细架构见 [支付功能.md](./支付功能.md)。
+
+### 能力矩阵
+
+| 能力 | 说明 |
+|------|------|
+| 一次性购买 | 微信 Native 扫码 / 支付宝 precreate 扫码；按月 / 按年 |
+| 自动续费 | 微信周期扣款合约 + 支付宝周期扣款协议；到期前 worker 扫单代扣 |
+| 价目管理 | Product / Price 存数据库，管理员后台 CRUD，无需改代码 |
+| 订单对账 | worker 每 10 分钟关超时单 + 补丢失回调单（防网络丢包） |
+| 退款 | 超管后台手动操作（二次密码确认） |
+| 审计 | 所有关键事件写 `AdminLog`（PAYMENT_COMPLETED / FAILED / REFUNDED / CONTRACT_*） |
+
+### 主要路由
+
+- `GET /api/pay/products` — 拉价目
+- `POST /api/pay/wechat/native` · `POST /api/pay/alipay/create` — 一次性下单
+- `POST /api/pay/wechat/sign` · `POST /api/pay/alipay/sign` — 签约自动续费
+- `POST /api/pay/wechat/notify` · `POST /api/pay/alipay/notify` — 渠道回调（验签 + 幂等入账）
+- `GET /api/pay/orders` · `GET /api/pay/contracts` — 用户自查
+- `/api/admin/products|prices|payment-orders|contracts` — 运营后台
+
+### Env（至少配齐一个渠道）
+
+```
+# 微信支付 V3
+WECHAT_APP_ID=...
+WECHAT_MCHID=...
+WECHAT_SERIAL_NO=...
+WECHAT_APIV3_KEY=...
+WECHAT_PRIVATE_KEY_PEM="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+WECHAT_PLATFORM_CERT_PEM=...
+
+# 支付宝
+ALIPAY_APP_ID=...
+ALIPAY_PRIVATE_KEY_PEM=...
+ALIPAY_PUBLIC_KEY_PEM=...
+
+# 公共
+PAY_PUBLIC_BASE_URL=https://api.your-domain.com     # notify 必须 HTTPS
+PAY_MOCK_ENABLED=false                              # 仅 dev 开启，便于前端联调
+```
+
+> 生产环境启动时 `env.js` 强校验：`WECHAT_*` 与 `ALIPAY_*` 至少一套完整，否则直接 exit。
+
+---
 
 ## 🚀 本地运行
 
@@ -166,6 +217,12 @@ delf-b2-website/
 6. 首次登录超管后**立即改密码**
 7. 前端：`cd frontend && npm run build` 产物部署到 CDN / Nginx
 8. 建议前置 Nginx 或 CDN 统一 TLS + HTTP/2，以及 WAF 防 CC
+9. **订阅支付**（微信 + 支付宝）：
+   - 补齐 `.env` 渠道凭证（`WECHAT_*` / `ALIPAY_*` 至少一套 + `PAY_PUBLIC_BASE_URL`）
+   - `npx prisma migrate deploy` 含 `billing_v2` 迁移
+   - `npm run seed:billing` 灌入默认 Product/Price（可后续后台改）
+   - 微信 / 支付宝商户后台把 notify URL 配成 `https://<你的域名>/api/pay/{wechat,alipay}/notify`
+   - Nginx 放行 `/api/pay/*/notify` 不走 auth，但通过 WAF，并限制 body ≤ 1 MB
 
 ## 🗺️ 路线图
 
@@ -173,6 +230,7 @@ delf-b2-website/
 - [x] **v0.2 生产级安全** — 邮箱验证 · refresh rotation · 状态守卫 · 管理后台 · 审计日志
 - [x] **v1.0 标准版** — 完整模拟考试 · 错题本 · PDF 成绩单
 - [x] **v1.5 AI 版 Beta** — DeepSeek V3 写作批改（并行 fan-out，单篇 <¥0.05） · AI 学习助手
+- [ ] **v1.6 订阅支付** — 微信 + 支付宝双通道 · 自动续费（签约代扣）· 商品/价格后台 · 管理员手动退款
 - [ ] **v2.0 AI 版正式** — AI 口语评测 · 备考计划生成 · 移动端优化
 - [ ] **v2.5** — 社区 · 教师版 · B2B API
 

@@ -1,27 +1,54 @@
-# CLAUDE.md — Gotchas
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
-本次（2026-04-18 生产级加固迭代）我自己踩过的坑。写在这里避免复犯。
+Tradeoff: These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
-## 1. 跑 Prisma CLI 前先 `unset DATABASE_URL`
+1. Think Before Coding
+Don't assume. Don't hide confusion. Surface tradeoffs.
 
-## 2. Admin stats 两个接口字段名不一致
+Before implementing:
 
-## 3. 调试鉴权时记得先杀 node + 关速率限制
+State your assumptions explicitly. If uncertain, ask.
+If multiple interpretations exist, present them - don't pick silently.
+If a simpler approach exists, say so. Push back when warranted.
+If something is unclear, stop. Name what's confusing. Ask.
+2. Simplicity First
+Minimum code that solves the problem. Nothing speculative.
 
-## 4. 日志里抓 token 不能裸用 grep
+No features beyond what was asked.
+No abstractions for single-use code.
+No "flexibility" or "configurability" that wasn't requested.
+No error handling for impossible scenarios.
+If you write 200 lines and it could be 50, rewrite it.
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-## 5. CSP 改了默认，生产加新 CDN 时会中断。
+3. Surgical Changes
+Touch only what you must. Clean up only your own mess.
 
-## 6. Windows 下 bash `&` 后的 cwd 不跟随
+When editing existing code:
 
-## 7. DeepSeek 迁移（2026-04-20）
+Don't "improve" adjacent code, comments, or formatting.
+Don't refactor things that aren't broken.
+Match existing style, even if you'd do it differently.
+If you notice unrelated dead code, mention it - don't delete it.
+When your changes create orphans:
 
-- `.env` 里 `ANTHROPIC_API_KEY` 要手动改名 `DEEPSEEK_API_KEY`，我不会自动迁移
-- DeepSeek 的 usage 字段是 `prompt_tokens` / `completion_tokens` / `prompt_cache_hit_tokens`，不是 Claude 的 `input_tokens` / `output_tokens` / `cache_read_input_tokens`
-- DeepSeek 自动按前缀缓存，**不需要**手动加 `cache_control: ephemeral`，也没有 5 分钟 TTL
-- tool 调用响应格式不同：`message.tool_calls[0].function.arguments` 是**字符串**，要 `JSON.parse`；Claude 是结构化 `input` 对象
-- 老 Essay 行的 `model` 字段仍是 `haiku-4-5` / `sonnet-4-6` / `opus-4-7`，读端兜底渲染为 "(legacy)"，不做数据迁移
+Remove imports/variables/functions that YOUR changes made unused.
+Don't remove pre-existing dead code unless asked.
+The test: Every changed line should trace directly to the user's request.
 
----
+4. Goal-Driven Execution
+Define success criteria. Loop until verified.
 
-> 本文件只列"我踩过的坑"，不是项目文档。架构和 API 看 `README.md`。
+Transform tasks into verifiable goals:
+
+"Add validation" → "Write tests for invalid inputs, then make them pass"
+"Fix the bug" → "Write a test that reproduces it, then make it pass"
+"Refactor X" → "Ensure tests pass before and after"
+For multi-step tasks, state a brief plan:
+
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+

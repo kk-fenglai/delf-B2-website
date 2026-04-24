@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   Card, Typography, Tabs, Tag, Button, Empty, Spin, Pagination, Badge, Space, Alert,
+  Radio, Checkbox, Input, message,
 } from 'antd';
 import {
   BookOutlined, CheckCircleTwoTone, CloseCircleTwoTone, ReloadOutlined,
+  EditOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import type { MistakeItem, MistakesResponse, MistakeStats, Skill } from '../types';
@@ -14,28 +15,110 @@ const { Title, Paragraph, Text } = Typography;
 
 const SKILL_KEYS: Array<Skill | 'ALL'> = ['ALL', 'CO', 'CE', 'PE', 'PO'];
 
-// Maps a skill to the practice route so "Practice again" lands on the right
-// filtered list. Mock has no dedicated route here — individual-skill practice
-// is the right destination for re-attempting an objective-type mistake.
-const SKILL_ROUTE: Record<Skill, string> = {
-  CO: '/practice/listening',
-  CE: '/practice/reading',
-  PE: '/practice/writing',
-  PO: '/practice/speaking',
-};
-
 function formatAnswer(ans: string | string[]): string {
   if (Array.isArray(ans)) return ans.length ? ans.join(', ') : '—';
   const s = String(ans ?? '').trim();
   return s || '—';
 }
 
-function MistakeCard({ item }: { item: MistakeItem }) {
+type RetryResult = {
+  isCorrect: boolean | null;
+  correctAnswer: string[];
+  explanation: string | null;
+  cleared: boolean;
+};
+
+function MistakeCard({
+  item,
+  onCleared,
+}: {
+  item: MistakeItem;
+  onCleared: (attemptId: string) => void;
+}) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const [retryOpen, setRetryOpen] = useState(false);
+  const [retryAnswer, setRetryAnswer] = useState<string | string[]>(
+    item.type === 'MULTIPLE' ? [] : ''
+  );
+  const [submitting, setSubmitting] = useState(false);
+  const [result, setResult] = useState<RetryResult | null>(null);
 
   const userAns = formatAnswer(item.userAnswer);
   const correctAns = formatAnswer(item.correctAnswer);
+
+  const submitRetry = async () => {
+    const empty = Array.isArray(retryAnswer)
+      ? retryAnswer.length === 0
+      : !retryAnswer.toString().trim();
+    if (empty) {
+      message.warning(t('mistakes.retryEmpty'));
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const { data } = await api.post<RetryResult>(
+        `/user/mistakes/${item.questionId}/retry`,
+        { answer: retryAnswer }
+      );
+      setResult(data);
+      if (data.cleared) {
+        message.success(t('mistakes.retryCorrect'));
+        // Give the success toast a beat to land before the card disappears,
+        // otherwise the user doesn't register what happened.
+        setTimeout(() => onCleared(item.attemptId), 900);
+      } else {
+        message.error(t('mistakes.retryWrong'));
+      }
+    } catch (e: any) {
+      message.error(e?.response?.data?.error || t('mistakes.retryFail'));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const renderRetryInput = () => {
+    if (item.type === 'SINGLE' || item.type === 'TRUE_FALSE') {
+      return (
+        <Radio.Group
+          value={retryAnswer}
+          onChange={(e) => setRetryAnswer(e.target.value)}
+          className="flex flex-col gap-2"
+          disabled={!!result?.cleared}
+        >
+          {item.options.map((o) => (
+            <Radio key={o.id} value={o.label} className="p-2 hover:bg-gray-50 rounded">
+              <strong>{o.label}.</strong> {o.text}
+            </Radio>
+          ))}
+        </Radio.Group>
+      );
+    }
+    if (item.type === 'MULTIPLE') {
+      return (
+        <Checkbox.Group
+          value={Array.isArray(retryAnswer) ? retryAnswer : []}
+          onChange={(v) => setRetryAnswer(v as string[])}
+          className="flex flex-col gap-2"
+          disabled={!!result?.cleared}
+        >
+          {item.options.map((o) => (
+            <Checkbox key={o.id} value={o.label} className="p-2 hover:bg-gray-50 rounded">
+              <strong>{o.label}.</strong> {o.text}
+            </Checkbox>
+          ))}
+        </Checkbox.Group>
+      );
+    }
+    // FILL
+    return (
+      <Input
+        value={Array.isArray(retryAnswer) ? '' : retryAnswer}
+        onChange={(e) => setRetryAnswer(e.target.value)}
+        placeholder={t('mistakes.retryFillPlaceholder')}
+        disabled={!!result?.cleared}
+      />
+    );
+  };
 
   return (
     <Card
@@ -109,14 +192,67 @@ function MistakeCard({ item }: { item: MistakeItem }) {
         />
       )}
 
-      <div className="flex justify-end">
-        <Button
-          type="primary"
-          icon={<ReloadOutlined />}
-          onClick={() => navigate(SKILL_ROUTE[item.skill])}
-        >
-          {t('mistakes.practiceAgain')}
-        </Button>
+      {retryOpen && (
+        <div className="mt-3 pt-3 border-t border-gray-200">
+          <Text strong className="block mb-2">{t('mistakes.retryPrompt')}</Text>
+          {renderRetryInput()}
+          {result && !result.cleared && (
+            <Alert
+              type="error"
+              className="mt-3"
+              showIcon
+              icon={<CloseCircleTwoTone twoToneColor="#ff4d4f" />}
+              message={t('mistakes.retryWrongBanner', {
+                answer: result.correctAnswer.join(', '),
+              })}
+              description={result.explanation || undefined}
+            />
+          )}
+          {result?.cleared && (
+            <Alert
+              type="success"
+              className="mt-3"
+              showIcon
+              icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
+              message={t('mistakes.retryCorrectBanner')}
+            />
+          )}
+        </div>
+      )}
+
+      <div className="flex justify-end gap-2 mt-3">
+        {!retryOpen ? (
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => setRetryOpen(true)}
+          >
+            {t('mistakes.retryOpen')}
+          </Button>
+        ) : (
+          <>
+            <Button
+              onClick={() => {
+                setRetryOpen(false);
+                setResult(null);
+                setRetryAnswer(item.type === 'MULTIPLE' ? [] : '');
+              }}
+              disabled={submitting}
+            >
+              {t('mistakes.retryCancel')}
+            </Button>
+            {!result?.cleared && (
+              <Button
+                type="primary"
+                icon={<ReloadOutlined />}
+                loading={submitting}
+                onClick={submitRetry}
+              >
+                {t('mistakes.retrySubmit')}
+              </Button>
+            )}
+          </>
+        )}
       </div>
     </Card>
   );
@@ -154,6 +290,18 @@ export default function MistakeNotebook() {
 
   useEffect(() => { fetchStats(); }, []);
   useEffect(() => { fetchItems(); /* eslint-disable-next-line */ }, [skill, page]);
+
+  // Optimistic removal after a successful retry — avoid a full refetch so the
+  // card's "Correct!" banner stays on screen during the fade. Stats are
+  // refreshed so the tab badge counts stay in sync with reality.
+  const handleCleared = (attemptId: string) => {
+    setData((d) =>
+      d
+        ? { ...d, items: d.items.filter((i) => i.attemptId !== attemptId), total: Math.max(0, d.total - 1) }
+        : d
+    );
+    fetchStats();
+  };
 
   // Reset pagination when the skill filter changes so we never land on an
   // out-of-range page (e.g. page 3 of "all" but only 1 page of "CO").
@@ -214,7 +362,7 @@ export default function MistakeNotebook() {
       ) : (
         <>
           {data.items.map((item) => (
-            <MistakeCard key={item.attemptId} item={item} />
+            <MistakeCard key={item.attemptId} item={item} onCleared={handleCleared} />
           ))}
           {data.total > pageSize && (
             <div className="flex justify-center mt-4">
