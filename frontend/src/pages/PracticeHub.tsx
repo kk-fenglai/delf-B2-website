@@ -22,8 +22,8 @@ const entries: HubEntry[] = [
     titleKey: 'skill.PO',
     descKey: 'practice.hub.poDesc',
     to: '/practice/speaking',
-    tagKey: 'practice.hub.comingSoonTag',
-    tagColor: 'orange',
+    tagKey: 'practice.hub.aiGradedTag',
+    tagColor: 'gold',
   },
 ];
 

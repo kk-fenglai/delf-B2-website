@@ -39,6 +39,8 @@ model User {
   attempts              UserAttempt[]
   sessions              ExamSession[]
   essays                Essay[]
+  recordings            Recording[]
+  orals                 Oral[]
   loginHistory          LoginHistory[]
   resetTokens           PasswordResetToken[]
   twoFactorTokens       TwoFactorToken[]
@@ -71,11 +73,17 @@ model Price {
   productId         String
   product           Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
   code              String         @unique      // STANDARD_1M | STANDARD_12M | AI_1M | ...
+  // Optional human-readable label for admin UI / marketing copy (does not replace `code`).
+  name              String?
   months            Int                           // 1 | 3 | 12
   currency          String         @default("CNY")
   amountCents       Int
   supportsAutoRenew Boolean        @default(false) // typically only monthly prices
   active            Boolean        @default(true)
+  // Stripe Price ID (e.g. price_1Pxxxx). Required for Stripe `mode: 'subscription'`
+  // checkout. One-time `mode: 'payment'` uses price_data inline so this can be null.
+  stripePriceId     String?
+  stripeMappings    PriceStripeMapping[]
   orders            PaymentOrder[]
   contracts         PayContract[]
   createdAt         DateTime       @default(now())
@@ -84,14 +92,27 @@ model Price {
   @@index([productId, active])
 }
 
+model PriceStripeMapping {
+  id           String   @id @default(cuid())
+  priceId      String
+  price        Price    @relation(fields: [priceId], references: [id], onDelete: Cascade)
+  currency     String
+  stripePriceId String  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([priceId, currency])
+  @@index([currency])
+}
+
 model PaymentOrder {
   id               String    @id @default(cuid())
   userId           String
   user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // wechat | alipay
+  // wechat | alipay | stripe
   provider         String
-  // native_qr | page_pay | precreate_qr | autopay
+  // native_qr | page_pay | precreate_qr | autopay | stripe_checkout | stripe_subscription
   product          String
 
   // Our business intent
@@ -141,8 +162,13 @@ model PayContract {
   priceId             String
   price               Price     @relation(fields: [priceId], references: [id])
 
-  provider            String                    // wechat | alipay
-  externalContractId  String    @unique         // wechat contract_id / alipay agreement_no
+  provider            String                    // wechat | alipay | stripe
+  externalContractId  String    @unique         // wechat contract_id / alipay agreement_no / stripe sub id mirror
+
+  // Stripe-only: customer + subscription identifiers used for Customer Portal
+  // and admin force-cancel. Null for wechat/alipay rows.
+  stripeCustomerId      String?
+  stripeSubscriptionId  String?  @unique
 
   status              String    @default("PENDING") // PENDING | ACTIVE | TERMINATED | SUSPENDED
   nextChargeAt        DateTime?
@@ -334,6 +360,7 @@ model Question {
 
   options       QuestionOption[]
   attempts      UserAttempt[]
+  followUps     OralFollowUp[]
 
   @@index([examSetId, skill])
   @@index([passageId])
@@ -417,5 +444,82 @@ model Essay {
 
   @@index([userId, createdAt])
   @@index([status, createdAt])              // worker scans queued/grading
+  @@index([sessionId])
+}
+
+// ---------------- Oral / Production Orale ----------------
+// Static follow-up questions per SPEAKING question — admin-curated. Read by
+// the SpeakingExam page during the débat phase; passed to the LLM as scoring
+// context (with `expectedAngle`) so it can judge the candidate's response.
+model OralFollowUp {
+  id            String   @id @default(cuid())
+  questionId    String
+  question      Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  order         Int      @default(0)
+  text          String                       // 考官问题原文 (FR)
+  audioUrl      String?                      // 可选 TTS 预录
+  expectedAngle String?                      // 评分时给 LLM 的参考方向，不展示给学生
+
+  @@index([questionId, order])
+}
+
+// One Recording row per uploaded audio blob. `followUpId == null` ⇒ the
+// monologue (Partie 1); otherwise the answer to that follow-up (Partie 2).
+// Audio file lives on disk under RECORDINGS_DIR; we never store binaries
+// in the DB. Transcript is filled in by the oral worker.
+model Recording {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId       String?
+  questionId      String
+  followUpId      String?
+  audioPath       String                    // relative to RECORDINGS_DIR
+  mimeType        String
+  durationSec     Int       @default(0)
+  sizeBytes       Int       @default(0)
+  transcript      String?
+  transcriptModel String?
+  transcribedAt   DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@index([userId, createdAt])
+  @@index([sessionId, questionId])
+}
+
+model Oral {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId    String?
+  questionId   String
+
+  // queued        : just inserted, waiting for STT pass
+  // transcribing  : worker is calling DashScope ASR
+  // grading       : transcripts done, LLM scoring in flight
+  // done          : aiScore + rubric populated
+  // error         : errorMessage populated; user may regrade
+  status       String   @default("queued")
+  model        String?
+  locale       String?
+  aiScore      Int?                          // 0..25 recomputed server-side
+  aiFeedback   String?
+  rubric       String?                       // JSON: [{key, score, max, feedback}]
+  corrections  String?                       // JSON: [{excerpt, issue, suggestion, type}]
+  strengths    String?                       // JSON: string[]
+  transcriptCombined String?                 // monologue + each follow-up answer with markers
+  recordingIds String?                       // JSON: [recId, ...] in playback order
+  tokensIn     Int?
+  tokensOut    Int?
+  tokensCached Int?
+  costUsd      Float?
+  errorMessage String?
+  gradedAt     DateTime?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
   @@index([sessionId])
 }

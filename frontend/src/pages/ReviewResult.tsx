@@ -9,6 +9,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import EssayGradeCard from '../components/EssayGradeCard';
+import OralGradeCard from '../components/OralGradeCard';
 import type { SubmitResult, ExamSetDetail, Skill } from '../types';
 
 const { Title, Paragraph, Text } = Typography;
@@ -75,6 +76,7 @@ export default function ReviewResult() {
   const pct = result.maxScore ? Math.round((result.totalScore / result.maxScore) * 100) : 0;
   const questionMap = new Map(exam.questions.map((q) => [q.id, q]));
   const essayByQuestion = new Map((result.essays || []).map((e) => [e.questionId, e]));
+  const oralByQuestion = new Map((result.orals || []).map((o) => [o.questionId, o]));
 
   // DELF B2 verdict. Only meaningful in mock mode (full exam covers all 4
   // skills). We scale each section to /25 so the pass gate (≥5/25) applies
@@ -194,6 +196,7 @@ export default function ReviewResult() {
         const q = questionMap.get(d.questionId);
         if (!q) return null;
         const essay = essayByQuestion.get(d.questionId) || null;
+        const oral = oralByQuestion.get(d.questionId) || null;
         const correctness =
           d.isCorrect === null ? 'pending' : d.isCorrect ? 'correct' : 'wrong';
 
@@ -226,6 +229,13 @@ export default function ReviewResult() {
               <EssayGradeCard
                 essayId={essay.essayId}
                 initialStatus={essay.status}
+                questionPrompt={q.prompt}
+              />
+            )}
+            {q.type === 'SPEAKING' && oral && (
+              <OralGradeCard
+                oralId={oral.oralId}
+                initialStatus={oral.status}
                 questionPrompt={q.prompt}
               />
             )}

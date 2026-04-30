@@ -50,13 +50,20 @@ const audioUpload = multer({
 // Validation schemas
 // ---------------------------------------------------------------------
 const VALID_SKILLS = ['CO', 'CE', 'PE', 'PO'];
-const VALID_TYPES = ['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'FILL', 'ESSAY'];
+const VALID_TYPES = ['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'FILL', 'ESSAY', 'SPEAKING'];
 
 const optionSchema = z.object({
   label: z.string().min(1).max(4),
   text: z.string().min(1),
   isCorrect: z.boolean().default(false),
   order: z.number().int().default(0),
+});
+
+const followUpSchema = z.object({
+  order: z.number().int().min(0).default(0),
+  text: z.string().min(1).max(500),
+  audioUrl: z.string().optional().nullable(),
+  expectedAngle: z.string().max(500).optional().nullable(),
 });
 
 const questionSchema = z.object({
@@ -69,6 +76,8 @@ const questionSchema = z.object({
   explanation: z.string().optional().nullable(),
   points: z.number().int().min(1).max(25).default(1),
   options: z.array(optionSchema).default([]),
+  // SPEAKING-only: follow-up débat questions read by SpeakingExam Partie 2.
+  followUps: z.array(followUpSchema).default([]),
 });
 
 const examSetSchema = z.object({
@@ -84,7 +93,7 @@ const bulkImportSchema = examSetSchema.extend({
 });
 
 // Business-rule validation beyond Zod: enforce exactly-one correct option for
-// SINGLE/TRUE_FALSE, at-least-one for MULTIPLE, zero options for FILL/ESSAY.
+// SINGLE/TRUE_FALSE, at-least-one for MULTIPLE, zero options for FILL/ESSAY/SPEAKING.
 // Returns null on success, or a string error.
 function validateQuestionShape(q) {
   const correctCount = q.options.filter((o) => o.isCorrect).length;
@@ -96,8 +105,18 @@ function validateQuestionShape(q) {
     if (q.options.length < 2) return 'MULTIPLE needs ≥2 options';
     if (correctCount < 1) return 'MULTIPLE needs ≥1 correct option';
   }
-  if ((q.type === 'FILL' || q.type === 'ESSAY') && q.options.length > 0) {
+  if ((q.type === 'FILL' || q.type === 'ESSAY' || q.type === 'SPEAKING') && q.options.length > 0) {
     return `${q.type} must not have options`;
+  }
+  if (q.type === 'SPEAKING') {
+    if (q.skill !== 'PO') return 'SPEAKING questions must have skill = PO';
+    if (!q.followUps || q.followUps.length < 1) {
+      return 'SPEAKING needs ≥1 follow-up question for the débat phase';
+    }
+    if (q.followUps.length > 6) return 'SPEAKING accepts at most 6 follow-ups';
+  }
+  if (q.type !== 'SPEAKING' && q.followUps && q.followUps.length > 0) {
+    return 'follow-ups are only allowed on SPEAKING questions';
   }
   return null;
 }
@@ -149,7 +168,10 @@ router.get('/:id', async (req, res, next) => {
       include: {
         questions: {
           orderBy: { order: 'asc' },
-          include: { options: { orderBy: { order: 'asc' } } },
+          include: {
+            options: { orderBy: { order: 'asc' } },
+            followUps: { orderBy: { order: 'asc' } },
+          },
         },
       },
     });
@@ -234,8 +256,16 @@ router.post('/:id/questions', async (req, res, next) => {
             order: o.order || i,
           })),
         },
+        followUps: {
+          create: data.followUps.map((f, i) => ({
+            order: f.order || i,
+            text: f.text,
+            audioUrl: f.audioUrl || null,
+            expectedAngle: f.expectedAngle || null,
+          })),
+        },
       },
-      include: { options: true },
+      include: { options: true, followUps: true },
     });
     await logAction(req, {
       action: 'QUESTION_CREATE', targetType: 'EXAM', targetId: req.params.id,
@@ -254,9 +284,10 @@ router.put('/questions/:qid', async (req, res, next) => {
     const shapeErr = validateQuestionShape(data);
     if (shapeErr) return res.status(400).json({ error: shapeErr });
 
-    // Replace options atomically so stale rows don't linger.
+    // Replace options + follow-ups atomically so stale rows don't linger.
     const updated = await prisma.$transaction(async (tx) => {
       await tx.questionOption.deleteMany({ where: { questionId: req.params.qid } });
+      await tx.oralFollowUp.deleteMany({ where: { questionId: req.params.qid } });
       return tx.question.update({
         where: { id: req.params.qid },
         data: {
@@ -276,8 +307,16 @@ router.put('/questions/:qid', async (req, res, next) => {
               order: o.order || i,
             })),
           },
+          followUps: {
+            create: data.followUps.map((f, i) => ({
+              order: f.order || i,
+              text: f.text,
+              audioUrl: f.audioUrl || null,
+              expectedAngle: f.expectedAngle || null,
+            })),
+          },
         },
-        include: { options: true },
+        include: { options: true, followUps: true },
       });
     });
     await logAction(req, {
@@ -364,6 +403,14 @@ router.post('/import', async (req, res, next) => {
                 text: o.text,
                 isCorrect: o.isCorrect,
                 order: o.order || j,
+              })),
+            },
+            followUps: {
+              create: (q.followUps || []).map((f, j) => ({
+                order: f.order || j,
+                text: f.text,
+                audioUrl: f.audioUrl || null,
+                expectedAngle: f.expectedAngle || null,
               })),
             },
           },

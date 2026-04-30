@@ -26,6 +26,7 @@ router.get('/', async (_req, res, next) => {
         prices: p.prices.map((pr) => ({
           id: pr.id,
           code: pr.code,
+          name: pr.name,
           months: pr.months,
           currency: pr.currency,
           amountCents: pr.amountCents,

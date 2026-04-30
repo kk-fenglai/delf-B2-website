@@ -25,7 +25,7 @@
 | 📊 **学习中心** | 四项能力雷达图 · 练习历史追踪 |
 | 🌐 **多语言** | 中文 · English · Français 一键切换 |
 | 💳 **订阅方案** | FREE / STANDARD / AI / AI_UNLIMITED 四档 |
-| 💰 **订阅支付** | 微信支付 V3 + 支付宝双通道 · 扫码下单 · **自动续费（签约代扣）** · 订单对账 · 管理员手动退款 |
+| 💰 **订阅支付** | **Stripe Checkout（海外主路径）**：Card / Link / Stripe-hosted WeChat Pay & Alipay · **月度订阅自动续费** · Customer Portal 自助管理 · 管理员一键退款；微信 V3 / 支付宝直连代码保留，按 flag 关停 |
 | 🧾 **成绩单** | PDF 成绩单下载 |
 
 ---
@@ -40,10 +40,11 @@ Zustand · React Router · ECharts · react-i18next · Axios
 
 ### Backend
 ```
-Node.js · Express · Prisma ORM · SQLite (dev) / PostgreSQL (prod)
+Node.js · Express · Prisma ORM · PostgreSQL（dev/prod 统一，推荐 Neon dev branch + prod branch）
 JWT · bcryptjs · Zod · openai SDK → DeepSeek V3 (AI grading)
 tesseract.js → OCR（识别用户上传的作文照片）
-wechatpay-axios-plugin · alipay-sdk → 订阅支付（V3 / RSA2）
+stripe → Stripe Checkout / Customer Portal / Webhook（默认主路径）
+wechatpay-axios-plugin · alipay-sdk → 国内通道（V3 / RSA2，flag 关停，代码保留）
 ```
 
 ---
@@ -66,52 +67,57 @@ wechatpay-axios-plugin · alipay-sdk → 订阅支付（V3 / RSA2）
 - 尽量正对、光线充足、对焦清晰，裁掉多余背景
 - 手写体/倾斜/反光会显著降低识别率
 
-## 💰 订阅支付（微信 + 支付宝）
+## 💰 订阅支付（Stripe-first）
 
-国内双通道订阅支付，支持一次性购买和按月自动续费。详细架构见 [支付功能.md](./支付功能.md)。
+**v1 海外单通道**：Stripe Checkout 一次性 + 订阅双模式，覆盖 Card / Link / Stripe-hosted WeChat Pay / Stripe-hosted Alipay。微信 V3 / 支付宝直连代码完整保留，靠 `ENABLE_DIRECT_WECHAT=false` / `ENABLE_DIRECT_ALIPAY=false` 默认不挂载路由。详细架构与时序图见 [支付功能.md](./支付功能.md)。
+
+### 更新记录（2026-04-30）
+
+- **管理后台（支付）**：支持在后台编辑价格档“展示名”（不改 `code`），并在价目表中展示
+- **多币种订阅**：新增 `PriceStripeMapping`（按 `priceId + currency` 绑定 Stripe recurring `price_xxx`），订阅 Checkout 优先按币种匹配
+- **可靠性**：Stripe Checkout Session 创建失败时，不再遗留 `PENDING` 订单；会立刻标记为 `FAILED` 并写审计日志
+- **Stripe 支付方式**：一次性支付 Checkout 支持 WeChat Pay / Alipay（是否展示取决于 Stripe 账号与币种/地区，详见 `支付功能.md` 排查）
 
 ### 能力矩阵
 
 | 能力 | 说明 |
 |------|------|
-| 一次性购买 | 微信 Native 扫码 / 支付宝 precreate 扫码；按月 / 按年 |
-| 自动续费 | 微信周期扣款合约 + 支付宝周期扣款协议；到期前 worker 扫单代扣 |
-| 价目管理 | Product / Price 存数据库，管理员后台 CRUD，无需改代码 |
-| 订单对账 | worker 每 10 分钟关超时单 + 补丢失回调单（防网络丢包） |
-| 退款 | 超管后台手动操作（二次密码确认） |
-| 审计 | 所有关键事件写 `AdminLog`（PAYMENT_COMPLETED / FAILED / REFUNDED / CONTRACT_*） |
+| 一次性购买 | Stripe Checkout `mode=payment`，按月 / 按年 |
+| 自动续费 | Stripe Subscription（`mode=subscription`）；扣款由 Stripe 自驱，本地用 `invoice.paid` webhook 入账，3 次失败 → 合约 SUSPENDED |
+| 自助管理 | Stripe Customer Portal：换卡 / 取消订阅 / 下载发票，由 `POST /api/pay/stripe/portal` 拉起 |
+| 价目管理 | Product / Price 存 DB，管理员后台 CRUD（订阅档需填 `stripePriceId`），无需改代码 |
+| 订单对账 | worker 每 10 分钟兜底：补丢失 webhook 单 + 关超时未付单（`checkout.sessions.retrieve`） |
+| 退款 | 管理员后台一键退款；按 `externalTradeNo` 前缀自动选 `pi_*` / `in_*` 路径，全额退则用户回落 FREE |
+| 幂等 | `PaymentOrder(provider, providerOrderNo)` 联合 unique；`invoice.id` 复用做 `providerOrderNo`，重放 webhook 直接 P2002 |
+| 审计 | 所有关键事件写 `AdminLog`（PAYMENT_COMPLETED / FAILED / REFUNDED / CONTRACT_* / RECONCILE_FIXUP） |
+| 国内通道（保留） | 微信 V3 Native QR + 周期扣款合约 / 支付宝 precreate + 周期协议；`ENABLE_DIRECT_*=true` 时挂载 |
 
-### 主要路由
+### 主要路由（Stripe，默认启用）
 
-- `GET /api/pay/products` — 拉价目
-- `POST /api/pay/wechat/native` · `POST /api/pay/alipay/create` — 一次性下单
-- `POST /api/pay/wechat/sign` · `POST /api/pay/alipay/sign` — 签约自动续费
-- `POST /api/pay/wechat/notify` · `POST /api/pay/alipay/notify` — 渠道回调（验签 + 幂等入账）
+- `GET /api/pay/products` — 拉价目（公开）
+- `POST /api/pay/stripe/checkout` — 创建 Checkout Session（`subscribe:true` 走订阅模式）
+- `POST /api/pay/stripe/portal` — 拉起 Customer Portal
+- `POST /api/pay/stripe/webhook` — 接 6 个事件（`checkout.session.completed` / `async_payment_succeeded` / `invoice.paid` / `invoice.payment_failed` / `customer.subscription.updated` / `customer.subscription.deleted`）
 - `GET /api/pay/orders` · `GET /api/pay/contracts` — 用户自查
 - `/api/admin/products|prices|payment-orders|contracts` — 运营后台
 
-### Env（至少配齐一个渠道）
+> 国内通道路由 `/api/pay/{wechat,alipay}/*` 仅在对应 `ENABLE_DIRECT_*=true` 时挂载。
+
+### Env（最小集，海外部署）
 
 ```
-# 微信支付 V3
-WECHAT_APP_ID=...
-WECHAT_MCHID=...
-WECHAT_SERIAL_NO=...
-WECHAT_APIV3_KEY=...
-WECHAT_PRIVATE_KEY_PEM="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
-WECHAT_PLATFORM_CERT_PEM=...
+# Stripe（默认主通道）
+STRIPE_SECRET_KEY=sk_live_...                    # 测试用 sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_CHECKOUT_SUCCESS_URL=https://your-domain.com/checkout/stripe/success?orderId={ORDER_ID}
+STRIPE_CHECKOUT_CANCEL_URL=https://your-domain.com/checkout/stripe/cancel?orderId={ORDER_ID}
 
-# 支付宝
-ALIPAY_APP_ID=...
-ALIPAY_PRIVATE_KEY_PEM=...
-ALIPAY_PUBLIC_KEY_PEM=...
-
-# 公共
-PAY_PUBLIC_BASE_URL=https://api.your-domain.com     # notify 必须 HTTPS
-PAY_MOCK_ENABLED=false                              # 仅 dev 开启，便于前端联调
+# 国内通道默认关闭（要开就设为 true，并补齐 WECHAT_* / ALIPAY_* + PAY_PUBLIC_BASE_URL）
+ENABLE_DIRECT_WECHAT=false
+ENABLE_DIRECT_ALIPAY=false
 ```
 
-> 生产环境启动时 `env.js` 强校验：`WECHAT_*` 与 `ALIPAY_*` 至少一套完整，否则直接 exit。
+> 生产环境启动时 `env.js` 强校验：Stripe / 微信 / 支付宝 **至少一套** 完整，否则直接 exit；`PAY_MOCK_ENABLED=true` 在生产也会拒绝启动。Stripe-first 部署的剩余动作（Stripe Dashboard 建 recurring Price、配 webhook、启用 Customer Portal）见 [支付功能.md 第十一节](./支付功能.md)。
 
 ---
 
@@ -119,17 +125,20 @@ PAY_MOCK_ENABLED=false                              # 仅 dev 开启，便于前
 
 ### 准备
 - Node.js ≥ 20
-- （生产环境用 PostgreSQL，开发环境 SQLite 开箱即用）
+- PostgreSQL 数据库（dev/prod 都用 PG）。最省事的方案是 [Neon](https://console.neon.tech) 免费档，开两个 branch 分别给 dev / prod，不用本地装 Postgres
 
 ### 后端
 ```bash
 cd backend
-cp .env.example .env              # 填入 JWT 密钥 + DEEPSEEK_API_KEY
+cp .env.example .env              # 填入 DATABASE_URL（Neon 连接串）+ JWT 密钥 + DEEPSEEK_API_KEY
 npm install
-npx prisma migrate dev --name init
-npm run seed                      # 导入仿真题种子数据
+npx prisma migrate deploy         # 应用 prisma/migrations 下两个迁移
+npm run seed                      # 仿真题 + 4 个 demo 账号（仅 NODE_ENV=development）
+npm run seed:billing              # 默认 Product/Price 价目（管理后台可改）
 npm run dev                       # → http://localhost:4000
 ```
+
+> Windows / PowerShell 用户注意：如果系统级环境变量里有旧的 `DATABASE_URL`，它会盖掉 `.env`（仅影响 `npx prisma ...` 这类 CLI；运行时 `npm run dev` 会被 `dotenv override:true` 覆盖回来）。要么先 `$env:DATABASE_URL='...'` 临时覆盖，要么用 `[Environment]::SetEnvironmentVariable('DATABASE_URL', $null, 'User')` 永久清除。
 
 > 获取 DeepSeek API key：[platform.deepseek.com](https://platform.deepseek.com/api_keys)（国内直连，无需 VPN）。测试阶段充 10 元约够几千篇作文。
 
@@ -206,23 +215,24 @@ delf-b2-website/
 
 1. `cp backend/.env.example backend/.env` 并：
    - `openssl rand -hex 48` 生成两个**不同**的 JWT 密钥
-   - 填入真实 `DATABASE_URL`（生产用 PostgreSQL）
+   - 填入真实 `DATABASE_URL`（PostgreSQL，建议 Neon prod branch，URL 含 `sslmode=require`）
    - 填入 163.com 授权码到 `SMTP_PASS`
    - 设置 `ADMIN_INITIAL_PASSWORD` 为强密码
    - **将 `NODE_ENV=production`**
-2. `cd backend && vi prisma/schema.prisma` 把 `provider = "sqlite"` 改为 `"postgresql"`
-3. `npx prisma migrate deploy`（生产用 deploy 不用 dev）
-4. `npm run seed`（仅超管上线，不会创建演示账户）
+2. `npx prisma migrate deploy`（生产用 deploy 不用 dev）
+3. `npm run seed`（生产只 upsert 超级管理员，**不会**创建 demo 账户，除非 `ALLOW_PROD_SEED=true`）
+4. `npm run seed:billing` 下发默认 Product/Price（金额/币种/`stripePriceId` 都需要再到管理后台改）
 5. `pm2 start src/index.js --name delfluent-api`（或 systemd / Docker）
 6. 首次登录超管后**立即改密码**
 7. 前端：`cd frontend && npm run build` 产物部署到 CDN / Nginx
 8. 建议前置 Nginx 或 CDN 统一 TLS + HTTP/2，以及 WAF 防 CC
-9. **订阅支付**（微信 + 支付宝）：
-   - 补齐 `.env` 渠道凭证（`WECHAT_*` / `ALIPAY_*` 至少一套 + `PAY_PUBLIC_BASE_URL`）
-   - `npx prisma migrate deploy` 含 `billing_v2` 迁移
-   - `npm run seed:billing` 灌入默认 Product/Price（可后续后台改）
-   - 微信 / 支付宝商户后台把 notify URL 配成 `https://<你的域名>/api/pay/{wechat,alipay}/notify`
-   - Nginx 放行 `/api/pay/*/notify` 不走 auth，但通过 WAF，并限制 body ≤ 1 MB
+9. **订阅支付（Stripe-first）**：
+   - `.env` 配齐 `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` + `STRIPE_CHECKOUT_{SUCCESS,CANCEL}_URL`
+   - Stripe Dashboard：给每个月度套餐建 recurring Price，把 `price_xxx` 填到管理后台对应 `Price.stripePriceId`
+   - Stripe Dashboard：Settings → Billing → 启用 **Customer Portal**（推荐 cancel-at-end-of-period）
+   - Stripe Dashboard：Webhooks → 加 endpoint `https://<域名>/api/pay/stripe/webhook`，订阅 6 个事件（详见 [支付功能.md 第十一节](./支付功能.md)）
+   - Nginx：`/api/pay/stripe/webhook` 透传原始 body，保留 `Stripe-Signature` 头，不要 strip
+   - 国内通道（可选）：把 `ENABLE_DIRECT_WECHAT/ALIPAY=true`，补 `WECHAT_*` / `ALIPAY_*` + `PAY_PUBLIC_BASE_URL`，notify URL 配成 `https://<域名>/api/pay/{wechat,alipay}/notify`
 
 ## 🗺️ 路线图
 
@@ -230,7 +240,7 @@ delf-b2-website/
 - [x] **v0.2 生产级安全** — 邮箱验证 · refresh rotation · 状态守卫 · 管理后台 · 审计日志
 - [x] **v1.0 标准版** — 完整模拟考试 · 错题本 · PDF 成绩单
 - [x] **v1.5 AI 版 Beta** — DeepSeek V3 写作批改（并行 fan-out，单篇 <¥0.05） · AI 学习助手
-- [ ] **v1.6 订阅支付** — 微信 + 支付宝双通道 · 自动续费（签约代扣）· 商品/价格后台 · 管理员手动退款
+- [x] **v1.6 订阅支付（代码就绪，待 Stripe Dashboard 接线）** — Stripe Checkout 一次性 + 订阅双模式 · Customer Portal 自助管理 · 商品/价格后台（含 `stripePriceId`） · 管理员一键退款 · reconcile worker 兜底；微信 V3 / 支付宝直连代码保留靠 flag 关停
 - [ ] **v2.0 AI 版正式** — AI 口语评测 · 备考计划生成 · 移动端优化
 - [ ] **v2.5** — 社区 · 教师版 · B2B API
 

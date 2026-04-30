@@ -45,6 +45,15 @@ function validate(data) {
         assert(correctCount >= 1, `q[${i}]: MULTIPLE needs >= 1 correct option`);
       }
     }
+    if (q.type === 'SPEAKING') {
+      assert(q.skill === 'PO', `q[${i}]: SPEAKING requires skill=PO`);
+      assert(Array.isArray(q.followUps) && q.followUps.length >= 1,
+        `q[${i}]: SPEAKING needs >= 1 follow-up question`);
+      q.followUps.forEach((f, j) => {
+        assert(typeof f.text === 'string' && f.text.length > 0,
+          `q[${i}].followUps[${j}]: text required`);
+      });
+    }
   });
 }
 
@@ -68,8 +77,11 @@ async function main() {
   const existing = await prisma.examSet.findFirst({ where: { title: data.title } });
 
   if (existing) {
-    console.log(`   ↻ ExamSet exists (${existing.id}) — wiping old questions/options`);
+    console.log(`   ↻ ExamSet exists (${existing.id}) — wiping old questions/options/follow-ups`);
     await prisma.questionOption.deleteMany({
+      where: { question: { examSetId: existing.id } },
+    });
+    await prisma.oralFollowUp.deleteMany({
       where: { question: { examSetId: existing.id } },
     });
     await prisma.question.deleteMany({ where: { examSetId: existing.id } });
@@ -118,6 +130,17 @@ async function main() {
           text: o.text,
           isCorrect: !!o.isCorrect,
           order: o.order ?? oi,
+        })),
+      });
+    }
+    if (q.type === 'SPEAKING' && Array.isArray(q.followUps)) {
+      await prisma.oralFollowUp.createMany({
+        data: q.followUps.map((f, fi) => ({
+          questionId: created.id,
+          order: f.order ?? fi,
+          text: f.text,
+          audioUrl: f.audioUrl || null,
+          expectedAngle: f.expectedAngle || null,
         })),
       });
     }

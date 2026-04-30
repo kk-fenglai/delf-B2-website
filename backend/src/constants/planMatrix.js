@@ -64,26 +64,33 @@ const CACHED_INPUT_MULTIPLIER = 0.3;
 // FREE is intentionally locked out of AI grading entirely.
 // Differentiation: STANDARD only gets qwen-turbo (cheap); AI gets qwen-turbo +
 // deepseek-chat; AI_UNLIMITED unlocks everything. Quotas scale as well.
+// `monthlyOralExams` is counted per Oral row created (one full PO simulation
+// = 1 unit, regardless of how many follow-up answers it bundles). Caps are
+// stricter than essays because each oral burns STT minutes + LLM tokens.
 const PLAN_CAPS = {
   FREE: {
     models: [],
     monthlyEssays: 0,
     dailyEssays: 0,
+    monthlyOralExams: 0,
   },
   STANDARD: {
     models: ['qwen-turbo'],
     monthlyEssays: 20,
     dailyEssays: 10,
+    monthlyOralExams: 5,
   },
   AI: {
     models: ['qwen-turbo', 'deepseek-chat'],
     monthlyEssays: 50,
     dailyEssays: 15,
+    monthlyOralExams: 15,
   },
   AI_UNLIMITED: {
     models: ['qwen-turbo', 'deepseek-chat', 'qwen-plus'],
     monthlyEssays: 200,
     dailyEssays: 20,
+    monthlyOralExams: 30,
   },
 };
 

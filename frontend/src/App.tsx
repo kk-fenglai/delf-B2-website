@@ -9,7 +9,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import PracticeHub from './pages/PracticeHub';
 import SkillPractice from './pages/SkillPractice';
-import SpeakingPlaceholder from './pages/SpeakingPlaceholder';
+import SpeakingExam from './pages/SpeakingExam';
 import ExamRunner from './pages/ExamRunner';
 import ReviewResult from './pages/ReviewResult';
 import MistakeNotebook from './pages/MistakeNotebook';
@@ -83,13 +83,14 @@ export default function App() {
         <Route path="/practice/listening" element={<RequireAuth><SkillPractice skill="CO" /></RequireAuth>} />
         <Route path="/practice/reading" element={<RequireAuth><SkillPractice skill="CE" /></RequireAuth>} />
         <Route path="/practice/writing" element={<RequireAuth><SkillPractice skill="PE" /></RequireAuth>} />
-        <Route path="/practice/speaking" element={<RequireAuth><SpeakingPlaceholder /></RequireAuth>} />
+        <Route path="/practice/speaking" element={<RequireAuth><SkillPractice skill="PO" /></RequireAuth>} />
         <Route path="/practice/mock" element={<RequireAuth><SkillPractice mockMode /></RequireAuth>} />
 
         {/* Runner routes — skill-scoped and mock */}
         <Route path="/practice/listening/:examId" element={<RequireAuth><ExamRunner skill="CO" /></RequireAuth>} />
         <Route path="/practice/reading/:examId" element={<RequireAuth><ExamRunner skill="CE" /></RequireAuth>} />
         <Route path="/practice/writing/:examId" element={<RequireAuth><ExamRunner skill="PE" /></RequireAuth>} />
+        <Route path="/practice/speaking/:examId" element={<RequireAuth><SpeakingExam /></RequireAuth>} />
         <Route path="/practice/mock/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
         {/* Legacy: /practice/:examId preserved for old session links (full mock) */}
         <Route path="/practice/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />

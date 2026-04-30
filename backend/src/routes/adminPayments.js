@@ -25,6 +25,7 @@ const {
 const { refundOrder } = require('../services/billing');
 const wechat = require('../services/payments/wechat');
 const alipay = require('../services/payments/alipay');
+const stripePay = require('../services/payments/stripe');
 const { logger } = require('../utils/logger');
 
 const router = express.Router();
@@ -41,7 +42,7 @@ router.get('/products', async (_req, res, next) => {
     const products = await prisma.product.findMany({
       orderBy: { createdAt: 'asc' },
       include: {
-        prices: { orderBy: { months: 'asc' } },
+        prices: { orderBy: { months: 'asc' }, include: { stripeMappings: true } },
       },
     });
     res.json({ products });
@@ -116,21 +117,31 @@ router.delete('/products/:id', async (req, res, next) => {
 const priceCreateSchema = z.object({
   productId: z.string().min(1),
   code: z.string().min(1).max(80),
+  // Optional display label (FE often sends explicit null when cleared — needs nullish)
+  name: z.string().trim().max(100).nullish(),
   months: z.number().int().min(1).max(36),
   currency: z.string().default('CNY'),
   amountCents: z.number().int().min(0),
   supportsAutoRenew: z.boolean().default(false),
   active: z.boolean().default(true),
+  // Stripe recurring Price ID (price_xxx) — required when supportsAutoRenew=true
+  // because Stripe Subscription Checkout cannot use inline price_data.
+  stripePriceId: z.string().trim().min(1).max(100).nullish(),
 });
 
 router.post('/prices', async (req, res, next) => {
   try {
-    const data = priceCreateSchema.parse(req.body);
+    const parsed = priceCreateSchema.parse(req.body);
+    const { name: rawName, ...rest } = parsed;
+    const data = {
+      ...rest,
+      name: rawName && rawName.length > 0 ? rawName : null,
+    };
     const product = await prisma.product.findUnique({ where: { id: data.productId } });
     if (!product) return res.status(404).json({ error: 'Product not found' });
     const exists = await prisma.price.findUnique({ where: { code: data.code } });
     if (exists) return res.status(409).json({ error: 'Price code already exists' });
-    const price = await prisma.price.create({ data });
+    const price = await prisma.price.create({ data, include: { stripeMappings: true } });
     await writeAdminLog({
       adminId: req.admin.id, action: 'PRICE_CREATE',
       targetType: 'PRICE', targetId: price.id,
@@ -141,17 +152,55 @@ router.post('/prices', async (req, res, next) => {
 });
 
 const priceUpdateSchema = z.object({
+  // Omit entirely to leave unchanged; pass null or empty string to clear.
+  name: z.string().trim().max(100).nullish(),
+  stripeMappings: z.array(z.object({
+    currency: z.string().trim().min(1).max(10),
+    stripePriceId: z.string().trim().min(1).max(100),
+  })).optional(),
   amountCents: z.number().int().min(0).optional(),
   supportsAutoRenew: z.boolean().optional(),
   active: z.boolean().optional(),
+  // Pass null to clear; omit to leave unchanged.
+  stripePriceId: z.string().trim().min(1).max(100).nullish(),
 });
 
 router.patch('/prices/:id', async (req, res, next) => {
   try {
-    const data = priceUpdateSchema.parse(req.body);
+    const parsed = priceUpdateSchema.parse(req.body);
+    /** @type {Record<string, unknown>} */
+    const data = {};
+    if (parsed.amountCents !== undefined) data.amountCents = parsed.amountCents;
+    if (parsed.supportsAutoRenew !== undefined) data.supportsAutoRenew = parsed.supportsAutoRenew;
+    if (parsed.active !== undefined) data.active = parsed.active;
+    if (parsed.stripePriceId !== undefined) data.stripePriceId = parsed.stripePriceId;
+    if (parsed.name !== undefined && parsed.name !== null) {
+      data.name = parsed.name === '' ? null : parsed.name;
+    } else if (parsed.name === null) {
+      data.name = null;
+    }
     const before = await prisma.price.findUnique({ where: { id: req.params.id } });
     if (!before) return res.status(404).json({ error: 'Price not found' });
-    const price = await prisma.price.update({ where: { id: before.id }, data });
+    const price = await prisma.$transaction(async (tx) => {
+      const updated = await tx.price.update({ where: { id: before.id }, data });
+      if (parsed.stripeMappings) {
+        // Replace mappings for this priceId (simple, deterministic).
+        await tx.priceStripeMapping.deleteMany({ where: { priceId: updated.id } });
+        if (parsed.stripeMappings.length > 0) {
+          await tx.priceStripeMapping.createMany({
+            data: parsed.stripeMappings.map((m) => ({
+              priceId: updated.id,
+              currency: m.currency.toUpperCase(),
+              stripePriceId: m.stripePriceId,
+            })),
+          });
+        }
+      }
+      return tx.price.findUnique({
+        where: { id: updated.id },
+        include: { stripeMappings: true },
+      });
+    });
     await writeAdminLog({
       adminId: req.admin.id, action: 'PRICE_UPDATE',
       targetType: 'PRICE', targetId: price.id,
@@ -309,6 +358,117 @@ router.get('/contracts', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// --------------------------------------------------------------------
+// Overview (dashboard)
+// --------------------------------------------------------------------
+//
+// Single read-only endpoint feeding the admin payment dashboard. All five
+// queries run in parallel; raw SQL is used only for the 7-day daily series
+// because Prisma's groupBy can't bucket by date(timestamp) without a server
+// extension.
+
+router.get('/payments/overview', async (_req, res, next) => {
+  try {
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const sevenDaysAgo = new Date(todayStart.getTime() - 6 * 86400000);
+
+    const [
+      todayAgg,
+      sevenDaysSeriesRaw,
+      activeSubscriptions,
+      providerAggRaw,
+      recentFailedRenewals,
+      mrrContracts,
+    ] = await Promise.all([
+      prisma.paymentOrder.aggregate({
+        where: { status: 'PAID', paidAt: { gte: todayStart } },
+        _sum: { amountCents: true },
+        _count: { _all: true },
+      }),
+      prisma.$queryRaw`
+        SELECT DATE("paidAt") AS day,
+               COUNT(*)::int AS cnt,
+               COALESCE(SUM("amountCents"), 0)::bigint AS revenue
+        FROM "PaymentOrder"
+        WHERE "status" = 'PAID' AND "paidAt" >= ${sevenDaysAgo}
+        GROUP BY DATE("paidAt")
+        ORDER BY DATE("paidAt") ASC
+      `,
+      prisma.payContract.count({ where: { status: 'ACTIVE' } }),
+      prisma.paymentOrder.groupBy({
+        by: ['provider'],
+        where: { status: 'PAID', paidAt: { gte: sevenDaysAgo } },
+        _sum: { amountCents: true },
+        _count: { _all: true },
+      }),
+      prisma.payContract.findMany({
+        where: { failedCount: { gt: 0 }, status: { not: 'TERMINATED' } },
+        orderBy: { updatedAt: 'desc' },
+        take: 5,
+        include: {
+          user: { select: { id: true, email: true } },
+          price: { select: { code: true, currency: true, amountCents: true } },
+        },
+      }),
+      prisma.payContract.findMany({
+        where: { status: 'ACTIVE' },
+        select: { price: { select: { months: true, amountCents: true, currency: true } } },
+      }),
+    ]);
+
+    // MRR: monthly contracts contribute amountCents directly; yearly contracts
+    // contribute amountCents / months. Currencies are mixed; we expose a per-
+    // currency breakdown plus a CNY-equivalent estimate is *not* provided
+    // (the frontend can choose to display the dominant currency).
+    const mrrByCurrency = {};
+    for (const c of mrrContracts) {
+      if (!c.price) continue;
+      const months = Math.max(1, c.price.months || 1);
+      const monthly = Math.round(c.price.amountCents / months);
+      const cur = c.price.currency || 'CNY';
+      mrrByCurrency[cur] = (mrrByCurrency[cur] || 0) + monthly;
+    }
+
+    // Normalise raw query result (BigInt -> Number for JSON safety).
+    const sevenDaysSeries = sevenDaysSeriesRaw.map((row) => ({
+      day: row.day instanceof Date ? row.day.toISOString().slice(0, 10) : String(row.day).slice(0, 10),
+      count: Number(row.cnt),
+      revenueCents: Number(row.revenue),
+    }));
+
+    const providerBreakdown = providerAggRaw.map((row) => ({
+      provider: row.provider,
+      count: row._count._all,
+      revenueCents: Number(row._sum.amountCents || 0),
+    }));
+
+    res.json({
+      generatedAt: now.toISOString(),
+      today: {
+        revenueCents: Number(todayAgg._sum.amountCents || 0),
+        orderCount: todayAgg._count._all,
+      },
+      activeSubscriptions,
+      mrrByCurrency,
+      sevenDaysSeries,
+      providerBreakdown,
+      recentFailedRenewals: recentFailedRenewals.map((c) => ({
+        id: c.id,
+        provider: c.provider,
+        status: c.status,
+        failedCount: c.failedCount,
+        lastChargeAt: c.lastChargeAt,
+        nextChargeAt: c.nextChargeAt,
+        userEmail: c.user?.email || null,
+        priceCode: c.price?.code || null,
+        amountCents: c.price?.amountCents ?? null,
+        currency: c.price?.currency ?? null,
+      })),
+    });
+  } catch (e) { next(e); }
+});
+
 router.post('/contracts/:id/terminate', async (req, res, next) => {
   try {
     const contract = await prisma.payContract.findUnique({ where: { id: req.params.id } });
@@ -328,6 +488,8 @@ router.post('/contracts/:id/terminate', async (req, res, next) => {
         });
       } else if (contract.provider === 'alipay' && alipay.isEnabled() && contract.externalContractId) {
         await alipay.unsignAgreement({ agreementNo: contract.externalContractId });
+      } else if (contract.provider === 'stripe' && stripePay.isEnabled() && contract.stripeSubscriptionId) {
+        await stripePay.cancelSubscription(contract.stripeSubscriptionId);
       }
     } catch (err) {
       channelError = err.message;

@@ -253,6 +253,105 @@ async function main() {
   });
   console.log('✅ Created paid set:', paidSet.id);
 
+  // ---- Production Orale sample sets (3) ----
+  // Each set is a single-question Production Orale exam: a short article
+  // (passage) + a thèse to defend (prompt) + 4-5 follow-up débat questions.
+  // Themes are classic DELF B2 PO topics: writes/reads/society.
+  const poSamples = [
+    {
+      title: 'DELF B2 PO 模拟 · 社交媒体与青少年',
+      year: 2025,
+      description: 'Production Orale · sujet "Réseaux sociaux et adolescents"',
+      isFreePreview: true,
+      passage: `D'après une étude menée par l'Observatoire de la jeunesse en 2024, les adolescents français passent en moyenne 4 h 30 par jour sur les réseaux sociaux. Si ces plateformes leur permettent de maintenir un lien social et de découvrir de nouveaux contenus, plusieurs études récentes alertent sur les conséquences psychologiques d'un usage intensif : troubles du sommeil, anxiété sociale, baisse de l'estime de soi, et surtout phénomènes de comparaison permanente avec des images souvent retouchées. Plusieurs pays européens, à l'image de la Norvège ou des Pays-Bas, envisagent désormais d'interdire purement et simplement l'accès des moins de 15 ans à ces réseaux.`,
+      prompt: `Vous dégagerez le problème soulevé par ce document, puis vous présenterez votre opinion sur le sujet de manière argumentée. Pensez-vous qu'il faille interdire les réseaux sociaux aux mineurs de moins de 15 ans ?`,
+      followUps: [
+        { text: 'Pensez-vous vraiment qu\'une interdiction soit applicable dans la pratique ? Comment contourneraient-ils l\'âge minimum ?',
+          expectedAngle: 'Faisabilité technique de la vérification d\'âge ; comparaison avec d\'autres restrictions (alcool, tabac).' },
+        { text: 'Selon vous, quel rôle les parents devraient-ils jouer dans l\'éducation aux médias numériques ?',
+          expectedAngle: 'Médiation parentale, dialogue, paramétrage du contrôle parental, exemple personnel.' },
+        { text: 'Certains soutiennent que ces réseaux sont aussi un espace d\'apprentissage et de créativité. Que leur répondez-vous ?',
+          expectedAngle: 'Reconnaître les bénéfices (créativité, expression) tout en tenant sa position.' },
+        { text: 'Si une telle interdiction était votée demain en France, quelles en seraient les conséquences sociales ?',
+          expectedAngle: 'Effets sur la sociabilité, sentiment d\'exclusion, marché noir d\'accès, conséquences économiques pour les plateformes.' },
+        { text: 'Pensez-vous que les jeunes adultes (18-25 ans) seraient prêts à se déconnecter volontairement ? Pourquoi ?',
+          expectedAngle: 'Habitudes ancrées, FOMO, dépendance affective vs sursaut de conscience.' },
+      ],
+    },
+    {
+      title: 'DELF B2 PO 模拟 · 远程办公与城市规划',
+      year: 2025,
+      description: 'Production Orale · sujet "Télétravail et aménagement du territoire"',
+      isFreePreview: false,
+      passage: `Depuis 2020, le télétravail s'est imposé comme une nouvelle norme dans une grande partie du secteur tertiaire français. Selon l'INSEE, près de 30 % des cadres travaillent désormais au moins deux jours par semaine depuis leur domicile. Si cette évolution améliore la qualité de vie de nombreux salariés et réduit les émissions liées aux transports pendulaires, elle pose aussi des questions épineuses pour l'aménagement du territoire. Les centres-villes des grandes métropoles voient leur fréquentation chuter, les commerçants de quartier souffrent d'une perte de clientèle, tandis que les villes moyennes connaissent un regain d'attractivité. Doit-on s'en réjouir ou s'en inquiéter ?`,
+      prompt: `Présentez le problème soulevé puis défendez votre point de vue : le télétravail est-il, à terme, une chance ou une menace pour l'équilibre des territoires français ?`,
+      followUps: [
+        { text: 'Comment expliquez-vous la baisse de fréquentation des centres-villes des grandes métropoles ?',
+          expectedAngle: 'Causalité directe avec la baisse de présence des cadres, effet domino sur la restauration et le commerce.' },
+        { text: 'Selon vous, les entreprises devraient-elles obliger leurs salariés à revenir au bureau ?',
+          expectedAngle: 'Tension liberté individuelle vs cohésion d\'équipe ; cadre juridique français.' },
+        { text: 'Le télétravail accentue-t-il les inégalités sociales, à votre avis ?',
+          expectedAngle: 'Différence entre cols blancs et cols bleus, accès au logement de qualité, fracture numérique.' },
+        { text: 'Quelles politiques publiques pourraient accompagner cette transformation ?',
+          expectedAngle: 'Aides à l\'installation en zone rurale, fibre optique, transport interurbain, fiscalité.' },
+        { text: 'Pensez-vous qu\'on reviendra un jour au mode "100 % présentiel" ?',
+          expectedAngle: 'Argumentation sur l\'irréversibilité culturelle vs cycles économiques.' },
+      ],
+    },
+    {
+      title: 'DELF B2 PO 模拟 · 食品工业与消费者信息',
+      year: 2025,
+      description: 'Production Orale · sujet "Étiquetage alimentaire et industrie agroalimentaire"',
+      isFreePreview: false,
+      passage: `Depuis 2017, le Nutri-Score, étiquetage nutritionnel volontaire allant de A (vert, le meilleur) à E (rouge, le moins favorable), figure sur de nombreux produits alimentaires en France. Plébiscité par les associations de consommateurs et de nombreux nutritionnistes, ce système est en revanche vivement critiqué par certains industriels — notamment ceux du fromage ou des produits typiques de l'agriculture méditerranéenne — qui estiment qu'il pénalise injustement leurs produits, au profit de plats préparés industriels rendus artificiellement plus "verts" par des reformulations. Bruxelles envisage aujourd'hui de rendre le Nutri-Score obligatoire dans toute l'Union européenne.`,
+      prompt: `Présentez le problème puis défendez votre opinion : faut-il imposer le Nutri-Score à l'ensemble des produits alimentaires en Europe ?`,
+      followUps: [
+        { text: 'Le consommateur moyen comprend-il vraiment ce que signifient les lettres A à E selon vous ?',
+          expectedAngle: 'Lisibilité visuelle vs compréhension nutritionnelle réelle, éducation à la santé.' },
+        { text: 'Que répondez-vous aux producteurs de fromage AOP qui se sentent stigmatisés ?',
+          expectedAngle: 'Distinction entre nutrition pure et tradition culturelle, modulation par la portion consommée.' },
+        { text: 'L\'industrie agroalimentaire ne risque-t-elle pas de simplement reformuler ses produits pour gagner une lettre ?',
+          expectedAngle: 'Effet pervers : reformulation cosmétique sans réelle amélioration nutritionnelle.' },
+        { text: 'Pensez-vous que ce type d\'étiquetage devrait s\'étendre à d\'autres domaines (vêtements, électronique) ?',
+          expectedAngle: 'Pertinence et limites d\'un score unique sur des univers complexes ; comparaison avec l\'écolabel.' },
+        { text: 'En tant que consommateur, votre comportement d\'achat a-t-il changé depuis l\'apparition de cet affichage ?',
+          expectedAngle: 'Réponse personnelle assumée et nuancée, conscience de ses propres biais.' },
+      ],
+    },
+  ];
+
+  for (const sample of poSamples) {
+    const created = await prisma.examSet.create({
+      data: {
+        title: sample.title,
+        year: sample.year,
+        description: sample.description,
+        isFreePreview: sample.isFreePreview,
+        isPublished: true,
+        questions: {
+          create: [
+            {
+              skill: 'PO',
+              type: 'SPEAKING',
+              order: 1,
+              prompt: sample.prompt,
+              passage: sample.passage,
+              points: 25,
+              followUps: {
+                create: sample.followUps.map((f, i) => ({
+                  order: i,
+                  text: f.text,
+                  expectedAngle: f.expectedAngle,
+                })),
+              },
+            },
+          ],
+        },
+      },
+    });
+    console.log('✅ Created PO sample:', created.title, `(${created.id})`);
+  }
+
   console.log('🎉 Seed complete!');
   console.log('Test accounts:');
   console.log('  demo@delfluent.com / demo1234  (标准版)');

@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const prisma = require('../prisma');
 const wechat = require('./payments/wechat');
 const alipay = require('./payments/alipay');
+const stripePay = require('./payments/stripe');
 const env = require('../config/env');
 
 const VALID_PLANS = ['FREE', 'STANDARD', 'AI', 'AI_UNLIMITED'];
@@ -145,6 +146,7 @@ async function refundOrder({ orderId, amountCents, reason, operatorAdminId }) {
     select: {
       id: true, userId: true, provider: true, providerOrderNo: true,
       amountCents: true, refundedCents: true, status: true, months: true, plan: true,
+      externalTradeNo: true, currency: true,
     },
   });
   if (!order) {
@@ -197,6 +199,38 @@ async function refundOrder({ orderId, amountCents, reason, operatorAdminId }) {
         outRequestNo: outRefundNo,
         refundCents: amountCents,
         reason,
+      });
+    } else if (order.provider === 'stripe') {
+      if (!stripePay.isEnabled()) throw Object.assign(new Error('Stripe not configured'), { code: 'PAY_NOT_CONFIGURED', status: 503 });
+      if (!order.externalTradeNo) {
+        throw Object.assign(new Error('Missing payment_intent / invoice id'), { code: 'REFUND_NO_PI', status: 400 });
+      }
+      const client = stripePay.getClient();
+      // One-time orders store payment_intent (pi_...) in externalTradeNo.
+      // Subscription invoice orders store invoice id (in_...) — we have to
+      // look up the underlying charge via the invoice to refund it.
+      let refundParams;
+      if (order.externalTradeNo.startsWith('pi_')) {
+        refundParams = { payment_intent: order.externalTradeNo };
+      } else if (order.externalTradeNo.startsWith('in_')) {
+        const invoice = await client.invoices.retrieve(order.externalTradeNo);
+        if (!invoice.charge) {
+          throw Object.assign(new Error('Invoice has no charge to refund'), { code: 'REFUND_NO_CHARGE', status: 400 });
+        }
+        refundParams = { charge: invoice.charge };
+      } else {
+        // Fallback: assume payment_intent.
+        refundParams = { payment_intent: order.externalTradeNo };
+      }
+      await client.refunds.create({
+        ...refundParams,
+        amount: amountCents,
+        reason: 'requested_by_customer',
+        metadata: {
+          orderId: order.id,
+          outRefundNo,
+          adminReason: reason || '',
+        },
       });
     } else {
       const e = new Error(`Unknown provider ${order.provider}`);

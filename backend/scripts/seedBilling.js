@@ -25,6 +25,7 @@ async function main() {
           amountCents: pr.amountCents,
           supportsAutoRenew: pr.supportsAutoRenew,
           active: true,
+          name: pr.name ?? null,
         },
         update: {
           productId: product.id,
@@ -32,6 +33,7 @@ async function main() {
           amountCents: pr.amountCents,
           supportsAutoRenew: pr.supportsAutoRenew,
           active: true,
+          name: pr.name ?? null,
         },
       });
     }

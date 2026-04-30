@@ -1,38 +1,36 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { ReactNode } from 'react';
 import {
-  Typography, Button, Modal, Segmented, QRCode,
-  Space, message, Checkbox, Skeleton,
+  Typography, Button, Modal, Segmented, Space, message, Checkbox, Skeleton,
 } from 'antd';
 import {
-  CheckOutlined, WechatOutlined, AlipayOutlined, SafetyCertificateOutlined, CreditCardOutlined,
+  CheckOutlined, SafetyCertificateOutlined, CreditCardOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
-import type { CatalogProduct, CatalogPrice, CreatedOrderResponse, Plan } from '../types';
+import type { CatalogProduct, CatalogPrice, Plan } from '../types';
 
 const { Title, Paragraph } = Typography;
 
 type BillingCycle = 'monthly' | 'yearly';
-type Provider = 'wechat' | 'alipay' | 'stripe';
-type PayRegion = 'domestic' | 'overseas';
 
 const FREE_CARD_KEY = 'free';
 
-/** WeChat brand green (official-style) */
-const WECHAT_GREEN = '#07C160';
+// Maps an ISO currency code to its display symbol. Falls back to the code
+// itself with a trailing space (e.g. "GBP 12.34") so unknown currencies stay
+// readable instead of silently appearing as bare numbers.
+const CURRENCY_SYMBOL: Record<string, string> = { CNY: '¥', USD: '$', EUR: '€' };
 
-function formatYuan(cents: number) {
-  if (cents % 100 === 0) return `¥${cents / 100}`;
-  return `¥${(cents / 100).toFixed(2)}`;
+function formatPrice(cents: number, currency: string | null | undefined): string {
+  const sym = currency ? (CURRENCY_SYMBOL[currency] ?? `${currency} `) : '¥';
+  const v = (cents / 100).toFixed(2).replace(/\.00$/, '');
+  return `${sym}${v}`;
 }
 
 export default function Pricing() {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
-  const fetchMe = useAuthStore((s) => s.fetchMe);
 
   const [products, setProducts] = useState<CatalogProduct[] | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(true);
@@ -41,13 +39,8 @@ export default function Pricing() {
   const [open, setOpen] = useState(false);
   const [buyingProduct, setBuyingProduct] = useState<CatalogProduct | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<CatalogPrice | null>(null);
-  const [region, setRegion] = useState<PayRegion>('domestic');
-  const [provider, setProvider] = useState<Provider>('wechat');
   const [enableAutoRenew, setEnableAutoRenew] = useState(false);
-
   const [loading, setLoading] = useState(false);
-  const [order, setOrder] = useState<CreatedOrderResponse | null>(null);
-  const [polling, setPolling] = useState(false);
 
   const isLoggedIn = !!user;
 
@@ -83,29 +76,11 @@ export default function Pricing() {
     }
     setBuyingProduct(product);
     setSelectedPrice(price);
-    setRegion('domestic');
-    setProvider('wechat');
     setEnableAutoRenew(false);
-    setOrder(null);
     setOpen(true);
   }
 
-  function switchRegion(next: PayRegion) {
-    setRegion(next);
-    setEnableAutoRenew(false);
-    setOrder(null);
-    setPolling(false);
-    setProvider(next === 'overseas' ? 'stripe' : 'wechat');
-  }
-
-  function chooseProvider(p: Provider) {
-    setProvider(p);
-    setEnableAutoRenew(false);
-    setOrder(null);
-    setPolling(false);
-  }
-
-  const priceLabel = selectedPrice ? formatYuan(selectedPrice.amountCents) : '—';
+  const priceLabel = selectedPrice ? formatPrice(selectedPrice.amountCents, selectedPrice.currency) : '—';
   const periodLabel = selectedPrice
     ? (selectedPrice.months === 1 ? t('pricing.checkout.perMonth') : t('pricing.checkout.perYear'))
     : '';
@@ -114,32 +89,16 @@ export default function Pricing() {
     if (!selectedPrice) return;
     setLoading(true);
     try {
-      if (provider === 'stripe') {
-        const { data } = await api.post('/pay/stripe/checkout', { priceId: selectedPrice.id });
-        if (data?.redirectUrl) {
-          window.location.href = data.redirectUrl;
-          return;
-        }
-        message.error(t('pricing.checkout.createFailed'));
+      const subscribe = enableAutoRenew && !!selectedPrice.supportsAutoRenew && selectedPrice.months === 1;
+      const { data } = await api.post('/pay/stripe/checkout', {
+        priceId: selectedPrice.id,
+        subscribe,
+      });
+      if (data?.redirectUrl) {
+        window.location.href = data.redirectUrl;
         return;
       }
-      if (enableAutoRenew && selectedPrice.supportsAutoRenew) {
-        const path = provider === 'wechat' ? '/pay/wechat/sign' : '/pay/alipay/sign';
-        const { data } = await api.post(path, { priceId: selectedPrice.id });
-        if (data.redirectUrl) {
-          window.open(data.redirectUrl, '_blank', 'noopener,noreferrer');
-          message.success(t('pricing.checkout.openingAlipay'));
-        } else {
-          message.error(t('pricing.checkout.createFailed'));
-        }
-        return;
-      }
-      const path = provider === 'wechat' ? '/pay/wechat/native' : '/pay/alipay/create';
-      const body: Record<string, unknown> = { priceId: selectedPrice.id };
-      if (provider === 'alipay') body.product = 'precreate_qr';
-      const { data } = await api.post(path, body);
-      setOrder({ ...data, provider });
-      setPolling(true);
+      message.error(t('pricing.checkout.createFailed'));
     } catch (e: unknown) {
       const msg = (e as { response?: { data?: { error?: string } } })?.response?.data?.error;
       message.error(msg || t('pricing.checkout.createFailed'));
@@ -147,45 +106,6 @@ export default function Pricing() {
       setLoading(false);
     }
   }
-
-  async function mockPay() {
-    if (!order) return;
-    try {
-      await api.post(`/pay/orders/${order.orderId}/mock-pay`);
-      message.success(t('pricing.checkout.mockSuccess'));
-    } catch (e: unknown) {
-      const msg = (e as { response?: { data?: { error?: string } } })?.response?.data?.error;
-      message.error(msg || 'Mock pay failed');
-    }
-  }
-
-  useEffect(() => {
-    if (!open || !order?.orderId || !polling) return;
-    let cancelled = false;
-    const timer = setInterval(async () => {
-      try {
-        const { data } = await api.get(`/pay/orders/${order.orderId}`);
-        const status = String(data?.order?.status || '');
-        if (cancelled) return;
-        if (status === 'PAID') {
-          setPolling(false);
-          message.success(t('pricing.checkout.paySuccess'));
-          await fetchMe();
-          setOpen(false);
-        }
-        if (status === 'CLOSED' || status === 'FAILED') {
-          setPolling(false);
-          message.error(t('pricing.checkout.payClosed'));
-        }
-      } catch {
-        // ignore transient polling errors
-      }
-    }, 1500);
-    return () => {
-      cancelled = true;
-      clearInterval(timer);
-    };
-  }, [open, order?.orderId, polling, fetchMe, t]);
 
   const cards = useMemo(() => {
     const free = { key: FREE_CARD_KEY, plan: 'FREE' as Plan, product: null as CatalogProduct | null };
@@ -249,7 +169,7 @@ export default function Pricing() {
 
             const priceText = isFree
               ? t('pricing.plans.free.price')
-              : price ? formatYuan(price.amountCents) : '—';
+              : price ? formatPrice(price.amountCents, price.currency) : '—';
             const periodText = isFree
               ? t('pricing.plans.free.period')
               : price ? (cycle === 'monthly'
@@ -296,6 +216,11 @@ export default function Pricing() {
                     </span>
                   )}
                 </div>
+                {!isFree && price?.name && (
+                  <div className="text-sm mb-4 -mt-2" style={{ color: 'var(--textMuted)' }}>
+                    {price.name}
+                  </div>
+                )}
 
                 <div className="space-y-2.5 mb-6 flex-grow">
                   {features.map((f, i) => (
@@ -358,7 +283,7 @@ export default function Pricing() {
       <Modal
         title={t('pricing.checkout.title')}
         open={open}
-        onCancel={() => { setPolling(false); setOpen(false); }}
+        onCancel={() => setOpen(false)}
         footer={null}
         destroyOnClose
         width={460}
@@ -374,6 +299,7 @@ export default function Pricing() {
               </div>
               <div className="text-xs mt-0.5" style={{ color: 'var(--textMuted)' }}>
                 {selectedPrice ? periodLabel : ''}
+                {selectedPrice?.name ? ` · ${selectedPrice.name}` : ''}
               </div>
             </div>
             <div className="text-right">
@@ -390,60 +316,19 @@ export default function Pricing() {
             </div>
           </div>
 
-          <Segmented
-            block
-            value={region}
-            onChange={(v) => switchRegion(v as PayRegion)}
-            options={[
-              { label: t('pricing.checkout.domestic'), value: 'domestic' },
-              { label: t('pricing.checkout.overseas'), value: 'overseas' },
-            ]}
+          <StripeProviderRow
+            label={t('pricing.checkout.stripe')}
+            sub={t('pricing.checkout.stripeHint')}
           />
 
-          {region === 'domestic' ? (
-            <Space direction="vertical" style={{ width: '100%' }} size="small">
-              <div className="text-xs" style={{ color: 'var(--textMuted)' }}>
-                {t('pricing.checkout.domesticHint')}
-              </div>
-              <div className="grid grid-cols-2 gap-2.5">
-                <ProviderOption
-                  label={t('pricing.checkout.wechat')}
-                  sub={t('pricing.checkout.scanPay')}
-                  icon={<WechatOutlined />}
-                  iconColor={WECHAT_GREEN}
-                  selected={provider === 'wechat'}
-                  onClick={() => chooseProvider('wechat')}
-                />
-                <ProviderOption
-                  label={t('pricing.checkout.alipay')}
-                  sub={t('pricing.checkout.scanPay')}
-                  icon={<AlipayOutlined />}
-                  selected={provider === 'alipay'}
-                  onClick={() => chooseProvider('alipay')}
-                />
-              </div>
-            </Space>
-          ) : (
-            <Space direction="vertical" style={{ width: '100%' }} size="small">
-              <div className="text-xs" style={{ color: 'var(--textMuted)' }}>
-                {t('pricing.checkout.overseasHint')}
-              </div>
-              <ProviderOption
-                label={t('pricing.checkout.stripe')}
-                sub={t('pricing.checkout.stripeHint')}
-                icon={<CreditCardOutlined />}
-                selected={provider === 'stripe'}
-                onClick={() => chooseProvider('stripe')}
-              />
-            </Space>
-          )}
-
-          {region === 'domestic' && provider !== 'stripe' && selectedPrice?.supportsAutoRenew && (
+          {/* Auto-renew checkbox is only relevant for monthly auto-renewable
+              prices (Stripe Subscription mode). */}
+          {selectedPrice?.supportsAutoRenew && selectedPrice.months === 1 && (
             <Checkbox
               checked={enableAutoRenew}
               onChange={(e) => setEnableAutoRenew(e.target.checked)}
             >
-              {t('pricing.checkout.autoRenew')}
+              {t('pricing.checkout.stripeAutoRenew', t('pricing.checkout.autoRenew'))}
             </Checkbox>
           )}
 
@@ -456,75 +341,26 @@ export default function Pricing() {
             disabled={!isLoggedIn}
             style={{ fontWeight: 600 }}
           >
-            {enableAutoRenew
-              ? t('pricing.checkout.autoRenew')
-              : region === 'overseas' || provider === 'stripe'
-                ? t('pricing.checkout.redirectToPay')
-                : t('pricing.checkout.generateQr')}
+            {t('pricing.checkout.redirectToPay')}
           </Button>
-
-          {order?.codeUrl ? (
-            <div className="flex flex-col items-center gap-3">
-              <div
-                className="p-4 rounded-xl"
-                style={{ background: '#ffffff', boxShadow: '0 6px 18px rgba(15,23,42,0.06)' }}
-              >
-                <QRCode value={order.codeUrl} />
-              </div>
-              <div className="text-xs" style={{ color: 'var(--textMuted)' }}>
-                {t('pricing.checkout.orderId', { id: order.orderId })}
-              </div>
-              <div className="text-xs" style={{ color: 'var(--textMuted)' }}>
-                {t('pricing.checkout.qrExpires')}
-              </div>
-              {order.mock && (
-                <Button onClick={mockPay}>
-                  {t('pricing.checkout.mockPay')}
-                </Button>
-              )}
-            </div>
-          ) : order?.redirectUrl ? (
-            <div className="text-sm">
-              <a href={order.redirectUrl} target="_blank" rel="noreferrer">
-                {provider === 'stripe'
-                  ? t('pricing.checkout.stripe')
-                  : t('pricing.checkout.alipay')}
-              </a>
-            </div>
-          ) : null}
         </Space>
       </Modal>
     </div>
   );
 }
 
-function ProviderOption({ label, sub, icon, iconColor, selected, onClick }: {
-  label: string;
-  sub: string;
-  icon: ReactNode;
-  /** When set, icon uses this color in both selected / unselected states (e.g. WeChat green). */
-  iconColor?: string;
-  selected: boolean;
-  onClick: () => void;
-}) {
+function StripeProviderRow({ label, sub }: { label: string; sub: string }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="cursor-pointer rounded-xl p-3 text-left w-full transition-all"
+    <div
+      className="rounded-xl p-3 w-full"
       style={{
-        background: selected ? 'rgba(37, 99, 235, 0.12)' : 'rgba(37, 99, 235, 0.04)',
-        boxShadow: selected ? '0 4px 14px rgba(37, 99, 235, 0.14)' : 'none',
-        border: 'none',
-        outline: 'none',
+        background: 'rgba(37, 99, 235, 0.12)',
+        boxShadow: '0 4px 14px rgba(37, 99, 235, 0.14)',
       }}
     >
       <div className="flex items-center justify-between gap-2">
         <div>
-          <div
-            className="font-medium text-sm"
-            style={{ color: selected ? '#2563eb' : 'var(--text)' }}
-          >
+          <div className="font-medium text-sm" style={{ color: '#2563eb' }}>
             {label}
           </div>
           <div className="text-xs mt-0.5" style={{ color: 'var(--textMuted)' }}>
@@ -533,15 +369,15 @@ function ProviderOption({ label, sub, icon, iconColor, selected, onClick }: {
         </div>
         <div
           style={{
-            color: iconColor ?? (selected ? '#2563eb' : 'var(--textMuted)'),
+            color: '#2563eb',
             fontSize: 22,
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          {icon}
+          <CreditCardOutlined />
         </div>
       </div>
-    </button>
+    </div>
   );
 }

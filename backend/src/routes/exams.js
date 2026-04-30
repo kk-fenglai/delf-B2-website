@@ -60,6 +60,11 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
               orderBy: { order: 'asc' },
               select: { id: true, label: true, text: true, order: true },
             },
+            followUps: {
+              orderBy: { order: 'asc' },
+              // expectedAngle is examiner-only — never leaked to the client.
+              select: { id: true, order: true, text: true, audioUrl: true },
+            },
           },
         },
       },
@@ -86,6 +91,7 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
       audioUrl: q.audioUrl,
       points: q.points,
       options: q.options, // isCorrect already excluded
+      followUps: q.followUps || [],
     }));
 
     res.json({

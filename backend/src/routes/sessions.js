@@ -4,6 +4,7 @@ const prisma = require('../prisma');
 const { requireAuth } = require('../middleware/auth');
 const { gradeAnswer } = require('../services/grader');
 const { enqueue: enqueueEssay } = require('../services/essayQueue');
+const { enqueue: enqueueOral } = require('../services/oralQueue');
 const PDFDocument = require('pdfkit');
 const {
   MODEL_KEYS,
@@ -38,6 +39,7 @@ async function buildSessionResult({ sessionId, userId }) {
             orderBy: { order: 'asc' },
             include: {
               options: { orderBy: { order: 'asc' } },
+              followUps: { orderBy: { order: 'asc' } },
             },
           },
         },
@@ -67,6 +69,12 @@ async function buildSessionResult({ sessionId, userId }) {
         label: o.label,
         text: o.text,
         order: o.order,
+      })),
+      followUps: (q.followUps || []).map((f) => ({
+        id: f.id,
+        order: f.order,
+        text: f.text,
+        audioUrl: f.audioUrl,
       })),
     })),
   };
@@ -126,27 +134,49 @@ async function buildSessionResult({ sessionId, userId }) {
     });
   }
 
-  const essays = await prisma.essay.findMany({
-    where: { sessionId: session.id, userId },
-    select: {
-      id: true,
-      questionId: true,
-      status: true,
-      model: true,
-      errorMessage: true,
-      aiScore: true,
-      aiFeedback: true,
-      rubric: true,
-      gradedAt: true,
-    },
-  });
+  const [essays, orals] = await Promise.all([
+    prisma.essay.findMany({
+      where: { sessionId: session.id, userId },
+      select: {
+        id: true,
+        questionId: true,
+        status: true,
+        model: true,
+        errorMessage: true,
+        aiScore: true,
+        aiFeedback: true,
+        rubric: true,
+        gradedAt: true,
+      },
+    }),
+    prisma.oral.findMany({
+      where: { sessionId: session.id, userId },
+      select: {
+        id: true,
+        questionId: true,
+        status: true,
+        model: true,
+        errorMessage: true,
+        aiScore: true,
+        aiFeedback: true,
+        rubric: true,
+        gradedAt: true,
+      },
+    }),
+  ]);
 
   const essayByQ = new Map(essays.map((e) => [e.questionId, e]));
+  const oralByQ = new Map(orals.map((o) => [o.questionId, o]));
   for (const d of details) {
     const e = essayByQ.get(d.questionId);
     if (e) {
       d.essayId = e.id;
       d.essayStatus = e.status;
+    }
+    const o = oralByQ.get(d.questionId);
+    if (o) {
+      d.oralId = o.id;
+      d.oralStatus = o.status;
     }
   }
 
@@ -171,6 +201,13 @@ async function buildSessionResult({ sessionId, userId }) {
         status: e.status,
         model: e.model,
         errorMessage: e.errorMessage,
+      })),
+      orals: orals.map((o) => ({
+        oralId: o.id,
+        questionId: o.questionId,
+        status: o.status,
+        model: o.model,
+        errorMessage: o.errorMessage,
       })),
     },
   };
@@ -257,6 +294,7 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
 
     const attempts = [];
     const essayJobs = []; // [{ questionId, content, wordCount, tooShort }]
+    const oralJobs = [];  // [{ questionId, recordingIds, noRecording }]
 
     for (const a of answers) {
       const q = qMap.get(a.questionId);
@@ -290,6 +328,20 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
           content: a.answer,
           wordCount,
           tooShort: wordCount < MIN_WORDS,
+        });
+      }
+
+      // SPEAKING answer payload shape: { recordingIds: [recId, ...] }.
+      // The recordings themselves were uploaded earlier via /api/user/recordings.
+      if (q.type === 'SPEAKING') {
+        const ans = a.answer || {};
+        const recIds = Array.isArray(ans.recordingIds)
+          ? ans.recordingIds.filter((s) => typeof s === 'string' && s.length > 0)
+          : [];
+        oralJobs.push({
+          questionId: q.id,
+          recordingIds: recIds,
+          noRecording: recIds.length === 0,
         });
       }
     }
@@ -342,12 +394,77 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
       if (!skipAI) enqueueEssay(row.id);
     }
 
+    // Same pattern for SPEAKING — verify user owns the cited recordings,
+    // then create one Oral row that the worker will pick up. The recording
+    // rows were uploaded earlier and already linked to the session.
+    const createdOrals = [];
+    for (const job of oralJobs) {
+      let quotaBlocked = false;
+      if (canUseAI && !job.noRecording) {
+        const monthStart = new Date();
+        monthStart.setDate(1);
+        monthStart.setHours(0, 0, 0, 0);
+        const monthUsed = await prisma.oral.count({
+          where: { userId: req.userId, createdAt: { gte: monthStart } },
+        });
+        if (monthUsed >= caps.monthlyOralExams) quotaBlocked = true;
+      }
+
+      // Defence in depth: only accept recording IDs that belong to this user
+      // AND this question. A malicious client can't piggy-back another user's
+      // audio onto their own session.
+      let validRecIds = [];
+      if (!job.noRecording) {
+        const owned = await prisma.recording.findMany({
+          where: {
+            id: { in: job.recordingIds },
+            userId: req.userId,
+            questionId: job.questionId,
+          },
+          select: { id: true },
+        });
+        validRecIds = owned.map((r) => r.id);
+      }
+
+      const skipAI = !canUseAI || job.noRecording || validRecIds.length === 0 || quotaBlocked;
+      const row = await prisma.oral.create({
+        data: {
+          userId: req.userId,
+          sessionId: session.id,
+          questionId: job.questionId,
+          recordingIds: JSON.stringify(validRecIds),
+          status: skipAI ? 'error' : 'queued',
+          model: skipAI ? null : requestedModel,
+          locale: skipAI ? null : locale,
+          errorMessage: job.noRecording || validRecIds.length === 0
+            ? 'NO_RECORDING'
+            : !canUseAI
+              ? 'PLAN_UPGRADE_REQUIRED'
+              : quotaBlocked
+                ? 'QUOTA_EXCEEDED'
+                : null,
+        },
+      });
+      createdOrals.push(row);
+      // Backfill the recording rows with the sessionId so review-page lookups
+      // can find them by sessionId alone (recordings may have been uploaded
+      // before the session existed in some flows).
+      if (validRecIds.length) {
+        await prisma.recording.updateMany({
+          where: { id: { in: validRecIds }, userId: req.userId },
+          data: { sessionId: session.id },
+        });
+      }
+      if (!skipAI) enqueueOral(row.id);
+    }
+
     const details = answers.map((a) => {
       const q = qMap.get(a.questionId);
       if (!q) return null;
       const { isCorrect, score } = gradeAnswer(q, a.answer);
       const correctOptions = q.options.filter((o) => o.isCorrect).map((o) => o.label);
       const essay = createdEssays.find((e) => e.questionId === q.id);
+      const oral = createdOrals.find((o) => o.questionId === q.id);
       return {
         questionId: q.id,
         userAnswer: a.answer,
@@ -358,6 +475,8 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
         explanation: q.explanation,
         essayId: essay?.id || null,
         essayStatus: essay?.status || null,
+        oralId: oral?.id || null,
+        oralStatus: oral?.status || null,
       };
     }).filter(Boolean);
 
@@ -379,6 +498,13 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
         status: e.status,
         model: e.model,
         errorMessage: e.errorMessage,
+      })),
+      orals: createdOrals.map((o) => ({
+        oralId: o.id,
+        questionId: o.questionId,
+        status: o.status,
+        model: o.model,
+        errorMessage: o.errorMessage,
       })),
     });
   } catch (e) { next(e); }

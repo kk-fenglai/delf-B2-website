@@ -45,6 +45,17 @@ function errorHandler(err, req, res, _next) {
       logger.warn({ err, requestId }, 'prisma fk violation');
       return res.status(409).json({ error: 'Related resource constraint', requestId });
     }
+    // P2022: column/table missing — schema not migrated (e.g. Price.name after code deploy)
+    if (err.code === 'P2022') {
+      logger.error({ err, requestId }, 'prisma schema drift (missing column)');
+      return res.status(503).json({
+        error:
+          'Database schema is out of date (missing column). Run Prisma migrations or execute: '
+          + 'ALTER TABLE "Price" ADD COLUMN IF NOT EXISTS "name" TEXT;',
+        code: err.code,
+        requestId,
+      });
+    }
     // Other known Prisma errors: treat as 400 generic
     logger.error({ err, requestId }, 'prisma known request error');
     return res.status(400).json({ error: 'Database request error', code: err.code, requestId });

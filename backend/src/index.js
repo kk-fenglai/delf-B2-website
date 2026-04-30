@@ -15,6 +15,8 @@ const examRoutes = require('./routes/exams');
 const sessionRoutes = require('./routes/sessions');
 const userRoutes = require('./routes/user');
 const essayRoutes = require('./routes/essays');
+const oralRoutes = require('./routes/orals');
+const recordingRoutes = require('./routes/recordings');
 const passwordResetRoutes = require('./routes/passwordReset');
 const adminAuthRoutes = require('./routes/adminAuth');
 const adminUserRoutes = require('./routes/adminUsers');
@@ -30,6 +32,7 @@ const payContractRoutes = require('./routes/payments/contracts');
 const { ipAllowlist } = require('./middleware/admin');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const essayQueue = require('./services/essayQueue');
+const oralQueue = require('./services/oralQueue');
 const reconcile = require('./services/payments/reconcile');
 
 const app = express();
@@ -48,7 +51,7 @@ app.use(
         fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
         imgSrc: ["'self'", 'data:', 'https:'],
         connectSrc: ["'self'", env.FRONTEND_URL],
-        mediaSrc: ["'self'", 'https:'],
+        mediaSrc: ["'self'", 'https:', 'blob:'],
         frameAncestors: ["'none'"],
         objectSrc: ["'none'"],
         upgradeInsecureRequests: env.IS_PROD ? [] : null,
@@ -157,6 +160,8 @@ app.use('/api/exams', examRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/user/essays', essayRoutes);
+app.use('/api/user/orals', oralRoutes);
+app.use('/api/user/recordings', recordingRoutes);
 app.use('/api/pay/products', payProductRoutes);
 // China-direct channels are off by default (overseas deploy uses Stripe's
 // wechat_pay/alipay payment methods instead). Set ENABLE_DIRECT_WECHAT=true /
@@ -193,6 +198,11 @@ const server = app.listen(env.PORT, () => {
   essayQueue.startWorker().catch((err) => {
     logger.error({ err }, 'essayQueue.startWorker.fail');
   });
+  // Oral worker: STT + LLM scoring for Production Orale rows. Same dev/prod
+  // tolerance as essayQueue — DASHSCOPE_API_KEY missing in dev only warns.
+  oralQueue.startWorker().catch((err) => {
+    logger.error({ err }, 'oralQueue.startWorker.fail');
+  });
   // Payment reconcile worker: close expired PENDING orders + recover orders
   // that paid on the channel side but whose notify we never received. Runs
   // in-process; for multi-instance deploys replace with a dedicated cron.
@@ -213,6 +223,9 @@ function shutdown(signal) {
     // race with prisma.disconnect.
     await essayQueue.drain({ timeoutMs: 12000 }).catch((e) => {
       logger.error({ err: e }, 'essayQueue.drain.fail');
+    });
+    await oralQueue.drain({ timeoutMs: 15000 }).catch((e) => {
+      logger.error({ err: e }, 'oralQueue.drain.fail');
     });
     await reconcile.stopWorker().catch((e) => {
       logger.error({ err: e }, 'reconcile.stopWorker.fail');

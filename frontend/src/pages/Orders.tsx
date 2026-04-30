@@ -65,9 +65,15 @@ const contractStatusColor: Record<ContractRow['status'], string> = {
   TERMINATED: 'default',
 };
 
-function formatYuan(cents: number) {
-  if (cents % 100 === 0) return `¥${cents / 100}`;
-  return `¥${(cents / 100).toFixed(2)}`;
+// Maps an ISO currency code to its display symbol. Falls back to the code
+// itself with a trailing space (e.g. "GBP 12.34") so unknown currencies stay
+// readable instead of silently appearing as bare numbers.
+const CURRENCY_SYMBOL: Record<string, string> = { CNY: '¥', USD: '$', EUR: '€' };
+
+function formatPrice(cents: number, currency: string | null | undefined): string {
+  const sym = currency ? (CURRENCY_SYMBOL[currency] ?? `${currency} `) : '¥';
+  const v = (cents / 100).toFixed(2).replace(/\.00$/, '');
+  return `${sym}${v}`;
 }
 
 function formatDate(iso: string | null) {
@@ -132,6 +138,26 @@ export default function Orders() {
         }
       },
     });
+  }
+
+  // Stripe subscriptions cannot be cancelled by a single API call from us —
+  // Stripe requires the user to confirm in the Customer Portal (which also
+  // gives them card-update + invoice download). We just hand off the redirect.
+  async function manageStripeSubscription(c: ContractRow) {
+    setUnsignBusy(c.id);
+    try {
+      const { data } = await api.post('/pay/stripe/portal');
+      if (data?.url) {
+        message.info(t('orders.contracts.openingPortal'));
+        window.location.href = data.url;
+        return;
+      }
+      message.error(t('orders.contracts.openingPortalFailed'));
+    } catch (e: any) {
+      message.error(e?.response?.data?.error || t('orders.contracts.openingPortalFailed'));
+    } finally {
+      setUnsignBusy(null);
+    }
   }
 
   async function openResume(orderId: string) {
@@ -200,13 +226,13 @@ export default function Orders() {
       title: t('orders.col.amount'),
       dataIndex: 'amountCents',
       render: (_v: number, row) => {
-        const base = formatYuan(row.amountCents);
+        const base = formatPrice(row.amountCents, row.currency);
         if (row.refundedCents > 0) {
           return (
             <span>
               {base}
               <span className="text-xs text-gray-500 ml-1">
-                {t('orders.refundedSuffix', { amount: formatYuan(row.refundedCents) })}
+                {t('orders.refundedSuffix', { amount: formatPrice(row.refundedCents, row.currency) })}
               </span>
             </span>
           );
@@ -266,7 +292,9 @@ export default function Orders() {
                     <span className="text-xs text-gray-500">
                       {c.provider === 'wechat'
                         ? t('pricing.checkout.wechat')
-                        : t('pricing.checkout.alipay')}
+                        : c.provider === 'alipay'
+                          ? t('pricing.checkout.alipay')
+                          : t('pricing.checkout.stripe')}
                     </span>
                   </Space>
                   <div className="text-xs text-gray-500 mt-1">
@@ -279,15 +307,28 @@ export default function Orders() {
                   </div>
                 </div>
                 <div>
-                  <Button
-                    size="small"
-                    danger
-                    disabled={c.status === 'TERMINATED' || c.status === 'PENDING'}
-                    loading={unsignBusy === c.id}
-                    onClick={() => unsignContract(c)}
-                  >
-                    {t('orders.contracts.unsign')}
-                  </Button>
+                  {c.provider === 'stripe' ? (
+                    <Button
+                      size="small"
+                      type="primary"
+                      ghost
+                      disabled={c.status === 'TERMINATED' || c.status === 'PENDING'}
+                      loading={unsignBusy === c.id}
+                      onClick={() => manageStripeSubscription(c)}
+                    >
+                      {t('orders.contracts.manageStripe')}
+                    </Button>
+                  ) : (
+                    <Button
+                      size="small"
+                      danger
+                      disabled={c.status === 'TERMINATED' || c.status === 'PENDING'}
+                      loading={unsignBusy === c.id}
+                      onClick={() => unsignContract(c)}
+                    >
+                      {t('orders.contracts.unsign')}
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}

@@ -280,12 +280,20 @@ async function settleContractSigned({ resource }) {
     },
   });
 
+  // adminId must reference a real User row (FK constraint) — look up the
+  // contract owner instead of using contract.id, which would dangle.
+  const contract = await prisma.payContract.findUnique({
+    where: { id: outerId },
+    select: { userId: true },
+  });
+  if (!contract) return;
+
   await writeAdminLog({
-    adminId: outerId, // use contract id for now; refine when we surface in admin UI
+    adminId: contract.userId,
     action: 'CONTRACT_SIGNED',
     targetType: 'CONTRACT',
-    targetId: externalContractId,
-    payload: { provider: 'wechat' },
+    targetId: outerId,
+    payload: { provider: 'wechat', externalContractId },
   });
 }
 
@@ -296,12 +304,19 @@ async function settleContractTerminated({ resource }) {
     where: { externalContractId, status: { in: ['PENDING', 'ACTIVE', 'SUSPENDED'] } },
     data: { status: 'TERMINATED', terminatedAt: new Date() },
   });
+
+  const contract = await prisma.payContract.findFirst({
+    where: { externalContractId },
+    select: { id: true, userId: true },
+  });
+  if (!contract) return;
+
   await writeAdminLog({
-    adminId: externalContractId,
+    adminId: contract.userId,
     action: 'CONTRACT_TERMINATED',
     targetType: 'CONTRACT',
-    targetId: externalContractId,
-    payload: { provider: 'wechat', source: 'notify' },
+    targetId: contract.id,
+    payload: { provider: 'wechat', source: 'notify', externalContractId },
   });
 }
 

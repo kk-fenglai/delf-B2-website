@@ -26,6 +26,14 @@ export interface Question {
   audioUrl?: string;
   points: number;
   options: QuestionOption[];
+  followUps?: OralFollowUp[];
+}
+
+export interface OralFollowUp {
+  id: string;
+  order: number;
+  text: string;
+  audioUrl?: string | null;
 }
 
 export interface ExamSetBrief {
@@ -56,6 +64,8 @@ export interface SubmitResultDetail {
   explanation?: string;
   essayId?: string | null;
   essayStatus?: EssayStatus | null;
+  oralId?: string | null;
+  oralStatus?: OralStatus | null;
 }
 
 export interface PerSkillBreakdown {
@@ -77,6 +87,7 @@ export interface SubmitResult {
   };
   details: SubmitResultDetail[];
   essays?: SubmitResponseEssay[];
+  orals?: SubmitResponseOral[];
 }
 
 // --- Score prediction (GET /api/user/prediction) ---
@@ -236,6 +247,97 @@ export interface SubmitResponseEssay {
   errorMessage: string | null;
 }
 
+// --- AI oral grading (Production Orale) -----------------------------------
+
+export type OralStatus = 'queued' | 'transcribing' | 'grading' | 'done' | 'error';
+
+export type OralRubricKey =
+  | 'presentation'
+  | 'argumentation'
+  | 'interaction'
+  | 'aisance'
+  | 'lexique_etendue'
+  | 'lexique_maitrise'
+  | 'morphosyntaxe_etendue'
+  | 'morphosyntaxe_maitrise'
+  | 'phonologie';
+
+export type OralCorrectionType = 'grammar' | 'lexique' | 'syntaxe' | 'register';
+
+export interface OralRubricDimension {
+  key: OralRubricKey;
+  score: number;
+  max: number;
+  feedback: string;
+}
+
+export interface OralCorrection {
+  excerpt: string;
+  issue: string;
+  suggestion: string;
+  type: OralCorrectionType;
+}
+
+export interface OralGrade {
+  id: string;
+  questionId: string;
+  sessionId: string | null;
+  status: OralStatus;
+  model: ClaudeModelKey | null;
+  locale: 'fr' | 'en' | 'zh' | null;
+  aiScore: number | null;
+  aiFeedback: string | null;
+  rubric: OralRubricDimension[] | null;
+  corrections: OralCorrection[] | null;
+  strengths: string[] | null;
+  transcriptCombined: string | null;
+  recordingIds: string[];
+  errorMessage: string | null;
+  gradedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface OralQuota {
+  plan: Plan;
+  used: number;
+  monthlyCap: number;
+  resetAt: string;
+  allowedModels: ClaudeModelKey[];
+  defaultModel: ClaudeModelKey | null;
+  models: EssayModelOption[];
+  thresholds: {
+    totalMax: number;
+    minWords: number;
+    targetWords: number;
+    maxWords: number;
+    monologueMaxSec: number;
+    followUpMaxSec: number;
+    prepDefaultSec: number;
+    prepPracticeSec: number;
+    dimensions: Array<{ key: OralRubricKey; max: number; labelFr: string }>;
+  };
+}
+
+export interface SubmitResponseOral {
+  oralId: string;
+  questionId: string;
+  status: OralStatus;
+  model: ClaudeModelKey | null;
+  errorMessage: string | null;
+}
+
+export interface UploadedRecording {
+  id: string;
+  questionId: string;
+  followUpId: string | null;
+  sessionId: string | null;
+  mimeType: string;
+  durationSec: number;
+  sizeBytes: number;
+  createdAt: string;
+}
+
 // --- Mistake notebook (错题本) -------------------------------------------
 
 export interface MistakeItem {
@@ -276,6 +378,8 @@ export type OrderStatus = 'CREATED' | 'PENDING' | 'PAID' | 'CLOSED' | 'REFUNDED'
 export interface CatalogPrice {
   id: string;
   code: string;
+  /** Optional display label (admin-editable). */
+  name?: string | null;
   months: number;
   currency: string;
   amountCents: number;
