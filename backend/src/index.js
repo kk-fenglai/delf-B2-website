@@ -4,7 +4,6 @@ const env = require('./config/env');
 const { logger, httpLogger } = require('./utils/logger');
 
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -15,6 +14,7 @@ const examRoutes = require('./routes/exams');
 const sessionRoutes = require('./routes/sessions');
 const userRoutes = require('./routes/user');
 const essayRoutes = require('./routes/essays');
+const essayTemplateRoutes = require('./routes/essayTemplates');
 const oralRoutes = require('./routes/orals');
 const recordingRoutes = require('./routes/recordings');
 const passwordResetRoutes = require('./routes/passwordReset');
@@ -22,6 +22,7 @@ const adminAuthRoutes = require('./routes/adminAuth');
 const adminUserRoutes = require('./routes/adminUsers');
 const adminStatsRoutes = require('./routes/adminStats');
 const adminExamRoutes = require('./routes/adminExams');
+const examAudioRoutes = require('./routes/examAudio');
 const adminPaymentsRoutes = require('./routes/adminPayments');
 const wechatPayRoutes = require('./routes/payments/wechat');
 const alipayRoutes = require('./routes/payments/alipay');
@@ -127,18 +128,11 @@ const payUserLimiter = rateLimit({
   message: { error: 'Too many payment requests, please retry' },
 });
 
-// --- Static audio (FEI sample exam MP3s and future CDN fallback) ---
-// Mounted under /api/* so the Vite dev proxy forwards it automatically.
-// Files live outside git (see .gitignore). No auth — this is public study material.
-app.use(
-  '/api/audio/fei',
-  express.static(path.join(__dirname, '..', 'content', 'fei-samples'), {
-    fallthrough: false,
-    setHeaders: (res) => {
-      res.setHeader('Cache-Control', 'public, max-age=86400');
-    },
-  })
-);
+// --- Listening audio (token-gated streaming) ---
+// Replaces the previous public express.static mount. Anyone hitting the URL
+// must present a short-lived HMAC token issued by the exam routes — see
+// utils/audioToken.js. Static MP3 leakage was a real risk for paid content.
+app.use('/api/audio/fei', examAudioRoutes);
 
 // --- Health ---
 app.get('/api/health', async (_req, res) => {
@@ -160,9 +154,11 @@ app.use('/api/exams', examRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/user/essays', essayRoutes);
+app.use('/api/user/templates', essayTemplateRoutes);
 app.use('/api/user/orals', oralRoutes);
 app.use('/api/user/recordings', recordingRoutes);
-app.use('/api/pay/products', payProductRoutes);
+// Mounts both GET /products and GET /preferred-currency.
+app.use('/api/pay', payProductRoutes);
 // China-direct channels are off by default (overseas deploy uses Stripe's
 // wechat_pay/alipay payment methods instead). Set ENABLE_DIRECT_WECHAT=true /
 // ENABLE_DIRECT_ALIPAY=true to expose these routes.

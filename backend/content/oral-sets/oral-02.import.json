@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · PARTIR VIVRE À L'ÉTRANGER : FAUT-IL SE LANCER DANS L'AVENTURE ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Document d'appui — source : cadremploi.fr. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Questions de relance générées par la plateforme.。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« PARTIR VIVRE À L'ÉTRANGER : FAUT-IL SE LANCER DANS L'AVENTURE ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Évidemment, certains diront qu'en partant dans un pays lointain, on laisse beaucoup de choses derrière soi. Il y aura forcément des moments de doute, des périodes plus compliquées, des incompréhensions et des difficultés au moment de trouver un emploi, par exemple. Mais avec une bonne préparation et en connaissant quelques personnes prêtes à vous aider une fois que vous serez dans le pays, tout est possible ! Bien sûr, il est plus facile de partir quand on est étudiant et sans enfants. Mais on peut choisir de s'expatrier à n'importe quel moment de sa vie.\nAlors, envie d'aller voir ailleurs si le soleil brille plus fort ? Envie de partir pour six mois, un an ou définitivement ? Pourquoi pas vous ? Il ne faut pas hésiter : une longue expérience à l'étranger fait forcément grandir, et c'est en partant dans un autre pays que l'on apprend vraiment une langue !",
+      "explanation": "Document d'appui — source : cadremploi.fr. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Questions de relance générées par la plateforme.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pour vous, partir vivre à l'étranger, c'est plutôt une chance ou un risque ?",
+          "expectedAngle": "明确立场，给理由"
+        },
+        {
+          "order": 1,
+          "text": "Faut-il aller dans un autre pays pour bien apprendre une langue ?",
+          "expectedAngle": "让步/反驳，承认其他途径"
+        },
+        {
+          "order": 2,
+          "text": "Quelles sont, selon vous, les plus grandes difficultés quand on part vivre ailleurs ?",
+          "expectedAngle": "列举主要困难"
+        },
+        {
+          "order": 3,
+          "text": "Aimeriez-vous vivre dans un autre pays ? Pourquoi ?",
+          "expectedAngle": "个人意愿+理由"
+        }
+      ]
+    }
+  ]
+}

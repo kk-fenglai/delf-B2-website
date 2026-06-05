@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Quels rapports entre les jeunes et le travail en 2030 ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Les Échos。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Quels rapports entre les jeunes et le travail en 2030 ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Les jeunes générations veulent appartenir à une entreprise qui correspond à leur mode de vie et qui est en phase avec leurs valeurs. Ainsi, la notion de « devoir travailler » risque de disparaître au profit d'un emploi qui a du sens. Il existe chez les jeunes générations un désir d'engagement très fort : pour elles, un travail utile est un travail d'intérêt général, qui apporte de réels changements à la société. Ainsi, le poste et le salaire ne suffiront plus seuls à motiver les jeunes. Et puisque le business se fera différemment, il faudra gérer l'humain autrement. Les futures générations veulent un manager 2.0*, bienveillant, qui sait faire confiance, laisser de l'autonomie et reconnaître le travail de ses collaborateurs. La pression constante des résultats et la multiplication des flux d'information exigent un manager capable de prendre du recul et soucieux du bien-être de ses équipes. Ainsi, le manager autoritaire devrait disparaître au profit d'un patron plus humain et inspirant.\n* manager 2.0 : dirigeant moderne, à l'aise avec les nouvelles technologies.",
+      "explanation": "Document d'appui — source : Les Échos. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Qu'attendez-vous le plus d'un travail : un bon salaire ou un travail qui a du sens ?",
+          "expectedAngle": "价值观"
+        },
+        {
+          "order": 1,
+          "text": "Un bon chef, comment est-il, selon vous ?",
+          "expectedAngle": "标准"
+        },
+        {
+          "order": 2,
+          "text": "Pensez-vous que les jeunes voient le travail autrement que leurs parents ?",
+          "expectedAngle": "代际对比"
+        },
+        {
+          "order": 3,
+          "text": "Le travail occupe-t-il trop de place dans la vie aujourd'hui ?",
+          "expectedAngle": "反思"
+        }
+      ]
+    }
+  ]
+}

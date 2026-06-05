@@ -1,0 +1,250 @@
+{
+  "title": "DELF B2 阅读 CE · 2023-06 中国场 · Texte 2（Éducation à l'art : il faut « déscolariser »）",
+  "year": 2023,
+  "description": "2023年6月中国考场真题 阅读第2篇（Lire un texte argumentatif）。分值统一记为1分。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Quel est le thème de l'article ?",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "Les moyens d'éduquer à l'art.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "Les débouchés des études d'art.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "La formation à l'art des enseignants.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 2,
+      "prompt": "Vrai ou faux ? (justifiez) Philippe Fenwick met en doute le rôle de l'artiste tel que l'a défini le colloque d'Amiens.",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": "Vrai. Justification : « Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": false,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 3,
+      "prompt": "Vrai ou faux ? (justifiez) Philippe Fenwick pense qu'il y a trop peu d'intervenants en art dans les écoles.",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": "Faux. Justification : « Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de créateurs intervenants. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 4,
+      "prompt": "Selon Philippe Fenwick, en tant que spectateurs de théâtre, les jeunes montrent trop…",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "de préjugés.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "de désintérêt.",
+          "isCorrect": true,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "d'incompréhension.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 5,
+      "prompt": "Comment comprenez-vous la comparaison entre une « sortie au théâtre » et « un cours de mathématiques, en plus détendu » ?",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Les sorties au théâtre sont devenues aussi structurées et rigides que des cours de mathématiques, perdant ainsi leur aspect ludique et créatif.",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 6,
+      "prompt": "Quel paradoxe Fenwick constate-t-il par rapport à l'augmentation du nombre de théâtres ?",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Malgré l'augmentation du nombre de théâtres, leur fréquentation (hors scolaires et jeune public) est restée la même depuis cinquante ans.",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 7,
+      "prompt": "« Déscolariser » l'art, selon Philippe Fenwick, signifie…",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "mettre l'accent sur la pratique de l'art à l'école.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "étendre l'enseignement de l'art à toute la société.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "supprimer l'éducation artistique en milieu scolaire.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 8,
+      "prompt": "À travers l'exemple d'ateliers de poésie, quel aspect l'auteur de l'article met-il en avant ?",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "L'enseignement de l'art ne devrait pas se limiter à la salle de classe ; il devrait s'adresser à des groupes plus petits et plus intimes et encourager les élèves à partager leur amour de l'art avec leur entourage.",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 9,
+      "prompt": "Pour Philippe Fenwick, la principale qualité de l'intervenant en art doit être…",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "sa maîtrise.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "son expérience.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "son engagement.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 10,
+      "prompt": "Le ton de ce texte est…",
+      "passage": "En mars 1968, suite au colloque d'Amiens, « Pour Une École Nouvelle », le tournant fut amorcé.\n\nL'éducation artistique doit commencer dès l'école primaire et privilégier le contact avec les artistes. Mais les réformateurs, qui nous ont incités à propager la bonne parole, ne nous ont-ils pas imposé une mission qui n'était pas la nôtre ? Plus de quarante ans après, quel est le résultat de cette politique généreuse ? L'éducation artistique a beaucoup reçu et jamais, aujourd'hui, les professionnels ne se sont autant engagés auprès des établissements. Jamais il n'y a eu autant de colloques sur l'art à l'école, et jamais on n'a vu un si grand nombre de « créateurs intervenants ». Des enseignants passent des heures à faire des ateliers devant des élèves pour qui le théâtre est intimement lié à l'école et donc, souvent, à l'ennui.\n\nAinsi, les poètes qui sont les plus talentueux critiques de la société se sont retrouvés au musée Grévin de la littérature, c'est-à-dire dans un manuel scolaire. La sortie au théâtre est devenue comme un cours de mathématiques, en plus tendu. On demande aux élèves de se taire, on leur explique que les acteurs sont « vivants » ! Plus terrible encore : au terme de leur scolarité, 95 % ne fréquentent plus les lieux culturels qu'ils ont fréquentés durant leurs années d'école. On leur a quand même ouvert une porte, nous explique-t-on, sans jamais remettre le système en cause. Ainsi, à part quelques très belles expériences, on peut parler d'une réussite très relative en ce qui concerne quarante ans d'éducation artistique.\n\nUne question légitime se pose alors : avant, la France était-elle moins sensible aux arts ? Si l'on se réfère aux chiffres, le nombre de théâtres a été multiplié par cent mais leur fréquentation - hors scolaires et jeune public - est restée la même depuis cinquante ans. Il faut aujourd'hui innover en matière d'éducation artistique, il faut avoir pour but, avec l'aide des professeurs, de « déscolariser définitivement l'art ». Ce tournant ne pourra se prendre qu'au sein de l'école. Avec des méthodes favorisant la valorisation des œuvres réalisées lors d'ateliers, il s'agirait de mettre l'art, et non la culture, au cœur du projet. Car, si la culture rassemble, l'art doit diviser en favorisant débats et émotions.\n\nAutre chose : pourquoi chercher à convaincre une classe de trente élèves que la poésie peut être source d'émancipation ? Ne vaudrait-il pas mieux sensibiliser des petits groupes pour que les participants à ces ateliers fassent aimer la poésie à leur entourage - en dehors du lycée - en se montrant fiers de leur production ? La transmission doit être prolongée par celui qui l'a reçue.\n\nAlors, avec l'école et au sein même de celle-ci, faisons en sorte que l'art ne soit plus considéré comme une chose figée mais comme une matière vivante. Les intervenants doivent rester des artistes qui ont envie de faire partager leur passion, sans être obligés parce qu'ils reçoivent une subvention. Il est essentiel de donner envie, d'éveiller la curiosité. Cherchons des idées neuves, et surtout, ne nous empêchons pas d'être utopistes.\n\nD'après Philippe Fenwick",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "engagé.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "ironique.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "pessimiste.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    }
+  ]
+}

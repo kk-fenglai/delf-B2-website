@@ -1,0 +1,125 @@
+---
+title: "DELF B2 阅读 CE · 2023-11 中国场 · Texte 2（Le sport sur ordonnance）"
+year: 2023
+description: "2023年11月中国考场真题 阅读第2篇。原题第4题含a/b两小题，已拆分为独立题。分值统一记为1分。"
+isPublished: false
+isFreePreview: false
+---
+
+## Passage: Texte 2 — Le sport sur ordonnance
+
+```passage
+Comment ralentir la croissance des ventes de médicaments en France tout en améliorant la santé des Français ? Comment participer au bien-être des personnes âgées sans pour autant multiplier les ordonnances de médicaments ?
+
+Le « sport sur ordonnance », une pratique qui émerge depuis quelques mois, peut répondre à ces problématiques.
+
+Cette pratique s'inscrit enfin dans la loi, mais il ne s'agit que d'une modification de la loi s'adressant aux personnes atteintes de maladies de longue durée. Pour le patient, dans un premier temps, le bénéfice du sport sur ordonnance médicale peut être double : en pratiquant une activité sportive adaptée à sa condition et à sa pathologie, cela peut améliorer sa forme générale. Mais la pratique du sport sur ordonnance peut aussi conduire à limiter de manière réelle la médication, permettant de diminuer les effets secondaires de certains traitements. À Strasbourg, une expérimentation de sport-santé sur ordonnance a été lancée en 2012 et a montré des résultats très encourageants. L'exemple strasbourgeois est le symbole de l'émergence de cette pratique, mais cela ne correspond encore qu'à un déploiement ponctuel. Sans volonté réelle de promouvoir et d'appuyer le sport sur ordonnance, cette pratique pourrait rester à l'état d'initiative individuelle. Or, pour que cela ait un impact significatif, il faut que cette tendance soit adoptée sur le plan national. Le principal frein à l'adoption généralisée du sport sur ordonnance vient actuellement de l'investissement financier que cela nécessiterait.
+
+Les caisses de l'État sont vides, certes, mais c'est une vision à long terme qu'il faut adopter : miser sur une telle pratique permettrait, avec une économie d'échelle, d'afficher des résultats convaincants. En effet, le sport sur ordonnance permettrait, en se projetant, de réduire les risques cardio-vasculaires, l'inactivité ou encore le diabète. Autant de problèmes médicaux représentant des traitements lourds à assumer pour les pouvoirs publics : promouvoir globalement le sport sur ordonnance permettrait de réduire les dépenses publiques en matière de santé. Mais pour cela, il faut que les pouvoirs publics interviennent sérieusement pour faire évoluer les choses.
+
+Certaines complémentaires santé ont déjà annoncé qu'elles adopteraient cette initiative avec une prise en charge des activités liées au sport. En effet, il n'est pas prévu que la Sécurité sociale prenne directement en charge les activités liées au sport sur ordonnance. Le financement pourrait être multiple, couvert par des organismes régionaux et locaux et par les assurances maladie ou des associations de patients. Mais il faut aller plus loin et généraliser cette mesure. Les médecins pourraient, par exemple, proposer ce type d'activités à tous les patients pour qui les effets seraient bénéfiques. Pour cela, les médecins devront être appuyés dans leur rôle de prescripteur de l'activité physique en étant formés dans ce sens ou avoir à disposition un référentiel ou un guide de prescription, ce qui n'est pas le cas actuellement.
+
+Enfin, en poussant les bénéfices du sport pour le bien-être des Français en général, il faudrait élargir le dispositif à toute pratique sportive. Ainsi, il semblerait logique que les clubs songent à développer des séances particulières pour ce type de public, comme l'a fait la Fédération française d'athlétisme, par exemple. Aux fédérations, dont la volonté d'augmenter le nombre de leurs adhérents est constante, de mettre en place des activités suffisamment attractives pour cette cible particulière.
+
+* ordonnance : prescription du médecin.
+* complémentaires santé : système privé d'assurance maladie.
+* Sécurité sociale : système public d'assurance maladie.
+```
+
+### Q: 1
+skill: CE
+type: SINGLE
+points: 1
+prompt: "Cet article traite principalement de la question…"
+answer: B
+options:
+- A) "des pratiques sportives différentes selon les malades."
+- B) "du financement de la pratique sportive sur ordonnance."
+- C) "du manque de formation des médecins sur les pratiques sportives."
+
+### Q: 2
+skill: CE
+type: SINGLE
+points: 1
+prompt: "D'après le texte, le cadre législatif qui encadre le sport sur ordonnance est…"
+answer: C
+options:
+- A) "élargi à toute la population."
+- B) "réservé aux personnes âgées."
+- C) "restreint aux personnes malades."
+
+### Q: 3
+skill: CE
+type: ESSAY
+points: 1
+prompt: "Selon l'article, quels sont les avantages de la pratique sportive pour le patient ? Donnez-en deux."
+modelEssay: "Elle permet d'améliorer sa forme générale et de limiter la prise de médicaments (donc d'en diminuer les effets secondaires), ainsi que de réduire les risques cardio-vasculaires, l'inactivité ou le diabète."
+
+### Q: 4
+skill: CE
+type: TRUE_FALSE_JUSTIFY
+points: 1
+prompt: "Vrai ou faux ? (justifiez) La pratique du sport sur ordonnance a déjà été expérimentée dans certaines villes mais les résultats n'ont pas été concluants."
+answer: F
+explanation: "Faux. Justification : « À Strasbourg, une expérimentation de sport-santé sur ordonnance a été lancée en 2012 et a montré des résultats très encourageants. »"
+options:
+- V) Vrai
+- F) Faux
+
+### Q: 5
+skill: CE
+type: TRUE_FALSE_JUSTIFY
+points: 1
+prompt: "Vrai ou faux ? (justifiez) La prescription médicale du sport coûte encore trop cher pour se développer."
+answer: V
+explanation: "Vrai. Justification : « Le principal frein à l'adoption généralisée du sport sur ordonnance vient actuellement de l'investissement financier que cela nécessiterait. »"
+options:
+- V) Vrai
+- F) Faux
+
+### Q: 6
+skill: CE
+type: SINGLE
+points: 1
+prompt: "D'après l'auteur, le sport sur ordonnance permettrait de réduire les dépenses publiques sur le long terme…"
+answer: C
+options:
+- A) "en remplaçant les médicaments les plus coûteux."
+- B) "en transférant les coûts vers les assurances privées."
+- C) "en diminuant le risque de développer des maladies graves."
+
+### Q: 7
+skill: CE
+type: TRUE_FALSE_JUSTIFY
+points: 1
+prompt: "Vrai ou faux ? (justifiez) L'auteur voudrait que l'État soit plus présent pour favoriser le sport sur ordonnance."
+answer: V
+explanation: "Vrai. Justification : « Il faut que les pouvoirs publics interviennent sérieusement pour faire évoluer les choses. »"
+options:
+- V) Vrai
+- F) Faux
+
+### Q: 8
+skill: CE
+type: SINGLE
+points: 1
+prompt: "D'après le texte, il est prévu que le sport sur ordonnance soit financé par…"
+answer: B
+options:
+- A) "la Sécurité sociale uniquement."
+- B) "un ensemble d'institutions diverses."
+- C) "les assurances privées et les employeurs."
+
+### Q: 9
+skill: CE
+type: ESSAY
+points: 1
+prompt: "D'après l'auteur, comment pourrait-on aider les médecins à encourager la pratique sportive ?"
+modelEssay: "En leur donnant un référentiel ou un guide de prescription, ou en les formant dans ce sens."
+
+### Q: 10
+skill: CE
+type: ESSAY
+points: 1
+prompt: "Selon le document, de quelle manière les associations sportives pourraient-elles favoriser le sport sur ordonnance ?"
+modelEssay: "En proposant des séances particulières pour ce type de public (comme l'a fait la Fédération française d'athlétisme)."

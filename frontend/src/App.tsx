@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import AppLayout from './components/AppLayout';
 import AdminLayout from './components/AdminLayout';
@@ -31,11 +31,13 @@ import AdminExamEdit from './pages/admin/AdminExamEdit';
 import AdminExamImport from './pages/admin/AdminExamImport';
 import AdminPayments from './pages/admin/AdminPayments';
 import AdminChangePassword from './pages/admin/AdminChangePassword';
+import ChangePassword from './pages/ChangePassword';
 import { useAuthStore } from './stores/auth';
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const user = useAuthStore((s) => s.user);
-  if (!user) return <Navigate to="/login" replace />;
+  const location = useLocation();
+  if (!user) return <Navigate to="/login" replace state={{ from: location }} />;
   return children;
 }
 
@@ -73,6 +75,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/change-password" element={<RequireAuth><ChangePassword /></RequireAuth>} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/verification-sent" element={<VerificationSent />} />
 

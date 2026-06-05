@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2024年3月（中国） — 申请海外职业培训",
+  "year": 2024,
+  "description": "申请海外职业培训。来源：2024年3月（中国） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous travaillez dans une entreprise française. Lors d'une réunion du personnel, vous apprenez l'existence d'une formation professionnelle à l'étranger. Vous écrivez au directeur de votre entreprise pour qu'il accède à votre demande : vous lui expliquez la situation de votre équipe de travail ainsi que la vôtre, et vous attirez l'attention de votre directeur sur l'intérêt de vous envoyer suivre cette formation.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2024 年 3 月中国 DELF B2 写作真题（回忆版）。注：原文 OCR 略有残缺，已按题意整理。体裁：致公司经理的书信。要点：说明团队及个人情况，论证参加海外培训的价值并请求批准。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

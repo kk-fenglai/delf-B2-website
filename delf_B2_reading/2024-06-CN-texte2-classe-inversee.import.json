@@ -1,0 +1,244 @@
+{
+  "title": "DELF B2 阅读 CE · 2024-06 中国场 · Texte 2（La classe inversée va-t-elle révolutionner l'école ?）",
+  "year": 2024,
+  "description": "2024年6月中国考场真题 阅读第2篇。原题第2题含a/b两小题，已拆分为独立题。分值统一记为1分。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Le but de ce texte est…",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "de dénoncer la méthodologie du cours magistral.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "de souligner les aspects positifs de la classe inversée.",
+          "isCorrect": true,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "de montrer les limites du numérique dans l'enseignement.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 2,
+      "prompt": "Vrai ou faux ? (justifiez) D'après l'auteur, la pédagogie de la classe inversée permet de rendre le travail en classe plus pratique.",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": "Vrai. Justification : « je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": false,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 3,
+      "prompt": "Vrai ou faux ? (justifiez) Avec la classe inversée, les professeurs n'ont pas le temps de répondre aux questions de leurs élèves en classe.",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": "Faux. Justification : « passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun » / « Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 4,
+      "prompt": "Selon Nicolas Lemoine, à quel type de discipline la classe inversée n'est-elle pas adaptée ?",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Aux disciplines pour lesquelles l'apport théorique n'est pas important (contrairement aux matières théoriques).",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 5,
+      "prompt": "Marie-Camille Coudert laisse ses élèves…",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "définir le programme de la séance.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "choisir les activités à faire en classe.",
+          "isCorrect": true,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "réaliser eux-mêmes les vidéos du cours.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 6,
+      "prompt": "Citez deux atouts de la vidéo comme outil d'apprentissage.",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Son caractère ludique et la possibilité de la regarder plusieurs fois (autant de fois qu'on veut), ce qui permet de travailler en autonomie, à son rythme.",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 7,
+      "prompt": "Vrai ou faux ? (justifiez) D'après le texte, la classe inversée avantage surtout les bons élèves.",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": "Faux. Justification : « Transférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 8,
+      "prompt": "Certains élèves sont perturbés par cette pédagogie. Pourquoi ?",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "Ils préfèrent être davantage guidés.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "Ils s'ennuient en regardant les vidéos.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "Ils ne comprennent pas ce qu'on attend d'eux.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 9,
+      "prompt": "D'après le texte, la pédagogie de la « classe inversée »…",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "a beaucoup de succès.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "est de moins en moins utilisée.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "reste peu connue des professeurs.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 10,
+      "prompt": "Quel changement important connaît aujourd'hui la pédagogie de la classe inversée ?",
+      "passage": "A priori, rien de vraiment différent d'un cours classique. Et pourtant.\n\n« Grâce aux nouvelles technologies, je peux proposer à mes élèves de découvrir les contenus théoriques chez eux afin de libérer du temps en classe pour faire des exercices », explique Nicolas Lemoine, enseignant en mathématiques au collège de D'Fancy, en proche banlieue parisienne. Fini donc le cours magistral. Bienvenue dans la classe inversée où les « devoirs » se font à l'école et les leçons à la maison.\n\nL'enseignant, adepte de cette méthode depuis deux ans et aujourd'hui formateur, passe ainsi les deux heures de cours à travailler avec les collégiens, en prenant le temps de répondre à chacun. Il fait régulièrement référence à son cours diffusé sous forme de vidéo qu'il réalise lui-même et qu'il propose sur son site internet ou via YouTube. Pour vérifier que les élèves ont regardé et compris, l'enseignant leur demande de répondre à un questionnaire en ligne, chez eux, puis de compléter une partie du cours, en classe. « Les matières théoriques sont particulièrement adaptées à cette pédagogie parce que l'apport théorique est important, observe Nicolas Lemoine. Ce n'est pas le cas pour toutes les disciplines et la méthode ne convient pas non plus à tous les enseignants. »\n\nMarie-Camille Coudert, professeure de physique-chimie au collège-lycée Sainte-Louise à Paris, dispense également ses cours sous forme de vidéos. Les élèves décident eux-mêmes de ce qu'ils font durant l'heure de cours, en suivant un plan de travail proposé par l'enseignante. Ici, le mot d'ordre est donc la liberté. « Je leur montre le chemin, mais ils le parcourent à leur rythme, précise-t-elle. Je suis à leur disposition pour répondre aux questions et les aider à travailler sur leurs erreurs. »\n\nAvec ce support numérique, plutôt associé au divertissement, beaucoup d'élèves n'ont pas l'impression d'avoir des devoirs à la maison, relève Nicolas Lemoine. Adil, en sixième, confirme : « La vidéo à la maison, c'est bien. On peut la regarder autant de fois qu'on veut », témoigne-t-il, comme la plupart des élèves. « C'est mieux que les exercices, sur lesquels les parents ne peuvent pas nous aider », ajoute-t-il, appréciant également de pouvoir avancer à son rythme en classe.\n\nTransférer le cours magistral à la maison permet aussi de mieux accompagner les élèves à l'école, notamment ceux qui sont en difficulté, souligne de son côté Marie-Camille Coudert. « À l'ère de Google, dit-elle, cette pédagogie repositionne le rôle de l'enseignant(e), qui n'est plus seulement dans la transmission des connaissances, mais de plus en plus dans l'accompagnement. »\n\nPourtant, l'autonomie proposée par cette pédagogie active déstabilise certains élèves. « J'aurais besoin d'un prof qui m'aide à hiérarchiser les infos et me dise ce qu'il faut savoir », se plaint Lucie, élève en terminale. Même ressenti chez son camarade Ruben : « L'autonomie, c'est trop dur quand on a 17 ans. »\n\nMalgré ses limites, cette pédagogie est aujourd'hui utilisée dans un grand nombre d'établissements. Si la classe inversée n'est pas tout à fait révolutionnaire (les enseignants donnaient déjà des leçons à faire à la maison et consacraient l'essentiel du cours à les corriger, rappelle Philippe Meirieu, chercheur en sciences de l'éducation), le concept est renouvelé avec l'introduction du numérique.\n\nD'après PINTO-GOMES, www.la-croix.com\n\n* adepte : qui pratique cette méthode.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Elle est renouvelée par l'introduction du numérique (les vidéos en ligne, etc.).",
+      "points": 1,
+      "options": []
+    }
+  ]
+}

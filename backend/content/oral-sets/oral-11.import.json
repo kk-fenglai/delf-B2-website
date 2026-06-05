@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Pourquoi entreprendre entre amis ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Pourquoi entreprendre entre amis ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "« Quand on a lancé notre société, notre entourage nous a mis en garde : vous êtes trop jeunes, vous êtes deux amies. Heureusement, on ne l'a pas écouté », se souviennent Mallorie et Marie. Les deux jeunes femmes, qui se sont rencontrées sur les bancs de l'école, ont fondé une centrale de réservation de soins de beauté et de bien-être sur Internet. Entreprendre entre amis peut-il représenter une prise de risque supplémentaire ? « Tout projet entrepreneurial est risqué, note Marie-Christine Barbot Grizzo, maîtresse de conférences à l'Université du Mans. La mauvaise entente entre deux associés peut mener à l'échec de l'entreprise. Rien ne prouve que ce risque augmente si les deux associés étaient déjà amis avant de se lancer. En revanche, la dimension amicale de leur relation doit impérativement être prise en compte dans la façon de concevoir l'entreprise, pour bien définir le rôle de chacun », préconise-t-elle. Il vaut donc mieux mettre toutes les chances de son côté pour lier avec succès amitié et affaires !",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Travailler avec un ami, est-ce une bonne idée selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Quels sont les risques de travailler avec un ami ?",
+          "expectedAngle": "风险"
+        },
+        {
+          "order": 2,
+          "text": "Préféreriez-vous créer une entreprise seul(e) ou avec quelqu'un ?",
+          "expectedAngle": "个人选择"
+        },
+        {
+          "order": 3,
+          "text": "Peut-on rester amis quand on travaille ensemble ?",
+          "expectedAngle": "友谊维持"
+        }
+      ]
+    }
+  ]
+}

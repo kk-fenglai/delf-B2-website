@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · L'information sur Internet",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : huffingtonpost.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« L'information sur Internet »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Les erreurs factuelles, volontaires ou non, circulent aujourd'hui facilement sur Internet. Or, les pratiques informationnelles, notamment des plus jeunes, sont essentiellement liées à leurs usages d'Internet et des réseaux sociaux. Il convient donc d'interroger la manière dont les jeunes consomment, analysent, s'approprient et créent les informations qui circulent sur le web, car les fausses informations se propagent à grande vitesse à cause des réseaux sociaux. Le gouvernement devrait s'intéresser davantage à cette problématique et voter des lois pour protéger les internautes ; toutefois, plusieurs questions se posent. Certains y voient une menace pour la liberté d'expression et questionnent l'impact réel d'un tel dispositif : il paraît dangereux de penser pouvoir contrôler les contenus publiés sur Internet. D'autres moyens d'agir existent, notamment l'éducation de tous à l'information et aux outils numériques, en particulier des futurs citoyens. L'esprit critique est une compétence essentielle du citoyen du 21e siècle : analyser une source, mettre en perspective l'information, en extraire l'essentiel, prendre du recul sur les contenus, s'interroger et s'approprier la démarche journalistique sont autant de savoirs indispensables.",
+      "explanation": "Document d'appui — source : huffingtonpost.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Où cherchez-vous vos informations : Internet, télévision, journaux ?",
+          "expectedAngle": "个人习惯"
+        },
+        {
+          "order": 1,
+          "text": "Comment savoir si une information est vraie ou fausse ?",
+          "expectedAngle": "方法"
+        },
+        {
+          "order": 2,
+          "text": "Faut-il contrôler ce qui se publie sur Internet ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 3,
+          "text": "L'école doit-elle apprendre à utiliser l'information ?",
+          "expectedAngle": "教育观点"
+        }
+      ]
+    }
+  ]
+}

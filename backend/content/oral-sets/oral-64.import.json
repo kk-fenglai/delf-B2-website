@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Le congé de paternité bientôt obligatoire ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : L'Express。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Le congé de paternité bientôt obligatoire ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Les jeunes papas pourraient devenir beaucoup plus nombreux à s'occuper de leur bébé juste après sa naissance si le congé paternité devenait obligatoire. Une idée à laquelle le gouvernement se dit favorable, pour diminuer les inégalités hommes-femmes. Depuis le 1er janvier 2002, les pères ont le droit de prendre onze jours de congé paternité (18 en cas de naissances multiples), qui s'ajoutent aux trois jours d'absence accordés pour une naissance. Bien que l'employeur ne puisse pas refuser ce congé, rémunéré par la Sécurité sociale, seulement deux tiers des pères y ont recours. Cette mesure « permettrait de rétablir un regard plus égalitaire sur les jeunes parents ». Pour le ministère, un congé obligatoire permettrait de « casser la discrimination qui sévit dans l'entreprise » et de « casser un stéréotype : les hommes sont aussi capables de s'occuper de leurs enfants ». Et ce n'est qu'un début : il faudra envisager qu'il soit plus long et mieux rémunéré, et s'attaquer au congé parental (trois ans maximum), qui éloigne souvent durablement les femmes du marché du travail.",
+      "explanation": "Document d'appui — source : L'Express. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Les hommes devraient-ils prendre autant de congé que les femmes à la naissance d'un enfant ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Pourquoi, selon vous, peu de pères prennent ce congé ?",
+          "expectedAngle": "成因"
+        },
+        {
+          "order": 2,
+          "text": "Rendre ce congé obligatoire : bonne idée ?",
+          "expectedAngle": "强制观点"
+        },
+        {
+          "order": 3,
+          "text": "Comment partager plus justement les tâches familiales ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

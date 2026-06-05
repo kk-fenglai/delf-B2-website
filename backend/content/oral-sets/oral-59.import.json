@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Vidéosurveillance dans l'entreprise : jusqu'où peut-on épier les salariés ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Laurence Neuer, Le Point。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Vidéosurveillance dans l'entreprise : jusqu'où peut-on épier les salariés ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Lors d'un contrôle dans une entreprise de transport, la Commission nationale de l'informatique et des libertés a ordonné l'interruption immédiate d'un dispositif de vidéosurveillance : les salariés étaient filmés en permanence à leur poste de travail. « Cette surveillance permanente n'était justifiée par aucun motif de sécurité ou de lutte contre des dégradations matérielles », reproche la Commission. Plusieurs sanctions pécuniaires* ont aussi été prononcées, notamment à l'encontre d'une société de prêt-à-porter qui a, sous couvert de lutte contre le vol, installé des caméras pour filmer les salariés de façon permanente, y compris dans des lieux où aucune marchandise n'était stockée, et sans les en avoir informés. La Commission a aussi rappelé à l'ordre une société qui filmait les salariés dans des espaces de repos : une mesure excessive par rapport à l'objectif de protection des personnes et des biens. Certains employés réclament l'enlèvement de ces caméras, estimant qu'elles représentent une atteinte à leur vie privée.\n* pécuniaire : relatif à l'argent.",
+      "explanation": "Document d'appui — source : Laurence Neuer, Le Point. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Filmer les salariés au travail, est-ce acceptable, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Où s'arrête le droit d'une entreprise de surveiller ses employés ?",
+          "expectedAngle": "界限"
+        },
+        {
+          "order": 2,
+          "text": "Vous sentiriez-vous à l'aise, filmé(e) toute la journée au travail ?",
+          "expectedAngle": "个人感受"
+        },
+        {
+          "order": 3,
+          "text": "Comment protéger la vie privée des salariés ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

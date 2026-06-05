@@ -41,6 +41,7 @@ model User {
   essays                Essay[]
   recordings            Recording[]
   orals                 Oral[]
+  essayTemplates        EssayTemplate[]
   loginHistory          LoginHistory[]
   resetTokens           PasswordResetToken[]
   twoFactorTokens       TwoFactorToken[]
@@ -325,8 +326,32 @@ model ExamSet {
   isFreePreview Boolean   @default(false)
   createdAt    DateTime   @default(now())
 
+  questions       Question[]
+  sessions        ExamSession[]
+  audioDocuments  AudioDocument[]
+}
+
+// One DELF B2 listening "document". Each Compréhension de l'Oral section has
+// two of these (Ex.1: long, played twice; Ex.2: short, played once). Multiple
+// questions share a document. Replaces the per-question audioUrl on CO so
+// the runner can enforce DELF rules (plays, gap, prep time) at the right
+// granularity.
+model AudioDocument {
+  id           String   @id @default(cuid())
+  examSetId    String
+  examSet      ExamSet  @relation(fields: [examSetId], references: [id], onDelete: Cascade)
+  order        Int      @default(0)              // 0 = Exercise 1, 1 = Exercise 2, …
+  title        String?                            // optional display name
+  audioUrl     String?
+  maxPlays     Int      @default(2)              // DELF: 2 for long, 1 for short
+  prepSeconds  Int      @default(60)             // time to read questions before first play
+  gapSeconds   Int      @default(180)            // silence between two plays (Ex.1 = 3 min)
+  answerSeconds Int     @default(0)              // optional final answering window after last play
+  createdAt    DateTime @default(now())
+
   questions    Question[]
-  sessions     ExamSession[]
+
+  @@index([examSetId, order])
 }
 
 model ReadingPassage {
@@ -354,16 +379,25 @@ model Question {
   passage       String?
   passageId     String?
   readingPassage ReadingPassage? @relation(fields: [passageId], references: [id], onDelete: SetNull)
+  // For CO questions, audio lives on the shared AudioDocument (see field
+  // below). Question.audioUrl is kept for non-CO usages (none today, but
+  // leave the column to avoid a destructive migration).
   audioUrl      String?
+  audioDocumentId String?
+  audioDocument AudioDocument? @relation(fields: [audioDocumentId], references: [id], onDelete: SetNull)
   explanation   String?
   points        Int          @default(1)
+
+  modelEssay    String?
 
   options       QuestionOption[]
   attempts      UserAttempt[]
   followUps     OralFollowUp[]
+  essays        Essay[]
 
   @@index([examSetId, skill])
   @@index([passageId])
+  @@index([audioDocumentId])
 }
 
 model QuestionOption {
@@ -383,6 +417,10 @@ model ExamSession {
   examSetId    String
   examSet      ExamSet    @relation(fields: [examSetId], references: [id])
   mode         String     @default("PRACTICE")
+  // For PRACTICE mode: CE | CO | PE | PO when single-skill, else null.
+  // For EXAM mode: always null (full mock covers all skills).
+  // Used by FREE-plan monthly quota bucketing in routes/sessions.js.
+  skill        String?
   startedAt    DateTime   @default(now())
   completedAt  DateTime?
   totalScore   Int?
@@ -391,6 +429,7 @@ model ExamSession {
   attempts     UserAttempt[]
 
   @@index([userId, completedAt])
+  @@index([userId, mode, skill, startedAt])
 }
 
 model UserAttempt {
@@ -415,6 +454,7 @@ model Essay {
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   sessionId   String?                        // links back to the ExamSession for review join
   content     String
   wordCount   Int      @default(0)
@@ -522,4 +562,17 @@ model Oral {
   @@index([userId, createdAt])
   @@index([status, createdAt])
   @@index([sessionId])
+}
+
+model EssayTemplate {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  type      String   @default("phrase")  // "phrase" | "structure"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
 }

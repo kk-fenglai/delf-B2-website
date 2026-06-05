@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Ce n'est pas la violence des jeux vidéo qui rend agressif",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Ce n'est pas la violence des jeux vidéo qui rend agressif »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "On ne compte plus le nombre d'études qui se concentrent sur le lien entre jeux vidéo violents et agressivité des joueurs. Certaines personnes n'hésitent pas à affirmer que ces jeux génèrent de « véritables monstres » ; d'autres études soulignent un impact sur le comportement. Mais inutile de dramatiser : certains spécialistes démentent tout lien entre la violence des jeux vidéo et les comportements agressifs. On pourrait croire qu'une nouvelle étude sur ce thème ne ferait que répéter les mêmes arguments, parfois contradictoires. Pourtant, une récente expérience révèle que les comportements violents des joueurs seraient liés non pas au contenu violent du jeu, mais aux difficultés rencontrées par le joueur dans ce jeu. Autrement dit, l'agressivité viendrait surtout de la frustration que l'on ressent lorsqu'on a du mal à comprendre un jeu ou lorsqu'on perd. La difficulté du jeu aurait donc davantage d'influence sur le comportement que son contenu.",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Jouez-vous aux jeux vidéo ? Lesquels ?",
+          "expectedAngle": "个人"
+        },
+        {
+          "order": 1,
+          "text": "Pensez-vous que les jeux vidéo rendent violent ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Les jeux vidéo ont-ils aussi de bons côtés ?",
+          "expectedAngle": "积极面"
+        },
+        {
+          "order": 3,
+          "text": "Faut-il limiter le temps passé sur les jeux vidéo ?",
+          "expectedAngle": "观点"
+        }
+      ]
+    }
+  ]
+}

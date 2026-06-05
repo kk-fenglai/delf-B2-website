@@ -26,7 +26,14 @@ let tickTimer = null;
 
 // Transient errors → row stays 'queued' for another pass.
 // Terminal errors → row becomes 'error' with errorMessage.
-const TRANSIENT_CODES = new Set(['AI_RATE_LIMITED', 'AI_PROVIDER_DOWN', 'AI_CALL_FAILED']);
+const TRANSIENT_CODES = new Set([
+  'AI_RATE_LIMITED',
+  'AI_PROVIDER_DOWN',
+  'AI_CALL_FAILED',
+  'AI_OUTPUT_TRUNCATED',
+  'AI_NO_TOOL_USE',   // model returned text instead of a tool call — retry usually fixes it
+  'AI_BAD_OUTPUT',    // schema parse failed — retry with fresh LLM sample
+]);
 
 async function claimOne() {
   // Claim the oldest queued essay. On SQLite the updateMany + take-1 pattern
@@ -81,6 +88,19 @@ async function processOne(essayRow) {
       question,
       modelKey,
       locale,
+      onPartial: async (task, partial) => {
+        const data = {};
+        if (task === 'scores') {
+          data.rubric = JSON.stringify(partial.rubric);
+          data.aiScore = partial.aiScore;
+        } else if (task === 'corrections') {
+          data.corrections = JSON.stringify(partial.corrections);
+        } else if (task === 'summary') {
+          data.aiFeedback = partial.aiFeedback;
+          data.strengths = JSON.stringify(partial.strengths);
+        }
+        await prisma.essay.update({ where: { id: essayRow.id }, data });
+      },
     });
 
     await prisma.essay.update({

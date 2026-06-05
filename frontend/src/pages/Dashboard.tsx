@@ -97,7 +97,7 @@ export default function Dashboard() {
                   >
                     <List.Item.Meta
                       title={s.title}
-                      description={`${t('dashboard.score')} ${s.totalScore}/${s.maxScore} · ${new Date(s.completedAt).toLocaleDateString()}`}
+                      description={new Date(s.completedAt).toLocaleDateString()}
                     />
                   </List.Item>
                 )}

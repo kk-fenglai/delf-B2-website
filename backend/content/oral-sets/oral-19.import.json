@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Inégalités de salaire : les Françaises appelées à cesser le travail !",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Inégalités de salaire : les Françaises appelées à cesser le travail ! »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Un collectif féministe appelle les femmes à quitter leur travail ce lundi 7 novembre à 16 h 34, et ce… jusqu'à la fin de l'année. La raison de cette précision dans la date est simple : si l'on se base sur l'écart de salaire moyen entre hommes et femmes, les Françaises travailleront à partir de ce moment « bénévolement » pendant les deux mois restants de l'année, en comparaison avec leurs collègues masculins. Sur Facebook, le collectif a créé un événement pour appeler les « femmes, les hommes, les syndicats et les organisations féministes à rejoindre le mouvement du 7 novembre 16 h 34 » et à multiplier les événements et manifestations pour faire de l'inégalité salariale une problématique politique centrale. Le mouvement s'inspire d'une idée lancée par des Islandaises : le 24 octobre dernier, ces dernières ont quitté le travail à 14 h 38 pour aller manifester devant le Parlement et réclamer, elles aussi, l'égalité de salaire. Espérons que cela permettra enfin d'éveiller les consciences et de faire évoluer la situation.",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Les inégalités de salaire entre hommes et femmes existent-elles dans votre pays ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 1,
+          "text": "Comment expliquer ces différences de salaire, selon vous ?",
+          "expectedAngle": "成因"
+        },
+        {
+          "order": 2,
+          "text": "Que peut-on faire pour réduire ces inégalités ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Pensez-vous que les manifestations sont un bon moyen d'agir ?",
+          "expectedAngle": "手段评价"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2022年3月（国内） — 推广图书漂流",
+  "year": 2022,
+  "description": "推广图书漂流。来源：2022年3月（国内） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous habitez en France. Vous avez vu cette affiche à Paris et vous aimeriez proposer cette idée d'échange de livres au maire de votre ville. Vous adressez une lettre au maire dans laquelle vous expliquez le principe de ce dispositif ainsi que ses avantages. Vous essayez également de convaincre le maire de l'utilité d'une telle pratique pour vos concitoyens.",
+      "passage": "Affiche — « Circul'Livre : Circul'Livre consiste à échanger gratuitement des livres entre lecteurs. Il suffit de les déposer soit dans un lieu public, soit dans un immeuble et de les remettre à leur place une fois lus. Circul'Livre fait la promotion de la lecture et contribue à développer les liens entre les habitants d'un quartier. — D'après www.paris.fr »",
+      "audioUrl": null,
+      "explanation": "来源：2022 年 3 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：介绍“图书漂流”（Circul'Livre）的原理与益处，说服市长在本市推广。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

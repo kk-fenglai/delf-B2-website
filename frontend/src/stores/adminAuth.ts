@@ -16,7 +16,10 @@ interface AdminAuthState {
   admin: AdminUser | null;
   pendingToken: string | null;
   loading: boolean;
-  loginStep1: (email: string, password: string) => Promise<{ message: string }>;
+  loginStep1: (
+    email: string,
+    password: string
+  ) => Promise<{ message: string; emailDelivery?: 'smtp' | 'console' }>;
   loginStep2: (code: string) => Promise<void>;
   logout: () => Promise<void>;
   fetchMe: () => Promise<void>;
@@ -36,7 +39,7 @@ export const useAdminAuth = create<AdminAuthState>()(
           const { data } = await adminApi.post('/auth/login', { email, password });
           if (data.step === '2fa') {
             set({ pendingToken: data.pendingToken });
-            return { message: data.message };
+            return { message: data.message, emailDelivery: data.emailDelivery };
           }
           throw new Error('Unexpected login response');
         } finally {

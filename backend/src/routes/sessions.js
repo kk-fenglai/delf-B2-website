@@ -13,6 +13,7 @@ const {
   modelAllowedForPlan,
 } = require('../constants/planMatrix');
 const { MIN_WORDS, MAX_WORDS } = require('../constants/delfRubric');
+const { signAudioUrl } = require('../utils/audioToken');
 
 const router = express.Router();
 
@@ -61,9 +62,12 @@ async function buildSessionResult({ sessionId, userId }) {
       type: q.type,
       order: q.order,
       prompt: q.prompt,
+      // CO transcript only shown after submission (review/result page) —
+      // the runner has already locked in answers by then.
       passage: q.passage,
-      audioUrl: q.audioUrl,
+      audioUrl: signAudioUrl(q.audioUrl),
       points: q.points,
+      modelEssay: q.modelEssay || null,
       options: q.options.map((o) => ({
         id: o.id,
         label: o.label,
@@ -74,7 +78,7 @@ async function buildSessionResult({ sessionId, userId }) {
         id: f.id,
         order: f.order,
         text: f.text,
-        audioUrl: f.audioUrl,
+        audioUrl: signAudioUrl(f.audioUrl),
       })),
     })),
   };
@@ -119,7 +123,7 @@ async function buildSessionResult({ sessionId, userId }) {
     if (perSkill[q.skill]) {
       perSkill[q.skill].score += score;
       perSkill[q.skill].maxScore += q.points;
-      if (q.type === 'ESSAY' || q.type === 'SPEAKING') perSkill[q.skill].pendingAI = true;
+      if ((q.type === 'ESSAY' && q.skill !== 'CE') || q.type === 'SPEAKING') perSkill[q.skill].pendingAI = true;
     }
     details.push({
       questionId: q.id,
@@ -219,19 +223,61 @@ function scaleTo25(score, max) {
 }
 
 // POST /api/sessions  { examSetId, mode, skill? } -> create new session
+//
+// FREE-plan quota: `caps.freeMonthlySessions` defines per-bucket month caps.
+// We count sessions created this calendar month for the same bucket and
+// reject (402) when the user is already at cap. Counted at create-time (not
+// submit) — otherwise a user could open N tabs concurrently and bypass the
+// cap. Tradeoff: opening a session you never submit still consumes a slot.
 router.post('/', requireAuth, async (req, res, next) => {
   try {
     const schema = z.object({
       examSetId: z.string(),
       mode: z.enum(['PRACTICE', 'EXAM']).default('PRACTICE'),
+      skill: z.enum(['CE', 'CO', 'PE', 'PO']).optional(),
     });
     const data = schema.parse(req.body);
+
+    const plan = req.userPlan || 'FREE';
+    const caps = PLAN_CAPS[plan] || PLAN_CAPS.FREE;
+
+    if (caps.freeMonthlySessions) {
+      // Bucket: EXAM mode is always MOCK; PRACTICE mode buckets by skill.
+      // PRACTICE without a skill (rare — multi-skill practice) isn't counted.
+      const bucket = data.mode === 'EXAM' ? 'MOCK' : data.skill;
+      const cap = bucket ? caps.freeMonthlySessions[bucket] : undefined;
+      if (cap !== undefined) {
+        const monthStart = new Date();
+        monthStart.setUTCDate(1);
+        monthStart.setUTCHours(0, 0, 0, 0);
+        const used = await prisma.examSession.count({
+          where: {
+            userId: req.userId,
+            startedAt: { gte: monthStart },
+            ...(bucket === 'MOCK'
+              ? { mode: 'EXAM' }
+              : { mode: 'PRACTICE', skill: bucket }),
+          },
+        });
+        if (used >= cap) {
+          return res.status(402).json({
+            error: 'Monthly free quota reached for this category',
+            code: 'FREE_QUOTA_EXCEEDED',
+            bucket,
+            used,
+            cap,
+            requiresUpgrade: true,
+          });
+        }
+      }
+    }
 
     const session = await prisma.examSession.create({
       data: {
         userId: req.userId,
         examSetId: data.examSetId,
         mode: data.mode,
+        skill: data.mode === 'EXAM' ? null : (data.skill || null),
       },
     });
     res.status(201).json({ session });
@@ -307,7 +353,8 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
         perSkill[q.skill].maxScore += q.points;
         // Essays/speaking are graded asynchronously — flag the section so the
         // UI can label the score as "provisional" until AI grading lands.
-        if (q.type === 'ESSAY' || q.type === 'SPEAKING') {
+        // CE ESSAY = short factual answer, no AI grading needed
+        if ((q.type === 'ESSAY' && q.skill !== 'CE') || q.type === 'SPEAKING') {
           perSkill[q.skill].pendingAI = true;
         }
       }
@@ -321,7 +368,7 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
         timeSpent: a.timeSpent || null,
       });
 
-      if (q.type === 'ESSAY' && typeof a.answer === 'string' && a.answer.trim()) {
+      if (q.type === 'ESSAY' && q.skill !== 'CE' && typeof a.answer === 'string' && a.answer.trim()) {
         const wordCount = countWords(a.answer);
         essayJobs.push({
           questionId: q.id,
@@ -404,10 +451,17 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
         const monthStart = new Date();
         monthStart.setDate(1);
         monthStart.setHours(0, 0, 0, 0);
-        const monthUsed = await prisma.oral.count({
-          where: { userId: req.userId, createdAt: { gte: monthStart } },
-        });
-        if (monthUsed >= caps.monthlyOralExams) quotaBlocked = true;
+        const dayStart = new Date();
+        dayStart.setHours(0, 0, 0, 0);
+        const [monthUsed, dayUsed] = await Promise.all([
+          prisma.oral.count({ where: { userId: req.userId, createdAt: { gte: monthStart } } }),
+          prisma.oral.count({ where: { userId: req.userId, createdAt: { gte: dayStart } } }),
+        ]);
+        // Block when either cap is exceeded — daily acts as the anti-abuse
+        // rate limit for the practically-unlimited AI_UNLIMITED monthly cap.
+        if (monthUsed >= caps.monthlyOralExams || dayUsed >= caps.dailyOralExams) {
+          quotaBlocked = true;
+        }
       }
 
       // Defence in depth: only accept recording IDs that belong to this user

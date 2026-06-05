@@ -12,7 +12,7 @@ import EssayGradeCard from '../components/EssayGradeCard';
 import OralGradeCard from '../components/OralGradeCard';
 import type { SubmitResult, ExamSetDetail, Skill } from '../types';
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 const SKILL_ORDER: Skill[] = ['CO', 'CE', 'PE', 'PO'];
 
@@ -106,23 +106,10 @@ export default function ReviewResult() {
   return (
     <div className="max-w-4xl mx-auto">
       <Card className="mb-4">
-        <div className="flex justify-between items-center flex-wrap gap-4">
-          <div>
-            <Title level={3} style={{ marginBottom: 4 }}>
-              {t('review.title')} · {exam.title}
-              {isMock && <Tag color="purple" className="ml-2">{t('exam.mockBadge')}</Tag>}
-            </Title>
-            <Paragraph className="text-gray-500 mb-0">
-              {t('dashboard.score')} <strong className="text-brand">{result.totalScore}</strong> / {result.maxScore}
-              {showMockVerdict && (
-                <Text className="ml-3 text-gray-500">
-                  · {t('review.delfTotal', { score: totalScaled.toFixed(1) })}
-                </Text>
-              )}
-            </Paragraph>
-          </div>
-          <Progress type="circle" percent={pct} size={100} strokeColor="#1A3A5C" />
-        </div>
+        <Title level={3} style={{ marginBottom: 4 }}>
+          {t('review.title')} · {exam.title}
+          {isMock && <Tag color="purple" className="ml-2">{t('exam.mockBadge')}</Tag>}
+        </Title>
       </Card>
 
       {/* DELF B2 verdict — mock exams only. Shows per-skill /25 scaled scores
@@ -206,7 +193,6 @@ export default function ReviewResult() {
               <strong>{t('exam.questionN', { n: i + 1 })}</strong>
               {correctness === 'correct' && <Tag color="success">{t('review.correct')}</Tag>}
               {correctness === 'wrong' && <Tag color="error">{t('review.wrong')}</Tag>}
-              {correctness === 'pending' && <Tag color="default">{t('review.pendingAI')}</Tag>}
             </div>
             <Paragraph>{q.prompt}</Paragraph>
             {q.type !== 'ESSAY' && q.type !== 'SPEAKING' && (
@@ -225,7 +211,25 @@ export default function ReviewResult() {
                 </div>
               </>
             )}
-            {q.type === 'ESSAY' && essay && (
+            {q.type === 'ESSAY' && q.skill === 'CE' && (
+              <div className="mt-2 flex flex-col gap-2">
+                <div>
+                  <span className="text-gray-500 text-sm">{t('review.yourAnswer')}</span>
+                  <div className="mt-1 p-2 rounded bg-gray-50 text-sm">
+                    {d.userAnswer || <span className="text-gray-400">{t('review.notAnswered')}</span>}
+                  </div>
+                </div>
+                {(q as any).modelEssay && (
+                  <div>
+                    <span className="text-gray-500 text-sm">{t('review.correctAnswer')}</span>
+                    <div className="mt-1 p-2 rounded bg-green-50 text-green-800 text-sm font-medium">
+                      {(q as any).modelEssay}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            {q.type === 'ESSAY' && q.skill !== 'CE' && essay && (
               <EssayGradeCard
                 essayId={essay.essayId}
                 initialStatus={essay.status}

@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Si le tourisme profite du patrimoine, il doit payer pour son entretien",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : AFP。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Si le tourisme profite du patrimoine, il doit payer pour son entretien »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Doubler les tarifs d'entrée des musées pour les touristes non européens, augmenter la taxe de séjour, autoriser les musées à vendre des œuvres : le Conseil d'analyse économique (CAE) a présenté des propositions parfois inattendues pour le patrimoine culturel français. Ce rapport, intitulé « Valoriser le patrimoine culturel français », propose de nombreuses pistes, dont certaines sont susceptibles de surprendre une partie du monde culturel, mais aussi certains acteurs économiques. Des professeurs d'économie préconisent un « tarif différencié entre visiteurs français et étrangers (hors UE), comme cela se pratique dans de nombreux pays ». Les auteurs ne sont pas favorables à une gratuité généralisée dans les musées très fréquentés. Ils sont favorables à une tarification variable en fonction de l'heure d'entrée dans le musée et de la période de l'année. Enfin, le rapport suggère d'autoriser à céder certaines œuvres, selon une procédure très encadrée, pour que le revenu de la vente serve à acquérir de nouvelles œuvres.",
+      "explanation": "Document d'appui — source : AFP. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Les touristes devraient-ils payer plus cher pour visiter les musées ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Les musées devraient-ils être gratuits pour tout le monde ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 2,
+          "text": "Comment financer l'entretien des monuments et des musées ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Le tourisme est-il bon ou mauvais pour le patrimoine ?",
+          "expectedAngle": "利弊"
+        }
+      ]
+    }
+  ]
+}

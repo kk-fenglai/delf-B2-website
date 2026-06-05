@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · La grande illusion du coaching en ligne",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : David Abiker, L'Express。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« La grande illusion du coaching en ligne »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Les personnes pouvant nous aider à gérer notre quotidien en ligne sont nombreuses : des sites pour faire connaissance, améliorer son potentiel de séduction ou préparer son mariage existent. Ils racontent la vitalité commerciale d'Internet et l'étendue de notre détresse relationnelle et sentimentale. Ils disent également combien la société du coaching* commercial a remplacé, plus ou moins avantageusement, les références et les hiérarchies d'autrefois. Qu'il s'agisse d'apprendre, de maigrir, de se soigner, de grandir ou de se confier, Internet nous apporte un substitut. De l'autre côté de l'écran, l'internaute solitaire s'imagine peut-être que le succès et la performance relationnelle sont à portée de souris. Bien entendu, le client se fabrique des illusions : illusion d'apprendre à séduire vite fait, d'aimer sans risque, d'écouter sans se tromper, de divorcer sans se ruiner, de vivre sans souffrir. Le Net organise la promesse d'une réussite émotionnelle et relationnelle avec les mêmes outils marketing que la réservation en ligne de billets d'avion. Quand saurons-nous dire stop ?\n* coaching : accompagnement individuel.",
+      "explanation": "Document d'appui — source : David Abiker, L'Express. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Peut-on vraiment apprendre à mieux vivre grâce à des sites Internet ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Demandez-vous parfois conseil sur Internet ?",
+          "expectedAngle": "个人习惯"
+        },
+        {
+          "order": 2,
+          "text": "Internet peut-il remplacer l'aide d'une vraie personne ?",
+          "expectedAngle": "辩证"
+        },
+        {
+          "order": 3,
+          "text": "Pourquoi, selon vous, ces sites ont-ils du succès ?",
+          "expectedAngle": "成因"
+        }
+      ]
+    }
+  ]
+}

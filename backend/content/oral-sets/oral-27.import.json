@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Un congé paternité obligatoire et plus long",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.lefigaro.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Un congé paternité obligatoire et plus long »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "L'Observatoire français des conjonctures économiques (OFCE) vient de proposer un changement du congé paternité afin de le rendre obligatoire et plus long. « La naissance des enfants augmente les inégalités professionnelles ; les tâches domestiques et familiales sont toujours majoritairement réalisées par les femmes ; celles-ci ne peuvent donc pas profiter du marché du travail de la même façon que les hommes », alerte l'organisme. Ainsi, même si les pères sont aujourd'hui plus nombreux à profiter d'un congé qui dure actuellement 11 jours, la réforme a surtout raccourci la durée du congé maternité pouvant être pris par les mères. C'est pourquoi l'organisme propose cette nouvelle mesure, afin de réduire les inégalités entre les deux sexes. À titre d'exemple, en Norvège, le congé parental est d'une durée d'un an environ : 10 semaines sont réservées à la mère et 10 semaines au père, le reste étant à partager de façon flexible entre les deux parents.",
+      "explanation": "Document d'appui — source : www.lefigaro.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Le congé paternité devrait-il être plus long, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Faut-il rendre le congé paternité obligatoire ?",
+          "expectedAngle": "强制观点"
+        },
+        {
+          "order": 2,
+          "text": "Qui s'occupe le plus des enfants et de la maison, dans votre pays ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 3,
+          "text": "Comment mieux partager les tâches entre les parents ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

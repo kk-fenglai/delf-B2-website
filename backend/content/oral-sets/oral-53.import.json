@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Moins productif à cause des téléphones ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : lci.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Moins productif à cause des téléphones ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Le développement d'Internet et des smartphones a eu pour effet d'augmenter le temps passé à travailler en dehors de nos horaires de bureau et le sentiment d'urgence, notamment en nous rendant joignables en permanence. Mais, paradoxalement, ces changements technologiques ont eu aussi pour effet de nous rendre moins productifs. Pour parvenir à ce constat, des chercheurs ont demandé à 95 personnes, de 19 à 56 ans, de se livrer à un test de concentration dans quatre situations différentes sur leur lieu de travail : avec leur smartphone dans la poche, puis posé sur leur bureau, enfermé dans un tiroir, et enfin totalement retiré de la pièce. Les résultats ont montré que les participants étaient d'une productivité beaucoup plus faible lorsque le smartphone se trouvait sur le bureau. À l'inverse, chaque fois que celui-ci s'éloignait de son propriétaire, l'effet sur ses performances au travail était immédiat : 26 % plus productif. C'est pourquoi beaucoup d'entreprises essaient aujourd'hui d'interdire les téléphones intelligents dans les bureaux.",
+      "explanation": "Document d'appui — source : lci.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Votre téléphone vous distrait-il quand vous travaillez ?",
+          "expectedAngle": "个人体验"
+        },
+        {
+          "order": 1,
+          "text": "Pourriez-vous travailler sans votre smartphone à côté de vous ?",
+          "expectedAngle": "假设"
+        },
+        {
+          "order": 2,
+          "text": "Les entreprises devraient-elles interdire les téléphones au bureau ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 3,
+          "text": "Comment mieux se concentrer aujourd'hui, selon vous ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

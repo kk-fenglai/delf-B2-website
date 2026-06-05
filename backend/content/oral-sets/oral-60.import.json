@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Rêvez-vous d'un bureau comme à la maison ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Floriane Salgues, L'Express。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Rêvez-vous d'un bureau comme à la maison ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "« On peut travailler efficacement dans des espaces qui ne soient pas des prisons. Et pourquoi pas même allongé dans l'herbe », s'amusait Alain Iribarne, directeur de recherche au Centre national de la recherche scientifique. Sous la plaisanterie pointe l'idée que l'on pourrait se sentir au travail comme à la maison. Le précepte semble tantôt utopique, tantôt néfaste. Quelques entreprises ont pourtant tenté le défi : espaces ouverts avec des arbres, salons silencieux, salle de gym. Le bureau comme à la maison apparaît comme l'une des nouvelles armes anti-stress. Mais pas pour Nathalie Menez, directrice des services généraux d'un groupe de santé, qui trouve même le terme « choquant ». « Les salariés n'apprécient pas forcément de retrouver sur leur lieu de travail les meubles qu'ils peuvent avoir chez eux. Derrière le concept, il y a un risque de confusion, car non, au travail, je ne suis pas à la maison », explique-t-elle. L'architecte préfère favoriser des « bulles personnelles » : des aménagements cloisonnés pour favoriser le travail au calme.",
+      "explanation": "Document d'appui — source : Floriane Salgues, L'Express. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Dans quel type d'espace aimez-vous travailler ou étudier ?",
+          "expectedAngle": "个人偏好"
+        },
+        {
+          "order": 1,
+          "text": "Faut-il que le bureau ressemble à la maison, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Comment rendre un lieu de travail plus agréable ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Vaut-il mieux séparer le travail et la vie privée ?",
+          "expectedAngle": "观点"
+        }
+      ]
+    }
+  ]
+}

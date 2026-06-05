@@ -1,0 +1,121 @@
+{
+  "title": "DELF B2 阅读 CE · 2021-11 中国场 · Texte 2（Petites mains de jardin à Paris）",
+  "year": 2021,
+  "description": "2021年11月中国考场真题 阅读第2篇。分值统一记为1分（后台仅接受整数分值）。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 1,
+      "prompt": "Vrai ou faux ? (justifiez) Le succès des jardins partagés est un phénomène très ancien à Paris.",
+      "passage": "Paris est une ville plutôt verte, avec ses 470 parcs et jardins, 2 bois et 14 cimetières, qui occupent 27 % de sa surface totale. Depuis une dizaine d'années seulement, on assiste à un véritable engouement pour ce qu'on appelle les « jardins partagés ».\n\nInspirés des jardins ouvriers et des jardins familiaux d'autrefois, ils s'en distinguent par leur gestion participative. À l'origine, on trouve généralement une association qui réunit les citoyens d'un quartier ou les habitants d'un immeuble. Ils se retrouvent et travaillent sur des portions de terrain mutualisées, décidant ensemble des variétés de plantes et légumes à cultiver. Pour la plupart, farouches partisans de l'alimentation biologique, ils ne ratent pas une occasion de se retrouver autour d'une table pour déguster les fruits de leur travail. Aujourd'hui, 56 jardins partagés ont signé la charte « Main verte » et ont intégré le réseau des jardins partagés parisiens, explique Fabienne Giboudeaux, adjointe au maire chargée des espaces verts. Lancée en 2003, la charte prône notamment une façon plus écologique de jardiner et encourage le partage des bonnes pratiques.\n\nLe succès des jardins partagés dans les quartiers populaires de l'Est parisien montre d'ailleurs leur capacité à renforcer le lien social. Même les bailleurs sociaux, tel Paris Habitat, l'ont compris et aménagent de plus en plus de jardins au pied des immeubles HLM. C'est le cas, par exemple, du jardin de Périchaux dans le XVe arrondissement ou de celui de la cité Losserand dans le XIVe. La signature de la charte n'étant pas une obligation, le nombre de jardins partagés parisiens est vraisemblablement beaucoup plus élevé.\n\nSigne que les initiatives spontanées autour de la végétalisation de la ville se multiplient : certains en arrivent même à pratiquer la « guérilla jardin ». Inventée aux États-Unis il y a une vingtaine d'années, cette pratique consiste à jeter des graines sur les terrains en friche, dans les fissures des trottoirs ou au pied des arbres. Un geste d'éco-rébellion qui prend timidement pied dans la capitale et qui ne gêne pas l'adjointe au maire : « On ne va certainement pas envoyer des brigades pour surveiller les friches ! Si les citoyens s'impliquent, c'est bien, il ne faut pas forcément passer par la norme. »\n\nPour ceux qui ne recherchent pas le frisson de l'interdit, le conseil est d'attendre quelques mois. Bientôt en effet, Hélène Binet et Emmanuelle Vibert, journalistes et passionnées d'écologie, vont lancer leur campagne « Laissons pousser ! » Grâce au soutien de Natureparif, agence pour la biodiversité en Île-de-France, « on va proposer aux Parisiens de planter des jardins de poche partout dans la ville », explique Hélène Binet.\n\nLes citoyens intéressés pourront se rendre auprès des collectivités partenaires de l'opération pour piocher parmi les 100 000 sachets de graines de différentes variétés vivaces. Grâce à une plateforme Internet, les citoyens pourront ensuite identifier les endroits les plus propices à la plantation et, après coup, signaler leur contribution aux autres participants. « Laissons pousser ! » se veut une initiative festive et participative. Facile à mettre en place, l'opération ne s'adresse pas qu'aux Parisiens. « On a déjà passé un accord avec le bailleur social Valophis dans le Val-de-Marne et on cherche activement d'autres partenaires de la région parisienne. » À bon entendeur…",
+      "points": 1,
+      "explanation": "Faux. Justification : « Depuis une dizaine d'années seulement, on assiste à un véritable engouement pour ce qu'on appelle les « jardins partagés ». »",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": false, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": true, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 2,
+      "prompt": "Quelle est la principale différence entre les « jardins partagés » actuels et les jardins ouvriers ou familiaux d'avant ?",
+      "points": 1,
+      "explanation": "评分要点：参与式管理（gestion participative）。",
+      "modelEssay": "Leur gestion participative."
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 3,
+      "prompt": "La charte Main verte met en avant…",
+      "points": 1,
+      "explanation": "答案：B。宪章倡导更生态的园艺方式（le respect de l'environnement）。",
+      "options": [
+        { "label": "A", "text": "la culture de semences rares", "isCorrect": false, "order": 0 },
+        { "label": "B", "text": "le respect de l'environnement", "isCorrect": true, "order": 1 },
+        { "label": "C", "text": "l'aspect esthétique des jardins", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 4,
+      "prompt": "Selon la journaliste, quel est l'effet bénéfique de ce type de jardin sur la population ?",
+      "points": 1,
+      "explanation": "评分要点：加强社会联系（renforcer le lien social），如巴黎东部平民街区的成功所示。",
+      "modelEssay": "Renforcer le lien social, comme le montre le succès des jardins partagés dans les quartiers populaires de l'Est parisien."
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 5,
+      "prompt": "Concernant le phénomène des « guérillas de jardin », l'adjointe au maire de Paris est…",
+      "points": 1,
+      "explanation": "答案：C plutôt favorable。",
+      "options": [
+        { "label": "A", "text": "plutôt contre", "isCorrect": false, "order": 0 },
+        { "label": "B", "text": "très favorable", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "plutôt favorable", "isCorrect": true, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 6,
+      "prompt": "Quel argument l'adjointe met-elle en avant pour expliquer sa position ?",
+      "points": 1,
+      "explanation": "评分要点：市民的自发参与是积极的，不必事事遵循既定规范。",
+      "modelEssay": "Les initiatives citoyennes sont positives et il n'est pas nécessaire de toujours suivre les normes établies."
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 7,
+      "prompt": "L'expression « jardin de poche » est utilisée pour désigner…",
+      "points": 1,
+      "explanation": "答案：A un jardin citadin。",
+      "options": [
+        { "label": "A", "text": "un jardin citadin", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "un jardin ouvrier", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "un jardin collectif", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 8,
+      "prompt": "Vrai ou faux ? (justifiez) Les participants à la campagne Laissons pousser devront fournir les graines à semer.",
+      "points": 1,
+      "explanation": "Faux. Justification : « Les citoyens intéressés pourront se rendre auprès des collectivités partenaires de l'opération pour piocher parmi les 100 000 sachets de graines de différentes variétés vivaces. »",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": false, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": true, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 9,
+      "prompt": "Vrai ou faux ? (justifiez) Cette opération vise à s'étendre à la région parisienne.",
+      "points": 1,
+      "explanation": "Vrai. Justification : « On a déjà passé un accord avec le bailleur social Valophis dans le Val-de-Marne et on cherche activement d'autres partenaires de la région parisienne. »",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": true, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": false, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 10,
+      "prompt": "En quoi se distingue l'opération Laissons pousser du phénomène de la guérilla de jardin ?",
+      "points": 1,
+      "explanation": "评分要点：有组织、并有正式的倡议与合作伙伴支持（与游击式园艺的自发、非正式相对）。",
+      "modelEssay": "Son caractère organisé et soutenu par des initiatives et partenariats formels."
+    }
+  ]
+}

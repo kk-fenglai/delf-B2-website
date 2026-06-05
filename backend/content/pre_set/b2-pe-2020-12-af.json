@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2020年12月（非洲） — 足球场关闭投诉",
+  "year": 2020,
+  "description": "足球场关闭投诉。来源：2020年12月（非洲） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous êtes un professeur de football qui travaille avec des jeunes. Vous écrivez une lettre de plainte au maire pour la fermeture du stade de football, car seule l'équipe professionnelle de la ville peut utiliser le stade. Vous expliquez les limites du stade et vous convainquez le maire de changer cette situation.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2020 年 12 月非洲 DELF B2 写作真题（回忆版，Production écrite / 25 points）。体裁：致市长的投诉信（lettre de plainte）。要点：说明球场仅供职业队使用对青少年的限制，说服市长改变现状。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2021年5月（法国） — 负责任消费互助网站",
+  "year": 2021,
+  "description": "负责任消费互助网站。来源：2021年5月（法国） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous écrivez un article pour le journal francophone de la ville où vous vivez. Vous demandez au maire le lancement d'un site internet municipal qui mette en contact les habitants intéressés par les nouvelles possibilités en matière de consommation des biens et des services. Vous expliquez comment notre relation aux objets quotidiens peut changer. Tout en reconnaissant que les obstacles sont nombreux, vous défendez les bénéfices d'une consommation plus responsable à l'échelle de la ville (environnement, économies réalisées, relations entre les habitants…).",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2021 年 5 月法国 DELF B2 写作真题（回忆版）。体裁：报刊文章（article）。要点：呼吁市政建设互助消费网站，论证负责任消费在环境、经济、邻里关系上的益处，同时承认存在障碍。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

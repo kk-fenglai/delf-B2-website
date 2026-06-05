@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Le téléphone portable à l'école",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.20minutes.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Le téléphone portable à l'école »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "L'utilisation du téléphone portable ne facilite pas l'apprentissage, mais entraîne au contraire une diminution de l'attention et de la mémorisation chez les élèves. À la récréation, au lieu de se parler, les élèves jouent à des jeux vidéo. Si tout le monde semble d'accord sur la nécessité d'une interdiction des portables dans l'enceinte des collèges, la manière de la mettre en œuvre pose question : casiers individuels ? tiroirs à l'entrée des classes ? L'interdiction complète est compliquée. « Dans mon collège, nous avions fait un travail d'éducation pour insister auprès des élèves sur les excès à éviter. Nous avions aussi demandé aux parents de nous aider à contrôler une utilisation raisonnable du portable. Cela avait plutôt été efficace », indique un professeur. « Tout commence par la famille. On ne peut pas interdire à un enfant ce dont nous sommes nous-mêmes incapables de nous passer. » Mais sommes-nous prêts à donner l'exemple et à nous déconnecter réellement ?",
+      "explanation": "Document d'appui — source : www.20minutes.fr. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Faut-il interdire le téléphone portable à l'école ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Le téléphone empêche-t-il les jeunes de se parler ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 2,
+          "text": "À quel âge un enfant devrait-il avoir un téléphone ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 3,
+          "text": "Les adultes donnent-ils le bon exemple, selon vous ?",
+          "expectedAngle": "反思"
+        }
+      ]
+    }
+  ]
+}

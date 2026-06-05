@@ -6,10 +6,11 @@ import Overview from './payments/Overview';
 import Catalog from './payments/Catalog';
 import Orders from './payments/Orders';
 import Contracts from './payments/Contracts';
+import PricingReview from './payments/PricingReview';
 
 const { Title } = Typography;
 
-const VALID_TABS = ['overview', 'catalog', 'orders', 'contracts'] as const;
+const VALID_TABS = ['overview', 'catalog', 'pricingReview', 'orders', 'contracts'] as const;
 type TabKey = (typeof VALID_TABS)[number];
 
 function isValidTab(v: string | null): v is TabKey {
@@ -55,6 +56,11 @@ export default function AdminPayments() {
             key: 'catalog',
             label: t('adminPayments.tabs.catalog'),
             children: <Catalog />,
+          },
+          {
+            key: 'pricingReview',
+            label: t('adminPayments.tabs.pricingReview'),
+            children: <PricingReview />,
           },
           {
             key: 'orders',

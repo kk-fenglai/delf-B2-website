@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Les salariés européens passent trop de temps sur Internet",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Les salariés européens passent trop de temps sur Internet »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Les employés européens passent de plus en plus de temps sur Internet au bureau. Un usage, en partie personnel, qui les limite dans leur productivité au travail. En effet, un employé passe, en moyenne, 1,53 heure par jour sur Internet, selon une étude réalisée dans cinq pays européens. La navigation personnelle représente la majorité de ce temps, soit 50 minutes par jour, l'équivalent de 25 jours par an. D'un point de vue financier, ces 50 minutes représenteraient un coût équivalent à 1,2 mois de salaire par an. Au-delà des chiffres, l'étude fait apparaître cinq points importants pour les entreprises : le risque d'impact de la navigation personnelle sur la productivité, les problèmes liés à la sécurité des données de l'entreprise, le ralentissement du débit d'Internet en cas de consultation de sites de vidéos, les risques juridiques et, enfin, les dangers pour l'e-réputation* de l'entreprise en cas de problème.\n* e-réputation : image d'une personne ou d'une entreprise sur Internet.",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Utilisez-vous Internet pour des raisons personnelles au travail ou en cours ?",
+          "expectedAngle": "个人习惯"
+        },
+        {
+          "order": 1,
+          "text": "Est-ce normal de surfer sur Internet pendant le travail ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Les entreprises devraient-elles contrôler l'usage d'Internet ?",
+          "expectedAngle": "管控观点"
+        },
+        {
+          "order": 3,
+          "text": "Internet nous rend-il plus ou moins productifs ?",
+          "expectedAngle": "利弊"
+        }
+      ]
+    }
+  ]
+}

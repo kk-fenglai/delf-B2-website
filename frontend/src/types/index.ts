@@ -1,6 +1,6 @@
 export type Plan = 'FREE' | 'STANDARD' | 'AI' | 'AI_UNLIMITED';
 export type Skill = 'CO' | 'CE' | 'PE' | 'PO';
-export type QuestionType = 'SINGLE' | 'MULTIPLE' | 'TRUE_FALSE' | 'FILL' | 'ESSAY' | 'SPEAKING';
+export type QuestionType = 'SINGLE' | 'MULTIPLE' | 'TRUE_FALSE' | 'TRUE_FALSE_JUSTIFY' | 'FILL' | 'ESSAY' | 'SPEAKING';
 
 export interface User {
   id: string;
@@ -22,11 +22,24 @@ export interface Question {
   type: QuestionType;
   order: number;
   prompt: string;
-  passage?: string;
-  audioUrl?: string;
+  passage?: string | null;
+  audioUrl?: string | null;
+  /** CO-only: which AudioDocument this question belongs to. */
+  audioDocumentId?: string | null;
   points: number;
   options: QuestionOption[];
   followUps?: OralFollowUp[];
+}
+
+export interface AudioDocument {
+  id: string;
+  order: number;
+  title: string | null;
+  audioUrl: string | null;
+  maxPlays: number;
+  prepSeconds: number;
+  gapSeconds: number;
+  answerSeconds: number;
 }
 
 export interface OralFollowUp {
@@ -52,6 +65,7 @@ export interface ExamSetDetail {
   year: number;
   description?: string;
   questions: Question[];
+  audioDocuments?: AudioDocument[];
 }
 
 export interface SubmitResultDetail {
@@ -210,6 +224,7 @@ export interface EssayGrade {
   strengths: string[] | null;
   errorMessage: string | null;
   gradedAt: string | null;
+  modelEssay: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -278,6 +293,13 @@ export interface OralCorrection {
   type: OralCorrectionType;
 }
 
+export interface OralGradeFollowUp {
+  id: string;
+  order: number;
+  text: string;
+  recordingId: string | null;
+}
+
 export interface OralGrade {
   id: string;
   questionId: string;
@@ -292,6 +314,8 @@ export interface OralGrade {
   strengths: string[] | null;
   transcriptCombined: string | null;
   recordingIds: string[];
+  monologueRecordingId: string | null;
+  followUps: OralGradeFollowUp[];
   errorMessage: string | null;
   gradedAt: string | null;
   createdAt: string;

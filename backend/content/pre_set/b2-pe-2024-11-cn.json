@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2024年11月（中国） — 社区空地菜园计划",
+  "year": 2024,
+  "description": "社区空地菜园计划。来源：2024年11月（中国） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous avez l'idée de mettre le terrain à disposition des collèges de votre ville et d'organiser des activités de découverte de la nature et de jardinage pour les enfants. Vous pouvez adresser une lettre au maire. Vous lui expliquerez comment vous imaginez la mise en place des activités de jardinage et vous essaierez de le convaincre de l'intérêt d'une telle pratique pour les enfants et la ville.",
+      "passage": "Annonce de la mairie : « La mairie souhaite laisser la population décider de la manière d'utiliser le terrain de 500 mètres carrés, actuellement inoccupé, près de la forêt municipale. Avez-vous des idées qui pourraient être bénéfiques à la commune ? Écrivez-nous ! Nous sélectionnerons le meilleur projet et le réaliserons prochainement. »",
+      "audioUrl": null,
+      "explanation": "来源：2024 年 11 月中国 DELF B2 写作真题（回忆版）。体裁：致市长的书信（lettre au maire）。要点：说明菜园活动的组织方式、对儿童和城市的益处，并说服市长采纳。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

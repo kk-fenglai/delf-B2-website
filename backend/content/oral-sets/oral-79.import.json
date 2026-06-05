@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Et si vous louiez vos vêtements ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Ava Djamshidi, Le Parisien。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Et si vous louiez vos vêtements ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Les mariages, les communions et autres festivités annuelles ramènent toujours la même question : « Qu'est-ce que je vais mettre ? » Rien que d'y penser, ça donne la migraine et ça fait mal au porte-monnaie. Mais les prises de tête vestimentaires ne touchent pas que les femmes. Céline, 35 ans, a trouvé la solution. « J'ai loué », avoue-t-elle. « Je voulais quelque chose d'original, mais il n'était pas question que je me ruine* », explique-t-elle. Elle a découvert un stand de « prêt-à-louer » : matières nobles, coupes parfaites. « Avec la location, on teste, on n'a pas de regret », ajoute la trentenaire. Pour ceux qui sont à l'origine de cette boutique, ce mode de consommation pourrait bien se généraliser. « On se lasse vite des vêtements qu'on achète dans les supermarchés de la mode », sourit-elle. « Nos placards débordent et, malgré tout, on répète qu'on n'a rien à se mettre. Avec la location, on peut sans cesse renouveler sa garde-robe. »\n* se ruiner : dépenser beaucoup d'argent.",
+      "explanation": "Document d'appui — source : Ava Djamshidi, Le Parisien. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Loueriez-vous des vêtements au lieu de les acheter ?",
+          "expectedAngle": "个人意愿"
+        },
+        {
+          "order": 1,
+          "text": "Achète-t-on trop de vêtements aujourd'hui ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Que pensez-vous de cette nouvelle façon de consommer ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 3,
+          "text": "Comment consommer la mode de façon plus responsable ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

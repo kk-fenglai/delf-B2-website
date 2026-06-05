@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2024年6月（中国） — 拯救小城电影院",
+  "year": 2024,
+  "description": "拯救小城电影院。来源：2024年6月（中国） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous habitez dans une petite ville française dans laquelle le cinéma va fermer définitivement, à cause d'un manque de fréquentation et de moyens. Vous écrivez au maire de la ville pour éviter cette fermeture et le convaincre, à l'aide d'arguments et d'exemples précis, des avantages (culturels, économiques...) que ce cinéma représente pour la ville. Vous insistez également sur l'importance de ce loisir pour toutes les générations et proposez des solutions pour développer la fréquentation du cinéma.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2024 年 6 月中国 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：阐述电影院的文化/经济价值、对各年龄层的意义，并提出提升上座率的方案。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

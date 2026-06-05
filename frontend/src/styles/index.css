@@ -59,5 +59,6 @@ body {
 
 .passage {
   font-family: 'Source Serif Pro', Georgia, serif;
-  line-height: 1.75;
+  font-size: 1.0625rem;
+  line-height: 1.8;
 }

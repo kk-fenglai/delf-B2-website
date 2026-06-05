@@ -1,0 +1,250 @@
+{
+  "title": "DELF B2 CE · Le plus grand musée de France (2021-07 法国场)",
+  "year": 2021,
+  "description": "2021 年 7 月法国场 DELF B2 阅读 Texte 2 — 卢浮宫学院学生抢救文化遗产（10题）",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Le document parle d'une innovation qui consiste à...",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "学生发起募集赞助以修复古老艺术品，故选 A。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "trouver de l'argent pour sauver des œuvres artistiques anciennes.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "fonder une nouvelle école pour de futurs conservateurs de musées.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "créer un nouveau type de musée pour les œuvres artistiques anciennes.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 2,
+      "prompt": "D'après le document, les musées permettent...",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "文中说博物馆是抵御时间侵蚀的避难所，作品在此被清洁、修复、研究，故选 A。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "de prendre soin des œuvres d'art et de les conserver.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "de montrer et d'exposer les œuvres d'art près de leur lieu d'origine.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "d'exposer les œuvres dans un contexte similaire à celui d'où elles viennent.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 3,
+      "prompt": "Les administrations publiques ont la capacité de conserver la quasi-totalité des œuvres d'art.",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "正确引文参考：C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls. V/F 与引文同时正确方可得分。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 4,
+      "prompt": "Dans le document, lorsque l'auteur utilise l'expression « Voilà qui ferait souffler un vent nouveau », quelle est son intention ?",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "该表达旨在表达这一倡议所具有的积极意义/价值，故选 B。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "Expliquer le côté idéaliste du projet.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "Exprimer l'intérêt que présente cette initiative.",
+          "isCorrect": true,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "Manifester des craintes concernant la fragilité du projet.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 5,
+      "prompt": "Quel est le point commun de ces élèves de l'École du Louvre ?",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "评分要点：答出「对艺术永不满足的好奇心 + 对（家乡）文化遗产的热情」即可。",
+      "modelEssay": "Leur curiosité insatiable pour l'art et leur passion pour le patrimoine de leur lieu d'origine.",
+      "points": 2,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 6,
+      "prompt": "Les élèves participant à l'opération « le plus grand musée de France » ont le libre choix de l'œuvre artistique sur laquelle ils vont travailler.",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "正确引文参考：Chaque élève participant à cette opération appelée « le plus grand musée de France » choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. V/F 与引文同时正确方可得分。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": false,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 7,
+      "prompt": "Quel est le point fort des élèves participant au projet ? Expliquez pourquoi.",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "评分要点：答出「年轻 + 对艺术的热情」是其优势，并说明这让他们能全身心投入作品的宣传推广、使其重见天日、并说服赞助者出资修复。",
+      "modelEssay": "Leur jeunesse et leur passion pour l'art : elles leur permettent de s'impliquer pleinement pour faire connaître l'œuvre, la sortir de l'oubli et convaincre les mécènes de financer sa restauration.",
+      "points": 2,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 8,
+      "prompt": "Les activités de diffusion culturelle autour de chaque œuvre artistique...",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "文中指出展览、讲座、历史重建等推广工作有助于说服赞助者出资，是获得资金的关键，故选 B。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "constituent un aspect secondaire de l'opération.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "sont indispensables pour obtenir l'argent nécessaire.",
+          "isCorrect": true,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "dépendent du choix des élèves participant à l'opération.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 9,
+      "prompt": "D'après le document, les œuvres d'art en dehors des musées...",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "文中说该「博物馆」是多学科的：雕塑、挂毯、绘画……故选 C。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "sont de plus en plus rares.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "se trouvent surtout dans des églises.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "font partie de plusieurs disciplines artistiques.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 10,
+      "prompt": "Pourquoi la participation à ce projet est-elle bénéfique pour les élèves de l'École du Louvre ?",
+      "passage": "La jeunesse à la rescousse du plus grand musée de France\n\nDe nombreux édifices publics renferment souvent des œuvres d'art de grande valeur, dont l'état est devenu préoccupant : des élèves de l'École du Louvre ont monté une opération de recherche de mécénat pour restaurer ces perles du patrimoine français. Un musée digne des grandes institutions. Le patrimoine culturel artistique est toujours en danger en raison de mauvaises conditions de conservation. La négligence ou le simple oubli peuvent entraîner la perte de ces objets irremplaçables.\n\nSi, dans les musées, les œuvres d'art sont parfois éloignées du lieu pour lequel elles ont été conçues, elles y trouvent un refuge contre les atteintes du temps. Elles y sont nettoyées, restaurées, étudiées... Le patrimoine artistique ne réside pas uniquement dans ces lieux et dans les églises, mais aussi dans d'autres bâtiments publics. Là, tableaux, statues et tapisseries font toujours partie des décors d'origine. Toutefois, les œuvres d'art y bénéficient rarement de la même attention que dans un musée. Beaucoup, poussiéreuses et exclues, ont besoin d'une restauration et attendent que quelqu'un veuille bien s'intéresser à elles. C'est un véritable musée à la taille d'un pays, mais trop grand pour que les pouvoirs publics et l'administration des monuments historiques en prennent soin à eux seuls.\n\nComment intéresser ce patrimoine artistique ? Des jeunes à la rescousse des trésors de l'art : voilà qui ferait souffler un vent nouveau. L'École du Louvre fournirait les candidats. Cette institution, unique dans son domaine, attire des candidats venus de toute la France. Les élèves, qui ont en commun cette curiosité insatiable pour l'art, sont souvent passionnés par le patrimoine de leur lieu d'origine... Chaque élève participant à cette opération appelée \"le plus grand musée de France\" choisit une œuvre dans un bâtiment public qui n'est pas un musée et qui nécessite une opération de conservation. Il doit trouver les financements pour sa restauration. Il faut convaincre des galeries d'art, des scènes reconnues ou des entreprises locales de financer la conservation.\n\nC'est là que la jeunesse constitue un atout certain : les apprentis historiens de l'art s'impliquent pour faire connaître leur œuvre et la sortir de l'oubli. Car si la restauration est le but de la campagne, ce n'est que la dernière étape d'un long processus où la mise en valeur de l'objet est importante : exposition, conférences, reconstitution de son historique... La sensibilisation des autorités locales à la valeur de leur patrimoine contribue à convaincre les mécènes. Chaque région possède ses richesses insolites et le musée est pluridisciplinaire : sculptures, tapisseries, tableaux, parfois d'auteurs célèbres. Les élèves du Louvre accomplissent avant tout une mission de service public : la mise en valeur d'une œuvre, particulièrement lorsqu'elle se trouve dans une petite église ou dans la mairie d'un village, peut être le moyen d'intéresser les habitants à leur histoire et à l'art, une part de leur identité qu'ils sont toujours ravis de découvrir.\n\nD'abord chercheurs de fonds, prospecteurs de mécénat, les élèves se font guides et historiens de l'art, pouvant mettre en pratique leur formation théorique. À une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier. Le succès de l'opération le démontre : le patrimoine artistique est une richesse qui ne s'est pas encore épuisée, et nul doute que d'autres chefs-d'œuvre attendent de retrouver à leur tour la place qui leur revient dans le plus grand musée de France.",
+      "audioUrl": null,
+      "explanation": "评分要点：答出「能将理论培训付诸实践，在地方层面预演未来的职业」即可。",
+      "modelEssay": "Elle leur permet de mettre en pratique leur formation théorique : à une échelle locale, ils s'entraînent à faire ce qui sera plus tard leur métier, tout en contribuant à la conservation du patrimoine artistique.",
+      "points": 2,
+      "options": []
+    }
+  ]
+}

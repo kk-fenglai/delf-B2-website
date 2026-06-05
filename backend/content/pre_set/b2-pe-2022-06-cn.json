@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2022年6月（国内） — 反对市政杂志全面数字化",
+  "year": 2022,
+  "description": "反对市政杂志全面数字化。来源：2022年6月（国内） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous vivez en France et la mairie de votre ville souhaiterait remplacer son magazine mensuel distribué aux habitants par une version numérique, seulement consultable en ligne. Vous écrivez une lettre destinée à être publiée dans le « courrier des lecteurs » du magazine de la mairie. Vous êtes opposé au « tout numérique ». Vous exposerez vos arguments de manière détaillée et cohérente afin de convaincre la mairie de ne pas abandonner son magazine papier.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2022 年 6 月国内 DELF B2 写作真题（回忆版）。体裁：市政杂志读者来信。要点：反对“全面数字化”，有条理地论证保留纸质版杂志的理由以说服市政府。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Le déclin de l'empire masculin ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Télérama。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Le déclin de l'empire masculin ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Quel chemin parcouru depuis 1965, quand les femmes devaient obtenir l'autorisation de leur mari pour travailler… Dans Un siècle de travail des femmes en France, 1901-2011, on apprend que les jeunes avocats, magistrats et médecins d'aujourd'hui sont en majorité des femmes ! Même le secteur des ingénieurs se féminise enfin. On retrouve les mêmes progressions de l'activité féminine que dans les autres pays occidentaux, en plus rapide. Personne n'avait prévu cette croissance incroyable. Mais ce sont encore les critères classiques de domination masculine (salaire, pouvoir) qui permettent d'évaluer cette nouvelle « supériorité » féminine. On ne parle pas de bien-être, de carrières plus souples, d'un travail qui pèse moins sur nos vies à tous, d'un meilleur équilibre entre temps professionnel et temps familial. Femmes et hommes mènent une vie aussi épuisante, pas plus adaptés les uns que les autres à l'implacable* économie contemporaine.\n* déclin : diminution, baisse. * implacable : d'une dureté qu'on ne peut pas calmer.",
+      "explanation": "Document d'appui — source : Télérama. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pensez-vous que la place des femmes au travail a beaucoup changé ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 1,
+          "text": "Dans votre pays, les femmes et les hommes sont-ils égaux au travail ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 2,
+          "text": "Qu'est-ce qu'une réussite professionnelle, pour vous ?",
+          "expectedAngle": "价值观"
+        },
+        {
+          "order": 3,
+          "text": "Un meilleur équilibre entre travail et vie privée est-il possible ?",
+          "expectedAngle": "立场"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Trop d'argent dans le football ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Trop d'argent dans le football ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Peu de secteurs sont plus visibles, plus commentés et finalement plus critiqués que celui du football. Les droits télévisuels annuels de diffusion des matchs, qui coûtent 652 millions d'euros, ont, par exemple, indigné beaucoup de monde. Pourtant, les sommes collectées participent non seulement à l'entretien du football amateur sur tout le territoire, mais surtout financent le football professionnel. Le football professionnel est une industrie particulièrement concurrentielle et un spectacle de plus en plus coûteux, mais il n'est pas payé par le contribuable. Bien mieux, il génère beaucoup d'argent pour les caisses de l'État : 1,3 milliard d'euros de contributions fiscales et sociales par an. Cependant, une autre question reste particulièrement sensible : le salaire des joueurs. Gagnent-ils trop ? La durée très courte des carrières rend moins importantes les sommes gagnées : sur la durée d'une carrière normale, elles perdent leur caractère exceptionnel. Quand on regarde attentivement, le football apparaît donc pour ce qu'il est : à la fois un sport, un spectacle et une entreprise.",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pensez-vous que les footballeurs gagnent trop d'argent ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Le sport est-il devenu trop commercial, selon vous ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 2,
+          "text": "Aimez-vous le football ou un autre sport ? Lequel ?",
+          "expectedAngle": "个人"
+        },
+        {
+          "order": 3,
+          "text": "L'argent a-t-il une bonne ou une mauvaise influence sur le sport ?",
+          "expectedAngle": "利弊"
+        }
+      ]
+    }
+  ]
+}

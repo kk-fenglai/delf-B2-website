@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 
 const VALID_SKILLS = new Set(['CO', 'CE', 'PE', 'PO']);
-const VALID_TYPES = new Set(['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'FILL', 'ESSAY']);
+const VALID_TYPES = new Set(['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'TRUE_FALSE_JUSTIFY', 'FILL', 'ESSAY']);
 
 function die(msg) {
   // eslint-disable-next-line no-console
@@ -92,7 +92,9 @@ function parseFrontmatter(lines) {
 
 function cleanQuoted(s) {
   const t = String(s).trim();
-  if ((t.startsWith('"') && t.endsWith('"')) || (t.startsWith("'") && t.endsWith("'"))) return t.slice(1, -1);
+  if ((t.startsWith('"') && t.endsWith('"')) || (t.startsWith("'") && t.endsWith("'"))) {
+    return t.slice(1, -1).replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+  }
   return t;
 }
 
@@ -106,9 +108,9 @@ function toInt(v, where) {
 
 function validateQuestionShape(q) {
   const correctCount = q.options.filter((o) => o.isCorrect).length;
-  if (q.type === 'SINGLE' || q.type === 'TRUE_FALSE') {
-    if (q.options.length < 2) return 'SINGLE/TRUE_FALSE needs ≥2 options';
-    if (correctCount !== 1) return 'SINGLE/TRUE_FALSE needs exactly 1 correct option';
+  if (q.type === 'SINGLE' || q.type === 'TRUE_FALSE' || q.type === 'TRUE_FALSE_JUSTIFY') {
+    if (q.options.length < 2) return 'SINGLE/TRUE_FALSE/TRUE_FALSE_JUSTIFY needs ≥2 options';
+    if (correctCount !== 1) return 'SINGLE/TRUE_FALSE/TRUE_FALSE_JUSTIFY needs exactly 1 correct option';
   }
   if (q.type === 'MULTIPLE') {
     if (q.options.length < 2) return 'MULTIPLE needs ≥2 options';
@@ -275,6 +277,7 @@ function parseDocument(mdText) {
         else if (key === 'audioUrl') q.audioUrl = cleanQuoted(value);
         else if (key === 'explanation') q.explanation = cleanQuoted(value);
         else if (key === 'answer') q.answer = parseAnswerList(value);
+        else if (key === 'modelEssay') q.modelEssay = cleanQuoted(value);
         // unknown keys are ignored on purpose (future-proof)
         i += 1;
         continue;
@@ -367,6 +370,7 @@ function parseDocument(mdText) {
         passage: passage === undefined ? undefined : passage,
         audioUrl: qBlock.audioUrl != null ? String(qBlock.audioUrl).trim() : null,
         explanation: qBlock.explanation != null ? String(qBlock.explanation).trim() : null,
+        modelEssay: qBlock.modelEssay != null ? String(qBlock.modelEssay).trim() : null,
         points: qBlock.points,
         options,
         __line: lineNo,

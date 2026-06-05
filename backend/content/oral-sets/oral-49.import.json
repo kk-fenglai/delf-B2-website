@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Caissières contre caisses automatiques",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : AgoraVox。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Caissières contre caisses automatiques »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Deux camps s'affrontent : l'un pour prétendre que les caisses automatiques vont permettre une plus grande satisfaction du client (rapidité), et l'autre que ce système automatisé va mettre à la porte un grand nombre de travailleurs. Réfléchissons à ce problème, qui symbolise une des contradictions majeures de notre époque : la rentabilité fera toujours préférer la machine à l'homme dans toutes les tâches difficiles et répétitives. Mais les emplois sont menacés par ces machines, qui leur enlèvent peu à peu leur travail. Pourtant, ces travaux sont difficiles, souvent ennuyeux et épuisants, physiquement et moralement. En théorie, nous devrions tous nous réjouir de la suppression de tous ces travaux pénibles ; en théorie, cette suppression devrait permettre soit plus de loisirs, soit la création d'emplois plus attrayants. Mais, en pratique, cette suppression engendre chômage et précarité, désocialisation et tout ce qui s'ensuit.",
+      "explanation": "Document d'appui — source : AgoraVox. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Utilisez-vous les caisses automatiques dans les magasins ?",
+          "expectedAngle": "个人习惯"
+        },
+        {
+          "order": 1,
+          "text": "Les machines vont-elles supprimer beaucoup d'emplois, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Préférez-vous être servi par une personne ou par une machine ?",
+          "expectedAngle": "偏好"
+        },
+        {
+          "order": 3,
+          "text": "Comment protéger les emplois face aux machines ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

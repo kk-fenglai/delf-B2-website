@@ -1,0 +1,125 @@
+{
+  "title": "DELF B2 阅读 CE · 2022-03 中国场 · Texte 1（Dans la cage des « espaces de travail ouverts »）",
+  "year": 2022,
+  "description": "2022年3月中国考场真题 阅读第1篇（Lire un texte informatif）。分值统一记为1分（后台仅接受整数分值）。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Cet article traite du thème de…",
+      "passage": "Aujourd'hui, les espaces de travail ouverts semblent en passe de gagner la partie : selon une enquête réalisée par un institut de sondages, les bureaux individuels sont minoritaires : ils concernent 40 % seulement des salariés.\n\nSi l'espace ouvert s'est peu à peu imposé, c'est surtout pour des raisons financières. En regroupant les salariés sur de vastes plateaux, les entreprises confrontées à l'explosion des prix de l'immobilier tentent donc d'améliorer le « rendement-moquette* ».\n\nPlébiscité pour sa souplesse et ses coûts, l'espace de travail ouvert a fini par devenir le symbole du discours managérial sur les vertus de la communication, de la transparence et des échanges : il « assouplit les esprits » et « augmente la fluidité de l'information et les échanges informels », affirme ainsi le secrétaire général d'une grande société. Cette conviction laisse la plupart des chercheurs perplexes, mais elle semble faire consensus* dans un monde de l'entreprise qui valorise l'innovation, la performance et la mobilité. « Beaucoup de dirigeants sont persuadés qu'en décloisonnant l'entreprise au sens propre, ces espaces ouverts la décloisonnent au sens figuré, explique l'économiste Alain d'Iribarne. Ils espèrent favoriser le fonctionnement collectif et le travail en équipe. »\n\nTout dépend en fait de ce que l'on entend par « espace de travail ouvert ». Lorsqu'un petit bureau ouvert correspond à un fonctionnement en équipe réel, le décloisonnement présente effectivement des vertus. La sociologue Caroline Datchary, maître de conférences à l'université Toulouse-II, l'a constaté en observant ce type de bureau décloisonné dans une entreprise de communication qui organise des congrès médicaux. L'équipe, qui réunit une douzaine de salariés, a besoin de proximité – lorsque le téléphone sonne, il suffit d'un regard pour vérifier la disponibilité de son voisin et intercepter la communication. « Le collectif de travail est d'une aide précieuse pour gérer les émotions et prendre du recul par rapport à une situation stressante », ajoute Caroline Datchary.\n\nLes grands plateaux rassemblant trente, voire cinquante salariés sont en revanche très contestés : il est rarissime qu'ils correspondent à un véritable travail commun. « Tous les salariés ont un téléphone et un ordinateur mais ils ne font pas le même travail ! », explique Michael Fenker, du Laboratoire espaces travail de l'École nationale supérieure d'architecture de Paris La Villette. En les réunissant sur un même plateau sans se soucier de ce qu'ils font vraiment, on gomme les spécificités du travail de chacun. Du coup, on crée des aménagements sans se demander comment ils influeront sur le système de relations sociales et professionnelles. »\n\nPour Danièle Linhart, sociologue du travail au Centre national de la recherche scientifique, le contrôle visuel induit par l'espace de travail ouvert est plus pesant encore que les difficultés de voisinage. « Sur un plateau, les salariés travaillent en permanence sous l'œil de leurs collègues et de leurs chefs. Or tout le monde a besoin d'un peu d'ombre, d'un peu d'intimité, d'un peu de quant-à-soi. »\n\nConsciente de cette impasse, les entreprises commencent, selon M. d'Iribarne, à s'éloigner d'une optique exclusivement gestionnaire. « Elles comprennent qu'il faut réhabiliter des espaces qui ont longtemps été déclassés comme les restaurants d'entreprise, les cafétérias, les jardins, les agoras*. Ces lieux de rencontres créent des moments d'échanges privilégiés, riches et spontanés. C'est important, car si les gens ne se connaissent pas, ne se comprennent pas, n'ont pas envie de travailler ensemble, le travail collectif ne fonctionne pas. »\n\nD'après Anne CHEMIN, Le Monde\n\n* espaces de travail ouverts : désigne un espace de travail où les bureaux ne sont pas séparés par des cloisons.\n* moquette : revêtement qui couvre tout le sol et dont la matière est semblable à celle d'un tapis.\n* faire consensus : être accepté par tous, faire l'unanimité.\n* agoras : places publiques.",
+      "points": 1,
+      "explanation": "答案：B。文章主要谈企业工作空间的布局/规划。",
+      "options": [
+        { "label": "A", "text": "la personnalisation de l'espace de travail par le salarié.", "isCorrect": false, "order": 0 },
+        { "label": "B", "text": "l'aménagement de l'espace de travail dans l'entreprise.", "isCorrect": true, "order": 1 },
+        { "label": "C", "text": "la répartition des espaces de travail selon les postes des salariés.", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 2,
+      "prompt": "Vrai ou faux ? (justifiez) Le succès des espaces de travail ouverts s'explique avant tout par leur capacité à réduire le prix de l'occupation au sol.",
+      "points": 1,
+      "explanation": "Vrai. Justification : « Si cet espace ouvert s'est peu à peu imposé, c'est surtout pour des raisons financières » ou « les entreprises confrontées à l'explosion des prix de l'immobilier tentent donc d'améliorer le rendement-moquette ».",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": true, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": false, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 3,
+      "prompt": "Vrai ou faux ? (justifiez) D'après l'auteur, le monde de l'entreprise serait assez partagé sur les effets bénéfiques des espaces de travail décloisonnés.",
+      "points": 1,
+      "explanation": "Faux. Justification : « Cette conviction semble faire consensus dans le monde de l'entreprise ».",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": false, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": true, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 4,
+      "prompt": "D'après Alain d'Iribarne, les dirigeants d'entreprise voient dans les espaces décloisonnés un moyen pour…",
+      "points": 1,
+      "explanation": "答案：B。",
+      "options": [
+        { "label": "A", "text": "contrôler les salariés.", "isCorrect": false, "order": 0 },
+        { "label": "B", "text": "inciter à travailler en groupe.", "isCorrect": true, "order": 1 },
+        { "label": "C", "text": "responsabiliser les employés.", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 5,
+      "prompt": "Selon Caroline Datchary, quel avantage présentent les petits espaces ouverts pour le travail en entreprise ?",
+      "points": 1,
+      "explanation": "评分要点：加强凝聚力/让员工安心，或便于同事间互助。",
+      "modelEssay": "Ils permettent de renforcer la cohésion tout en rassurant les salariés OU ils permettent l'entraide entre collègues."
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 6,
+      "prompt": "Vrai ou faux ? (justifiez) D'après l'auteur de l'article, les grands espaces décloisonnés favorisent la collaboration entre salariés.",
+      "points": 1,
+      "explanation": "Faux. Justification : « il est rarissime qu'ils correspondent à un véritable travail commun ».",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": false, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": true, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 7,
+      "prompt": "Pour Michael Fenker, l'organisation du travail en grands espaces décloisonnés ne tient pas compte…",
+      "points": 1,
+      "explanation": "答案：A。",
+      "options": [
+        { "label": "A", "text": "de la particularité des postes occupés par les salariés.", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "de la confidentialité du travail effectué par les employés.", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "des relations hiérarchiques entre les fonctions des employés.", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 8,
+      "prompt": "Selon Danièle Linhart, le système des bureaux décloisonnés porte atteinte…",
+      "points": 1,
+      "explanation": "答案：A。",
+      "options": [
+        { "label": "A", "text": "à l'individualité des salariés.", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "à la concentration des salariés.", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "à la bonne entente entre salariés.", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 9,
+      "prompt": "Quel intérêt ont certaines entreprises à créer des espaces de rencontres ?",
+      "points": 1,
+      "explanation": "评分要点：拉近人与人的距离（让他们愿意一起工作）。",
+      "modelEssay": "Leur intérêt est de rapprocher les gens (pour leur donner envie de travailler ensemble)."
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 10,
+      "prompt": "Comment comprenez-vous le jeu de mots dans le titre de l'article : « Dans la cage des espaces de travail ouverts » ?",
+      "points": 1,
+      "explanation": "评分要点：把「笼子」的禁闭感与开放式办公空间联系起来，凸显这种系统的负面效果——员工在其中并不自在/没有个人空间与私密性。",
+      "modelEssay": "L'association entre l'enfermement de la cage et l'espace de travail décloisonné met l'accent sur les effets pervers d'un tel système : un espace dans lequel le salarié n'est pas si à l'aise que cela pour effectuer son travail / dans lequel le salarié n'a pas d'espace personnel ni d'intimité."
+    }
+  ]
+}

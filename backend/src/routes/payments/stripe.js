@@ -137,6 +137,21 @@ router.post('/checkout', requireAuth, async (req, res, next) => {
       });
     }
 
+    if (!session.url) {
+      try {
+        await prisma.paymentOrder.update({
+          where: { id: order.id },
+          data: { status: 'FAILED', externalTradeNo: 'NO_CHECKOUT_URL' },
+        });
+      } catch (logErr) {
+        logger.error({ err: logErr, orderId: order.id }, '[stripe.checkout] failed to mark order FAILED after missing session.url');
+      }
+      return res.status(502).json({
+        error: 'Stripe returned no checkout URL — check server Stripe SDK/API version and ui_mode (hosted redirect).',
+        code: 'STRIPE_CHECKOUT_NO_URL',
+      });
+    }
+
     await prisma.paymentOrder.update({
       where: { id: order.id },
       data: { providerOrderNo: session.sessionId, redirectUrl: session.url },

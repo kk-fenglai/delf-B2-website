@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Les covacances, un nouveau moyen pour partir pas cher",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Les covacances, un nouveau moyen pour partir pas cher »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Ils ne se connaissent pas, mais n'hésitent pas à partir en vacances ensemble. Cette tendance, en plein essor, est liée à un souci d'économie, mais aussi au désir d'éviter la solitude. Un tour-opérateur et un site Internet sont désormais consacrés à cette nouvelle formule. Les covacances, déclinaison estivale de la colocation et du covoiturage, existaient déjà, mais, avec le lancement de forums et de sites Internet, le phénomène est monté en puissance. Une agence de voyage explique : « On recevait de plus en plus de courriers de clients qui en avaient marre de payer le supplément réservé aux personnes seules. On a donc décidé de leur proposer une solution. » Jusqu'ici, seuls quelques dizaines de groupes sont partis, car la formule ne va pas de soi : n'est-il pas risqué de partir avec des inconnus ? Les agences de voyages sont là pour éviter les mésaventures et n'hésitent pas à rappeler qu'en plus des motivations économiques, cela peut être une occasion de faire de nouvelles rencontres.",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Partiriez-vous en vacances avec des inconnus ?",
+          "expectedAngle": "个人意愿"
+        },
+        {
+          "order": 1,
+          "text": "Quels sont les avantages et les risques de cette formule ?",
+          "expectedAngle": "利弊"
+        },
+        {
+          "order": 2,
+          "text": "Préférez-vous voyager seul, en famille ou en groupe ?",
+          "expectedAngle": "偏好"
+        },
+        {
+          "order": 3,
+          "text": "Internet a-t-il changé notre façon de voyager ?",
+          "expectedAngle": "观点"
+        }
+      ]
+    }
+  ]
+}

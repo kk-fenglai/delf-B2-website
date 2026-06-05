@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Espèces en voie de disparition",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : France Inter。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Espèces en voie de disparition »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "En France, un peu plus d'un paiement sur deux se fait encore en espèces, mais la monnaie dans nos poches est de plus en plus rare. L'idée de vivre sans monnaie est à la mode : dans un pays comme la Suède, seuls 20 % des achats se font encore en liquide. Notre portefeuille se virtualise et on parle de « moyens de paiement dématérialisés ». En tête, on retrouve la carte bancaire et le paiement sans contact, qui équipe déjà 2/3 des cartes, ainsi que de plus en plus… de smartphones. Car votre futur portefeuille, c'est votre mobile ! Et pour ceux qui n'ont pas accès à un compte bancaire, des solutions se développent heureusement. Exemple : le compte Nickel, qui s'ouvre en quelques minutes dans un bureau de tabac. Et la vie privée ? De ce côté, c'est plutôt mal parti. En témoigne l'annonce faite par le géant Google, qui a exprimé vouloir récolter l'historique des terminaux de paiement aux États-Unis pour améliorer son ciblage publicitaire.",
+      "explanation": "Document d'appui — source : France Inter. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Payez-vous plutôt en liquide ou par carte ? Pourquoi ?",
+          "expectedAngle": "个人习惯"
+        },
+        {
+          "order": 1,
+          "text": "Pensez-vous qu'on pourra bientôt vivre sans argent liquide ?",
+          "expectedAngle": "预测"
+        },
+        {
+          "order": 2,
+          "text": "Le paiement sans contact pose-t-il un problème de vie privée ?",
+          "expectedAngle": "隐私"
+        },
+        {
+          "order": 3,
+          "text": "Quels sont les risques d'une société sans argent liquide ?",
+          "expectedAngle": "风险"
+        }
+      ]
+    }
+  ]
+}

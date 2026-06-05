@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2021年6月（国内） — 保留夏末免费音乐会",
+  "year": 2021,
+  "description": "保留夏末免费音乐会。来源：2021年6月（国内） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous habitez dans une ville francophone qui organise chaque année un grand concert gratuit pour marquer la fin de l'été. Pour des raisons financières, votre ville annonce qu'elle veut supprimer cet événement musical. Vous écrivez au maire de la ville pour le persuader, à l'aide d'arguments et d'exemples précis, des avantages culturels et touristiques que ce concert représente. Vous insistez également sur l'intérêt économique de cette manifestation pour les commerçants et les artistes de la région.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2021 年 6 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：论证免费音乐会的文化、旅游与经济价值（对商家和艺术家），说服市长不要取消。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

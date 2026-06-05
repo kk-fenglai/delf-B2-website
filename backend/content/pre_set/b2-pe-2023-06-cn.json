@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2023年6月（国内） — 网购货不对板维权",
+  "year": 2023,
+  "description": "网购货不对板维权。来源：2023年6月（国内） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous avez acheté ce produit sur Internet mais vous avez reçu un ordinateur moins moderne et moins performant. Vous exprimez votre indignation sur un forum consacré aux problèmes liés aux achats sur Internet, parfois rencontrés par les consommateurs (contrefaçons, délais de livraison, produits non conformes, etc.), et vous tentez de proposer des solutions.",
+      "passage": "Publicité du produit — « Ordinateur portable : Ce nouvel ordinateur a désormais une batterie qui offre une journée d'autonomie. Il ne mesure que 1,7 cm d'épaisseur, pour un poids plume de 1,08 kg. Mais sa coque en aluminium inaltérable lui assure également solidité et résistance. »",
+      "audioUrl": null,
+      "explanation": "来源：2023 年 6 月国内 DELF B2 写作真题（回忆版）。体裁：网络论坛留言（message sur un forum）。要点：表达对网购货不对板的愤慨，列举网购常见问题并提出解决建议。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

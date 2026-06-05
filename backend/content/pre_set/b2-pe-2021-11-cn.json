@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2021年11月（国内） — 老人为儿童读故事",
+  "year": 2021,
+  "description": "老人为儿童读故事。来源：2021年11月（国内） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous vivez dans une petite ville française, à côté d'une école maternelle et d'une maison de retraite. Vous pensez que les personnes âgées pourraient venir lire des histoires aux enfants de l'école. Vous écrivez une lettre au maire pour lui proposer votre idée. Dans cette lettre, vous expliquez en quoi consiste votre projet de lecture et vous en présentez les divers avantages à la fois pour les enfants et pour les retraités.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2021 年 11 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信（écrit argumenté）。要点：阐述“老人为幼儿园儿童读故事”的代际阅读计划及其对双方的益处。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

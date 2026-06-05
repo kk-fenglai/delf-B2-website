@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Qui aime les Jeux olympiques ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Qui aime les Jeux olympiques ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "On sait maintenant que Paris organisera les Jeux olympiques en 2024, mais une minorité de personnes convaincues s'opposent encore et toujours à cette décision. Depuis quelques années, ces opposants se font entendre et s'élèvent contre l'organisation des Jeux à Paris. Le collectif « Non aux JO 2024 à Paris » s'inscrit dans une démarche citoyenne et demande l'opinion du peuple. Frédéric Viale, un des porte-paroles de ce mouvement, voit trois raisons à l'opposition du collectif aux Jeux olympiques : le coût, l'écologie et la démocratie. « Les JO vont coûter très cher, comme tous les autres, et c'est nous qui paierons ; cela va détruire des forêts et augmenter la circulation ! Et puis, plus grave, personne ne nous a demandé notre avis ! Les citoyens devraient pouvoir décider, cela les concerne », dit-il. Cette opinion semble partagée partout dans le monde, puisque de moins en moins de pays se portent candidats pour l'organisation de cette grande fête du sport. Est-ce bientôt la fin du rêve olympique ?",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Aimez-vous regarder les Jeux olympiques ? Pourquoi ?",
+          "expectedAngle": "个人"
+        },
+        {
+          "order": 1,
+          "text": "Pensez-vous que les JO coûtent trop cher ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Les grands événements sportifs sont-ils bons pour une ville ?",
+          "expectedAngle": "利弊"
+        },
+        {
+          "order": 3,
+          "text": "Faut-il demander l'avis des citoyens pour ce genre de projet ?",
+          "expectedAngle": "民主观点"
+        }
+      ]
+    }
+  ]
+}

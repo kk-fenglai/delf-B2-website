@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Payer des femmes enceintes pour qu'elles arrêtent de fumer",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Payer des femmes enceintes pour qu'elles arrêtent de fumer »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Rémunérer des femmes enceintes pour les encourager à arrêter de fumer ? Cette approche positive, jugée plus efficace que la culpabilisation, est testée dans seize maternités de France. Aujourd'hui encore, 20 % des femmes enceintes continuent à fumer tout au long de leur grossesse, avec de nombreux risques de complications pour le futur bébé. Pour tenter d'y remédier, ces maternités vont essayer, pour la première fois, de convaincre de futures mamans d'arrêter de fumer en leur offrant des bons d'achat. Un total de 400 femmes enceintes va être recruté : des volontaires, majeures, qui doivent être enceintes de moins de quatre mois et demi et fumer un minimum de cinq cigarettes quotidiennes. Cette méthode est certes étonnante : chercher à récompenser plutôt qu'à éduquer. Le principe serait d'encourager les personnes dépendantes plutôt que de les punir ou de leur faire honte ; il faudrait les accompagner dans leurs difficultés plutôt que de les accuser et de les isoler.",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Payer les gens pour arrêter de fumer : bonne ou mauvaise idée ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Vaut-il mieux récompenser ou punir pour changer un comportement ?",
+          "expectedAngle": "奖 vs 罚"
+        },
+        {
+          "order": 2,
+          "text": "Comment peut-on aider quelqu'un à arrêter de fumer ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "L'État doit-il intervenir dans nos habitudes de santé ?",
+          "expectedAngle": "干预观点"
+        }
+      ]
+    }
+  ]
+}

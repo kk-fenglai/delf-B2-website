@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2023年11月（国内） — 公园垃圾问题",
+  "year": 2023,
+  "description": "公园垃圾问题。来源：2023年11月（国内） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous habitez en France. Depuis plusieurs semaines, le jardin public qui se situe à côté de chez vous est recouvert de déchets. Vous écrivez une lettre au maire de la ville pour lui exposer la situation et le convaincre de mettre en place les mesures nécessaires. Vous proposez des solutions concrètes pour résoudre le problème.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2023 年 11 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：描述公园垃圾问题的现状，说服市长采取措施并提出具体解决方案。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

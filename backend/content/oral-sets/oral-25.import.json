@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Les limites de la vidéosurveillance",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.liberation.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Les limites de la vidéosurveillance »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "De nombreux lycées français seront prochainement équipés de la vidéosurveillance. Ce projet, qui a pour but de renforcer la sécurité dans les établissements scolaires, provoque une grande inquiétude du côté des parents d'élèves, qui s'interrogent sur l'utilisation possible des données et des images ainsi obtenues. « Il est question de les envoyer vers des centres de surveillance urbains, mais qui les observera ? À l'intérieur des établissements, les caméras ne vont pas empêcher qu'il y ait des problèmes avec les élèves et, même, au contraire, peuvent être vues comme une provocation pour certains ! » affirme Nathalie Gaujac, elle-même maman d'une lycéenne. « Sur des cités scolaires très étendues où on ne peut pas mettre partout du personnel, cela peut se comprendre, mais on ne remplacera jamais la présence humaine. On voit bien que les villes ont déjà des caméras partout et pourtant ce n'est pas cela qui fait baisser la délinquance. »",
+      "explanation": "Document d'appui — source : www.liberation.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Y a-t-il beaucoup de caméras de surveillance dans votre ville ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 1,
+          "text": "Pensez-vous que les caméras améliorent vraiment la sécurité ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "La vidéosurveillance pose-t-elle un problème de vie privée ?",
+          "expectedAngle": "隐私"
+        },
+        {
+          "order": 3,
+          "text": "Préférez-vous des caméras ou plus de personnel humain ?",
+          "expectedAngle": "选择"
+        }
+      ]
+    }
+  ]
+}

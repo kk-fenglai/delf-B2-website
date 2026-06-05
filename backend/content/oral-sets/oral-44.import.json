@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · La perche à selfie",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Libération。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« La perche à selfie »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Le selfie était le mot de l'année 2013, la perche à selfie l'invention de 2014, et elle fait beaucoup parler d'elle en 2015. La perche à selfie incarne deux problèmes contemporains du mauvais goût photographique : le tourisme et le narcissisme. Pourtant, la pratique du selfie n'est pas si narcissique qu'il n'y paraît. Le selfie est avant tout une pratique conversationnelle, une documentation de l'instant. Tourné vers soi, l'autoportrait au smartphone est en fait davantage orienté vers Internet : il constitue plus un discours sur l'environnement extérieur (« je suis ici / avec ») que sur soi-même. La haine de la perche à selfie témoigne aussi de notre rapport à la technologie : nous l'adulons, mais nous détestons qu'elle soit visible. On peste devant la marée de smartphones dans les concerts, on refuse de voir apparaître les téléphones à table. La technologie est toujours plus puissante, mais doit être toujours moins visible. La perche à selfie semble traverser cette tendance et montrer que nous aimons la technologie et les accessoires, malgré tout.\n* selfie : autoportrait, en général fait au smartphone.",
+      "explanation": "Document d'appui — source : Libération. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Aimez-vous prendre des selfies ? Pourquoi ?",
+          "expectedAngle": "个人"
+        },
+        {
+          "order": 1,
+          "text": "Pensez-vous que les selfies sont un signe de narcissisme ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Utilise-t-on trop son smartphone dans les lieux publics ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 3,
+          "text": "La technologie occupe-t-elle trop de place dans notre vie ?",
+          "expectedAngle": "反思"
+        }
+      ]
+    }
+  ]
+}

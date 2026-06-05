@@ -5,12 +5,14 @@ import {
   Progress, Alert, Modal, Space, Upload,
 } from 'antd';
 import {
-  ClockCircleOutlined, ExclamationCircleFilled, LockOutlined,
+  ClockCircleOutlined, ExclamationCircleFilled, LockOutlined, BookOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
-import AudioPlayer from '../components/AudioPlayer';
-import AIModelPicker from '../components/AIModelPicker';
+import { useAuthStore } from '../stores/auth';
+import CoSectionRunner from '../components/CoSectionRunner';
+import CoSectionRunnerMock from '../components/CoSectionRunnerMock';
+import TemplateDrawer from '../components/TemplateDrawer';
 import type { ExamSetDetail, Question, Skill, EssayQuota, ClaudeModelKey } from '../types';
 
 const { Title, Paragraph, Text } = Typography;
@@ -18,13 +20,25 @@ const { Title, Paragraph, Text } = Typography;
 type Props = { skill?: Skill; mockMode?: boolean };
 
 // DELF B2 official time allocation per skill (in minutes)
-const SKILL_MINUTES: Record<Skill, number> = { CO: 30, CE: 60, PE: 60, PO: 20 };
+const SKILL_MINUTES: Record<Skill, number> = { CO: 30, CE: 30, PE: 60, PO: 20 };
 // Canonical DELF B2 section order.
 const SECTION_ORDER: Skill[] = ['CO', 'CE', 'PE', 'PO'];
 // DELF B2 passing standards
 const PASS_TOTAL = 50;          // /100
 const PASS_PER_SKILL = 5;       // /25
 const SKILL_MAX = 25;
+
+// Render passage text: single newlines (PDF line-wrap artifacts) become spaces;
+// double newlines become paragraph breaks.
+function renderPassage(text: string) {
+  return text
+    .split(/\n{2,}/)
+    .map((para) => para.replace(/\n/g, ' ').trim())
+    .filter(Boolean)
+    .map((para, i) => (
+      <p key={i} style={{ marginBottom: '0.75em', lineHeight: 1.8 }}>{para}</p>
+    ));
+}
 
 function formatTime(seconds: number): string {
   const s = Math.max(0, Math.floor(seconds));
@@ -41,6 +55,11 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const { t, i18n } = useTranslation();
   const { examId } = useParams();
   const navigate = useNavigate();
+  // Plan-gate the OCR upload affordance — only AI_UNLIMITED users can hit
+  // the /essays/ocr endpoint, so hiding the button for everyone else keeps
+  // the UI honest (clicking it would just 403).
+  const userPlan = useAuthStore((s) => s.user?.plan);
+  const canUseOcr = userPlan === 'AI_UNLIMITED';
   const [exam, setExam] = useState<ExamSetDetail | null>(null);
   const [sectionIdx, setSectionIdx] = useState(0);
   const [current, setCurrent] = useState(0);
@@ -50,8 +69,8 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const [submitting, setSubmitting] = useState(false);
   const [blocked, setBlocked] = useState<string | null>(null);
   const [quota, setQuota] = useState<EssayQuota | null>(null);
-  const [aiModel, setAiModel] = useState<ClaudeModelKey | null>(null);
   const [ocrLoading, setOcrLoading] = useState(false);
+  const [templateDrawerOpen, setTemplateDrawerOpen] = useState(false);
   const [remaining, setRemaining] = useState<number>(0);
   const [sectionStartedAt, setSectionStartedAt] = useState<number>(0);
   const autoSubmittedRef = useRef(false);
@@ -81,8 +100,14 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
 
   const currentSection: Section | undefined = sections[sectionIdx];
   const sectionQuestions = currentSection?.questions ?? [];
+  // CO in PRACTICE mode (isMock=false) is untimed — candidates control
+  // playback themselves so the section countdown is disabled. In MOCK
+  // mode the strict DELF schedule applies, so the full 30 min counts down.
+  // sectionSeconds === 0 short-circuits the timer effect below.
   const sectionSeconds = currentSection
-    ? SKILL_MINUTES[currentSection.skill] * 60
+    ? currentSection.skill === 'CO' && !isMock
+      ? 0
+      : SKILL_MINUTES[currentSection.skill] * 60
     : 0;
   const isLastSection = sectionIdx >= sections.length - 1;
 
@@ -121,11 +146,22 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         // Mock mode uses the stricter EXAM mode so later analytics can
         // distinguish simulated full exams from untimed skill drills.
         const mode = isMock ? 'EXAM' : 'PRACTICE';
-        const session = await api.post('/sessions', { examSetId: examId, mode });
+        const session = await api.post('/sessions', {
+          examSetId: examId,
+          mode,
+          ...(isMock ? {} : skill ? { skill } : {}),
+        });
         setSessionId(session.data.session.id);
         setSectionStartedAt(Date.now());
       } catch (e: any) {
-        if (e.response?.data?.requiresUpgrade) {
+        const code = e.response?.data?.code;
+        if (code === 'FREE_QUOTA_EXCEEDED') {
+          const bucket = e.response?.data?.bucket as 'CE' | 'CO' | 'MOCK' | undefined;
+          const cap = e.response?.data?.cap as number | undefined;
+          setBlocked(bucket
+            ? t(`freeQuota.exceeded.${bucket}`, { cap })
+            : t('freeQuota.exceeded.generic'));
+        } else if (e.response?.data?.requiresUpgrade) {
           setBlocked(e.response.data.error);
         } else {
           message.error(t('exam.loadFail'));
@@ -144,7 +180,6 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       .then((r) => {
         if (cancelled) return;
         setQuota(r.data);
-        if (r.data?.defaultModel) setAiModel(r.data.defaultModel);
       })
       .catch(() => {});
     return () => { cancelled = true; };
@@ -244,7 +279,6 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       if (hasEssay) {
         const loc = (i18n.language || 'fr').slice(0, 2);
         body.aiLocale = (['fr', 'en', 'zh'] as const).includes(loc as any) ? loc : 'fr';
-        if (aiModel) body.aiModel = aiModel;
       }
       const { data } = await api.post(`/sessions/${sessionId}/submit`, body);
       sessionStorage.setItem(`result-${sessionId}`, JSON.stringify({ result: data, exam, isMock }));
@@ -361,6 +395,37 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         </Radio.Group>
       );
     }
+    if (q.type === 'TRUE_FALSE_JUSTIFY') {
+      let parsed: { choice?: string; justification?: string } = {};
+      try { parsed = JSON.parse(value || '{}'); } catch { /* ignore */ }
+      const updateTFJ = (patch: { choice?: string; justification?: string }) => {
+        updateAnswer(JSON.stringify({ ...parsed, ...patch }));
+      };
+      return (
+        <div className="flex flex-col gap-3">
+          <Radio.Group
+            value={parsed.choice}
+            onChange={(e) => updateTFJ({ choice: e.target.value })}
+            className="flex gap-4"
+          >
+            {q.options.map((o) => (
+              <Radio key={o.id} value={o.label} className="p-2 hover:bg-surface rounded">
+                <strong>{o.label}.</strong> {o.text}
+              </Radio>
+            ))}
+          </Radio.Group>
+          <div>
+            <div className="text-sm text-gray-500 mb-1">Justification — recopiez la phrase du texte :</div>
+            <Input.TextArea
+              value={parsed.justification || ''}
+              onChange={(e) => updateTFJ({ justification: e.target.value })}
+              rows={3}
+              placeholder="Recopiez ici la phrase ou la partie du texte qui justifie votre réponse."
+            />
+          </div>
+        </div>
+      );
+    }
     if (q.type === 'MULTIPLE') {
       return (
         <Checkbox.Group value={value || []} onChange={(v) => updateAnswer(v)} className="flex flex-col gap-2">
@@ -381,52 +446,61 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       const ocrLang = (i18n.language || 'fr').slice(0, 2);
       return (
         <div>
-          <div className="flex justify-end mb-2">
-            <Upload
-              accept="image/png,image/jpeg,image/webp"
-              showUploadList={false}
-              beforeUpload={(file) => {
-                const isOkType = ['image/png', 'image/jpeg', 'image/webp'].includes(file.type);
-                if (!isOkType) {
-                  message.error('仅支持 PNG/JPG/WEBP 图片');
-                  return Upload.LIST_IGNORE;
-                }
-                const maxMb = 8;
-                if (file.size / 1024 / 1024 > maxMb) {
-                  message.error(`图片过大（最大 ${maxMb}MB）`);
-                  return Upload.LIST_IGNORE;
-                }
-                return true;
-              }}
-              customRequest={async ({ file, onSuccess, onError }) => {
-                try {
-                  setOcrLoading(true);
-                  const form = new FormData();
-                  form.append('image', file as Blob);
-                  form.append('lang', (['fr', 'en', 'zh'] as const).includes(ocrLang as any) ? ocrLang : 'fr');
-                  const { data } = await api.post('/user/essays/ocr', form, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                  });
-                  const text = String(data?.text || '').trim();
-                  if (!text) {
-                    message.warning('未识别到文字，请换更清晰的照片重试');
-                  } else {
-                    updateAnswer(text);
-                    message.success('识别成功，已填入作文框');
-                  }
-                  onSuccess?.(data, undefined as any);
-                } catch (err: any) {
-                  message.error(err?.response?.data?.error || 'OCR 识别失败');
-                  onError?.(err);
-                } finally {
-                  setOcrLoading(false);
-                }
-              }}
+          <div className="flex justify-between items-center mb-2">
+            <Button
+              size="small"
+              icon={<BookOutlined />}
+              onClick={() => setTemplateDrawerOpen(true)}
             >
-              <Button loading={ocrLoading} disabled={submitting} size="small">
-                上传照片识别（OCR）
-              </Button>
-            </Upload>
+              {t('template.drawerTitle')}
+            </Button>
+            {canUseOcr && (
+              <Upload
+                accept="image/png,image/jpeg,image/webp"
+                showUploadList={false}
+                beforeUpload={(file) => {
+                  const isOkType = ['image/png', 'image/jpeg', 'image/webp'].includes(file.type);
+                  if (!isOkType) {
+                    message.error(t('exam.ocr.unsupportedType'));
+                    return Upload.LIST_IGNORE;
+                  }
+                  const maxMb = 8;
+                  if (file.size / 1024 / 1024 > maxMb) {
+                    message.error(t('exam.ocr.tooLarge', { maxMb }));
+                    return Upload.LIST_IGNORE;
+                  }
+                  return true;
+                }}
+                customRequest={async ({ file, onSuccess, onError }) => {
+                  try {
+                    setOcrLoading(true);
+                    const form = new FormData();
+                    form.append('image', file as Blob);
+                    form.append('lang', (['fr', 'en', 'zh'] as const).includes(ocrLang as any) ? ocrLang : 'fr');
+                    const { data } = await api.post('/user/essays/ocr', form, {
+                      headers: { 'Content-Type': 'multipart/form-data' },
+                    });
+                    const text = String(data?.text || '').trim();
+                    if (!text) {
+                      message.warning(t('exam.ocr.noText'));
+                    } else {
+                      updateAnswer(text);
+                      message.success(t('exam.ocr.success'));
+                    }
+                    onSuccess?.(data, undefined as any);
+                  } catch (err: any) {
+                    message.error(err?.response?.data?.error || t('exam.ocr.fail'));
+                    onError?.(err);
+                  } finally {
+                    setOcrLoading(false);
+                  }
+                }}
+              >
+                <Button loading={ocrLoading} disabled={submitting} size="small">
+                  {t('exam.ocr.uploadBtn')}
+                </Button>
+              </Upload>
+            )}
           </div>
           <Input.TextArea
             value={value || ''}
@@ -435,15 +509,12 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
             placeholder={t('exam.essayPlaceholder')}
             showCount
           />
-          {quota && quota.allowedModels.length > 0 ? (
-            <AIModelPicker
-              allowedModels={quota.allowedModels}
-              models={quota.models}
-              defaultModel={quota.defaultModel}
-              value={aiModel}
-              onChange={setAiModel}
-            />
-          ) : (
+          <TemplateDrawer
+            open={templateDrawerOpen}
+            onClose={() => setTemplateDrawerOpen(false)}
+            onInsert={(content) => updateAnswer((value || '') + content)}
+          />
+          {quota && quota.allowedModels.length > 0 && (
             <div className="mt-2 text-xs text-muted">{t('exam.essayAITip')}</div>
           )}
         </div>
@@ -461,26 +532,101 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         <Radio.Group
           value={value}
           onChange={(e) => update(e.target.value)}
-          className="flex flex-col gap-2"
+          className="flex flex-col gap-2 w-full"
         >
           {qq.options.map((o) => (
-            <Radio key={o.id} value={o.label} className="p-2 hover:bg-surface rounded">
-              <strong>{o.label}.</strong> {o.text}
+            <Radio
+              key={o.id}
+              value={o.label}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '10px 14px',
+                borderRadius: 8,
+                border: `1.5px solid ${value === o.label ? '#2563eb' : '#e5e7eb'}`,
+                background: '#ffffff',
+                fontWeight: value === o.label ? 600 : 400,
+                width: '100%',
+                marginRight: 0,
+                transition: 'border-color 0.15s, background 0.15s',
+              }}
+            >
+              <strong style={{ minWidth: 20 }}>{o.label}.</strong>&nbsp;{o.text}
             </Radio>
           ))}
         </Radio.Group>
       );
     }
+    if (qq.type === 'TRUE_FALSE_JUSTIFY') {
+      let parsed: { choice?: string; justification?: string } = {};
+      try { parsed = JSON.parse(value || '{}'); } catch { /* ignore */ }
+      const updateTFJ = (patch: { choice?: string; justification?: string }) =>
+        update(JSON.stringify({ ...parsed, ...patch }));
+      return (
+        <div className="flex flex-col gap-3">
+          <Radio.Group
+            value={parsed.choice}
+            onChange={(e) => updateTFJ({ choice: e.target.value })}
+            className="flex gap-3"
+          >
+            {qq.options.map((o) => (
+              <Radio
+                key={o.id}
+                value={o.label}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '10px 20px',
+                  borderRadius: 8,
+                  border: `1.5px solid ${parsed.choice === o.label ? '#2563eb' : '#e5e7eb'}`,
+                  background: '#ffffff',
+                  fontWeight: parsed.choice === o.label ? 600 : 400,
+                  marginRight: 0,
+                  transition: 'border-color 0.15s, background 0.15s',
+                }}
+              >
+                <strong style={{ minWidth: 20 }}>{o.label}.</strong>&nbsp;{o.text}
+              </Radio>
+            ))}
+          </Radio.Group>
+          <div>
+            <div className="text-sm text-gray-500 mb-1">Justification — recopiez la phrase du texte :</div>
+            <Input.TextArea
+              value={parsed.justification || ''}
+              onChange={(e) => updateTFJ({ justification: e.target.value })}
+              rows={3}
+              placeholder="Recopiez ici la phrase ou la partie du texte qui justifie votre réponse."
+            />
+          </div>
+        </div>
+      );
+    }
     if (qq.type === 'MULTIPLE') {
+      const selected: string[] = value || [];
       return (
         <Checkbox.Group
-          value={value || []}
+          value={selected}
           onChange={(v) => update(v)}
-          className="flex flex-col gap-2"
+          className="flex flex-col gap-2 w-full"
         >
           {qq.options.map((o) => (
-            <Checkbox key={o.id} value={o.label} className="p-2 hover:bg-surface rounded">
-              <strong>{o.label}.</strong> {o.text}
+            <Checkbox
+              key={o.id}
+              value={o.label}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '10px 14px',
+                borderRadius: 8,
+                border: `1.5px solid ${selected.includes(o.label) ? '#2563eb' : '#e5e7eb'}`,
+                background: '#ffffff',
+                fontWeight: selected.includes(o.label) ? 600 : 400,
+                width: '100%',
+                marginRight: 0,
+                transition: 'border-color 0.15s, background 0.15s',
+              }}
+            >
+              <strong style={{ minWidth: 20 }}>{o.label}.</strong>&nbsp;{o.text}
             </Checkbox>
           ))}
         </Checkbox.Group>
@@ -533,7 +679,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     const unanswered = allReading.length - answered;
 
     return (
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
           <Title level={3} className="!mb-0">
             {exam.title}
@@ -572,24 +718,36 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         />
 
         {readingGroups.map((g, gi) => (
-          <Card key={gi} bordered={false} className="mb-4 app-surface">
-            {g.passage && (
-              <div
-                className="passage p-4 rounded mb-4 whitespace-pre-wrap"
-                style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
-              >
-                {g.passage}
+          <Card key={gi} bordered={false} className="mb-6 app-surface">
+            <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start' }}>
+              {g.passage && (
+                <div
+                  className="passage p-4 rounded"
+                  style={{
+                    flex: '0 0 52%',
+                    background: 'var(--bgElevated)',
+                    borderLeft: '4px solid var(--primary)',
+                    position: 'sticky',
+                    top: 80,
+                    maxHeight: 'calc(100vh - 140px)',
+                    overflowY: 'auto',
+                  }}
+                >
+                  {renderPassage(g.passage)}
+                </div>
+              )}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {g.questions.map((qq, qi) => (
+                  <div key={qq.id} className={qi > 0 ? 'mt-5 pt-5 border-t' : ''}>
+                    <Paragraph className="text-base font-semibold mb-3">
+                      {qq.order}. {qq.prompt}
+                      <Text className="ml-2" type="secondary">({qq.points} {t('exam.points')})</Text>
+                    </Paragraph>
+                    {renderAnswerInputFor(qq)}
+                  </div>
+                ))}
               </div>
-            )}
-            {g.questions.map((qq, qi) => (
-              <div key={qq.id} className={qi > 0 ? 'mt-4 pt-4 border-t' : ''}>
-                <Paragraph className="text-base font-semibold mb-3">
-                  {qq.order}. {qq.prompt}
-                  <Text className="ml-2" type="secondary">({qq.points} {t('exam.points')})</Text>
-                </Paragraph>
-                {renderAnswerInputFor(qq)}
-              </div>
-            ))}
+            </div>
           </Card>
         ))}
 
@@ -611,19 +769,29 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           {isMock && <Tag color="purple" className="ml-2">{t('exam.mockBadge')}</Tag>}
         </Title>
         <Space>
-          <Tag
-            icon={<ClockCircleOutlined />}
-            color={timerDanger ? 'red' : timerWarning ? 'orange' : 'blue'}
-            className="text-base px-3 py-1"
-          >
-            {formatTime(remaining)}
-          </Tag>
+          {sectionSeconds > 0 ? (
+            <Tag
+              icon={<ClockCircleOutlined />}
+              color={timerDanger ? 'red' : timerWarning ? 'orange' : 'blue'}
+              className="text-base px-3 py-1"
+            >
+              {formatTime(remaining)}
+            </Tag>
+          ) : (
+            // CO practice mode — no countdown, just a static "no limit" tag.
+            // Mock CO still uses the countdown branch above.
+            <Tag icon={<ClockCircleOutlined />} color="green" className="text-base px-3 py-1">
+              {t('exam.coNoTimeLimit')}
+            </Tag>
+          )}
           <Tag color="blue">{t(`skill.${q.skill}`)} · {q.points} {t('exam.points')}</Tag>
         </Space>
       </div>
 
       {/* Section stepper (mock mode only) — visualises CO→CE→PE→PO and locks
-          completed sections so candidates can't drift back. */}
+          completed sections so candidates can't drift back. In mock mode CO
+          uses the official 30 min; only the practice-mode runner (which can't
+          reach this stepper anyway) would show "no time limit". */}
       {isMock && sections.length > 1 && (
         <Steps
           current={sectionIdx}
@@ -637,7 +805,9 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         />
       )}
 
-      {/* Pass-criteria banner — shows target and current section duration */}
+      {/* Pass-criteria banner — shows target and current section duration.
+          CO in practice mode (only) advertises "no time limit"; mock CO keeps
+          the official duration. */}
       <Alert
         type="info"
         showIcon
@@ -652,12 +822,20 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
               })
             : t('exam.passCriteriaTitle')
         }
-        description={t('exam.passCriteriaInline', {
-          total: PASS_TOTAL,
-          skillMin: PASS_PER_SKILL,
-          skillMax: SKILL_MAX,
-          duration: SKILL_MINUTES[currentSection.skill],
-        })}
+        description={
+          currentSection.skill === 'CO' && !isMock
+            ? t('exam.passCriteriaInlineNoTime', {
+                total: PASS_TOTAL,
+                skillMin: PASS_PER_SKILL,
+                skillMax: SKILL_MAX,
+              })
+            : t('exam.passCriteriaInline', {
+                total: PASS_TOTAL,
+                skillMin: PASS_PER_SKILL,
+                skillMax: SKILL_MAX,
+                duration: SKILL_MINUTES[currentSection.skill],
+              })
+        }
       />
 
       {/* Progress of answered questions in the current section */}
@@ -669,50 +847,89 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         <Progress percent={progressPct} size="small" showInfo={false} />
       </div>
 
-      <Steps
-        current={current}
-        size="small"
-        className="mb-6"
-        items={sectionQuestions.map((qq, i) => ({
-          title: t('exam.questionN', { n: i + 1 }),
-          description: t(`skill.${qq.skill}`),
-          status:
-            answers[qq.id] !== undefined && answers[qq.id] !== '' &&
-            !(Array.isArray(answers[qq.id]) && answers[qq.id].length === 0)
-              ? 'finish'
-              : i === current
-              ? 'process'
-              : 'wait',
-        }))}
-      />
-
-      <Card bordered={false} className="mb-4 app-surface">
-        {q.skill === 'CO' && (
-          <AudioPlayer
-            audioUrl={q.audioUrl}
-            transcript={q.passage?.replace(/^\[.*?\]\s*/, '')}
-            maxPlays={2}
+      {currentSection.skill === 'CO' ? (
+        // Listening: pick the runner based on mode.
+        //   - Mock exam (isMock=true) → strict DELF timeline (auto-play,
+        //     limited plays, prep/gap/answer phases, no pause/replay).
+        //   - Practice (isMock=false) → free playback (pause / resume /
+        //     replay / seek), untimed, manual "next document" button.
+        isMock ? (
+          <CoSectionRunnerMock
+            documents={exam.audioDocuments || []}
+            questions={sectionQuestions}
+            renderAnswer={(qq, locked) => (
+              <div style={locked ? { pointerEvents: 'none', opacity: 0.5 } : undefined}>
+                {renderAnswerInputFor(qq)}
+              </div>
+            )}
+            onComplete={() => {
+              if (!isLastSection) advanceSection();
+              else if (!autoSubmittedRef.current) {
+                autoSubmittedRef.current = true;
+                doSubmit(true);
+              }
+            }}
           />
-        )}
-        {q.skill !== 'CO' && q.passage && (
-          <div
-            className="passage p-4 rounded mb-4"
-            style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
-          >
-            {q.passage}
-          </div>
-        )}
-        <Paragraph className="text-base font-semibold mb-4">
-          {current + 1}. {q.prompt}
-        </Paragraph>
-        {renderAnswerInput()}
-      </Card>
+        ) : (
+          <CoSectionRunner
+            documents={exam.audioDocuments || []}
+            questions={sectionQuestions}
+            renderAnswer={(qq, locked) => (
+              <div style={locked ? { pointerEvents: 'none', opacity: 0.5 } : undefined}>
+                {renderAnswerInputFor(qq)}
+              </div>
+            )}
+            onComplete={() => {
+              if (!autoSubmittedRef.current) {
+                autoSubmittedRef.current = true;
+                doSubmit(true);
+              }
+            }}
+          />
+        )
+      ) : (
+        <>
+          <Steps
+            current={current}
+            size="small"
+            className="mb-6"
+            items={sectionQuestions.map((qq, i) => ({
+              title: t('exam.questionN', { n: i + 1 }),
+              description: t(`skill.${qq.skill}`),
+              status:
+                answers[qq.id] !== undefined && answers[qq.id] !== '' &&
+                !(Array.isArray(answers[qq.id]) && answers[qq.id].length === 0)
+                  ? 'finish'
+                  : i === current
+                  ? 'process'
+                  : 'wait',
+            }))}
+          />
+
+          <Card bordered={false} className="mb-4 app-surface">
+            {q.passage && (
+              <div
+                className="passage p-4 rounded mb-4"
+                style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
+              >
+                {renderPassage(q.passage)}
+              </div>
+            )}
+            <Paragraph className="text-base font-semibold mb-4">
+              {current + 1}. {q.prompt}
+            </Paragraph>
+            {renderAnswerInput()}
+          </Card>
+        </>
+      )}
 
       <div className="flex justify-between">
-        <Button disabled={current === 0} onClick={() => setCurrent(current - 1)}>
-          {t('exam.prev')}
-        </Button>
-        {!isLastQuestionOfSection ? (
+        {currentSection.skill !== 'CO' && (
+          <Button disabled={current === 0} onClick={() => setCurrent(current - 1)}>
+            {t('exam.prev')}
+          </Button>
+        )}
+        {currentSection.skill === 'CO' ? null : !isLastQuestionOfSection ? (
           <Button type="primary" onClick={() => setCurrent(current + 1)}>
             {t('exam.next')}
           </Button>

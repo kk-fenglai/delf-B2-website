@@ -14,13 +14,25 @@ import type { CatalogProduct, CatalogPrice, Plan } from '../types';
 const { Title, Paragraph } = Typography;
 
 type BillingCycle = 'monthly' | 'yearly';
+type Currency = 'CNY' | 'USD' | 'EUR';
 
 const FREE_CARD_KEY = 'free';
+const SUPPORTED_CURRENCIES: Currency[] = ['CNY', 'USD', 'EUR'];
 
 // Maps an ISO currency code to its display symbol. Falls back to the code
 // itself with a trailing space (e.g. "GBP 12.34") so unknown currencies stay
 // readable instead of silently appearing as bare numbers.
 const CURRENCY_SYMBOL: Record<string, string> = { CNY: '¥', USD: '$', EUR: '€' };
+
+// Pick the currency a user most likely wants based on their UI locale. The
+// user can still override via the currency selector. Falls back to CNY for
+// any locale not explicitly mapped.
+function defaultCurrencyForLocale(lang: string | undefined): Currency {
+  const code = (lang || '').toLowerCase().slice(0, 2);
+  if (code === 'en') return 'USD';
+  if (code === 'fr') return 'EUR';
+  return 'CNY';
+}
 
 function formatPrice(cents: number, currency: string | null | undefined): string {
   const sym = currency ? (CURRENCY_SYMBOL[currency] ?? `${currency} `) : '¥';
@@ -29,12 +41,19 @@ function formatPrice(cents: number, currency: string | null | undefined): string
 }
 
 export default function Pricing() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const user = useAuthStore((s) => s.user);
 
   const [products, setProducts] = useState<CatalogProduct[] | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [cycle, setCycle] = useState<BillingCycle>('monthly');
+  // Initial currency uses the UI locale; we replace it with an IP-derived
+  // value once /pay/preferred-currency responds. User changes always win
+  // over both — we only set state if they haven't picked one yet.
+  const [currency, setCurrency] = useState<Currency>(() =>
+    defaultCurrencyForLocale(i18n.language)
+  );
+  const [userSelectedCurrency, setUserSelectedCurrency] = useState(false);
 
   const [open, setOpen] = useState(false);
   const [buyingProduct, setBuyingProduct] = useState<CatalogProduct | null>(null);
@@ -59,9 +78,33 @@ export default function Pricing() {
     return () => { cancelled = true; };
   }, []);
 
+  // Pull the IP-derived currency from the edge proxy header. Doesn't block
+  // the catalog render; if it fails or the user already picked, we leave
+  // the locale-based default alone.
+  useEffect(() => {
+    let cancelled = false;
+    api.get('/pay/preferred-currency')
+      .then((r) => {
+        if (cancelled || userSelectedCurrency) return;
+        const cur = r.data?.currency;
+        if (cur === 'CNY' || cur === 'USD' || cur === 'EUR') {
+          setCurrency(cur);
+        }
+      })
+      .catch(() => { /* fall back to locale-based default */ });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Find the Price matching BOTH the requested cycle and the selected
+  // currency. Returns null when the product has no row for that combo —
+  // the cards then show "—" / disable the buy button gracefully instead
+  // of falling through to a row in a different currency.
   function priceForCycle(product: CatalogProduct, c: BillingCycle): CatalogPrice | null {
     const months = c === 'monthly' ? 1 : 12;
-    return product.prices.find((p) => p.months === months) || null;
+    return (
+      product.prices.find((p) => p.months === months && p.currency === currency) || null
+    );
   }
 
   function openCheckout(product: CatalogProduct) {
@@ -131,7 +174,7 @@ export default function Pricing() {
         </Paragraph>
       </div>
 
-      <div className="flex justify-center mb-10">
+      <div className="flex justify-center mb-10 gap-3 flex-wrap">
         <Segmented
           value={cycle}
           onChange={(v) => setCycle(v as BillingCycle)}
@@ -140,6 +183,18 @@ export default function Pricing() {
             { label: t('pricing.checkout.monthly'), value: 'monthly' },
             { label: t('pricing.checkout.yearly'), value: 'yearly' },
           ]}
+        />
+        <Segmented
+          value={currency}
+          onChange={(v) => {
+            setCurrency(v as Currency);
+            setUserSelectedCurrency(true);
+          }}
+          size="large"
+          options={SUPPORTED_CURRENCIES.map((cur) => ({
+            label: `${CURRENCY_SYMBOL[cur]} ${cur}`,
+            value: cur,
+          }))}
         />
       </div>
 

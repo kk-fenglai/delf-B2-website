@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2024年3月（法国） — 反对市中心四车道大道",
+  "year": 2024,
+  "description": "反对市中心四车道大道。来源：2024年3月（法国） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous vivez en France. Le maire de votre ville a pour projet de construire un boulevard quatre voies en centre-ville pour faciliter la circulation et réduire les temps de transport entre les logements et les entreprises. Conscient des avantages de ce projet, vous écrivez cependant une lettre au maire pour lui exprimer vos inquiétudes sur l'impact de cette nouvelle route sur les conditions de vie des habitants (pollution, bruit...) et pour lui proposer des solutions alternatives qui pourraient satisfaire tout le monde.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2024 年 3 月法国 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：承认项目优点的同时表达对居民生活（污染、噪音）的担忧，并提出折中替代方案。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

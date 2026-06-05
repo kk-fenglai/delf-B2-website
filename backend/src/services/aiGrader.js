@@ -1,6 +1,6 @@
 // AI essay grader for DELF B2 Production Écrite.
 //
-// Providers: DeepSeek (api.deepseek.com) + Qwen/DashScope (dashscope.aliyuncs.com).
+// Providers: DeepSeek V4 (api.deepseek.com) + Qwen/DashScope (dashscope.aliyuncs.com).
 // Both expose an OpenAI-compatible chat-completions endpoint, so we use the
 // `openai` SDK with two baseURL/apiKey instances and dispatch by model. Adding
 // another OpenAI-compatible provider later is a one-entry addition to
@@ -28,6 +28,7 @@ const OpenAI = require('openai');
 const { z } = require('zod');
 const env = require('../config/env');
 const { logger } = require('../utils/logger');
+const { deepseekV4RequestExtras } = require('../utils/deepseekRequest');
 const {
   DIMENSIONS,
   DIMENSION_KEYS,
@@ -184,7 +185,7 @@ const CORRECTIONS_TOOL_DEF = {
       corrections: {
         type: 'array',
         minItems: 0,
-        maxItems: 12,
+        maxItems: 8,
         items: {
           type: 'object',
           properties: {
@@ -221,35 +222,46 @@ const SUMMARY_TOOL_DEF = {
 };
 
 // Per-task Zod schemas mirror the tool parameters for defence-in-depth.
+// Normalise correction type: AI sometimes returns French variants or wrong case.
+const CORRECTION_TYPE_MAP = {
+  grammar: 'grammar', grammaire: 'grammar', grammatical: 'grammar', grammaticale: 'grammar',
+  lexique: 'lexique', lexical: 'lexique', vocabulaire: 'lexique', vocabulary: 'lexique',
+  orthographe: 'orthographe', spelling: 'orthographe', orthography: 'orthographe',
+  syntaxe: 'syntaxe', syntax: 'syntaxe', syntaxique: 'syntaxe',
+};
+function normaliseCorrectionType(raw) {
+  return CORRECTION_TYPE_MAP[String(raw || '').toLowerCase()] || 'grammar';
+}
+
 const ScoreSchema = z.object({
   dimensions: z
     .array(
       z.object({
-        key: z.enum(DIMENSION_KEYS),
-        score: z.number().min(0),
-        max: z.number().min(0),
-        feedback: z.string().min(10),
+        key: z.string(),                     // validated post-parse against DIMENSION_KEYS
+        score: z.coerce.number().min(0),     // coerce "2" → 2
+        max: z.coerce.number().min(0),
+        feedback: z.string().min(1),         // just non-empty
       })
     )
-    .length(DIMENSIONS.length),
+    .min(1),                                 // at least 1 dimension (not exactly 10)
 });
 
 const CorrectionsSchema = z.object({
   corrections: z
     .array(
       z.object({
-        excerpt: z.string().min(1).max(200),
-        issue: z.string().min(5),
+        excerpt: z.string().min(1).max(400),
+        issue: z.string().min(1),
         suggestion: z.string().min(1),
-        type: z.enum(CORRECTION_TYPES),
+        type: z.string().transform(normaliseCorrectionType),
       })
     )
     .max(12),
 });
 
 const SummarySchema = z.object({
-  strengths: z.array(z.string().min(5)).min(1).max(4),
-  globalFeedback: z.string().min(80),
+  strengths: z.array(z.string().min(1)).min(1).max(6),
+  globalFeedback: z.string().min(10),        // just non-trivial
 });
 
 // ---- Usage parsing -------------------------------------------------------
@@ -309,19 +321,23 @@ async function withRetry(fn, { attempts = 2, baseMs = 400 } = {}) {
 // model so legit slow responses still land; tighter than the old Anthropic
 // budget because both providers are fast.
 const SUBCALL_TIMEOUT_MS = {
-  'qwen-turbo': 8_000,
-  'deepseek-chat': 10_000,
-  'qwen-plus': 12_000,
+  'qwen-turbo': 25_000,
+  'deepseek-chat': 30_000,
+  'qwen-plus': 35_000,
 };
 
-const TASK_HINTS = {
-  scores:
-    "TÂCHE : notez les 10 dimensions de la grille. Pour chaque dimension, un feedback BREF de ≤ 25 mots. Appelez submit_scores une seule fois.",
-  corrections:
-    "TÂCHE : identifiez 3 à 8 erreurs précises. Pour chaque erreur : citation EXACTE (≤10 mots) du texte, nature, suggestion, type. Appelez submit_corrections une seule fois.",
-  summary:
-    "TÂCHE : listez 2 à 4 points forts concrets (citez des formulations réussies) et rédigez un retour global de 80 à 150 mots (forces → axes de progrès). Appelez submit_summary une seule fois.",
-};
+function buildTaskHint(task) {
+  switch (task) {
+    case 'scores':
+      return "TÂCHE : notez les 10 dimensions de la grille. Chaque champ 'feedback' doit être BREF (≤ 25 mots) en français. Appelez submit_scores une seule fois.";
+    case 'corrections':
+      return "TÂCHE : identifiez 3 à 8 erreurs précises en français. Citation EXACTE (≤10 mots) du texte original pour 'excerpt'. Appelez submit_corrections une seule fois.";
+    case 'summary':
+      return "TÂCHE : champ 'strengths' = 2 à 4 points forts en français (≤15 mots chacun). Champ 'globalFeedback' = axes de progrès et conseils (80–150 mots) en français — NE répétez PAS les points forts, n'ajoutez PAS de titre. Appelez submit_summary une seule fois.";
+    default:
+      return '';
+  }
+}
 
 const TASK_TOOL_DEFS = {
   scores: SCORE_TOOL_DEF,
@@ -330,10 +346,91 @@ const TASK_TOOL_DEFS = {
 };
 
 const TASK_MAX_TOKENS = {
-  scores: 1200,
-  corrections: 1000,
-  summary: 600,
+  scores: 2400,
+  corrections: 2800,
+  summary: 1800,
 };
+
+// ---- Translation (post-grading, only when locale != 'fr') ----------------
+const TRANSLATE_TOOL_DEF = {
+  name: 'submit_translation',
+  description: 'Submit translated feedback fields.',
+  parameters: {
+    type: 'object',
+    properties: {
+      rubricFeedbacks:      { type: 'array', items: { type: 'string' }, description: 'Translated feedback for each rubric dimension, same order as input.' },
+      correctionIssues:     { type: 'array', items: { type: 'string' }, description: 'Translated issue for each correction.' },
+      correctionSuggestions:{ type: 'array', items: { type: 'string' }, description: 'Translated suggestion for each correction.' },
+      strengths:            { type: 'array', items: { type: 'string' }, description: 'Translated strengths.' },
+      aiFeedback:           { type: 'string', description: 'Translated global feedback paragraph.' },
+    },
+    required: ['rubricFeedbacks', 'correctionIssues', 'correctionSuggestions', 'strengths', 'aiFeedback'],
+  },
+};
+
+const TRANSLATE_LANG_LABEL = { en: 'English', zh: 'Simplified Chinese (简体中文)' };
+
+async function translateResult(result, targetLocale, modelKey) {
+  const langLabel = TRANSLATE_LANG_LABEL[targetLocale] || targetLocale;
+  const taskModel = MODEL_CATALOG[modelKey];
+  const client = getClient(taskModel.provider);
+
+  const input = {
+    rubricFeedbacks:       result.rubric.map((d) => d.feedback),
+    correctionIssues:      result.corrections.map((c) => c.issue),
+    correctionSuggestions: result.corrections.map((c) => c.suggestion),
+    strengths:             result.strengths,
+    aiFeedback:            result.aiFeedback,
+  };
+
+  const userMsg =
+    `Translate the following DELF B2 essay feedback from French into ${langLabel}.\n` +
+    `Rules:\n` +
+    `- Keep technical French grammar terms in French (e.g. subjonctif, accord du participe passé, connecteurs logiques).\n` +
+    `- Do NOT alter numbers, scores, or excerpts.\n` +
+    `- Preserve the tone (constructive, professional).\n\n` +
+    `Input JSON:\n${JSON.stringify(input, null, 2)}`;
+
+  const resp = await client.chat.completions.create(
+    {
+      model: taskModel.providerId,
+      max_tokens: 2000,
+      tools: [{ type: 'function', function: TRANSLATE_TOOL_DEF }],
+      tool_choice: { type: 'function', function: { name: TRANSLATE_TOOL_DEF.name } },
+      messages: [
+        { role: 'system', content: 'You are a professional translator specialising in French language-learning content.' },
+        { role: 'user', content: userMsg },
+      ],
+    },
+    { timeout: 30_000 }
+  );
+
+  const tc = resp.choices?.[0]?.message?.tool_calls?.[0];
+  if (!tc) return; // silent fallback — keep French
+
+  let translated;
+  try { translated = JSON.parse(tc.function.arguments || '{}'); }
+  catch { return; }
+
+  // Merge back into result (in-place mutation is intentional — avoids copying large object)
+  if (Array.isArray(translated.rubricFeedbacks)) {
+    result.rubric.forEach((d, i) => {
+      if (translated.rubricFeedbacks[i]) d.feedback = translated.rubricFeedbacks[i];
+    });
+  }
+  if (Array.isArray(translated.correctionIssues)) {
+    result.corrections.forEach((c, i) => {
+      if (translated.correctionIssues[i]) c.issue = translated.correctionIssues[i];
+    });
+  }
+  if (Array.isArray(translated.correctionSuggestions)) {
+    result.corrections.forEach((c, i) => {
+      if (translated.correctionSuggestions[i]) c.suggestion = translated.correctionSuggestions[i];
+    });
+  }
+  if (Array.isArray(translated.strengths)) result.strengths = translated.strengths;
+  if (translated.aiFeedback) result.aiFeedback = translated.aiFeedback;
+}
 
 // With a single DeepSeek tier, every sub-call uses the same model. Shape kept
 // for when we add deepseek-reasoner (R1) as a premium tier later.
@@ -341,7 +438,7 @@ function modelForTask(_task, userModelKey) {
   return userModelKey;
 }
 
-function buildUserContent(essay, question, loc, task) {
+function buildUserContent(essay, question, task) {
   return `Consigne (sujet) :
 """
 ${String(question.prompt || '').trim()}
@@ -352,13 +449,10 @@ Copie du candidat (${essay.wordCount} mots) :
 ${essay.content.trim()}
 """
 
-${TASK_HINTS[task]}
-
-Langue du retour : ${LOCALES[loc].label}.
-${LOCALES[loc].instruction}`;
+${buildTaskHint(task)}`;
 }
 
-async function runSubCall({ userModelKey, task, essay, question, loc }) {
+async function runSubCall({ userModelKey, task, essay, question }) {
   const toolDef = TASK_TOOL_DEFS[task];
   const taskModelKey = modelForTask(task, userModelKey);
   const taskModel = MODEL_CATALOG[taskModelKey];
@@ -370,14 +464,13 @@ async function runSubCall({ userModelKey, task, essay, question, loc }) {
       {
         model: taskModel.providerId,
         max_tokens: TASK_MAX_TOKENS[task],
-        // Force the model to call exactly this tool — structured output
-        // guaranteed, no free-text parsing needed.
         tools: [{ type: 'function', function: toolDef }],
         tool_choice: { type: 'function', function: { name: toolDef.name } },
         messages: [
           { role: 'system', content: getSystemPrompt() },
-          { role: 'user', content: buildUserContent(essay, question, loc, task) },
+          { role: 'user', content: buildUserContent(essay, question, task) },
         ],
+        ...deepseekV4RequestExtras(taskModel),
       },
       { timeout: SUBCALL_TIMEOUT_MS[taskModelKey] || 10_000 }
     );
@@ -399,6 +492,13 @@ async function runSubCall({ userModelKey, task, essay, question, loc }) {
   const toolCalls = choice.message?.tool_calls;
   const tc = toolCalls && toolCalls[0];
   if (!tc || tc.type !== 'function' || tc.function?.name !== toolDef.name) {
+    logger.error({
+      task,
+      model: userModelKey,
+      finishReason: choice.finish_reason,
+      gotTool: tc?.function?.name ?? null,
+      messageContent: choice.message?.content?.slice(0, 300) ?? null,
+    }, 'aiGrader.noToolUse');
     const e = new Error(`Expected tool_call=${toolDef.name} for task=${task}, got ${tc?.function?.name || 'none'}`);
     e.code = 'AI_NO_TOOL_USE';
     throw e;
@@ -430,6 +530,7 @@ function wrapProviderError(err, task) {
     status >= 500                      ? 'AI_PROVIDER_DOWN' :
     status >= 400 && status < 500      ? 'AI_BAD_REQUEST'   :
     'AI_CALL_FAILED';
+  logger.error({ task, httpStatus: status ?? null, providerMsg: err?.message ?? null, code }, 'aiGrader.providerError');
   const wrapped = new Error(`Provider call failed (task=${task}): ${err?.message || err}`);
   wrapped.code = code;
   wrapped.cause = err;
@@ -445,7 +546,7 @@ function wrapProviderError(err, task) {
  * @param {string} args.locale     — fr | en | zh
  * @returns {Promise<{ aiScore, aiFeedback, rubric, corrections, strengths, model, tokensIn, tokensOut, tokensCached, costUsd }>}
  */
-async function gradeEssay({ essay, question, modelKey, locale }) {
+async function gradeEssay({ essay, question, modelKey, locale, onPartial }) {
   if (!MODEL_KEYS.includes(modelKey)) {
     const e = new Error(`Unknown model key: ${modelKey}`);
     e.code = 'AI_BAD_MODEL';
@@ -462,12 +563,40 @@ async function gradeEssay({ essay, question, modelKey, locale }) {
 
   // Fan out: 3 sub-calls in parallel. Each sub-call resolves its own client
   // via the model's provider tag (DeepSeek or Qwen).
+  // When onPartial is provided, each sub-call writes its parsed result to the
+  // DB immediately on completion so the frontend can show progressive results.
   const tasks = ['scores', 'corrections', 'summary'];
   const results = await Promise.all(
-    tasks.map((task) =>
-      runSubCall({ userModelKey: modelKey, task, essay, question, loc })
-        .catch((err) => { throw wrapProviderError(err, task); })
-    )
+    tasks.map(async (task) => {
+      const res = await runSubCall({ userModelKey: modelKey, task, essay, question, loc })
+        .catch((err) => { throw wrapProviderError(err, task); });
+
+      if (onPartial) {
+        try {
+          if (task === 'scores') {
+            const parsed = ScoreSchema.parse(res.rawInput);
+            const byKey = new Map(parsed.dimensions.map((d) => [d.key, d]));
+            const canonical = DIMENSIONS.map((ref) => {
+              const got = byKey.get(ref.key);
+              const score = Math.max(0, Math.min(ref.max, got?.score ?? 0));
+              return { key: ref.key, score, max: ref.max, feedback: got?.feedback ?? '' };
+            });
+            await onPartial('scores', {
+              rubric: canonical,
+              aiScore: Math.round(canonical.reduce((s, d) => s + d.score, 0)),
+            });
+          } else if (task === 'corrections') {
+            const parsed = CorrectionsSchema.parse(res.rawInput);
+            await onPartial('corrections', { corrections: parsed.corrections });
+          } else if (task === 'summary') {
+            const parsed = SummarySchema.parse(res.rawInput);
+            await onPartial('summary', { aiFeedback: parsed.globalFeedback, strengths: parsed.strengths });
+          }
+        } catch { /* partial write failure doesn't abort the grade */ }
+      }
+
+      return res;
+    })
   );
 
   const [scoreRes, corrRes, sumRes] = results;
@@ -475,16 +604,19 @@ async function gradeEssay({ essay, question, modelKey, locale }) {
   let scoreParsed, corrParsed, sumParsed;
   try { scoreParsed = ScoreSchema.parse(scoreRes.rawInput); }
   catch (err) {
+    logger.error({ task: 'scores', model: modelKey, zodError: err.message, raw: scoreRes.rawInput }, 'aiGrader.parse.fail');
     const e = new Error(`scores tool output invalid: ${err.message}`);
     e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }
   try { corrParsed = CorrectionsSchema.parse(corrRes.rawInput); }
   catch (err) {
+    logger.error({ task: 'corrections', model: modelKey, zodError: err.message, raw: corrRes.rawInput }, 'aiGrader.parse.fail');
     const e = new Error(`corrections tool output invalid: ${err.message}`);
     e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }
   try { sumParsed = SummarySchema.parse(sumRes.rawInput); }
   catch (err) {
+    logger.error({ task: 'summary', model: modelKey, zodError: err.message, raw: sumRes.rawInput }, 'aiGrader.parse.fail');
     const e = new Error(`summary tool output invalid: ${err.message}`);
     e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }

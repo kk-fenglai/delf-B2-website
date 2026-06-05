@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · CoÉcrire : l'école des robots où les instituteurs sont les enfants",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : RFI。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« CoÉcrire : l'école des robots où les instituteurs sont les enfants »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Des chercheurs suisses ont mis au point un programme numérique et pédagogique nommé CoÉcrire, qui permet aux enfants de prendre la place de leur professeur, avec pour objectif d'apprendre à écrire à des robots. Ce programme s'inspire d'une méthode pédagogique que l'on peut résumer par « apprendre en enseignant ». Nao, l'androïde conçu par la société française Aldebaran, reçoit des cours d'écriture donnés par les enfants et prend le rôle du dernier de la classe, celui qui a besoin d'aide. Les jeunes élèves lui montrent comment écrire des lettres correctement sur une tablette. En s'appliquant à corriger les erreurs d'écriture du robot, la méthode bénéficie avant tout aux élèves, en les obligeant à former correctement les lettres qu'ils sont en train d'enseigner. CoÉcrire est au stade du prototype : il a été employé dans des classes du primaire auprès de 70 élèves âgés de 6 à 8 ans. Malheureusement, nous ne savons pas si Nao, qui n'est qu'une machine, sait maintenant lire et écrire grâce à ses jeunes professeurs.",
+      "explanation": "Document d'appui — source : RFI. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pensez-vous qu'on apprend mieux en enseignant aux autres ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Les robots ont-ils leur place à l'école, selon vous ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 2,
+          "text": "Aimeriez-vous apprendre quelque chose à un robot ?",
+          "expectedAngle": "个人"
+        },
+        {
+          "order": 3,
+          "text": "La technologie aide-t-elle vraiment les enfants à apprendre ?",
+          "expectedAngle": "利弊"
+        }
+      ]
+    }
+  ]
+}

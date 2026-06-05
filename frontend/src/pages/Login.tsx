@@ -1,5 +1,5 @@
 import { Form, Input, Button, Card, Typography, message, Modal } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, type Location } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/auth';
 import { api } from '../api/client';
@@ -9,13 +9,19 @@ const { Title } = Typography;
 export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, loading } = useAuthStore();
+
+  const redirectAfterLogin = (() => {
+    const from = (location.state as { from?: Location } | null)?.from?.pathname;
+    return from && from !== '/login' ? from : '/dashboard';
+  })();
 
   const onSubmit = async (values: { email: string; password: string }) => {
     try {
       await login(values.email, values.password);
       message.success(t('auth.loginSuccess'));
-      navigate('/dashboard');
+      navigate(redirectAfterLogin, { replace: true });
     } catch (e: any) {
       const status = e.response?.status;
       const code = e.response?.data?.code;
@@ -55,13 +61,24 @@ export default function Login() {
           <Form.Item label={t('auth.password')} name="password" rules={[{ required: true }]}>
             <Input.Password />
           </Form.Item>
-          <Button type="primary" htmlType="submit" block loading={loading}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            loading={loading}
+            style={{ backgroundColor: '#1d4ed8', borderColor: '#1d4ed8', color: '#fff' }}
+          >
             {t('auth.submitLogin')}
           </Button>
         </Form>
-        <div className="flex justify-between items-center mt-4 text-sm">
-          <Link to="/register">{t('auth.toRegister')}</Link>
-          <Link to="/forgot-password">{t('auth.forgotPassword')}</Link>
+        <div className="mt-4 text-sm space-y-2">
+          <div className="flex justify-between items-center">
+            <Link to="/register">{t('auth.toRegister')}</Link>
+            <Link to="/forgot-password">{t('auth.forgotPassword')}</Link>
+          </div>
+          <div className="text-center">
+            <Link to="/change-password">{t('auth.changePassword.fromLogin')}</Link>
+          </div>
         </div>
       </Card>
     </div>

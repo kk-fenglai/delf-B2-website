@@ -1,0 +1,244 @@
+{
+  "title": "DELF B2 CE · Le succès des bars à jeux de société (2021-10 法国场)",
+  "year": 2021,
+  "description": "2021 年 10 月法国场 DELF B2 阅读 — 桌游酒吧的成功（10题）",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Au Nid, Antoine Chasseloup cherche à...",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "他说「On veut que les gens fassent des rencontres ici」，旨在让陌生人之间建立联系，故选 B。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "partager sa passion d'enfance.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "créer du lien entre des inconnus.",
+          "isCorrect": true,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "attirer un nouveau type de clientèle.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 2,
+      "prompt": "Les personnes doivent payer une cotisation au Nid pour prendre part aux soirées jeux.",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "正确引文参考：Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils fassent partie de notre association ou pas. V/F 与引文同时正确方可得分。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 3,
+      "prompt": "Selon Aurélien Fouillet, les jeux de société sont un moyen pour...",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "他指出游戏让人「s'échapper le temps d'une soirée」，即暂时摆脱日常烦恼，故选 C。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "réfléchir sur la société actuelle.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "apprendre à respecter les règles.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "oublier ses problèmes quotidiens.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 4,
+      "prompt": "D'après l'article, actuellement, quelles sont les raisons qui poussent les clients à fréquenter les bars à jeux de société ? (Deux réponses attendues)",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "评分要点：需给出两点（各 1 分）：① 社交需求 / 结识他人；② 逃避现实、暂时忘记日常烦恼。",
+      "modelEssay": "1) Le besoin de socialisation et de faire des rencontres. 2) Le désir de s'échapper de la réalité, d'oublier ses problèmes quotidiens à travers le jeu.",
+      "points": 2,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 5,
+      "prompt": "Il existe une forte compétition dans le secteur des jeux de société.",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "正确引文参考：Des jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. V/F 与引文同时正确方可得分。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": false,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 6,
+      "prompt": "Sur quel exemple cité dans le texte l'auteur s'appuie-t-il pour démontrer le succès des bars à jeux de société ?",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "文中说此类酒吧在大都市乃至中等城市不断开业，故选 C。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "La croissance des ventes de ce type de produits.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "Les nombreuses enquêtes réalisées sur ce sujet.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "La multiplication de bars à jeux partout en France.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 7,
+      "prompt": "D'après l'auteur, quel reproche est fréquemment fait aux jeux vidéo ?",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "评分要点：答出「电子游戏是一种助长个人主义的孤独活动」即可。",
+      "modelEssay": "Le reproche souvent fait aux jeux vidéo est qu'ils sont une activité solitaire qui favorise l'individualisme.",
+      "points": 2,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 8,
+      "prompt": "De quelle évolution récente liée aux jeux de société Antoine Chasseloup se réjouit-il ?",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "评分要点：答出「越来越多女性参与游戏并与男性一较高下」即可。",
+      "modelEssay": "Il se réjouit du fait que les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.",
+      "points": 2,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 9,
+      "prompt": "Quel aspect positif du jeu Benjamin souligne-t-il ?",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "Benjamin 强调游戏在题材、年代、主题上的多样性（variété），故选 A。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "Sa diversité.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "Son apparence.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "Son accessibilité.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 10,
+      "prompt": "Selon l'auteur du texte, l'avenir des bars à jeux est assuré.",
+      "passage": "Le succès des bars à jeux de société\n\nÀ Paris, au café Le Nid, un bar à jeux de société, les clients se retrouvent pour jouer. Le concept : les clients du bar ont accès en soirée à 500 jeux (Monopoly, Scrabble et bien d'autres classiques de notre jeunesse).\n\n\"On veut que les gens fassent des rencontres ici\", explique Antoine Chasseloup, le ludothécaire du Nid. \"Tous les clients du bar peuvent participer gratuitement aux jeux, qu'ils soient des joueurs expérimentés ou débutants, qu'ils fassent partie de notre association ou pas, à la différence d'autres bars qui sont plus sélectifs.\" Il affirme que le jeu est un élément qui permet de créer des liens de sociabilité, confirme Aurélien Fouillet, sociologue spécialisé dans le jeu. \"On est aussi dans une période de crise et le jeu permet de s'échapper le temps d'une soirée. C'est une projection dans une aventure sans conséquence sur le reste de la vie. On peut même être quelqu'un d'autre sans être jugé.\"\n\nEn France, le café a toujours été un espace de socialisation historique, où on jouait aux cartes. Il est donc logique d'intégrer le jeu de société dans cet espace et les premiers bars à jeux sont apparus dès la fin des années 1970, en tant qu'espaces pour les amateurs de jeux de rôles. L'idée est toujours la même aujourd'hui : avoir un espace pour jouer, ailleurs que chez soi pour que cela soit plus chaleureux et que cela revienne moins cher.\n\nDes jeux, il y en a vraiment pour tous les goûts car le marché est devenu hyper concurrentiel. D'ailleurs, il est difficile de chiffrer l'importance du phénomène des bars à jeux en France puisqu'aucune étude sur la question n'a jamais été réalisée. Cependant, plusieurs indices indiquent la bonne santé du secteur : des bars de ce type ouvrent dans les métropoles, mais aussi dans des villes moyennes. L'aspect du jeu de société actuel, ses couleurs et ses illustrations variées lui permettent aussi de se distinguer des jeux de cartes traditionnels, associés aux grands-parents, et des jeux vidéo, activité solitaire qui favorise l'individualisme. \"La culture du jeu de société est très ouverte\", assure Antoine Chasseloup. \"Le jeu permet de dépasser les différences générationnelles et de genre, même si, historiquement, il n'est pas trop dirigé vers les filles : dans les jeux dits 'historiques', comme les jeux de stratégie ou les échecs, tous les grands champions sont des hommes. Heureusement, les choses changent depuis quelques années : les femmes sont de plus en plus nombreuses à jouer et concurrencent les hommes.\"\n\nEnfin, le jeu permet de vivre une passion. \"Les jeux offrent une grande variété de genres, d'époques, de thèmes\", explique Benjamin, un des clients du Nid. \"Science-fiction, Moyen Âge, Préhistoire... On peut voyager dans tous les univers qui nous plaisent et cela permet d'intéresser les gens au jeu. J'ai un ami qui n'aimait pas les jeux, mais qui a joué à un jeu dérivé d'une série télévisée dont il est fan. Il s'agissait de ce qu'on appelle un jeu expert, avec beaucoup de règles, beaucoup de matériel aussi. Et pourtant, mon ami a tout de suite été séduit !\"\n\nSimple mode ou succès dans la durée ? Le temps finira par le dire, mais les joueurs semblent nombreux au rendez-vous.",
+      "audioUrl": null,
+      "explanation": "正确引文参考：Simple mode ou succès dans la durée ? Le temps finira par le dire. （作者持观望态度，未断定前景已定）V/F 与引文同时正确方可得分。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    }
+  ]
+}

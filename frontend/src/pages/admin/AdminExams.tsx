@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import {
-  Table, Button, Space, Tag, Typography, message, Popconfirm, Select, Modal, Form, Input, InputNumber, Switch,
+  Table, Button, Space, Tag, Typography, message, Popconfirm, Select,
+  Modal, Form, Input, Switch, Tabs, Badge,
 } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { PlusOutlined, ReloadOutlined, ImportOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined, ReloadOutlined, ImportOutlined, DeleteOutlined, EditOutlined,
+  AudioOutlined, ReadOutlined, EditFilled, CustomerServiceOutlined, TrophyOutlined,
+} from '@ant-design/icons';
 import { adminApi } from '../../api/adminClient';
 
 const { Title } = Typography;
@@ -20,12 +24,34 @@ interface ExamRow {
   createdAt: string;
 }
 
+type Section = 'CO' | 'CE' | 'PE' | 'PO' | 'mock';
+
+const MOCK_SKILLS = ['CO', 'CE', 'PE', 'PO'];
+
+function inferSection(row: ExamRow): Section {
+  const skills = Object.keys(row.countsBySkill).filter((k) => row.countsBySkill[k] > 0);
+  if (skills.length === 1) return skills[0] as Section;
+  if (MOCK_SKILLS.every((s) => (row.countsBySkill[s] ?? 0) > 0)) return 'mock';
+  return 'mock'; // 不满足四个 skill 的异常情况也归入全真模拟兜底
+}
+
+const SECTIONS: { key: Section; label: string; icon: React.ReactNode; color: string }[] = [
+  { key: 'CO',   label: '听力',     icon: <AudioOutlined />,           color: 'blue'   },
+  { key: 'CE',   label: '阅读',     icon: <ReadOutlined />,            color: 'green'  },
+  { key: 'PE',   label: '写作',     icon: <EditFilled />,              color: 'purple' },
+  { key: 'PO',   label: '口语',     icon: <CustomerServiceOutlined />, color: 'orange' },
+  { key: 'mock', label: '全真模拟', icon: <TrophyOutlined />,          color: 'red'    },
+];
+
 export default function AdminExams() {
   const navigate = useNavigate();
   const [rows, setRows] = useState<ExamRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState<'all' | 'published' | 'draft'>('all');
+  const [activeSection, setActiveSection] = useState<Section>('CO');
   const [createOpen, setCreateOpen] = useState(false);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [bulkRunning, setBulkRunning] = useState(false);
   const [form] = Form.useForm();
 
   const fetchData = async () => {
@@ -46,7 +72,8 @@ export default function AdminExams() {
   const createExam = async () => {
     try {
       const values = await form.validateFields();
-      const { data } = await adminApi.post('/exams', values);
+      // 年份已从后台界面移除：创建时用当前年份兜底（后端 year 仍为必填字段）。
+      const { data } = await adminApi.post('/exams', { ...values, year: new Date().getFullYear() });
       message.success('套题已创建（草稿）');
       setCreateOpen(false);
       form.resetFields();
@@ -77,6 +104,37 @@ export default function AdminExams() {
     }
   };
 
+  // Batch publish/unpublish the selected sets in the current module. Loops over
+  // the existing PUT endpoint (no backend change); only touches rows whose state
+  // actually differs, and reports partial success.
+  const bulkSetPublish = async (publish: boolean) => {
+    const targets = rows.filter(
+      (r) => selectedKeys.includes(r.id)
+        && inferSection(r) === activeSection
+        && r.isPublished !== publish,
+    );
+    if (targets.length === 0) {
+      message.info(publish ? '所选套题均已发布' : '所选套题均为草稿');
+      return;
+    }
+    setBulkRunning(true);
+    let ok = 0;
+    let fail = 0;
+    for (const r of targets) {
+      try {
+        await adminApi.put(`/exams/${r.id}`, { isPublished: publish });
+        ok += 1;
+      } catch {
+        fail += 1;
+      }
+    }
+    setBulkRunning(false);
+    const verb = publish ? '发布' : '下架';
+    message[fail ? 'warning' : 'success'](`批量${verb}完成：成功 ${ok}${fail ? `，失败 ${fail}` : ''}`);
+    setSelectedKeys([]);
+    fetchData();
+  };
+
   const columns = [
     {
       title: '标题',
@@ -85,7 +143,6 @@ export default function AdminExams() {
         <Link to={`/admin/exams/${row.id}`}>{t}</Link>
       ),
     },
-    { title: '年份', dataIndex: 'year', width: 80 },
     {
       title: '题目分布',
       dataIndex: 'countsBySkill',
@@ -138,6 +195,26 @@ export default function AdminExams() {
     },
   ];
 
+  const sectionRows = rows.filter((r) => inferSection(r) === activeSection);
+
+  const tabItems = SECTIONS.map(({ key, label, icon, color }) => {
+    const count = rows.filter((r) => inferSection(r) === key).length;
+    return {
+      key,
+      label: (
+        <Space size={6}>
+          {icon}
+          {label}
+          <Badge
+            count={count}
+            showZero
+            style={{ backgroundColor: count > 0 ? color : '#d9d9d9' }}
+          />
+        </Space>
+      ),
+    };
+  });
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
@@ -148,9 +225,9 @@ export default function AdminExams() {
             onChange={(v) => setStatus(v)}
             style={{ width: 120 }}
             options={[
-              { value: 'all', label: '全部' },
-              { value: 'published', label: '已发布' },
-              { value: 'draft', label: '草稿' },
+              { value: 'all',       label: '全部状态' },
+              { value: 'published', label: '已发布'   },
+              { value: 'draft',     label: '草稿'     },
             ]}
           />
           <Button icon={<ReloadOutlined />} onClick={fetchData}>刷新</Button>
@@ -158,7 +235,7 @@ export default function AdminExams() {
             icon={<ImportOutlined />}
             onClick={() => navigate('/admin/exams/import')}
           >
-            JSON 批量导入
+            题目上传 / JSON 导入
           </Button>
           <Button
             type="primary"
@@ -170,12 +247,51 @@ export default function AdminExams() {
         </Space>
       </div>
 
+      <Tabs
+        activeKey={activeSection}
+        onChange={(k) => { setActiveSection(k as Section); setSelectedKeys([]); }}
+        items={tabItems}
+        className="mb-4"
+      />
+
+      <div className="mb-3 flex items-center gap-2 flex-wrap">
+        <span className="text-gray-500">
+          {selectedKeys.length > 0 ? `已选 ${selectedKeys.length} 项` : '勾选左侧复选框可批量操作本模块套题'}
+        </span>
+        <Popconfirm
+          title={`确定批量发布所选 ${selectedKeys.length} 套题？发布后学员立即可见`}
+          onConfirm={() => bulkSetPublish(true)}
+          disabled={selectedKeys.length === 0 || bulkRunning}
+        >
+          <Button
+            type="primary"
+            size="small"
+            loading={bulkRunning}
+            disabled={selectedKeys.length === 0}
+          >
+            批量发布
+          </Button>
+        </Popconfirm>
+        <Popconfirm
+          title={`确定批量下架所选 ${selectedKeys.length} 套题？`}
+          onConfirm={() => bulkSetPublish(false)}
+          disabled={selectedKeys.length === 0 || bulkRunning}
+        >
+          <Button size="small" disabled={selectedKeys.length === 0}>批量下架</Button>
+        </Popconfirm>
+      </div>
+
       <Table
         rowKey="id"
         loading={loading}
         columns={columns}
-        dataSource={rows}
+        dataSource={sectionRows}
         pagination={{ pageSize: 20 }}
+        locale={{ emptyText: `暂无${SECTIONS.find(s => s.key === activeSection)?.label}套题` }}
+        rowSelection={{
+          selectedRowKeys: selectedKeys,
+          onChange: (keys) => setSelectedKeys(keys as string[]),
+        }}
       />
 
       <Modal
@@ -190,7 +306,6 @@ export default function AdminExams() {
           form={form}
           layout="vertical"
           initialValues={{
-            year: new Date().getFullYear(),
             isPublished: false,
             isFreePreview: false,
           }}
@@ -201,13 +316,6 @@ export default function AdminExams() {
             rules={[{ required: true, message: '请输入标题' }]}
           >
             <Input placeholder="如：DELF B2 仿真题 2024 · 第 1 套" />
-          </Form.Item>
-          <Form.Item
-            name="year"
-            label="年份"
-            rules={[{ required: true }]}
-          >
-            <InputNumber min={2000} max={2100} style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item name="description" label="简介">
             <Input.TextArea rows={2} />

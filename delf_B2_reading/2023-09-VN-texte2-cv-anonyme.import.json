@@ -1,0 +1,208 @@
+{
+  "title": "DELF B2 阅读 CE · 2023-09 越南场 · Texte 2（« Le CV anonyme n'est pas un outil miracle »）",
+  "year": 2023,
+  "description": "2023年9月越南考场真题 阅读第2篇（entretien）。原题判断题含a/b两小题，已拆分为独立题。分值统一记为1分。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Quel est le thème de cet article ?",
+      "passage": "Entretien avec Inès Dauvergne, responsable de projets pour un réseau de grandes entreprises engagées dans la lutte contre les discriminations, sur le CV anonyme. Rappelons que ce dispositif supprime les nom, prénom, adresse, date de naissance, sexe et état civil des candidats.\n\nSelon vous, le CV anonyme permet-il vraiment de lutter contre les discriminations à l'embauche ?\n\nOui, à en croire les entreprises avec qui nous travaillons et qui l'utilisent depuis plusieurs années sur leurs sites de recrutement en ligne. Il est efficace parce qu'il amène les recruteurs à changer leurs pratiques en se libérant de mécanismes inconscients à l'origine de discriminations. C'est le cas, par exemple, lorsqu'un employeur a intégré des stéréotypes sur les candidats issus des quartiers sensibles, quand il porte un a priori négatif sur ceux qui habitent loin du bureau ou s'il pense qu'une jeune femme risque d'être moins disponible. Le CV anonyme permet de lever toutes ses anticipations négatives. Il agit aussi sur les candidats en limitant l'autocensure. Plusieurs grandes entreprises ont remarqué que, grâce au CV anonyme, elles recevaient beaucoup plus de candidatures de personnes d'origines étrangères qui jusque-là n'osaient pas. C'est un signal positif de la part des employeurs qui montrent aux candidats que tous peuvent avoir une chance, une façon de communiquer sur leur recrutement.\n\nUne récente étude conclut au contraire que l'anonymat ne permet pas de réduire l'écart de chance entre les candidats issus de l'immigration ou résidant dans des quartiers sensibles et les autres. Comment expliquer ce décalage ?\n\nNous ne remettons pas en cause le sérieux de l'enquête mais nous pensons que l'échantillon des 1000 recruteurs choisis n'est pas représentatif des entreprises françaises. Toutes se sont portées volontaires. On peut donc penser qu'elles sont, à l'origine, plus ouvertes et déjà engagées dans une démarche de lutte contre les discriminations. D'ailleurs, les candidats femmes, seniors, d'origines étrangères ou issus des zones urbaines sensibles qui ont adressé des CV nominatifs ont eu autant de chances, voire plus, d'accéder aux entretiens, ce qui contredit toutes les enquêtes de terrain et les résultats des expérimentations.\n\nVous n'encouragez pas pour autant la généralisation du CV anonyme. Pourquoi ?\n\nLe CV anonyme est très efficace mais il faut bien garder à l'esprit qu'il n'est pas un outil miracle et qu'il ne peut, à lui seul, régler tous les problèmes de discrimination. Il est surtout performant quand il s'inscrit dans des dispositifs plus larges de sensibilisation des recruteurs et de formation des services de ressources humaines. Généraliser le CV anonyme serait relativement simple pour les grandes entreprises qui recrutent beaucoup sur leur portail Internet, ce qui permet de rendre facilement anonymes les candidatures. Mais si cela doit doubler les délais de recrutement et être vécu comme une contrainte, les entreprises risquent de le contourner. Travailler sur l'égalité des chances à l'entretien ne doit pas non plus empêcher des mesures d'actions positives. Nous proposons, par exemple, aux entreprises de rencontrer des candidats issus de quartiers difficiles. Beaucoup d'associations le font aussi pour favoriser l'emploi des personnes handicapées. Or, le CV anonyme freinerait ces autres actions en faveur de la diversité. Nous recommandons donc de ne pas le généraliser mais trouvons injuste de nier son intérêt.\n\n* nominatifs : non anonymes.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "L'abandon du CV anonyme dans les entreprises françaises.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "L'influence du CV anonyme dans les entreprises françaises.",
+          "isCorrect": true,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "L'obligation du CV anonyme dans les entreprises françaises.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 2,
+      "prompt": "Pourquoi Inès Dauvergne n'est-elle pas convaincue par l'enquête citée dans le texte ? Parce que les entreprises qui ont pris part à l'étude…",
+      "passage": "Entretien avec Inès Dauvergne, responsable de projets pour un réseau de grandes entreprises engagées dans la lutte contre les discriminations, sur le CV anonyme. Rappelons que ce dispositif supprime les nom, prénom, adresse, date de naissance, sexe et état civil des candidats.\n\nSelon vous, le CV anonyme permet-il vraiment de lutter contre les discriminations à l'embauche ?\n\nOui, à en croire les entreprises avec qui nous travaillons et qui l'utilisent depuis plusieurs années sur leurs sites de recrutement en ligne. Il est efficace parce qu'il amène les recruteurs à changer leurs pratiques en se libérant de mécanismes inconscients à l'origine de discriminations. C'est le cas, par exemple, lorsqu'un employeur a intégré des stéréotypes sur les candidats issus des quartiers sensibles, quand il porte un a priori négatif sur ceux qui habitent loin du bureau ou s'il pense qu'une jeune femme risque d'être moins disponible. Le CV anonyme permet de lever toutes ses anticipations négatives. Il agit aussi sur les candidats en limitant l'autocensure. Plusieurs grandes entreprises ont remarqué que, grâce au CV anonyme, elles recevaient beaucoup plus de candidatures de personnes d'origines étrangères qui jusque-là n'osaient pas. C'est un signal positif de la part des employeurs qui montrent aux candidats que tous peuvent avoir une chance, une façon de communiquer sur leur recrutement.\n\nUne récente étude conclut au contraire que l'anonymat ne permet pas de réduire l'écart de chance entre les candidats issus de l'immigration ou résidant dans des quartiers sensibles et les autres. Comment expliquer ce décalage ?\n\nNous ne remettons pas en cause le sérieux de l'enquête mais nous pensons que l'échantillon des 1000 recruteurs choisis n'est pas représentatif des entreprises françaises. Toutes se sont portées volontaires. On peut donc penser qu'elles sont, à l'origine, plus ouvertes et déjà engagées dans une démarche de lutte contre les discriminations. D'ailleurs, les candidats femmes, seniors, d'origines étrangères ou issus des zones urbaines sensibles qui ont adressé des CV nominatifs ont eu autant de chances, voire plus, d'accéder aux entretiens, ce qui contredit toutes les enquêtes de terrain et les résultats des expérimentations.\n\nVous n'encouragez pas pour autant la généralisation du CV anonyme. Pourquoi ?\n\nLe CV anonyme est très efficace mais il faut bien garder à l'esprit qu'il n'est pas un outil miracle et qu'il ne peut, à lui seul, régler tous les problèmes de discrimination. Il est surtout performant quand il s'inscrit dans des dispositifs plus larges de sensibilisation des recruteurs et de formation des services de ressources humaines. Généraliser le CV anonyme serait relativement simple pour les grandes entreprises qui recrutent beaucoup sur leur portail Internet, ce qui permet de rendre facilement anonymes les candidatures. Mais si cela doit doubler les délais de recrutement et être vécu comme une contrainte, les entreprises risquent de le contourner. Travailler sur l'égalité des chances à l'entretien ne doit pas non plus empêcher des mesures d'actions positives. Nous proposons, par exemple, aux entreprises de rencontrer des candidats issus de quartiers difficiles. Beaucoup d'associations le font aussi pour favoriser l'emploi des personnes handicapées. Or, le CV anonyme freinerait ces autres actions en faveur de la diversité. Nous recommandons donc de ne pas le généraliser mais trouvons injuste de nier son intérêt.\n\n* nominatifs : non anonymes.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "ont choisi d'y participer.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "étaient trop peu nombreuses.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "ont fait les tests sur une courte durée.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 3,
+      "prompt": "Vrai ou faux ? (justifiez) Cette enquête a montré que les CV portant des noms sont moins retenus par les recruteurs que les CV anonymes.",
+      "passage": "Entretien avec Inès Dauvergne, responsable de projets pour un réseau de grandes entreprises engagées dans la lutte contre les discriminations, sur le CV anonyme. Rappelons que ce dispositif supprime les nom, prénom, adresse, date de naissance, sexe et état civil des candidats.\n\nSelon vous, le CV anonyme permet-il vraiment de lutter contre les discriminations à l'embauche ?\n\nOui, à en croire les entreprises avec qui nous travaillons et qui l'utilisent depuis plusieurs années sur leurs sites de recrutement en ligne. Il est efficace parce qu'il amène les recruteurs à changer leurs pratiques en se libérant de mécanismes inconscients à l'origine de discriminations. C'est le cas, par exemple, lorsqu'un employeur a intégré des stéréotypes sur les candidats issus des quartiers sensibles, quand il porte un a priori négatif sur ceux qui habitent loin du bureau ou s'il pense qu'une jeune femme risque d'être moins disponible. Le CV anonyme permet de lever toutes ses anticipations négatives. Il agit aussi sur les candidats en limitant l'autocensure. Plusieurs grandes entreprises ont remarqué que, grâce au CV anonyme, elles recevaient beaucoup plus de candidatures de personnes d'origines étrangères qui jusque-là n'osaient pas. C'est un signal positif de la part des employeurs qui montrent aux candidats que tous peuvent avoir une chance, une façon de communiquer sur leur recrutement.\n\nUne récente étude conclut au contraire que l'anonymat ne permet pas de réduire l'écart de chance entre les candidats issus de l'immigration ou résidant dans des quartiers sensibles et les autres. Comment expliquer ce décalage ?\n\nNous ne remettons pas en cause le sérieux de l'enquête mais nous pensons que l'échantillon des 1000 recruteurs choisis n'est pas représentatif des entreprises françaises. Toutes se sont portées volontaires. On peut donc penser qu'elles sont, à l'origine, plus ouvertes et déjà engagées dans une démarche de lutte contre les discriminations. D'ailleurs, les candidats femmes, seniors, d'origines étrangères ou issus des zones urbaines sensibles qui ont adressé des CV nominatifs ont eu autant de chances, voire plus, d'accéder aux entretiens, ce qui contredit toutes les enquêtes de terrain et les résultats des expérimentations.\n\nVous n'encouragez pas pour autant la généralisation du CV anonyme. Pourquoi ?\n\nLe CV anonyme est très efficace mais il faut bien garder à l'esprit qu'il n'est pas un outil miracle et qu'il ne peut, à lui seul, régler tous les problèmes de discrimination. Il est surtout performant quand il s'inscrit dans des dispositifs plus larges de sensibilisation des recruteurs et de formation des services de ressources humaines. Généraliser le CV anonyme serait relativement simple pour les grandes entreprises qui recrutent beaucoup sur leur portail Internet, ce qui permet de rendre facilement anonymes les candidatures. Mais si cela doit doubler les délais de recrutement et être vécu comme une contrainte, les entreprises risquent de le contourner. Travailler sur l'égalité des chances à l'entretien ne doit pas non plus empêcher des mesures d'actions positives. Nous proposons, par exemple, aux entreprises de rencontrer des candidats issus de quartiers difficiles. Beaucoup d'associations le font aussi pour favoriser l'emploi des personnes handicapées. Or, le CV anonyme freinerait ces autres actions en faveur de la diversité. Nous recommandons donc de ne pas le généraliser mais trouvons injuste de nier son intérêt.\n\n* nominatifs : non anonymes.",
+      "audioUrl": null,
+      "explanation": "Faux. Justification : « les candidats femmes, seniors, d'origines étrangères ou issus des zones urbaines sensibles qui ont adressé des CV nominatifs ont eu autant de chances, voire plus, d'accéder aux entretiens. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 4,
+      "prompt": "Selon Inès Dauvergne, le CV anonyme est une mesure…",
+      "passage": "Entretien avec Inès Dauvergne, responsable de projets pour un réseau de grandes entreprises engagées dans la lutte contre les discriminations, sur le CV anonyme. Rappelons que ce dispositif supprime les nom, prénom, adresse, date de naissance, sexe et état civil des candidats.\n\nSelon vous, le CV anonyme permet-il vraiment de lutter contre les discriminations à l'embauche ?\n\nOui, à en croire les entreprises avec qui nous travaillons et qui l'utilisent depuis plusieurs années sur leurs sites de recrutement en ligne. Il est efficace parce qu'il amène les recruteurs à changer leurs pratiques en se libérant de mécanismes inconscients à l'origine de discriminations. C'est le cas, par exemple, lorsqu'un employeur a intégré des stéréotypes sur les candidats issus des quartiers sensibles, quand il porte un a priori négatif sur ceux qui habitent loin du bureau ou s'il pense qu'une jeune femme risque d'être moins disponible. Le CV anonyme permet de lever toutes ses anticipations négatives. Il agit aussi sur les candidats en limitant l'autocensure. Plusieurs grandes entreprises ont remarqué que, grâce au CV anonyme, elles recevaient beaucoup plus de candidatures de personnes d'origines étrangères qui jusque-là n'osaient pas. C'est un signal positif de la part des employeurs qui montrent aux candidats que tous peuvent avoir une chance, une façon de communiquer sur leur recrutement.\n\nUne récente étude conclut au contraire que l'anonymat ne permet pas de réduire l'écart de chance entre les candidats issus de l'immigration ou résidant dans des quartiers sensibles et les autres. Comment expliquer ce décalage ?\n\nNous ne remettons pas en cause le sérieux de l'enquête mais nous pensons que l'échantillon des 1000 recruteurs choisis n'est pas représentatif des entreprises françaises. Toutes se sont portées volontaires. On peut donc penser qu'elles sont, à l'origine, plus ouvertes et déjà engagées dans une démarche de lutte contre les discriminations. D'ailleurs, les candidats femmes, seniors, d'origines étrangères ou issus des zones urbaines sensibles qui ont adressé des CV nominatifs ont eu autant de chances, voire plus, d'accéder aux entretiens, ce qui contredit toutes les enquêtes de terrain et les résultats des expérimentations.\n\nVous n'encouragez pas pour autant la généralisation du CV anonyme. Pourquoi ?\n\nLe CV anonyme est très efficace mais il faut bien garder à l'esprit qu'il n'est pas un outil miracle et qu'il ne peut, à lui seul, régler tous les problèmes de discrimination. Il est surtout performant quand il s'inscrit dans des dispositifs plus larges de sensibilisation des recruteurs et de formation des services de ressources humaines. Généraliser le CV anonyme serait relativement simple pour les grandes entreprises qui recrutent beaucoup sur leur portail Internet, ce qui permet de rendre facilement anonymes les candidatures. Mais si cela doit doubler les délais de recrutement et être vécu comme une contrainte, les entreprises risquent de le contourner. Travailler sur l'égalité des chances à l'entretien ne doit pas non plus empêcher des mesures d'actions positives. Nous proposons, par exemple, aux entreprises de rencontrer des candidats issus de quartiers difficiles. Beaucoup d'associations le font aussi pour favoriser l'emploi des personnes handicapées. Or, le CV anonyme freinerait ces autres actions en faveur de la diversité. Nous recommandons donc de ne pas le généraliser mais trouvons injuste de nier son intérêt.\n\n* nominatifs : non anonymes.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "insuffisante.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "mal considérée.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "peu intéressante.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 5,
+      "prompt": "Vrai ou faux ? (justifiez) Les entreprises craignent que le CV anonyme ralentisse le processus d'embauche.",
+      "passage": "Entretien avec Inès Dauvergne, responsable de projets pour un réseau de grandes entreprises engagées dans la lutte contre les discriminations, sur le CV anonyme. Rappelons que ce dispositif supprime les nom, prénom, adresse, date de naissance, sexe et état civil des candidats.\n\nSelon vous, le CV anonyme permet-il vraiment de lutter contre les discriminations à l'embauche ?\n\nOui, à en croire les entreprises avec qui nous travaillons et qui l'utilisent depuis plusieurs années sur leurs sites de recrutement en ligne. Il est efficace parce qu'il amène les recruteurs à changer leurs pratiques en se libérant de mécanismes inconscients à l'origine de discriminations. C'est le cas, par exemple, lorsqu'un employeur a intégré des stéréotypes sur les candidats issus des quartiers sensibles, quand il porte un a priori négatif sur ceux qui habitent loin du bureau ou s'il pense qu'une jeune femme risque d'être moins disponible. Le CV anonyme permet de lever toutes ses anticipations négatives. Il agit aussi sur les candidats en limitant l'autocensure. Plusieurs grandes entreprises ont remarqué que, grâce au CV anonyme, elles recevaient beaucoup plus de candidatures de personnes d'origines étrangères qui jusque-là n'osaient pas. C'est un signal positif de la part des employeurs qui montrent aux candidats que tous peuvent avoir une chance, une façon de communiquer sur leur recrutement.\n\nUne récente étude conclut au contraire que l'anonymat ne permet pas de réduire l'écart de chance entre les candidats issus de l'immigration ou résidant dans des quartiers sensibles et les autres. Comment expliquer ce décalage ?\n\nNous ne remettons pas en cause le sérieux de l'enquête mais nous pensons que l'échantillon des 1000 recruteurs choisis n'est pas représentatif des entreprises françaises. Toutes se sont portées volontaires. On peut donc penser qu'elles sont, à l'origine, plus ouvertes et déjà engagées dans une démarche de lutte contre les discriminations. D'ailleurs, les candidats femmes, seniors, d'origines étrangères ou issus des zones urbaines sensibles qui ont adressé des CV nominatifs ont eu autant de chances, voire plus, d'accéder aux entretiens, ce qui contredit toutes les enquêtes de terrain et les résultats des expérimentations.\n\nVous n'encouragez pas pour autant la généralisation du CV anonyme. Pourquoi ?\n\nLe CV anonyme est très efficace mais il faut bien garder à l'esprit qu'il n'est pas un outil miracle et qu'il ne peut, à lui seul, régler tous les problèmes de discrimination. Il est surtout performant quand il s'inscrit dans des dispositifs plus larges de sensibilisation des recruteurs et de formation des services de ressources humaines. Généraliser le CV anonyme serait relativement simple pour les grandes entreprises qui recrutent beaucoup sur leur portail Internet, ce qui permet de rendre facilement anonymes les candidatures. Mais si cela doit doubler les délais de recrutement et être vécu comme une contrainte, les entreprises risquent de le contourner. Travailler sur l'égalité des chances à l'entretien ne doit pas non plus empêcher des mesures d'actions positives. Nous proposons, par exemple, aux entreprises de rencontrer des candidats issus de quartiers difficiles. Beaucoup d'associations le font aussi pour favoriser l'emploi des personnes handicapées. Or, le CV anonyme freinerait ces autres actions en faveur de la diversité. Nous recommandons donc de ne pas le généraliser mais trouvons injuste de nier son intérêt.\n\n* nominatifs : non anonymes.",
+      "audioUrl": null,
+      "explanation": "Vrai. Justification : « Mais si cela doit doubler les délais de recrutement et être vécu comme une contrainte, les entreprises risquent de le contourner. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": false,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 6,
+      "prompt": "Vrai ou faux ? (justifiez) Le CV anonyme peut encourager d'autres dispositifs de lutte contre les discriminations.",
+      "passage": "Entretien avec Inès Dauvergne, responsable de projets pour un réseau de grandes entreprises engagées dans la lutte contre les discriminations, sur le CV anonyme. Rappelons que ce dispositif supprime les nom, prénom, adresse, date de naissance, sexe et état civil des candidats.\n\nSelon vous, le CV anonyme permet-il vraiment de lutter contre les discriminations à l'embauche ?\n\nOui, à en croire les entreprises avec qui nous travaillons et qui l'utilisent depuis plusieurs années sur leurs sites de recrutement en ligne. Il est efficace parce qu'il amène les recruteurs à changer leurs pratiques en se libérant de mécanismes inconscients à l'origine de discriminations. C'est le cas, par exemple, lorsqu'un employeur a intégré des stéréotypes sur les candidats issus des quartiers sensibles, quand il porte un a priori négatif sur ceux qui habitent loin du bureau ou s'il pense qu'une jeune femme risque d'être moins disponible. Le CV anonyme permet de lever toutes ses anticipations négatives. Il agit aussi sur les candidats en limitant l'autocensure. Plusieurs grandes entreprises ont remarqué que, grâce au CV anonyme, elles recevaient beaucoup plus de candidatures de personnes d'origines étrangères qui jusque-là n'osaient pas. C'est un signal positif de la part des employeurs qui montrent aux candidats que tous peuvent avoir une chance, une façon de communiquer sur leur recrutement.\n\nUne récente étude conclut au contraire que l'anonymat ne permet pas de réduire l'écart de chance entre les candidats issus de l'immigration ou résidant dans des quartiers sensibles et les autres. Comment expliquer ce décalage ?\n\nNous ne remettons pas en cause le sérieux de l'enquête mais nous pensons que l'échantillon des 1000 recruteurs choisis n'est pas représentatif des entreprises françaises. Toutes se sont portées volontaires. On peut donc penser qu'elles sont, à l'origine, plus ouvertes et déjà engagées dans une démarche de lutte contre les discriminations. D'ailleurs, les candidats femmes, seniors, d'origines étrangères ou issus des zones urbaines sensibles qui ont adressé des CV nominatifs ont eu autant de chances, voire plus, d'accéder aux entretiens, ce qui contredit toutes les enquêtes de terrain et les résultats des expérimentations.\n\nVous n'encouragez pas pour autant la généralisation du CV anonyme. Pourquoi ?\n\nLe CV anonyme est très efficace mais il faut bien garder à l'esprit qu'il n'est pas un outil miracle et qu'il ne peut, à lui seul, régler tous les problèmes de discrimination. Il est surtout performant quand il s'inscrit dans des dispositifs plus larges de sensibilisation des recruteurs et de formation des services de ressources humaines. Généraliser le CV anonyme serait relativement simple pour les grandes entreprises qui recrutent beaucoup sur leur portail Internet, ce qui permet de rendre facilement anonymes les candidatures. Mais si cela doit doubler les délais de recrutement et être vécu comme une contrainte, les entreprises risquent de le contourner. Travailler sur l'égalité des chances à l'entretien ne doit pas non plus empêcher des mesures d'actions positives. Nous proposons, par exemple, aux entreprises de rencontrer des candidats issus de quartiers difficiles. Beaucoup d'associations le font aussi pour favoriser l'emploi des personnes handicapées. Or, le CV anonyme freinerait ces autres actions en faveur de la diversité. Nous recommandons donc de ne pas le généraliser mais trouvons injuste de nier son intérêt.\n\n* nominatifs : non anonymes.",
+      "audioUrl": null,
+      "explanation": "Faux. Justification : « Or, le CV anonyme freinerait ces autres actions en faveur de la diversité. Nous recommandons donc de ne pas le généraliser. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 7,
+      "prompt": "Pour Inès Dauvergne, le CV anonyme…",
+      "passage": "Entretien avec Inès Dauvergne, responsable de projets pour un réseau de grandes entreprises engagées dans la lutte contre les discriminations, sur le CV anonyme. Rappelons que ce dispositif supprime les nom, prénom, adresse, date de naissance, sexe et état civil des candidats.\n\nSelon vous, le CV anonyme permet-il vraiment de lutter contre les discriminations à l'embauche ?\n\nOui, à en croire les entreprises avec qui nous travaillons et qui l'utilisent depuis plusieurs années sur leurs sites de recrutement en ligne. Il est efficace parce qu'il amène les recruteurs à changer leurs pratiques en se libérant de mécanismes inconscients à l'origine de discriminations. C'est le cas, par exemple, lorsqu'un employeur a intégré des stéréotypes sur les candidats issus des quartiers sensibles, quand il porte un a priori négatif sur ceux qui habitent loin du bureau ou s'il pense qu'une jeune femme risque d'être moins disponible. Le CV anonyme permet de lever toutes ses anticipations négatives. Il agit aussi sur les candidats en limitant l'autocensure. Plusieurs grandes entreprises ont remarqué que, grâce au CV anonyme, elles recevaient beaucoup plus de candidatures de personnes d'origines étrangères qui jusque-là n'osaient pas. C'est un signal positif de la part des employeurs qui montrent aux candidats que tous peuvent avoir une chance, une façon de communiquer sur leur recrutement.\n\nUne récente étude conclut au contraire que l'anonymat ne permet pas de réduire l'écart de chance entre les candidats issus de l'immigration ou résidant dans des quartiers sensibles et les autres. Comment expliquer ce décalage ?\n\nNous ne remettons pas en cause le sérieux de l'enquête mais nous pensons que l'échantillon des 1000 recruteurs choisis n'est pas représentatif des entreprises françaises. Toutes se sont portées volontaires. On peut donc penser qu'elles sont, à l'origine, plus ouvertes et déjà engagées dans une démarche de lutte contre les discriminations. D'ailleurs, les candidats femmes, seniors, d'origines étrangères ou issus des zones urbaines sensibles qui ont adressé des CV nominatifs ont eu autant de chances, voire plus, d'accéder aux entretiens, ce qui contredit toutes les enquêtes de terrain et les résultats des expérimentations.\n\nVous n'encouragez pas pour autant la généralisation du CV anonyme. Pourquoi ?\n\nLe CV anonyme est très efficace mais il faut bien garder à l'esprit qu'il n'est pas un outil miracle et qu'il ne peut, à lui seul, régler tous les problèmes de discrimination. Il est surtout performant quand il s'inscrit dans des dispositifs plus larges de sensibilisation des recruteurs et de formation des services de ressources humaines. Généraliser le CV anonyme serait relativement simple pour les grandes entreprises qui recrutent beaucoup sur leur portail Internet, ce qui permet de rendre facilement anonymes les candidatures. Mais si cela doit doubler les délais de recrutement et être vécu comme une contrainte, les entreprises risquent de le contourner. Travailler sur l'égalité des chances à l'entretien ne doit pas non plus empêcher des mesures d'actions positives. Nous proposons, par exemple, aux entreprises de rencontrer des candidats issus de quartiers difficiles. Beaucoup d'associations le font aussi pour favoriser l'emploi des personnes handicapées. Or, le CV anonyme freinerait ces autres actions en faveur de la diversité. Nous recommandons donc de ne pas le généraliser mais trouvons injuste de nier son intérêt.\n\n* nominatifs : non anonymes.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "a des effets trop limités.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "doit encore faire ses preuves.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "a des qualités non négligeables.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    }
+  ]
+}

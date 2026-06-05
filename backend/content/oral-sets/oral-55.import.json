@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Vacances : attention aux informations publiées en ligne",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Vacances : attention aux informations publiées en ligne »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Enfin les vacances ! C'est le bon moment pour prendre du temps en famille et se reposer. Mais attention : annoncer à tout le monde, sur les réseaux sociaux, qu'on s'en va passer des vacances à l'étranger, c'est la porte ouverte à tous les problèmes ! Un selfie devant le Colisée de Rome ou la Tour Eiffel confirmera à vos amis, à leurs amis et aux amis de vos amis que vous n'êtes plus chez vous. On prend alors le risque que ces informations tombent entre de mauvaises mains : une personne pourrait bien visiter votre appartement en votre absence et repartir avec vos objets de valeur. Pire encore, certaines personnes comptent les jours restant avant un départ et publient des messages comme « trois nuits avant le départ ». C'est informer tout le monde qu'on ne sera pas à la maison. Alors, pourquoi prendre autant de précautions pour protéger sa maison lors d'un départ en vacances et ne plus en prendre sur les réseaux sociaux ?",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Publiez-vous des photos de vacances sur les réseaux sociaux ?",
+          "expectedAngle": "个人习惯"
+        },
+        {
+          "order": 1,
+          "text": "Partager sa vie en ligne, est-ce dangereux, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Quelles précautions prenez-vous pour protéger votre vie privée ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Pensez-vous qu'on partage trop de choses sur Internet ?",
+          "expectedAngle": "观点"
+        }
+      ]
+    }
+  ]
+}

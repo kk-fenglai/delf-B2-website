@@ -49,6 +49,103 @@ router.get('/products', async (_req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// In-memory FX cache so the admin page doesn't hammer Frankfurter when
+// reloaded repeatedly. 6h matches how often ECB publishes; admins reviewing
+// prices don't need fresher data than that.
+let fxCache = { fetchedAt: 0, rates: null };
+const FX_TTL_MS = 6 * 60 * 60 * 1000;
+
+async function fetchFxRates() {
+  if (fxCache.rates && Date.now() - fxCache.fetchedAt < FX_TTL_MS) {
+    return { ...fxCache, cached: true };
+  }
+  // Frankfurter is ECB-backed, free, no API key. We ask for USD-base so
+  // every reported rate is "1 USD = X (target)".
+  const r = await fetch('https://api.frankfurter.app/latest?from=USD&to=CNY,EUR', {
+    signal: AbortSignal.timeout(5000),
+  });
+  if (!r.ok) throw new Error(`Frankfurter ${r.status}`);
+  const j = await r.json();
+  fxCache = {
+    fetchedAt: Date.now(),
+    rates: { USD: 1, CNY: j.rates?.CNY, EUR: j.rates?.EUR, date: j.date },
+  };
+  return { ...fxCache, cached: false };
+}
+
+// GET /api/admin/pricing-report — read-only audit table: for each (product,
+// price) row, show the listed price, what it converts to in USD at today's
+// ECB rate, and the % drift versus the canonical USD price of the same
+// product+cycle. Use it quarterly to spot prices that have drifted >10% off
+// because of FX moves.
+router.get('/pricing-report', async (_req, res, next) => {
+  try {
+    const products = await prisma.product.findMany({
+      where: { active: true },
+      orderBy: { createdAt: 'asc' },
+      include: { prices: { where: { active: true }, orderBy: [{ months: 'asc' }, { currency: 'asc' }] } },
+    });
+
+    let fx;
+    try { fx = await fetchFxRates(); }
+    catch (err) {
+      return res.status(503).json({
+        error: 'Failed to fetch FX rates from Frankfurter',
+        detail: String(err?.message || err),
+      });
+    }
+    const rates = fx.rates;
+
+    // For each (product, months) group, pick the USD price as the anchor
+    // and compute deviation of CNY/EUR prices against it (after FX).
+    const report = products.map((p) => {
+      const groups = new Map(); // months -> { USD, CNY, EUR }
+      for (const pr of p.prices) {
+        if (!groups.has(pr.months)) groups.set(pr.months, {});
+        groups.get(pr.months)[pr.currency] = pr;
+      }
+      const rows = [];
+      for (const [months, byCur] of groups) {
+        const usdPrice = byCur.USD;
+        const usdAnchor = usdPrice ? usdPrice.amountCents / 100 : null;
+        for (const cur of ['CNY', 'USD', 'EUR']) {
+          const pr = byCur[cur];
+          if (!pr) continue;
+          const local = pr.amountCents / 100;
+          // Convert local → USD via FX. rate[cur] is "1 USD = X cur", so
+          // local / rate[cur] is the USD-equivalent of the local price.
+          const usdEquivalent = rates[cur] ? local / rates[cur] : null;
+          const deviationPct = usdAnchor && usdEquivalent
+            ? ((usdEquivalent - usdAnchor) / usdAnchor) * 100
+            : null;
+          rows.push({
+            priceId: pr.id,
+            priceCode: pr.code,
+            months,
+            currency: cur,
+            amountCents: pr.amountCents,
+            amountDisplay: local.toFixed(2),
+            usdEquivalent: usdEquivalent != null ? Number(usdEquivalent.toFixed(2)) : null,
+            usdAnchor,
+            deviationPct: deviationPct != null ? Number(deviationPct.toFixed(1)) : null,
+          });
+        }
+      }
+      return {
+        productCode: p.code,
+        productName: p.name,
+        plan: p.plan,
+        rows,
+      };
+    });
+
+    res.json({
+      report,
+      fx: { rates, fetchedAt: new Date(fx.fetchedAt).toISOString(), cached: fx.cached, source: 'frankfurter.app' },
+    });
+  } catch (e) { next(e); }
+});
+
 const productCreateSchema = z.object({
   code: z.string().min(1).max(50),
   name: z.string().min(1).max(100),

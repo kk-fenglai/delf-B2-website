@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · L'art pour tous : emprunter une œuvre d'art",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : france3-regions.francetvinfo.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« L'art pour tous : emprunter une œuvre d'art »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Mettre l'art à la portée de tous, c'est la devise de l'artothèque municipale de Grenoble. On peut y entrer, décrocher un tableau du mur et repartir avec. À vrai dire, n'importe qui ne peut pas emprunter : il faut tout de même montrer sa carte d'abonné pour adopter une œuvre de son choix, trois au maximum pour trois mois. Trois mois, c'est peu pour que l'art se diffuse sur tous les murs, mais rien ne vous empêche, si vous vous êtes attaché à une œuvre, de la ramener puis de la reprendre à nouveau, plus tard. Il n'y a pas que les particuliers qui peuvent en profiter, mais aussi les écoles et les maisons de retraite. Mais est-on prêt à emprunter une œuvre d'art à l'époque où l'on télécharge toute la culture : livres, films, musique ?",
+      "explanation": "Document d'appui — source : france3-regions.francetvinfo.fr. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Aimeriez-vous emprunter une œuvre d'art pour la mettre chez vous ?",
+          "expectedAngle": "个人意愿"
+        },
+        {
+          "order": 1,
+          "text": "Pensez-vous que l'art est accessible à tout le monde ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 2,
+          "text": "Comment donner aux gens l'envie d'aimer l'art ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Préférez-vous voir l'art dans un musée ou chez vous ?",
+          "expectedAngle": "偏好"
+        }
+      ]
+    }
+  ]
+}

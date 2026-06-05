@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Le port de l'uniforme, une contrainte pour les filles ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.slate.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Le port de l'uniforme, une contrainte pour les filles ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "À chaque fois que le débat sur le port de l'uniforme à l'école revient, on évite systématiquement de parler des problèmes qu'il pose en ce qui concerne les filles et les garçons. Même si certaines écoles françaises, ayant déjà imposé l'uniforme à leurs élèves, ont choisi une tenue neutre, beaucoup de personnes pensent que les filles devraient nécessairement porter une jupe. Or, une fille en jupe, dans une cour de récréation, à la cantine ou dans les allées de son école, va être perçue dans son corps et son genre, ce qui va déterminer la façon dont elle va se comporter dans l'espace. Imposer la jupe obligatoire aux fillettes et aux jeunes femmes les oblige à adopter une certaine attitude, ce qui est totalement contradictoire avec l'objectif du port de l'uniforme, censé offrir les mêmes conditions à tous à l'école.",
+      "explanation": "Document d'appui — source : www.slate.fr. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Êtes-vous pour ou contre l'uniforme à l'école ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "L'uniforme rend-il les élèves plus égaux, selon vous ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 2,
+          "text": "Filles et garçons devraient-ils porter la même tenue ?",
+          "expectedAngle": "性别平等"
+        },
+        {
+          "order": 3,
+          "text": "Que portiez-vous à l'école ? Aviez-vous le choix ?",
+          "expectedAngle": "经历"
+        }
+      ]
+    }
+  ]
+}

@@ -56,6 +56,9 @@ async function createCheckoutSession({
     // Card-only for recurring: WeChat Pay / Alipay through Stripe do not support
     // saved payment methods, so they cannot back a subscription.
     const session = await client.checkout.sessions.create({
+      // Stripe API 2026+ (stripe-node 22): hosted redirect uses `hosted_page`.
+      // Omitting ui_mode can yield non-hosted sessions with no `url` for redirect.
+      ui_mode: 'hosted_page',
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [{ price: price.stripePriceId, quantity: 1 }],
@@ -94,6 +97,7 @@ async function createCheckoutSession({
   // via checkout.session.async_payment_succeeded. Stripe will reject the session
   // at create-time if the price currency is not enabled on the account.
   const session = await client.checkout.sessions.create({
+    ui_mode: 'hosted_page',
     mode: 'payment',
     payment_method_types: ['card', 'wechat_pay', 'alipay'],
     payment_method_options: {

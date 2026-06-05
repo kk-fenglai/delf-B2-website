@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · La journée des parents au bureau",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.cbnews.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« La journée des parents au bureau »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Un réseau social professionnel a lancé à l'échelle mondiale une idée qui a de quoi surprendre : la Journée des parents au bureau. Cette initiative a pour but d'encourager les entreprises du monde entier à ouvrir leurs portes aux parents de leurs collaborateurs, afin de leur faire découvrir, de l'intérieur, la vie professionnelle de leurs enfants. « Nous travaillons pour rendre nos proches fiers de nous. La plupart des salariés sont ici parce que leurs parents les ont soutenus », explique un jeune employé. Cet événement annuel a été lancé en 2013, suite à la publication d'une étude mondiale qui révélait que plus d'un parent sur trois ne comprenait pas le métier de son enfant. De plus, 50 % des salariés pensent que leurs parents ont encore des compétences professionnelles et des conseils à leur transmettre. Et si cette journée était aussi une manière de transmettre un message positif autour de l'âge et de valoriser les seniors ?",
+      "explanation": "Document d'appui — source : www.cbnews.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Vos parents comprennent-ils bien votre travail ou vos études ?",
+          "expectedAngle": "个人"
+        },
+        {
+          "order": 1,
+          "text": "Est-ce une bonne idée d'inviter ses parents au bureau ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Les parents ont-ils encore des conseils utiles à donner sur le travail ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 3,
+          "text": "Faut-il mieux valoriser les personnes âgées dans la société ?",
+          "expectedAngle": "社会态度"
+        }
+      ]
+    }
+  ]
+}

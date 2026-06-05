@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · CONVIVIALITÉ À VENDRE ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Document d'appui — source : labelleassiette.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement.。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« CONVIVIALITÉ À VENDRE ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Sur le modèle des sites de partage, on trouve maintenant des plateformes internet pour mettre en lien des hôtes* cuisiniers et des « invités » qui veulent vivre une expérience gastronomique originale. Pour devenir un « hôte », il suffit de vous inscrire sur un site et de proposer vos repas. C'est vous qui choisissez l'heure, le nombre d'invités, le menu et son prix. Mais pas seulement ! Vous précisez les langues que vous parlez et si vous acceptez les fumeurs... Vos invités auront payé leur repas à l'avance, à travers le site, donc pas de risque de dispute ou de mauvaise ambiance pour une question d'argent. Le mot clé de ces repas, c'est l'authenticité, aussi bien pour la cuisine que pour l'accueil. Votre invité va passer le repas avec vous et laisser par la suite un commentaire sur le site pour les autres internautes. Mais comme on sait que beaucoup d'hôtes pratiquent ces repas pour gagner de l'argent, on peut se demander si l'ambiance amicale de ces repas est vraiment authentique.\n* hôte : personne qui reçoit des invités chez elle.",
+      "explanation": "Document d'appui — source : labelleassiette.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Aimeriez-vous manger chez une personne que vous ne connaissez pas ?",
+          "expectedAngle": "个人意愿，信任/安全"
+        },
+        {
+          "order": 1,
+          "text": "Peut-on parler d'un vrai moment d'amitié si l'hôte est payé ?",
+          "expectedAngle": "商业化是否削弱真诚"
+        },
+        {
+          "order": 2,
+          "text": "Ce genre de site est-il une bonne idée, selon vous ?",
+          "expectedAngle": "整体评价利弊"
+        },
+        {
+          "order": 3,
+          "text": "Pensez-vous que l'argent change les relations entre les gens ?",
+          "expectedAngle": "普遍命题，避免绝对"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2022年12月（法国） — 公共场所视频监控",
+  "year": 2022,
+  "description": "公共场所视频监控。来源：2022年12月（法国） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous réagissez à un article paru dans le journal de votre ville francophone et dont le thème est « il faut installer plus de caméras de vidéosurveillance dans les espaces publics ». Vous écrivez au courrier des lecteurs du journal en expliquant les avantages de ce genre de dispositif mais vous faites aussi part de vos craintes au sujet des excès possibles et vous essayez de montrer les limites de ce système.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2022 年 12 月法国 DELF B2 写作真题（回忆版）。体裁：报刊读者来信（courrier des lecteurs）。要点：在肯定视频监控优点的同时，表达对滥用的担忧并指出该系统的局限。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

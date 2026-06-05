@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Se professionnaliser à un âge avancé : un nouveau possible ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Le Monde。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Se professionnaliser à un âge avancé : un nouveau possible ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Louise Brun, 84 ans, vient de devenir avocate au barreau* de Toulouse. Louise n'avait pas fait d'études et avait occupé toute sa vie des postes ne nécessitant pas de diplômes. Une fois retraitée, elle a poursuivi son rêve : faire du droit. Après avoir décroché le bac, elle s'est inscrite à la faculté de Toulouse, où elle a réussi. Elle explique son envie d'apprendre : « Étudier m'apporte la force et l'envie de vivre qui fait oublier la vieillesse. Je voulais vraiment faire du droit pour connaître le fonctionnement de la justice et aider les autres. Avec l'espérance de vie que l'on atteint aujourd'hui, on devrait changer de mentalité et inciter les gens à faire des études à tout âge, pour avancer et progresser, revaloriser enfin le travail des seniors. » L'idée est louable, néanmoins comment gérer alors les différences d'âge entre étudiants, différences pouvant s'avérer problématiques. Autre question importante : y aura-t-il assez de travail pour tout le monde ?\n* barreau : l'ensemble des avocats d'un tribunal.",
+      "explanation": "Document d'appui — source : Le Monde. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pensez-vous qu'on peut apprendre à tout âge ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Aimeriez-vous reprendre des études plus tard dans votre vie ?",
+          "expectedAngle": "个人意愿"
+        },
+        {
+          "order": 2,
+          "text": "Quels avantages un étudiant plus âgé peut-il apporter à une classe ?",
+          "expectedAngle": "积极面"
+        },
+        {
+          "order": 3,
+          "text": "Selon vous, est-il difficile d'étudier quand on est plus âgé ? Pourquoi ?",
+          "expectedAngle": "困难分析"
+        }
+      ]
+    }
+  ]
+}

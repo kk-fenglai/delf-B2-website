@@ -1,0 +1,188 @@
+{
+  "title": "DELF B2 写作真题集（2020–2024 回忆版）",
+  "year": 2024,
+  "description": "历年 DELF B2 Production écrite（写作）考试回忆题合集，共 18 题，按时间从新到旧排列（已去重：2021 年 6 月法国题与 2024 年 2 月法国题为同一远程办公题，合并为一题）。每题为一篇议论性书信/文章（essai argumenté），DELF B2 标准要求 250 字以上、满分 25 分。来源：历年考试回忆，非 FEI 官方 sujet d'exemple。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous avez l'idée de mettre le terrain à disposition des collèges de votre ville et d'organiser des activités de découverte de la nature et de jardinage pour les enfants. Vous pouvez adresser une lettre au maire. Vous lui expliquerez comment vous imaginez la mise en place des activités de jardinage et vous essaierez de le convaincre de l'intérêt d'une telle pratique pour les enfants et la ville.",
+      "passage": "Annonce de la mairie : « La mairie souhaite laisser la population décider de la manière d'utiliser le terrain de 500 mètres carrés, actuellement inoccupé, près de la forêt municipale. Avez-vous des idées qui pourraient être bénéfiques à la commune ? Écrivez-nous ! Nous sélectionnerons le meilleur projet et le réaliserons prochainement. »",
+      "audioUrl": null,
+      "explanation": "来源：2024 年 11 月中国 DELF B2 写作真题（回忆版）。体裁：致市长的书信（lettre au maire）。要点：说明菜园活动的组织方式、对儿童和城市的益处，并说服市长采纳。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 2,
+      "prompt": "Vous habitez dans une petite ville française dans laquelle le cinéma va fermer définitivement, à cause d'un manque de fréquentation et de moyens. Vous écrivez au maire de la ville pour éviter cette fermeture et le convaincre, à l'aide d'arguments et d'exemples précis, des avantages (culturels, économiques...) que ce cinéma représente pour la ville. Vous insistez également sur l'importance de ce loisir pour toutes les générations et proposez des solutions pour développer la fréquentation du cinéma.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2024 年 6 月中国 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：阐述电影院的文化/经济价值、对各年龄层的意义，并提出提升上座率的方案。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 3,
+      "prompt": "Vous travaillez dans une entreprise française. Lors d'une réunion du personnel, vous apprenez l'existence d'une formation professionnelle à l'étranger. Vous écrivez au directeur de votre entreprise pour qu'il accède à votre demande : vous lui expliquez la situation de votre équipe de travail ainsi que la vôtre, et vous attirez l'attention de votre directeur sur l'intérêt de vous envoyer suivre cette formation.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2024 年 3 月中国 DELF B2 写作真题（回忆版）。注：原文 OCR 略有残缺，已按题意整理。体裁：致公司经理的书信。要点：说明团队及个人情况，论证参加海外培训的价值并请求批准。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 4,
+      "prompt": "Vous vivez en France. Le maire de votre ville a pour projet de construire un boulevard quatre voies en centre-ville pour faciliter la circulation et réduire les temps de transport entre les logements et les entreprises. Conscient des avantages de ce projet, vous écrivez cependant une lettre au maire pour lui exprimer vos inquiétudes sur l'impact de cette nouvelle route sur les conditions de vie des habitants (pollution, bruit...) et pour lui proposer des solutions alternatives qui pourraient satisfaire tout le monde.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2024 年 3 月法国 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：承认项目优点的同时表达对居民生活（污染、噪音）的担忧，并提出折中替代方案。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 5,
+      "prompt": "Vous travaillez dans une entreprise française. Vous avez discuté avec plusieurs collègues des avantages liés au fait de pouvoir « télétravailler » — c'est-à-dire travailler depuis la maison grâce aux nouvelles technologies — au moins une journée par semaine, et d'aller au bureau les autres jours, comme cela se pratique déjà dans certaines entreprises. Vous rédigez un courrier à votre directeur, dans lequel vous lui proposez de mettre en place cette idée pour tout le personnel de l'entreprise. Vous essayez de le convaincre en lui expliquant l'intérêt du projet, à la fois pour les employés et pour l'entreprise.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2024 年 2 月法国 DELF B2 写作真题（回忆版）。体裁：致公司经理的书信。要点：论证远程办公（télétravail）对员工和企业的双重益处并提出实施建议。注：与 2021 年 6 月法国题为同一题。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 6,
+      "prompt": "Vous habitez à Toulouse. Chaque année la ville organise avec succès une course à pied en faveur d'une association qui aide les personnes âgées. Vous participez toujours à cette course mais cette année la mairie a annulé l'événement. Vous écrivez une lettre au maire de la ville pour demander des explications et exprimer votre mécontentement. Vous rappelez l'impact positif de cette course et vous proposez des solutions pour faciliter son organisation.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2023 年 12 月法国 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：表达对取消公益跑步赛的不满、要求解释，回顾活动的积极意义并提出可行方案。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 7,
+      "prompt": "Vous habitez en France. Depuis plusieurs semaines, le jardin public qui se situe à côté de chez vous est recouvert de déchets. Vous écrivez une lettre au maire de la ville pour lui exposer la situation et le convaincre de mettre en place les mesures nécessaires. Vous proposez des solutions concrètes pour résoudre le problème.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2023 年 11 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：描述公园垃圾问题的现状，说服市长采取措施并提出具体解决方案。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 8,
+      "prompt": "Vous avez acheté ce produit sur Internet mais vous avez reçu un ordinateur moins moderne et moins performant. Vous exprimez votre indignation sur un forum consacré aux problèmes liés aux achats sur Internet, parfois rencontrés par les consommateurs (contrefaçons, délais de livraison, produits non conformes, etc.), et vous tentez de proposer des solutions.",
+      "passage": "Publicité du produit — « Ordinateur portable : Ce nouvel ordinateur a désormais une batterie qui offre une journée d'autonomie. Il ne mesure que 1,7 cm d'épaisseur, pour un poids plume de 1,08 kg. Mais sa coque en aluminium inaltérable lui assure également solidité et résistance. »",
+      "audioUrl": null,
+      "explanation": "来源：2023 年 6 月国内 DELF B2 写作真题（回忆版）。体裁：网络论坛留言（message sur un forum）。要点：表达对网购货不对板的愤慨，列举网购常见问题并提出解决建议。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 9,
+      "prompt": "Vous vivez dans une ville française et vous aimeriez développer un concept de café mêlant commerce et projet associatif. Vous écrivez une lettre au Maire dans laquelle vous expliquez le projet et les divers avantages d'une telle initiative pour les habitants de la ville. Vous lui demandez également la mise à disposition d'un lieu pour accueillir le « café pour réparer ».",
+      "passage": "Document — « Réparer ensemble, c'est l'idée des “Cafés pour réparer” dont l'entrée est ouverte à tous. Outils et matériel sont disponibles pour faire toutes les réparations possibles et imaginables : vêtements, meubles, appareils électriques, bicyclettes, vaisselle, jouets, et autres.\nQuel est le principe ?\nOn y apporte des objets que l'on possède à la maison. Et on apprend à les réparer avec les gens du métier. Il y a toujours quelque chose à apprendre au “Café pour réparer”. »",
+      "audioUrl": null,
+      "explanation": "来源：2023 年 3 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：介绍“维修咖啡馆”理念、对居民的益处，并请求市政府提供场地。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 10,
+      "prompt": "Vous réagissez à un article paru dans le journal de votre ville francophone et dont le thème est « il faut installer plus de caméras de vidéosurveillance dans les espaces publics ». Vous écrivez au courrier des lecteurs du journal en expliquant les avantages de ce genre de dispositif mais vous faites aussi part de vos craintes au sujet des excès possibles et vous essayez de montrer les limites de ce système.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2022 年 12 月法国 DELF B2 写作真题（回忆版）。体裁：报刊读者来信（courrier des lecteurs）。要点：在肯定视频监控优点的同时，表达对滥用的担忧并指出该系统的局限。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 11,
+      "prompt": "Sous prétexte de filmer un documentaire sur la réinsertion d'un chômeur, les caméras suivent un patron déguisé — pour éviter d'être reconnu — qui effectue, de façon anonyme, plusieurs stages dans sa propre entreprise pendant 5 jours, pour observer ses employés. Un patron qui a participé à cette émission estime que « tous les 5 ou 10 ans, les directeurs devraient s'introduire incognito parmi les salariés de leur entreprise car cela permet de mieux comprendre le personnel ». Vous venez de lire cet article et vous décidez d'écrire au magazine pour donner votre avis sur une telle expérience. Vous vous interrogez sur l'intérêt de la démarche, mais aussi sur les risques que cela implique, tant du point de vue des employés que des dirigeants.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2022 年 11 月国内 DELF B2 写作真题（回忆版）。体裁：致杂志的读者来信。要点：评价老板“卧底”体验的意义，并权衡其对员工与管理者双方带来的风险。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 12,
+      "prompt": "Vous vivez en France et la mairie de votre ville souhaiterait remplacer son magazine mensuel distribué aux habitants par une version numérique, seulement consultable en ligne. Vous écrivez une lettre destinée à être publiée dans le « courrier des lecteurs » du magazine de la mairie. Vous êtes opposé au « tout numérique ». Vous exposerez vos arguments de manière détaillée et cohérente afin de convaincre la mairie de ne pas abandonner son magazine papier.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2022 年 6 月国内 DELF B2 写作真题（回忆版）。体裁：市政杂志读者来信。要点：反对“全面数字化”，有条理地论证保留纸质版杂志的理由以说服市政府。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 13,
+      "prompt": "Vous habitez en France. Vous avez vu cette affiche à Paris et vous aimeriez proposer cette idée d'échange de livres au maire de votre ville. Vous adressez une lettre au maire dans laquelle vous expliquez le principe de ce dispositif ainsi que ses avantages. Vous essayez également de convaincre le maire de l'utilité d'une telle pratique pour vos concitoyens.",
+      "passage": "Affiche — « Circul'Livre : Circul'Livre consiste à échanger gratuitement des livres entre lecteurs. Il suffit de les déposer soit dans un lieu public, soit dans un immeuble et de les remettre à leur place une fois lus. Circul'Livre fait la promotion de la lecture et contribue à développer les liens entre les habitants d'un quartier. — D'après www.paris.fr »",
+      "audioUrl": null,
+      "explanation": "来源：2022 年 3 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：介绍“图书漂流”（Circul'Livre）的原理与益处，说服市长在本市推广。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 14,
+      "prompt": "Vous vivez dans une petite ville française, à côté d'une école maternelle et d'une maison de retraite. Vous pensez que les personnes âgées pourraient venir lire des histoires aux enfants de l'école. Vous écrivez une lettre au maire pour lui proposer votre idée. Dans cette lettre, vous expliquez en quoi consiste votre projet de lecture et vous en présentez les divers avantages à la fois pour les enfants et pour les retraités.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2021 年 11 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信（écrit argumenté）。要点：阐述“老人为幼儿园儿童读故事”的代际阅读计划及其对双方的益处。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 15,
+      "prompt": "Vous habitez dans une ville francophone qui organise chaque année un grand concert gratuit pour marquer la fin de l'été. Pour des raisons financières, votre ville annonce qu'elle veut supprimer cet événement musical. Vous écrivez au maire de la ville pour le persuader, à l'aide d'arguments et d'exemples précis, des avantages culturels et touristiques que ce concert représente. Vous insistez également sur l'intérêt économique de cette manifestation pour les commerçants et les artistes de la région.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2021 年 6 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：论证免费音乐会的文化、旅游与经济价值（对商家和艺术家），说服市长不要取消。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 16,
+      "prompt": "Vous écrivez un article pour le journal francophone de la ville où vous vivez. Vous demandez au maire le lancement d'un site internet municipal qui mette en contact les habitants intéressés par les nouvelles possibilités en matière de consommation des biens et des services. Vous expliquez comment notre relation aux objets quotidiens peut changer. Tout en reconnaissant que les obstacles sont nombreux, vous défendez les bénéfices d'une consommation plus responsable à l'échelle de la ville (environnement, économies réalisées, relations entre les habitants…).",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2021 年 5 月法国 DELF B2 写作真题（回忆版）。体裁：报刊文章（article）。要点：呼吁市政建设互助消费网站，论证负责任消费在环境、经济、邻里关系上的益处，同时承认存在障碍。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 17,
+      "prompt": "Vous travaillez en France. Dans le cadre de la formation continue offerte par votre entreprise aux salariés étrangers, vous suivez des cours de français. La direction a décidé de supprimer ces cours pour des raisons financières. Vous écrivez une lettre de protestation au directeur général. Vous lui parlez de votre expérience et vous lui décrivez les points forts de cette formation. Vous lui expliquez les conséquences de la disparition de la formation et vous tentez de le convaincre de continuer à la proposer.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2021 年 3 月法国 DELF B2 写作真题（回忆版）。体裁：致总经理的抗议信（lettre de protestation）。要点：分享个人学习经历、法语培训的优点、取消的后果，并说服公司继续提供。≥ 250 mots。",
+      "points": 25
+    },
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 18,
+      "prompt": "Vous êtes un professeur de football qui travaille avec des jeunes. Vous écrivez une lettre de plainte au maire pour la fermeture du stade de football, car seule l'équipe professionnelle de la ville peut utiliser le stade. Vous expliquez les limites du stade et vous convainquez le maire de changer cette situation.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2020 年 12 月非洲 DELF B2 写作真题（回忆版，Production écrite / 25 points）。体裁：致市长的投诉信（lettre de plainte）。要点：说明球场仅供职业队使用对青少年的限制，说服市长改变现状。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

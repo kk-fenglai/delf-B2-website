@@ -16,7 +16,12 @@ const {
 } = require('../services/refreshTokens');
 const { revokeAllForUser } = require('../services/refreshTokens');
 const { requireAdmin, writeAdminLog, clientIp } = require('../middleware/admin');
-const { sendMail, renderAdmin2FAEmail, renderAdminPasswordChangedEmail } = require('../services/mailer');
+const {
+  sendMail,
+  getMailerMode,
+  renderAdmin2FAEmail,
+  renderAdminSelfPasswordChangedEmail,
+} = require('../services/mailer');
 
 const router = express.Router();
 
@@ -95,11 +100,13 @@ router.post('/login', async (req, res, next) => {
     });
 
     const pendingToken = signTwoFactorPendingToken({ userId: user.id });
+    const emailDelivery = getMailerMode() === 'smtp' ? 'smtp' : 'console';
     res.json({
       step: '2fa',
       pendingToken,
       message: `6 位验证码已发送至 ${user.email.replace(/(.{2}).*(@.*)/, '$1***$2')}`,
       expiresInMinutes: TWO_FA_TTL_MIN,
+      emailDelivery,
     });
   } catch (e) { next(e); }
 });
@@ -321,7 +328,7 @@ router.post('/change-password', requireAdmin, async (req, res, next) => {
 
     // Notify by email (best-effort)
     try {
-      const { subject, text, html } = renderAdminPasswordChangedEmail({ name: me.name, byAdmin: me.email });
+      const { subject, text, html } = renderAdminSelfPasswordChangedEmail({ name: me.name, email: me.email });
       await sendMail({ to: me.email, subject, text, html });
     } catch { /* ignore */ }
 

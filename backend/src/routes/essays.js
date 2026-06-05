@@ -75,11 +75,14 @@ function dayStart() {
 // POST /api/user/essays/ocr — upload a photo and extract plain text
 // Body: multipart/form-data with field "image"
 // Optional: lang = fr|en|zh|fra|eng|chi_sim|fra+eng
+//
+// Plan gate: AI_UNLIMITED only — Tesseract is CPU-bound and we cap usage to
+// the top-tier subscribers so OCR latency doesn't degrade for paying users.
 // -------------------------------------------------------------------------
 router.post(
   '/ocr',
   requireAuth,
-  requirePlan('STANDARD'),
+  requirePlan('AI_UNLIMITED'),
   ocrLimiter,
   ocrUpload.single('image'),
   async (req, res, next) => {
@@ -129,6 +132,7 @@ function serialiseEssay(row) {
     gradedAt: row.gradedAt,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
+    modelEssay: row.question?.modelEssay ?? null,
   };
 }
 
@@ -176,7 +180,10 @@ router.get('/quota', requireAuth, async (req, res, next) => {
 // -------------------------------------------------------------------------
 router.get('/:id', requireAuth, async (req, res, next) => {
   try {
-    const row = await prisma.essay.findUnique({ where: { id: req.params.id } });
+    const row = await prisma.essay.findUnique({
+      where: { id: req.params.id },
+      include: { question: { select: { modelEssay: true } } },
+    });
     if (!row || row.userId !== req.userId) {
       return res.status(404).json({ error: 'Essay not found' });
     }

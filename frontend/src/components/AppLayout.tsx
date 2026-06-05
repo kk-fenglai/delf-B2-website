@@ -34,6 +34,7 @@ export default function AppLayout() {
     items: [
       { key: 'dashboard', label: t('nav.dashboard'), onClick: () => navigate('/dashboard') },
       { key: 'orders', label: t('nav.orders'), onClick: () => navigate('/orders') },
+      { key: 'changePassword', label: t('nav.changePassword'), onClick: () => navigate('/change-password') },
       { key: 'logout', label: t('nav.logout'), onClick: () => { logout(); navigate('/'); } },
     ],
   };
@@ -71,7 +72,7 @@ export default function AppLayout() {
           </div>
         ) : (
           <div className="flex gap-2 ml-3">
-            <Button ghost onClick={() => navigate('/login')}>{t('nav.login')}</Button>
+            <Button onClick={() => navigate('/login')}>{t('nav.login')}</Button>
             <Button type="primary" onClick={() => navigate('/register')}>{t('nav.register')}</Button>
           </div>
         )}

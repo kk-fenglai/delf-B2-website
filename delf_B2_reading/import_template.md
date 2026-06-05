@@ -19,6 +19,7 @@ isFreePreview: false
   - `SINGLE/TRUE_FALSE`：至少 2 个选项，且**恰好 1 个**正确
   - `MULTIPLE`：至少 2 个选项，且**至少 1 个**正确
   - `FILL/ESSAY`：`options` 必须为空（不要写任何 `- A) ...`）
+- **主观问答题**（CE + ESSAY）：不写选项；用 `explanation:` 写评分要点，用 `modelEssay:` 写参考答案（均可选）。
 
 ---
 
@@ -65,6 +66,25 @@ options:
 - B) "..."
 - C) "..."
 - D) "..."
+
+### Q: 4
+skill: CE
+type: ESSAY
+points: 4
+prompt: "En vous appuyant sur le texte, expliquez pourquoi... (répondez en français, 40–60 mots)"
+explanation: "评分要点：需提及 X 和 Y 两个论据，语言通顺（可选，后台可见）"
+modelEssay: "参考答案示例：D'après le texte, ... （可选，后台可见）"
+
+### Q: 5
+skill: CE
+type: TRUE_FALSE_JUSTIFY
+points: 2
+prompt: "Il est scientifiquement établi que la pratique d'un instrument favorise les facultés d'apprentissage."
+answer: V
+explanation: "仅当 Vrai/Faux 和引文佐证均正确时方可得分（可选，后台可见）"
+options:
+- V) Vrai
+- F) Faux
 
 ---
 

@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Opéra ma non troppo : l'opéra au cinéma",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Philippe Herlin。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Opéra ma non troppo : l'opéra au cinéma »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Le Metropolitan Opera de New York a lancé la mode il y a six ans, avec succès : les projections d'opéras en direct dans les salles de cinéma ont trouvé un réel public. Bien sûr, rien ne remplace la présence dans une salle d'opéra, mais l'expérience n'est pas de moins bonne qualité : elle s'avère surtout différente. Le direct confère à l'événement l'excitation de la représentation. Le grand écran nous plonge au cœur de l'action. Les gros plans apportent un regard que même les spectateurs placés au premier rang ne peuvent découvrir. Les sensations sont bien présentes. À environ 28 euros la place, cela en vaut la peine : plus cher qu'une place de cinéma, mais moins qu'une place à l'opéra, ce prix attire un nouveau public. L'initiative est fondamentalement positive : des personnes qui n'avaient pas l'occasion de voir ces spectacles l'auront désormais. Tant mieux ! Mais ces diffusions ne doivent pas être un prétexte à la suppression des places financièrement accessibles dans les salles.\n* ma non troppo : en langage musical, littéralement « mais pas trop ».",
+      "explanation": "Document d'appui — source : Philippe Herlin. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Aimeriez-vous voir un opéra ou un concert au cinéma ?",
+          "expectedAngle": "个人意愿"
+        },
+        {
+          "order": 1,
+          "text": "Voir un spectacle sur écran, est-ce aussi bien qu'en vrai ?",
+          "expectedAngle": "对比"
+        },
+        {
+          "order": 2,
+          "text": "La culture est-elle assez accessible à tous, selon vous ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 3,
+          "text": "Comment rendre la culture moins chère pour tout le monde ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

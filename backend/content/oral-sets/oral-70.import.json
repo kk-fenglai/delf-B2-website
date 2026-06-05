@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Louer un ami local",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Le Figaro。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Louer un ami local »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Faire du tourisme dans une ville inconnue est toujours plus agréable en compagnie d'une personne qui en connaît tous les secrets. Mais comme ce n'est pas toujours possible, une jeune femme, Alice Moura, a eu l'idée de proposer les services d'« amis locaux ». Elle a donc créé un site Internet sur lequel vous pouvez louer un ami local ! Le coût varie selon les villes : 60 euros à Paris, 80 euros à Milan, 77 dollars à Rio de Janeiro et 90 dollars à San Francisco. Ce service fonctionne aujourd'hui dans 15 villes comme Paris, New York, Barcelone, Shanghai et New Delhi, grâce à 27 « amis locaux » qui parlent tous au moins une langue étrangère et proposent des circuits personnalisés. Pour « l'ami local », c'est un travail d'appoint*, mais cela ne fait vivre personne, souligne Alice Moura. « C'est bien plus pour se distraire que pour gagner de l'argent. » De fait, dans de nombreux cas, l'ami local est devenu un véritable ami, selon elle. Alors, dans ce cas, pourquoi le payer ?\n* travail d'appoint : travail qui permet de compléter un salaire.",
+      "explanation": "Document d'appui — source : Le Figaro. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Aimeriez-vous visiter une ville avec un « ami local » ?",
+          "expectedAngle": "个人意愿"
+        },
+        {
+          "order": 1,
+          "text": "Peut-on devenir vraiment ami avec quelqu'un qu'on paie ?",
+          "expectedAngle": "辩证"
+        },
+        {
+          "order": 2,
+          "text": "Comment préférez-vous découvrir une nouvelle ville ?",
+          "expectedAngle": "偏好"
+        },
+        {
+          "order": 3,
+          "text": "Que pensez-vous de ces nouveaux services sur Internet ?",
+          "expectedAngle": "观点"
+        }
+      ]
+    }
+  ]
+}

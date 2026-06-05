@@ -1,23 +1,31 @@
 import { useState } from 'react';
 import { Card, Form, Input, Button, Typography, Alert, Space, Steps } from 'antd';
 import { LockOutlined, MailOutlined, SafetyOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, type Location } from 'react-router-dom';
 import { useAdminAuth } from '../../stores/adminAuth';
 
 const { Title, Text } = Typography;
 
 export default function AdminLogin() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { loginStep1, loginStep2, loading, pendingToken, clearPending } = useAdminAuth();
   const [step, setStep] = useState<0 | 1>(pendingToken ? 1 : 0);
   const [twoFaMessage, setTwoFaMessage] = useState('');
+  const [emailDelivery, setEmailDelivery] = useState<'smtp' | 'console' | undefined>(undefined);
   const [error, setError] = useState('');
+
+  const redirectAfterLogin = (() => {
+    const from = (location.state as { from?: Location } | null)?.from?.pathname;
+    return from && from.startsWith('/admin') && from !== '/admin/login' ? from : '/admin';
+  })();
 
   const onPassword = async (v: { email: string; password: string }) => {
     setError('');
     try {
       const r = await loginStep1(v.email, v.password);
       setTwoFaMessage(r.message);
+      setEmailDelivery(r.emailDelivery);
       setStep(1);
     } catch (e: any) {
       setError(e.response?.data?.error || '登录失败');
@@ -28,7 +36,7 @@ export default function AdminLogin() {
     setError('');
     try {
       await loginStep2(v.code);
-      navigate('/admin');
+      navigate(redirectAfterLogin, { replace: true });
     } catch (e: any) {
       setError(e.response?.data?.error || '验证失败');
     }
@@ -67,15 +75,31 @@ export default function AdminLogin() {
             <Button type="primary" htmlType="submit" block size="large" loading={loading} danger>
               下一步
             </Button>
+            <div style={{ marginTop: 16, textAlign: 'center' }}>
+              <Link to="/admin/change-password">修改密码（需先登录）</Link>
+            </div>
           </Form>
         )}
 
         {step === 1 && (
           <Form layout="vertical" onFinish={onVerify} autoComplete="off">
+            {emailDelivery === 'console' && (
+              <Alert
+                type="warning"
+                showIcon
+                style={{ marginBottom: 16 }}
+                message="当前未通过 SMTP 发信，邮箱里不会有验证码"
+                description="请在运行后端服务的终端窗口查找以「📧」开头的日志，其中包含 6 位验证码。生产环境请在 backend/.env 配置 SMTP_HOST、SMTP_USER、SMTP_PASS 等变量。"
+              />
+            )}
             <Alert
               type="info" showIcon style={{ marginBottom: 16 }}
-              message={twoFaMessage || '验证码已发送到您的邮箱'}
-              description="请查收邮件并输入 6 位验证码，10 分钟内有效。"
+              message={emailDelivery === 'console'
+                ? '验证码已生成，请按上方说明在服务器日志中查看'
+                : (twoFaMessage || '验证码已发送到您的邮箱')}
+              description={emailDelivery === 'console'
+                ? '配置真实 SMTP 后，验证码会发到注册邮箱。'
+                : '请查收邮件并输入 6 位验证码，10 分钟内有效。'}
             />
             <Form.Item
               name="code" label="6 位验证码"

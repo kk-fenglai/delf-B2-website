@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { Card, Progress, Tag, Typography, Button, Alert, Divider, Space, message, Modal, Input } from 'antd';
-import { ReloadOutlined, RightOutlined, EditOutlined } from '@ant-design/icons';
+import { Card, Progress, Tag, Typography, Button, Alert, Divider, Space, message, Modal, Input, Collapse, Skeleton, Row, Col } from 'antd';
+import { ReloadOutlined, EditOutlined, BookOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import EssayInlineAnnotations from './EssayInlineAnnotations';
-import AIModelPicker from './AIModelPicker';
+import TemplateDrawer from './TemplateDrawer';
 import type {
   EssayGrade,
   EssayQuota,
@@ -16,20 +16,18 @@ import type {
 const { Title, Paragraph, Text } = Typography;
 
 const POLL_MS = 1000;
-const STUCK_WARN_MS = 12_000;   // "taking longer than usual" hint (typical p95 ~10s)
-const STUCK_TIMEOUT_MS = 25_000; // stop polling, show timeout error (covers 1 retry of slowest sub-call)
+const STUCK_WARN_MS = 20_000;   // "taking longer than usual" hint
+const STUCK_TIMEOUT_MS = 60_000; // stop polling after 60s — covers API slow days + 1 retry
 
 type Props = {
   essayId: string;
   initialStatus?: string;
-  // Pass through the question prompt so "too short" / "plan required" states
-  // can still show what the student was asked to write.
   questionPrompt?: string;
 };
 
 function localeTag(model: ClaudeModelKey | string | null) {
   if (!model) return '';
-  if (model === 'deepseek-chat') return 'DeepSeek V3';
+  if (model === 'deepseek-chat') return 'DeepSeek V4 Flash';
   if (model === 'qwen-turbo') return 'Qwen Turbo';
   if (model === 'qwen-plus') return 'Qwen Plus';
   // Legacy rows graded with Claude before the DeepSeek/Qwen switch.
@@ -48,6 +46,7 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
   const [rewriting, setRewriting] = useState(false);
   const [rewriteOpen, setRewriteOpen] = useState(false);
   const [rewriteContent, setRewriteContent] = useState('');
+  const [templateOpen, setTemplateOpen] = useState(false);
   const [elapsedMs, setElapsedMs] = useState(0);
   const pollTimer = useRef<number | null>(null);
   const pollStartRef = useRef<number | null>(null);
@@ -170,29 +169,113 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
 
   if (status === 'queued' || status === 'grading') {
     const slow = elapsedMs >= STUCK_WARN_MS;
+    const partialRubric: RubricDimension[] = essay.rubric || [];
+    const hasPartial = partialRubric.length > 0 || (essay.corrections?.length ?? 0) > 0 || !!essay.aiFeedback || (essay.strengths?.length ?? 0) > 0;
+
+    const gradingBanner = (
+      <div className="flex items-center gap-3 mb-4">
+        <Progress type="circle" percent={status === 'grading' ? 60 : 20} size={40} />
+        <div>
+          <Text strong>
+            {status === 'grading'
+              ? t('essay.grade.grading', { model: localeTag(essay.model) })
+              : t('essay.grade.queued')}
+          </Text>
+          <Text type="secondary" className="text-xs block">
+            {t('essay.grade.pollingHint')}
+            {elapsedMs > 0 && ` · ${Math.round(elapsedMs / 1000)}s`}
+          </Text>
+        </div>
+      </div>
+    );
+
+    if (!hasPartial) {
+      return (
+        <Card className="mb-3">
+          {gradingBanner}
+          {slow && <Alert type="warning" showIcon message={t('essay.grade.slowWarning')} />}
+        </Card>
+      );
+    }
+
+    // Partial results available — render what we have, skeleton for the rest.
+    const totalMax = quota?.thresholds.totalMax ?? 25;
+    const pct = essay.aiScore != null ? Math.round((essay.aiScore / totalMax) * 100) : null;
     return (
       <Card className="mb-3">
-        <div className="flex items-center gap-3">
-          <Progress type="circle" percent={status === 'grading' ? 60 : 20} size={48} />
-          <div>
-            <Title level={5} style={{ marginBottom: 0 }}>
-              {status === 'grading'
-                ? t('essay.grade.grading', { model: localeTag(essay.model) })
-                : t('essay.grade.queued')}
-            </Title>
-            <Text type="secondary" className="text-xs">
-              {t('essay.grade.pollingHint')}
-              {elapsedMs > 0 && ` · ${Math.round(elapsedMs / 1000)}s`}
-            </Text>
+        {gradingBanner}
+        <Divider className="!my-3" />
+        <div className="flex gap-6 flex-wrap items-start mb-4">
+          <div className="shrink-0">
+            {pct != null ? (
+              <Progress
+                type="circle"
+                percent={pct}
+                format={() => (
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-brand">{essay.aiScore}</div>
+                    <div className="text-xs text-gray-500">/ {totalMax}</div>
+                  </div>
+                )}
+                size={120}
+                strokeColor="#1A3A5C"
+              />
+            ) : (
+              <Skeleton.Avatar active size={120} shape="circle" />
+            )}
+          </div>
+          <div className="flex-1 min-w-0">
+            {partialRubric.length > 0 ? (
+              <>
+                <Title level={5} style={{ marginBottom: 8 }}>{t('essay.rubric.sectionTitle')}</Title>
+                <Collapse
+                  size="small"
+                  ghost
+                  items={partialRubric.map((d) => {
+                    const dimPct = Math.round((d.score / d.max) * 100);
+                    const barColor = d.score < d.max * 0.5 ? '#ff4d4f' : '#1A3A5C';
+                    return {
+                      key: d.key,
+                      label: (
+                        <div className="flex items-center gap-2 w-full pr-2">
+                          <span className="text-sm font-medium flex-1 min-w-0">{t(`essay.rubric.${d.key}`)}</span>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <div style={{ width: 72, height: 5, background: '#f0f0f0', borderRadius: 3, overflow: 'hidden' }}>
+                              <div style={{ width: `${dimPct}%`, height: '100%', background: barColor, borderRadius: 3 }} />
+                            </div>
+                            <span className="text-xs text-gray-500 w-9 text-right">{d.score}/{d.max}</span>
+                          </div>
+                        </div>
+                      ),
+                      children: <p className="text-xs text-gray-600 m-0 pl-1">{d.feedback}</p>,
+                    };
+                  })}
+                />
+              </>
+            ) : (
+              <Skeleton active paragraph={{ rows: 4 }} title={false} />
+            )}
           </div>
         </div>
-        {slow && (
-          <Alert
-            className="mt-3"
-            type="warning"
-            showIcon
-            message={t('essay.grade.slowWarning')}
-          />
+        {(essay.corrections?.length ?? 0) > 0 && essay.content && (
+          <>
+            <Divider className="!my-3" />
+            <EssayInlineAnnotations text={essay.content} corrections={essay.corrections!} />
+          </>
+        )}
+        {(essay.aiFeedback || (essay.strengths?.length ?? 0) > 0) && (
+          <>
+            <Divider className="!my-3" />
+            <Title level={5}>{t('essay.grade.summaryTitle')}</Title>
+            {(essay.strengths?.length ?? 0) > 0 && (
+              <ul className="list-disc pl-5 text-sm text-gray-700 mb-2">
+                {essay.strengths!.map((s, i) => <li key={i}>{s}</li>)}
+              </ul>
+            )}
+            {essay.aiFeedback && (
+              <Paragraph className="mb-0 text-sm text-gray-600">{essay.aiFeedback}</Paragraph>
+            )}
+          </>
         )}
       </Card>
     );
@@ -238,18 +321,10 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
           </summary>
           <pre className="whitespace-pre-wrap text-sm mt-2">{essay.content}</pre>
         </details>
-        {canRetry && quota && (
-          <div>
-            <AIModelPicker
-              allowedModels={quota.allowedModels}
-              models={quota.models}
-              defaultModel={quota.defaultModel}
-              value={regradeModel}
-              onChange={setRegradeModel}
-            />
+        {canRetry && (
+          <Space wrap>
             <Button
               type="primary"
-              className="mt-3"
               loading={regrading}
               onClick={onRegrade}
               icon={<ReloadOutlined />}
@@ -258,12 +333,11 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
             </Button>
             <Button
               icon={<EditOutlined />}
-              className="mt-2 ml-2"
               onClick={() => { setRewriteContent(essay.content); setRewriteOpen(true); }}
             >
               {t('essay.rewrite.button')}
             </Button>
-          </div>
+          </Space>
         )}
         {reason.startsWith('PLAN_UPGRADE_REQUIRED') && (
           <Link to="/pricing">
@@ -311,105 +385,122 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
         </Space>
       </div>
 
-      <div className="flex items-center gap-6 flex-wrap mb-4">
-        <Progress
-          type="circle"
-          percent={pct}
-          format={() => (
-            <div className="text-center">
-              <div className="text-2xl font-bold text-brand">{essay.aiScore}</div>
-              <div className="text-xs text-gray-500">/ {totalMax}</div>
-            </div>
-          )}
-          size={120}
-          strokeColor="#1A3A5C"
-        />
-        <div className="flex-1 min-w-[220px]">
-          <Text type="secondary" className="text-xs block mb-1">
-            {t('essay.grade.totalScore')}
-          </Text>
-          <Paragraph className="mb-0 text-sm">{essay.aiFeedback}</Paragraph>
+      <div className="flex gap-6 flex-wrap items-start mb-4">
+        <div className="shrink-0">
+          <Progress
+            type="circle"
+            percent={pct}
+            format={() => (
+              <div className="text-center">
+                <div className="text-2xl font-bold text-brand">{essay.aiScore}</div>
+                <div className="text-xs text-gray-500">/ {totalMax}</div>
+              </div>
+            )}
+            size={120}
+            strokeColor="#1A3A5C"
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <Title level={5} style={{ marginBottom: 8 }}>{t('essay.rubric.sectionTitle')}</Title>
+          <Collapse
+            size="small"
+            ghost
+            items={rubric.map((d) => {
+              const dimPct = Math.round((d.score / d.max) * 100);
+              const barColor = d.score < d.max * 0.5 ? '#ff4d4f' : '#1A3A5C';
+              return {
+                key: d.key,
+                label: (
+                  <div className="flex items-center gap-2 w-full pr-2">
+                    <span className="text-sm font-medium flex-1 min-w-0">{t(`essay.rubric.${d.key}`)}</span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <div style={{ width: 72, height: 5, background: '#f0f0f0', borderRadius: 3, overflow: 'hidden' }}>
+                        <div style={{ width: `${dimPct}%`, height: '100%', background: barColor, borderRadius: 3 }} />
+                      </div>
+                      <span className="text-xs text-gray-500 w-9 text-right">{d.score}/{d.max}</span>
+                    </div>
+                  </div>
+                ),
+                children: <p className="text-xs text-gray-600 m-0 pl-1">{d.feedback}</p>,
+              };
+            })}
+          />
         </div>
       </div>
 
-      <Divider className="!my-3" />
-
-      <Title level={5}>{t('essay.grade.title')}</Title>
-      <div className="space-y-2">
-        {rubric.map((d) => (
-          <div key={d.key}>
-            <div className="flex justify-between text-sm">
-              <span className="font-medium">{t(`essay.rubric.${d.key}`)}</span>
-              <span className="text-gray-600">
-                {d.score} / {d.max}
-              </span>
-            </div>
-            <Progress
-              percent={Math.round((d.score / d.max) * 100)}
-              strokeColor={d.score < d.max * 0.5 ? '#ff4d4f' : '#1A3A5C'}
-              showInfo={false}
-              size="small"
-            />
-            <div className="text-xs text-gray-500 mt-0.5">{d.feedback}</div>
-          </div>
-        ))}
-      </div>
-
-      {(essay.strengths?.length ?? 0) > 0 && (
+      {((essay.corrections?.length ?? 0) > 0 || !!essay.modelEssay) && (
         <>
           <Divider className="!my-3" />
-          <Title level={5}>{t('essay.grade.strengths')}</Title>
-          <ul className="list-disc pl-5 text-sm text-gray-700">
-            {essay.strengths!.map((s, i) => (
-              <li key={i}>{s}</li>
-            ))}
-          </ul>
+          {essay.modelEssay ? (
+            <>
+              <Title level={5}>{t('essay.grade.modelEssayTitle')}</Title>
+              <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                  <div className="text-sm font-medium text-gray-700 mb-2">{t('essay.grade.myEssay')}</div>
+                  <EssayInlineAnnotations text={essay.content} corrections={essay.corrections ?? []} />
+                </Col>
+                <Col xs={24} md={12}>
+                  <div className="text-sm font-medium text-gray-700 mb-2">{t('essay.grade.modelEssayLabel')}</div>
+                  <div className="whitespace-pre-wrap text-sm leading-relaxed bg-gray-50 rounded p-3">
+                    {essay.modelEssay.replace(/\\n/g, '\n')}
+                  </div>
+                </Col>
+              </Row>
+            </>
+          ) : (
+            <>
+              <Title level={5}>{t('essay.grade.annotationsTitle')}</Title>
+              <EssayInlineAnnotations text={essay.content} corrections={essay.corrections!} />
+            </>
+          )}
         </>
       )}
 
-      {(essay.corrections?.length ?? 0) > 0 && (
+      {(essay.aiFeedback || (essay.strengths?.length ?? 0) > 0) && (
         <>
           <Divider className="!my-3" />
-          <Title level={5}>{t('essay.grade.annotationsTitle')}</Title>
-          <EssayInlineAnnotations text={essay.content} corrections={essay.corrections!} />
+          <Title level={5}>{t('essay.grade.summaryTitle')}</Title>
+          {(essay.strengths?.length ?? 0) > 0 && (
+            <ul className="list-disc pl-5 text-sm text-gray-700 mb-2">
+              {essay.strengths!.map((s, i) => <li key={i}>{s}</li>)}
+            </ul>
+          )}
+          {essay.aiFeedback && (
+            <Paragraph className="mb-0 text-sm text-gray-600">{essay.aiFeedback}</Paragraph>
+          )}
         </>
       )}
 
-      {quota && quota.allowedModels.length > 1 && (
-        <>
-          <Divider className="!my-3" />
-          <AIModelPicker
-            allowedModels={quota.allowedModels}
-            models={quota.models}
-            defaultModel={quota.defaultModel}
-            value={regradeModel}
-            onChange={setRegradeModel}
-          />
-          <Button
-            type="default"
-            className="mt-3"
-            loading={regrading}
-            disabled={!regradeModel || regradeModel === essay.model}
-            onClick={onRegrade}
-            icon={<RightOutlined />}
-          >
-            {regradeModel && regradeModel !== essay.model
-              ? t('essay.grade.regradeWith', { model: localeTag(regradeModel) })
-              : t('essay.grade.regrade')}
-          </Button>
-        </>
-      )}
       {quota && quota.allowedModels.length > 0 && (
         <>
           <Divider className="!my-3" />
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => { setRewriteContent(essay.content); setRewriteOpen(true); }}
-          >
-            {t('essay.rewrite.button')}
-          </Button>
+          <Space wrap>
+            <Button
+              loading={regrading}
+              onClick={onRegrade}
+              icon={<ReloadOutlined />}
+            >
+              {t('essay.grade.regrade')}
+            </Button>
+            <Button
+              icon={<EditOutlined />}
+              onClick={() => { setRewriteContent(essay.content); setRewriteOpen(true); }}
+            >
+              {t('essay.rewrite.button')}
+            </Button>
+          </Space>
         </>
       )}
+      <Divider className="!my-3" />
+      <Button
+        size="large"
+        icon={<BookOutlined />}
+        onClick={() => setTemplateOpen(true)}
+        block
+      >
+        {t('essay.grade.myTemplates')}
+      </Button>
+      <TemplateDrawer open={templateOpen} onClose={() => setTemplateOpen(false)} />
       <Modal
         open={rewriteOpen}
         title={t('essay.rewrite.modalTitle')}

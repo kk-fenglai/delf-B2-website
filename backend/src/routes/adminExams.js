@@ -30,19 +30,31 @@ function logAction(req, { action, targetType, targetId, payload }) {
 const AUDIO_DIR = path.join(__dirname, '..', '..', 'content', 'fei-samples');
 if (!fs.existsSync(AUDIO_DIR)) fs.mkdirSync(AUDIO_DIR, { recursive: true });
 
+// Defense in depth: both the file extension AND the mimetype must be in our
+// allowlist. Browsers / curl can spoof either one, but requiring both
+// narrows what an attacker can drop into the static dir.
+const ALLOWED_AUDIO_EXTS = new Set(['.mp3', '.m4a', '.mp4', '.ogg', '.oga', '.wav', '.webm', '.aac']);
+const ALLOWED_AUDIO_MIME = /^audio\/(mpeg|mp3|mp4|x-m4a|m4a|aac|ogg|wav|x-wav|wave|webm)$/i;
+
 const audioUpload = multer({
   storage: multer.diskStorage({
     destination: (_req, _file, cb) => cb(null, AUDIO_DIR),
     filename: (_req, file, cb) => {
-      const ext = path.extname(file.originalname || '.mp3').toLowerCase() || '.mp3';
+      const rawExt = path.extname(file.originalname || '').toLowerCase();
+      const ext = ALLOWED_AUDIO_EXTS.has(rawExt) ? rawExt : '.mp3';
       const id = crypto.randomBytes(8).toString('hex');
       cb(null, `${Date.now()}-${id}${ext}`);
     },
   }),
   limits: { fileSize: 15 * 1024 * 1024 }, // 15MB — enough for 10-min DELF audio
   fileFilter: (_req, file, cb) => {
-    const ok = /audio\/(mpeg|mp3|mp4|ogg|wav|webm)/i.test(file.mimetype);
-    cb(ok ? null : new Error('Only audio files are allowed'), ok);
+    const ext = path.extname(file.originalname || '').toLowerCase();
+    const okExt = ALLOWED_AUDIO_EXTS.has(ext);
+    const okMime = ALLOWED_AUDIO_MIME.test(file.mimetype || '');
+    if (!okExt || !okMime) {
+      return cb(new Error(`Unsupported audio file (ext=${ext || 'none'}, mime=${file.mimetype || 'none'})`), false);
+    }
+    cb(null, true);
   },
 });
 
@@ -50,7 +62,7 @@ const audioUpload = multer({
 // Validation schemas
 // ---------------------------------------------------------------------
 const VALID_SKILLS = ['CO', 'CE', 'PE', 'PO'];
-const VALID_TYPES = ['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'FILL', 'ESSAY', 'SPEAKING'];
+const VALID_TYPES = ['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'TRUE_FALSE_JUSTIFY', 'FILL', 'ESSAY', 'SPEAKING'];
 
 const optionSchema = z.object({
   label: z.string().min(1).max(4),
@@ -73,7 +85,12 @@ const questionSchema = z.object({
   prompt: z.string().min(1),
   passage: z.string().optional().nullable(),
   audioUrl: z.string().optional().nullable(),
+  // CO-only: link this question to a shared AudioDocument so the runner can
+  // enforce play rules at document granularity. Optional during import; admin
+  // UI sets it after creating the AudioDocument.
+  audioDocumentId: z.string().optional().nullable(),
   explanation: z.string().optional().nullable(),
+  modelEssay: z.string().optional().nullable(),
   points: z.number().int().min(1).max(25).default(1),
   options: z.array(optionSchema).default([]),
   // SPEAKING-only: follow-up débat questions read by SpeakingExam Partie 2.
@@ -97,9 +114,9 @@ const bulkImportSchema = examSetSchema.extend({
 // Returns null on success, or a string error.
 function validateQuestionShape(q) {
   const correctCount = q.options.filter((o) => o.isCorrect).length;
-  if (q.type === 'SINGLE' || q.type === 'TRUE_FALSE') {
-    if (q.options.length < 2) return 'SINGLE/TRUE_FALSE needs ≥2 options';
-    if (correctCount !== 1) return 'SINGLE/TRUE_FALSE needs exactly 1 correct option';
+  if (q.type === 'SINGLE' || q.type === 'TRUE_FALSE' || q.type === 'TRUE_FALSE_JUSTIFY') {
+    if (q.options.length < 2) return 'SINGLE/TRUE_FALSE/TRUE_FALSE_JUSTIFY needs ≥2 options';
+    if (correctCount !== 1) return 'SINGLE/TRUE_FALSE/TRUE_FALSE_JUSTIFY needs exactly 1 correct option';
   }
   if (q.type === 'MULTIPLE') {
     if (q.options.length < 2) return 'MULTIPLE needs ≥2 options';
@@ -173,12 +190,90 @@ router.get('/:id', async (req, res, next) => {
             followUps: { orderBy: { order: 'asc' } },
           },
         },
+        audioDocuments: { orderBy: { order: 'asc' } },
       },
     });
     if (!set) return res.status(404).json({ error: 'Exam set not found' });
     res.json({ set });
   } catch (e) { next(e); }
 });
+
+// ---------------------------------------------------------------------
+// AudioDocument CRUD — listening uses these to group questions under a
+// shared audio with DELF play rules (maxPlays, prepSeconds, gapSeconds).
+// ---------------------------------------------------------------------
+const audioDocumentSchema = z.object({
+  order: z.number().int().min(0).default(0),
+  title: z.string().max(200).optional().nullable(),
+  audioUrl: z.string().optional().nullable(),
+  maxPlays: z.number().int().min(1).max(3).default(2),
+  prepSeconds: z.number().int().min(0).max(600).default(60),
+  gapSeconds: z.number().int().min(0).max(600).default(180),
+  answerSeconds: z.number().int().min(0).max(900).default(0),
+});
+
+// POST /api/admin/exams/:id/audio-documents
+router.post('/:id/audio-documents', async (req, res, next) => {
+  try {
+    const data = audioDocumentSchema.parse(req.body);
+    const doc = await prisma.audioDocument.create({
+      data: { ...data, examSetId: req.params.id },
+    });
+    await logAction(req, {
+      action: 'AUDIO_DOCUMENT_CREATE', targetType: 'EXAM', targetId: req.params.id,
+      payload: { docId: doc.id },
+    });
+    res.status(201).json({ document: doc });
+  } catch (e) { next(e); }
+});
+
+// PUT /api/admin/exams/audio-documents/:docId
+router.put('/audio-documents/:docId', async (req, res, next) => {
+  try {
+    const data = audioDocumentSchema.partial().parse(req.body);
+    const doc = await prisma.audioDocument.update({
+      where: { id: req.params.docId },
+      data,
+    });
+    await logAction(req, {
+      action: 'AUDIO_DOCUMENT_UPDATE', targetType: 'EXAM', targetId: req.params.docId,
+    });
+    res.json({ document: doc });
+  } catch (e) { next(e); }
+});
+
+// DELETE /api/admin/exams/audio-documents/:docId
+router.delete('/audio-documents/:docId', async (req, res, next) => {
+  try {
+    await prisma.audioDocument.delete({ where: { id: req.params.docId } });
+    await logAction(req, {
+      action: 'AUDIO_DOCUMENT_DELETE', targetType: 'EXAM', targetId: req.params.docId,
+    });
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+// POST /api/admin/exams/audio-documents/:docId/audio — upload MP3/WAV and
+// wire its audioUrl onto the document.
+router.post(
+  '/audio-documents/:docId/audio',
+  audioUpload.single('audio'),
+  async (req, res, next) => {
+    try {
+      if (!req.file) return res.status(400).json({ error: 'No audio file' });
+      const audioUrl = `/api/audio/fei/${req.file.filename}`;
+      const updated = await prisma.audioDocument.update({
+        where: { id: req.params.docId },
+        data: { audioUrl },
+      });
+      await logAction(req, {
+        action: 'AUDIO_DOCUMENT_UPLOAD', targetType: 'EXAM', targetId: req.params.docId,
+        payload: { filename: req.file.filename, size: req.file.size },
+      });
+      res.json({ document: updated, audioUrl });
+    } catch (e) { next(e); }
+  }
+);
 
 // ---------------------------------------------------------------------
 // POST /api/admin/exams — create new exam set (draft by default)
@@ -215,7 +310,14 @@ router.put('/:id', async (req, res, next) => {
 // ---------------------------------------------------------------------
 router.delete('/:id', async (req, res, next) => {
   try {
-    await prisma.examSet.delete({ where: { id: req.params.id } });
+    // ExamSession.examSet has no DB-level cascade, so a set that has ever been
+    // practised is blocked by a foreign-key restriction. Clear its sessions
+    // first (UserAttempt.sessionId is SetNull, so attempts are preserved), then
+    // delete the set — questions/options/follow-ups cascade automatically.
+    await prisma.$transaction([
+      prisma.examSession.deleteMany({ where: { examSetId: req.params.id } }),
+      prisma.examSet.delete({ where: { id: req.params.id } }),
+    ]);
     await logAction(req, { action: 'EXAM_DELETE', targetType: 'EXAM', targetId: req.params.id });
     res.json({ ok: true });
   } catch (e) { next(e); }
@@ -246,7 +348,9 @@ router.post('/:id/questions', async (req, res, next) => {
         prompt: data.prompt,
         passage: data.passage || null,
         audioUrl: data.audioUrl || null,
+        audioDocumentId: data.audioDocumentId || null,
         explanation: data.explanation || null,
+        modelEssay: data.modelEssay || null,
         points: data.points,
         options: {
           create: data.options.map((o, i) => ({
@@ -297,7 +401,9 @@ router.put('/questions/:qid', async (req, res, next) => {
           prompt: data.prompt,
           passage: data.passage || null,
           audioUrl: data.audioUrl || null,
+          audioDocumentId: data.audioDocumentId || null,
           explanation: data.explanation || null,
+          modelEssay: data.modelEssay || null,
           points: data.points,
           options: {
             create: data.options.map((o, i) => ({
@@ -396,6 +502,7 @@ router.post('/import', async (req, res, next) => {
             passage: q.passage || null,
             audioUrl: q.audioUrl || null,
             explanation: q.explanation || null,
+            modelEssay: q.modelEssay || null,
             points: q.points,
             options: {
               create: q.options.map((o, j) => ({

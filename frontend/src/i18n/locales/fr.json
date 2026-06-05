@@ -13,6 +13,7 @@
     "orders": "Mes commandes",
     "login": "Se connecter",
     "register": "S'inscrire",
+    "changePassword": "Changer le mot de passe",
     "logout": "Déconnexion"
   },
   "plan": {
@@ -58,6 +59,17 @@
     "toRegister": "Pas de compte ? Inscrivez-vous",
     "toLogin": "Déjà un compte ? Connectez-vous",
     "forgotPassword": "Mot de passe oublié ?",
+    "changePassword": {
+      "fromLogin": "Changer le mot de passe",
+      "title": "Changer le mot de passe",
+      "subtitle": "Toutes les sessions seront révoquées ; vous devrez vous reconnecter.",
+      "oldPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "submit": "Enregistrer",
+      "success": "Mot de passe mis à jour. Veuillez vous reconnecter.",
+      "fail": "Échec du changement de mot de passe"
+    },
     "useAdminLogin": "Les comptes administrateurs doivent se connecter via la console admin",
     "loginSuccess": "Connexion réussie",
     "loginFail": "Échec de la connexion",
@@ -160,6 +172,26 @@
     "submit": "Soumettre",
     "submitFail": "Échec de l'envoi",
     "audioNotSupported": "Votre navigateur ne prend pas en charge la lecture audio",
+    "audioNotUploaded": "L'audio de cette question n'est pas encore disponible — veuillez contacter l'administrateur.",
+    "audioPlays": "Lectures {{used}} / {{max}}",
+    "audioPlaysUnlimited": "Lectures illimitées",
+    "audioPlayLimitReached": "Vous avez atteint le nombre maximal de lectures pour cet extrait.",
+    "audioPlay": "Lire",
+    "audioPause": "Pause",
+    "audioSpeed": "Vitesse",
+    "coDocLabel": "Document {{n}} / {{total}}",
+    "coPhaseDone": "Compréhension orale terminée",
+    "coNextDoc": "Document suivant",
+    "coFinish": "Terminer la compréhension orale",
+    "coNoTimeLimit": "Sans limite de temps",
+    "coPhasePrep": "Temps de lecture — parcourez les questions avant le début de l'enregistrement",
+    "coPhasePlay": "En cours de lecture — écoutez attentivement",
+    "coPhaseGap": "Pause entre les deux écoutes — commencez à répondre",
+    "coPhaseAnswer": "Temps de réponse — finalisez vos réponses pour ce document",
+    "coCountdown": "Prochaine étape dans {{sec}} s",
+    "coAutoNextDoc": "Le document {{n}} est terminé. Le suivant démarre automatiquement.",
+    "coCannotEditYet": "Vous pourrez répondre une fois l'audio diffusé.",
+    "coDocPlaysRule": "Lu {{n}} fois",
     "fillPlaceholder": "Saisir votre réponse",
     "essayPlaceholder": "Rédigez votre essai ici (250 mots minimum)...",
     "essayAITip": "💡 La rédaction n'est pas corrigée automatiquement en MVP. Passez au plan IA pour la correction IA.",
@@ -167,6 +199,14 @@
     "loadFail": "Échec du chargement",
     "blockedTitle": "Abonnement requis",
     "blockedCta": "Voir les tarifs",
+    "ocr": {
+      "uploadBtn": "Photo (OCR)",
+      "unsupportedType": "Seuls les formats PNG/JPG/WEBP sont acceptés",
+      "tooLarge": "Image trop volumineuse (max {{maxMb}}Mo)",
+      "noText": "Aucun texte détecté. Réessayez avec une photo plus nette.",
+      "success": "Texte reconnu — inséré dans l'éditeur",
+      "fail": "Échec de l'OCR"
+    },
     "notFound": "Sujet introuvable",
     "points": "pts",
     "mockBadge": "Examen blanc complet",
@@ -176,6 +216,7 @@
     "progressLabel": "Répondues : {{done}} / {{total}}",
     "passCriteriaTitle": "Critères de réussite DELF B2",
     "passCriteriaInline": "Total ≥ {{total}}/100 · chaque épreuve ≥ {{skillMin}}/{{skillMax}} · durée {{duration}} min",
+    "passCriteriaInlineNoTime": "Total ≥ {{total}}/100 · chaque épreuve ≥ {{skillMin}}/{{skillMax}} · sans limite de temps",
     "passTotal": "Score total ≥ {{min}}/100",
     "passPerSkill": "Chacune des 4 épreuves ≥ {{min}}/{{max}}",
     "confirmTitle": "Soumettre votre examen ?",
@@ -186,6 +227,7 @@
     "fiveMinSectionWarning": "⏰ 5 minutes restantes dans cette section — vous ne pourrez plus y revenir.",
     "sectionTimeUp": "Temps écoulé pour cette section — passage à la suivante.",
     "sectionBanner": "Section {{idx}} sur {{total}} : {{skill}} · {{minutes}} min",
+    "sectionBannerNoTime": "Section {{idx}} sur {{total}} : {{skill}} · sans limite de temps",
     "advanceSection": "Terminer la section",
     "advanceTitle": "Terminer cette section ?",
     "advanceAnswered": "Vous avez répondu à {{done}} question(s) sur {{total}} dans cette section.",
@@ -193,6 +235,14 @@
     "advanceNext": "Section suivante : {{skill}} · {{minutes}} minutes.",
     "advanceOk": "Passer à la section suivante",
     "advanceCancel": "Rester sur cette section"
+  },
+  "freeQuota": {
+    "exceeded": {
+      "CE": "Vous avez utilisé vos {{cap}} séries gratuites de compréhension écrite ce mois-ci. Passez à Standard pour la pratique illimitée.",
+      "CO": "Vous avez utilisé vos {{cap}} séries gratuites de compréhension orale ce mois-ci. Passez à Standard pour la pratique illimitée.",
+      "MOCK": "Vous avez utilisé vos {{cap}} examens blancs gratuits ce mois-ci. Passez à Standard pour des examens blancs illimités.",
+      "generic": "Quota gratuit mensuel atteint. Passez à un forfait pour la pratique illimitée."
+    }
   },
   "review": {
     "title": "Résultats",
@@ -244,7 +294,7 @@
     "title": "Choisissez votre formule",
     "subtitle": "WeChat Pay / Alipay · Annulable à tout moment · Remboursement sous 7 jours",
     "popular": "Le plus choisi",
-    "paymentNote": "💳 Le paiement sera activé après le lancement du MVP (WeChat Pay / Alipay / Stripe)",
+    "paymentNote": "💳 Paiement sécurisé par Stripe (cartes · WeChat Pay · Alipay)",
     "plans": {
       "free": {
         "name": "Gratuit",
@@ -252,47 +302,42 @@
         "period": "",
         "cta": "Inscription gratuite",
         "features": [
-          "5 sessions complètes par mois",
-          "Compréhension orale et écrite de base",
-          "Vérification de base des réponses"
+          "3 séries de compréhension écrite / mois",
+          "3 séries de compréhension orale / mois",
+          "2 examens blancs complets / mois",
+          "Carnet d'erreurs (base)"
         ]
       },
       "standard": {
         "name": "Standard",
-        "price": "4,90 €",
-        "period": "/mois ou 29 €/an",
         "cta": "Choisir Standard",
         "features": [
-          "Entraînement illimité",
-          "Banque complète de sujets",
-          "Les 4 compétences (CO/CE/PE/PO)",
-          "Examens blancs + rapport PDF",
-          "Carnet d'erreurs & rapports"
+          "Compréhension écrite & orale illimitées",
+          "Examens blancs complets illimités",
+          "Correction IA de rédaction (5/mois)",
+          "Évaluation IA de l'oral (3/mois)",
+          "Carnet d'erreurs complet"
         ]
       },
       "ai": {
         "name": "IA",
-        "price": "9,90 €",
-        "period": "/mois ou 69 €/an",
         "cta": "Choisir IA",
         "features": [
           "Toutes les fonctions Standard",
-          "Correction IA de rédaction (50/mois)",
-          "Assistant d'étude IA",
-          "Parcours personnalisé",
-          "Évaluation orale IA (bientôt)"
+          "Correction IA de rédaction (30/mois)",
+          "Évaluation IA de l'oral (15/mois)",
+          "Modèles de rédaction personnalisés (3)"
         ]
       },
       "ai_unlimited": {
         "name": "IA Illimité",
-        "price": "14,90 €",
-        "period": "/mois ou 99 €/an",
         "cta": "Choisir Illimité",
         "features": [
           "Toutes les fonctions IA",
-          "Correction IA illimitée",
-          "Plan d'étude IA",
-          "Rapport diagnostique IA",
+          "Correction IA de rédaction illimitée (limite 30/jour)",
+          "Évaluation IA de l'oral illimitée (limite 15/jour)",
+          "Modèles de rédaction illimités",
+          "Upload OCR pour rédactions manuscrites",
           "Accès anticipé aux nouveautés"
         ]
       }
@@ -301,7 +346,7 @@
       "label": "Modèles IA de correction",
       "none": "—",
       "haiku": "Qwen Turbo (rapide)",
-      "sonnet": "DeepSeek Chat (équilibré)",
+      "sonnet": "DeepSeek V4 Flash (équilibré)",
       "opus": "Qwen Plus (précis)"
     },
     "checkout": {
@@ -367,9 +412,17 @@
       "errRateLimited": "Trop de requêtes — patientez un instant et réessayez.",
       "errBadRequest": "La requête de correction a été rejetée. Contactez l'administrateur.",
       "errCallFailed": "Problème de réseau ou de connexion. Veuillez réessayer.",
-      "errTimeout": "Délai de correction dépassé (>25s). Relancez ou modifiez la rédaction et soumettez à nouveau."
+      "errTimeout": "Délai de correction dépassé (>25s). Relancez ou modifiez la rédaction et soumettez à nouveau.",
+      "modelEssay": "Voir la copie modèle",
+      "modelEssayTitle": "Copie modèle",
+      "modelEssayClose": "Fermer",
+      "myEssay": "Mon texte",
+      "modelEssayLabel": "Texte modèle",
+      "myTemplates": "Mes modèles",
+      "summaryTitle": "Synthèse"
     },
     "rubric": {
+      "sectionTitle": "Détail des scores",
       "consigne": "Respect de la consigne",
       "sociolinguistique": "Correction sociolinguistique",
       "faits": "Présenter des faits",
@@ -413,6 +466,33 @@
       "placeholder": "Modifiez votre rédaction ici…",
       "wordCount": "Nombre de mots : {{count}}"
     }
+  },
+  "template": {
+    "drawerTitle": "Mes modèles",
+    "quotaUsed": "{{used}} / {{cap}} utilisés",
+    "quotaUnlimited": "Illimité",
+    "quotaExceeded": "Limite du forfait atteinte. Passez à un forfait supérieur.",
+    "upgradeAlert": "Les modèles personnalisés sont une fonction du forfait IA. Passez à IA pour enregistrer vos propres phrases et structures.",
+    "new": "Nouveau",
+    "systemTab": "Modèles officiels",
+    "phraseTab": "Banque de phrases",
+    "structureTab": "Structures",
+    "empty": "Aucun modèle — cliquez sur « Nouveau » pour en créer un",
+    "insert": "Insérer",
+    "inserted": "Inséré dans la rédaction",
+    "editTitle": "Modifier le modèle",
+    "createTitle": "Nouveau modèle",
+    "typeLabel": "Type",
+    "titleLabel": "Titre",
+    "titlePlaceholder": "ex. : Tournures d'argumentation / Plan d'introduction",
+    "contentLabel": "Contenu",
+    "contentPlaceholder": "Saisissez une phrase courante ou un plan de rédaction…",
+    "save": "Enregistrer",
+    "saveError": "Échec de l'enregistrement",
+    "deleteError": "Échec de la suppression",
+    "confirmDelete": "Supprimer ce modèle ?",
+    "confirmYes": "Supprimer",
+    "confirmNo": "Annuler"
   },
   "orders": {
     "title": "Mes commandes",
@@ -486,6 +566,7 @@
       "monologueTitle": "Partie 1 · Monologue suivi",
       "monologueHint": "Présentez votre point de vue de manière développée et argumentée. Vous disposez de {{sec}} secondes maximum.",
       "yourNotes": "Vos notes",
+      "notesEmpty": "(aucune note prise pendant la préparation)",
       "debatTitle": "Partie 2 · Exercice en interaction",
       "debatHint": "Le jury vous pose une question. Répondez en {{sec}} secondes maximum, défendez votre position.",
       "examinerQuestion": "Question du jury",
@@ -495,6 +576,8 @@
       "submitting": "Envoi à l'évaluateur…",
       "submittingDesc": "Transcription puis notation IA en cours. Vous serez redirigé vers la page de résultat.",
       "submitFailed": "Échec de l'envoi. Vérifiez votre connexion et réessayez.",
+      "missingMonologue": "Le monologue n'a pas été enregistré — veuillez l'enregistrer avant de soumettre.",
+      "missingFollowUp": "La question {{n}} de l'entretien n'a pas été enregistrée — veuillez l'enregistrer avant de soumettre.",
       "retrySubmit": "Réessayer",
       "quotaUsed": "Cycles ce mois-ci",
       "upgradeRequired": "Plan AI requis",
@@ -552,6 +635,9 @@
       "segments": "segments",
       "segMonologue": "Monologue",
       "segFollowUp": "Réponse {{n}}",
+      "segNotRecorded": "(non enregistré)",
+      "loadingAudio": "Chargement de l'enregistrement…",
+      "playbackError": "Échec du chargement de l'enregistrement",
       "regrade": "Re-noter",
       "regradeWith": "Re-noter avec {{model}}",
       "retry": "Réessayer",
@@ -578,8 +664,27 @@
     "tabs": {
       "overview": "Aperçu",
       "catalog": "Produits & tarifs",
+      "pricingReview": "Revue des tarifs",
       "orders": "Commandes",
       "contracts": "Abonnements"
+    },
+    "pricingReview": {
+      "title": "Revue des tarifs (taux en direct)",
+      "refresh": "Actualiser",
+      "monthly": "Mensuel",
+      "cached": "en cache",
+      "fxLine": "Taux ({{date}}) : 1 USD = ¥{{cny}} CNY / €{{eur}} EUR · source : frankfurter.app (BCE)",
+      "col": {
+        "months": "Cycle",
+        "currency": "Devise",
+        "listed": "Prix affiché",
+        "usdEquivalent": "Équivalent USD",
+        "usdAnchor": "Ancrage USD",
+        "usdAnchorTip": "Le prix USD du même forfait + cycle, utilisé comme référence",
+        "deviation": "Écart",
+        "deviationTip": "Prix local converti en USD au taux du jour, comparé à l'ancrage USD. ≥{{warn}}% orange, ≥{{alert}}% rouge",
+        "priceCode": "Code prix"
+      }
     },
     "common": {
       "refresh": "Actualiser",

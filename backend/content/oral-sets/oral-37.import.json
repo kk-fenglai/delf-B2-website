@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · L'école inversée",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : internetactu.blog.lemonde.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« L'école inversée »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Dans le mouvement dit de « l'école inversée », les enseignants enregistrent leurs cours en vidéo et les élèves les regardent sur leur smartphone ou chez eux. Surtout, ils les regardent plusieurs fois sans avoir peur de passer pour des imbéciles. Et puis, la classe devient un lieu d'activité, dans un rapport direct entre l'enseignant et les élèves. Ce qui permet aux enseignants d'identifier beaucoup plus vite ceux qui n'ont pas compris. Évidemment, il y aurait, dans le détail, beaucoup à discuter dans cette « école inversée » qui exige des enseignants plus de créativité et d'énergie ; mais il y a quelque chose de très intéressant du point de vue de l'usage des technologies : d'un côté, on pousse jusqu'au bout la logique de leur place dans la vie des élèves ; mais ce renversement produit, paradoxalement, une disparition de la technologie en classe. La classe devient alors le lieu de la parole, des questions, du dialogue. C'est comme si l'utilisation de la technologie à la maison replaçait l'humain à l'école. Qui s'en plaindrait ?",
+      "explanation": "Document d'appui — source : internetactu.blog.lemonde.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Que pensez-vous de l'idée de regarder les cours en vidéo à la maison ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Préférez-vous écouter un cours ou faire des exercices en classe ?",
+          "expectedAngle": "偏好"
+        },
+        {
+          "order": 2,
+          "text": "La technologie a-t-elle une bonne place dans l'éducation ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 3,
+          "text": "Cette méthode pourrait-elle marcher dans votre pays ?",
+          "expectedAngle": "可行性"
+        }
+      ]
+    }
+  ]
+}

@@ -26,6 +26,7 @@ const TYPES = [
   { value: 'TRUE_FALSE', label: 'TRUE_FALSE · 判断' },
   { value: 'FILL', label: 'FILL · 填空' },
   { value: 'ESSAY', label: 'ESSAY · 作文' },
+  { value: 'SPEAKING', label: 'SPEAKING · 口语（录音 + débat）' },
 ];
 
 interface Option {
@@ -45,8 +46,16 @@ interface Question {
   passage?: string;
   audioUrl?: string;
   explanation?: string;
+  modelEssay?: string;
   points: number;
   options: Option[];
+  followUps?: Array<{
+    id?: string;
+    order: number;
+    text: string;
+    audioUrl?: string | null;
+    expectedAngle?: string | null;
+  }>;
 }
 
 interface ExamSet {
@@ -77,7 +86,6 @@ export default function AdminExamEdit() {
       setExam(data.set);
       metaForm.setFieldsValue({
         title: data.set.title,
-        year: data.set.year,
         description: data.set.description,
         isPublished: data.set.isPublished,
         isFreePreview: data.set.isFreePreview,
@@ -118,6 +126,7 @@ export default function AdminExamEdit() {
         { label: 'A', text: '', isCorrect: false, order: 0 },
         { label: 'B', text: '', isCorrect: false, order: 1 },
       ],
+      followUps: [],
     });
     setEditorOpen(true);
   };
@@ -133,9 +142,11 @@ export default function AdminExamEdit() {
       passage: q.passage,
       audioUrl: q.audioUrl,
       explanation: q.explanation,
+      modelEssay: q.modelEssay,
       options: q.options.length
         ? q.options.map((o) => ({ ...o }))
         : [],
+      followUps: q.followUps?.length ? q.followUps.map((f) => ({ ...f })) : [],
     });
     setEditorOpen(true);
   };
@@ -143,21 +154,31 @@ export default function AdminExamEdit() {
   const saveQ = async () => {
     try {
       const values = await qForm.validateFields();
+      const isSpeaking = values.type === 'SPEAKING';
       const payload = {
-        skill: values.skill,
+        skill: isSpeaking ? 'PO' : values.skill,
         type: values.type,
         order: values.order || 0,
         prompt: values.prompt,
         passage: values.passage || null,
         audioUrl: values.audioUrl || null,
         explanation: values.explanation || null,
+        modelEssay: values.modelEssay || null,
         points: values.points || 1,
-        options: (values.options || []).map((o: Option, i: number) => ({
+        options: isSpeaking ? [] : (values.options || []).map((o: Option, i: number) => ({
           label: o.label,
           text: o.text,
           isCorrect: !!o.isCorrect,
           order: i,
         })),
+        followUps: isSpeaking
+          ? (values.followUps || []).map((f: any, i: number) => ({
+            order: Number.isFinite(f.order) ? f.order : i,
+            text: f.text,
+            audioUrl: f.audioUrl || null,
+            expectedAngle: f.expectedAngle || null,
+          }))
+          : [],
       };
       if (editing) {
         await adminApi.put(`/exams/questions/${editing.id}`, payload);
@@ -252,7 +273,8 @@ export default function AdminExamEdit() {
 
   const watchType = Form.useWatch('type', qForm);
   const watchSkill = Form.useWatch('skill', qForm);
-  const needsOptions = !['FILL', 'ESSAY'].includes(watchType || 'SINGLE');
+  const isSpeaking = watchType === 'SPEAKING';
+  const needsOptions = !['FILL', 'ESSAY', 'SPEAKING'].includes(watchType || 'SINGLE');
 
   if (loading || !exam) return <div>加载中...</div>;
 
@@ -270,14 +292,9 @@ export default function AdminExamEdit() {
 
       <Card title="套题信息" className="mb-4">
         <Form form={metaForm} layout="vertical">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Form.Item name="title" label="标题" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item name="year" label="年份" rules={[{ required: true }]}>
-              <InputNumber min={2000} max={2100} style={{ width: '100%' }} />
-            </Form.Item>
-          </div>
+          <Form.Item name="title" label="标题" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
           <Form.Item name="description" label="简介">
             <Input.TextArea rows={2} />
           </Form.Item>
@@ -330,7 +347,7 @@ export default function AdminExamEdit() {
         <Form form={qForm} layout="vertical">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <Form.Item name="skill" label="技能" rules={[{ required: true }]}>
-              <Select options={SKILLS} />
+              <Select options={SKILLS} disabled={isSpeaking} />
             </Form.Item>
             <Form.Item name="type" label="题型" rules={[{ required: true }]}>
               <Select options={TYPES} />
@@ -358,6 +375,16 @@ export default function AdminExamEdit() {
             <Input.TextArea rows={4} />
           </Form.Item>
 
+          {isSpeaking && (
+            <Alert
+              type="info"
+              showIcon
+              className="mb-3"
+              message="口语题说明"
+              description="SPEAKING 题型会在前台进入“口语考试”流程：用户先录 1 段 monologue，再逐个回答 débat follow-ups。这里需要至少 1 条 follow-up。"
+            />
+          )}
+
           {watchSkill === 'CO' && (
             <Alert
               type="info"
@@ -370,6 +397,12 @@ export default function AdminExamEdit() {
           <Form.Item name="explanation" label="解析（答题后展示）">
             <Input.TextArea rows={2} />
           </Form.Item>
+
+          {watchType === 'ESSAY' && (
+            <Form.Item name="modelEssay" label="范文参考（写作题，批改后可查看）">
+              <Input.TextArea rows={6} placeholder="在此粘贴或输入参考范文，留空则不展示" />
+            </Form.Item>
+          )}
 
           {needsOptions && (
             <>
@@ -435,6 +468,82 @@ export default function AdminExamEdit() {
                       block
                     >
                       添加选项
+                    </Button>
+                  </>
+                )}
+              </Form.List>
+            </>
+          )}
+
+          {isSpeaking && (
+            <>
+              <Divider orientation="left">Débat follow-ups（至少 1 条）</Divider>
+              <Form.List
+                name="followUps"
+                rules={[
+                  {
+                    validator: async (_rule, value) => {
+                      if (!value || value.length < 1) {
+                        throw new Error('口语 SPEAKING 题必须至少 1 条 follow-up');
+                      }
+                    },
+                  },
+                ]}
+              >
+                {(fields, { add, remove }, { errors }) => (
+                  <>
+                    {fields.map((field) => (
+                      <Card
+                        key={field.key}
+                        size="small"
+                        className="mb-2"
+                        title={`Follow-up #${field.name + 1}`}
+                        extra={(
+                          <Button danger size="small" onClick={() => remove(field.name)}>
+                            删除
+                          </Button>
+                        )}
+                      >
+                        <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
+                          <Form.Item
+                            {...field}
+                            name={[field.name, 'order']}
+                            label="顺序"
+                            style={{ marginBottom: 0 }}
+                          >
+                            <InputNumber min={0} style={{ width: '100%' }} />
+                          </Form.Item>
+                          <Form.Item
+                            {...field}
+                            name={[field.name, 'text']}
+                            label="问题（FR）"
+                            rules={[{ required: true, message: '请输入 follow-up 问题' }]}
+                            style={{ marginBottom: 0 }}
+                            className="md:col-span-5"
+                          >
+                            <Input />
+                          </Form.Item>
+                          <Form.Item
+                            {...field}
+                            name={[field.name, 'expectedAngle']}
+                            label="评分参考（不展示给学生）"
+                            style={{ marginBottom: 0 }}
+                            className="md:col-span-6"
+                          >
+                            <Input.TextArea rows={2} />
+                          </Form.Item>
+                        </div>
+                      </Card>
+                    ))}
+
+                    <Form.ErrorList errors={errors} />
+                    <Button
+                      type="dashed"
+                      onClick={() => add({ order: fields.length, text: '', expectedAngle: '' })}
+                      icon={<PlusOutlined />}
+                      block
+                    >
+                      添加 follow-up
                     </Button>
                   </>
                 )}

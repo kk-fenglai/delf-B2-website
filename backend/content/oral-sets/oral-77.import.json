@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Devenir végétarien, est-ce raisonnable ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.letemps.ch。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Devenir végétarien, est-ce raisonnable ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "De nombreux adolescents et jeunes adultes décident aujourd'hui de ne plus consommer de produits issus des animaux ou de leur exploitation, principalement par convictions écologiques. De plus en plus de restaurants proposent des produits qui s'adaptent à ce style de vie. Cependant, un tel régime demande de bonnes connaissances en diététique, car il peut provoquer des problèmes de santé ; c'est pourquoi il est déconseillé aux enfants en pleine croissance et aux adolescents. En outre, au-delà de l'équilibre alimentaire, cette décision affecte également la vie familiale, comme le confirme Philippe, père de famille : « Au début, nous préparions des plats différents, mais nous nous sommes rapidement rendu compte que c'était impossible à organiser. C'est pourquoi, désormais, nous mangeons tous des plats végétariens quand nous sommes ensemble. Ma consommation de viande a diminué, mais je ne suis pas encore prêt à arrêter d'en manger, surtout quand on sait qu'énormément de personnes ne peuvent pas en consommer pour des raisons économiques. »",
+      "explanation": "Document d'appui — source : www.letemps.ch. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pourriez-vous devenir végétarien ? Pourquoi ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Pourquoi de plus en plus de jeunes arrêtent-ils la viande ?",
+          "expectedAngle": "成因"
+        },
+        {
+          "order": 2,
+          "text": "Manger végétarien est-il bon pour la santé, selon vous ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 3,
+          "text": "Nos habitudes alimentaires doivent-elles changer pour l'environnement ?",
+          "expectedAngle": "环保"
+        }
+      ]
+    }
+  ]
+}

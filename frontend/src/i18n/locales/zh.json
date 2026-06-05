@@ -13,6 +13,7 @@
     "orders": "我的订单",
     "login": "登录",
     "register": "免费注册",
+    "changePassword": "修改密码",
     "logout": "退出登录"
   },
   "plan": {
@@ -58,6 +59,17 @@
     "toRegister": "还没有账号？立即注册",
     "toLogin": "已有账号？直接登录",
     "forgotPassword": "忘记密码？",
+    "changePassword": {
+      "fromLogin": "修改密码",
+      "title": "修改密码",
+      "subtitle": "修改后将撤销所有登录状态，需使用新密码重新登录。",
+      "oldPassword": "当前密码",
+      "newPassword": "新密码",
+      "confirmPassword": "确认新密码",
+      "submit": "保存",
+      "success": "密码已更新，请重新登录",
+      "fail": "修改失败"
+    },
     "useAdminLogin": "管理员账户请使用管理后台登录",
     "loginSuccess": "登录成功",
     "loginFail": "登录失败",
@@ -162,6 +174,26 @@
     "submit": "提交答卷",
     "submitFail": "提交失败",
     "audioNotSupported": "您的浏览器不支持音频播放",
+    "audioNotUploaded": "本题音频尚未上传，请联系管理员。",
+    "audioPlays": "播放次数 {{used}} / {{max}}",
+    "audioPlaysUnlimited": "无次数限制",
+    "audioPlayLimitReached": "本段音频已达到最大播放次数。",
+    "audioPlay": "播放",
+    "audioPause": "暂停",
+    "audioSpeed": "倍速",
+    "coDocLabel": "文档 {{n}} / {{total}}",
+    "coPhaseDone": "听力部分已结束",
+    "coNextDoc": "下一段听力",
+    "coFinish": "完成听力",
+    "coNoTimeLimit": "无时间限制",
+    "coPhasePrep": "读题准备 —— 录音开始前请先浏览题目",
+    "coPhasePlay": "正在播放 —— 请专注聆听",
+    "coPhaseGap": "两遍之间 —— 利用此时段先作答",
+    "coPhaseAnswer": "答题时间 —— 请完成本文档相关题目",
+    "coCountdown": "{{sec}} 秒后进入下一阶段",
+    "coAutoNextDoc": "文档 {{n}} 已播完，下一段将自动开始。",
+    "coCannotEditYet": "音频播放后即可作答。",
+    "coDocPlaysRule": "共播放 {{n}} 次",
     "fillPlaceholder": "输入答案",
     "essayPlaceholder": "请在此处撰写作文（至少250字）...",
     "essayAITip": "💡 MVP阶段写作题暂不自动评分，升级AI版可获得 AI 智能批改",
@@ -169,6 +201,14 @@
     "loadFail": "加载失败",
     "blockedTitle": "需要订阅",
     "blockedCta": "查看订阅方案",
+    "ocr": {
+      "uploadBtn": "拍照上传识别（OCR）",
+      "unsupportedType": "仅支持 PNG/JPG/WEBP 图片",
+      "tooLarge": "图片过大（最大 {{maxMb}}MB）",
+      "noText": "未识别到文字，请换更清晰的照片重试",
+      "success": "识别成功，已填入作文框",
+      "fail": "OCR 识别失败"
+    },
     "notFound": "套题不存在",
     "points": "分",
     "mockBadge": "全真模拟考",
@@ -178,6 +218,7 @@
     "progressLabel": "已作答：{{done}} / {{total}}",
     "passCriteriaTitle": "DELF B2 合格标准",
     "passCriteriaInline": "总分 ≥ {{total}}/100 · 单项 ≥ {{skillMin}}/{{skillMax}} · 总时长 {{duration}} 分钟",
+    "passCriteriaInlineNoTime": "总分 ≥ {{total}}/100 · 单项 ≥ {{skillMin}}/{{skillMax}} · 无时间限制",
     "passTotal": "总分须 ≥ {{min}}/100",
     "passPerSkill": "听/读/写/说 四项每项须 ≥ {{min}}/{{max}}",
     "confirmTitle": "确认提交答卷？",
@@ -188,6 +229,7 @@
     "fiveMinSectionWarning": "⏰ 本节剩余 5 分钟 — 时间结束后将无法返回本节。",
     "sectionTimeUp": "本节时间已到 — 自动进入下一节。",
     "sectionBanner": "第 {{idx}} / {{total}} 节：{{skill}} · {{minutes}} 分钟",
+    "sectionBannerNoTime": "第 {{idx}} / {{total}} 节：{{skill}} · 无时间限制",
     "advanceSection": "结束本节",
     "advanceTitle": "确认结束本节？",
     "advanceAnswered": "本节已作答 {{done}} / {{total}} 题。",
@@ -195,6 +237,14 @@
     "advanceNext": "下一节：{{skill}} · {{minutes}} 分钟。",
     "advanceOk": "进入下一节",
     "advanceCancel": "继续本节"
+  },
+  "freeQuota": {
+    "exceeded": {
+      "CE": "本月免费阅读练习已用完（{{cap}} 套）。升级标准版即可无限次练习。",
+      "CO": "本月免费听力练习已用完（{{cap}} 套）。升级标准版即可无限次练习。",
+      "MOCK": "本月免费全真模拟已用完（{{cap}} 套）。升级标准版即可无限次模拟。",
+      "generic": "本月免费额度已用完，升级订阅解锁不限次练习。"
+    }
   },
   "review": {
     "title": "练习结果",
@@ -246,7 +296,7 @@
     "title": "选择适合你的订阅方案",
     "subtitle": "支持微信支付 / 支付宝 · 随时取消 · 7天无理由退款",
     "popular": "最受欢迎",
-    "paymentNote": "💳 订阅支付功能将在 MVP 上线后接入（微信支付 / 支付宝）",
+    "paymentNote": "💳 支持 Stripe 安全支付（信用卡 / 微信支付 / 支付宝）",
     "plans": {
       "free": {
         "name": "免费版",
@@ -254,48 +304,43 @@
         "period": "",
         "cta": "免费注册",
         "features": [
-          "每月限 5 次完整练习",
-          "基础听力与阅读练习",
-          "基础答案核对"
+          "阅读练习 3 套/月",
+          "听力练习 3 套/月",
+          "全真模拟 2 套/月",
+          "错题本基础功能"
         ]
       },
       "standard": {
         "name": "标准版",
-        "price": "¥29",
-        "period": "/月 或 ¥198/年",
         "cta": "开通标准版",
         "features": [
-          "无限次练习",
-          "完整历年仿真题库",
-          "全技能项练习（听说读写）",
-          "模拟考试 + PDF成绩单",
-          "错题本与学习报告"
+          "阅读 / 听力无限次练习",
+          "全真模拟考无限次",
+          "作文 AI 批改 5 篇/月",
+          "口语 AI 批改 3 次/月",
+          "完整错题本"
         ]
       },
       "ai": {
         "name": "AI 版",
-        "price": "¥69",
-        "period": "/月 或 ¥498/年",
         "cta": "开通 AI 版",
         "features": [
           "标准版全部功能",
-          "AI 写作批改（50次/月）",
-          "AI 学习助手对话",
-          "个性化学习路径",
-          "AI 口语评测（即将上线）"
+          "作文 AI 批改 30 篇/月",
+          "口语 AI 批改 15 次/月",
+          "作文模板库 自定义 3 个"
         ]
       },
       "ai_unlimited": {
         "name": "AI 无限",
-        "price": "¥99",
-        "period": "/月 或 ¥798/年",
         "cta": "开通 AI 无限",
         "features": [
           "AI 版全部功能",
-          "AI 批改无次数限制",
-          "AI 备考计划生成",
-          "AI 综合诊断报告",
-          "优先体验新功能"
+          "作文 AI 不限次（每日上限 30 篇）",
+          "口语 AI 不限次（每日上限 15 次）",
+          "作文模板库无限",
+          "OCR 拍照上传作文 → AI 批改",
+          "新功能优先体验"
         ]
       }
     },
@@ -303,7 +348,7 @@
       "label": "AI 批改模型",
       "none": "—",
       "haiku": "Qwen Turbo（快速）",
-      "sonnet": "DeepSeek Chat（均衡）",
+      "sonnet": "DeepSeek V4 Flash（均衡）",
       "opus": "Qwen Plus（精准）"
     },
     "checkout": {
@@ -326,6 +371,8 @@
       "alipay": "支付宝",
       "stripe": "信用卡 / Link / 微信 / 支付宝（Stripe）",
       "stripeHint": "将跳转到 Stripe 收银台，可展示微信/支付宝/卡等方式（取决于 Stripe 账号与币种/地区）",
+      "cnyFallbackTitle": "以欧元结算",
+      "cnyFallbackNote": "实际扣款 {{charged}}（约 {{display}}）。Stripe 不直接支持人民币计费，您用人民币卡 / 微信 / 支付宝付款时由 Stripe 按当日汇率折算。",
       "generateQr": "生成支付二维码",
       "redirectToPay": "跳转到支付页面",
       "orderId": "订单号：{{id}}",
@@ -369,9 +416,17 @@
       "errRateLimited": "请求过于频繁，请稍后再试。",
       "errBadRequest": "批改请求被拒，请联系管理员。",
       "errCallFailed": "网络或连接异常，请重试。",
-      "errTimeout": "批改超时（超过 25 秒未完成），请重新批改或修改作文后提交。"
+      "errTimeout": "批改超时（超过 60 秒未完成），请重新批改或稍后重试。",
+      "modelEssay": "查看范文",
+      "modelEssayTitle": "范文参考",
+      "modelEssayClose": "关闭",
+      "myEssay": "我的作文",
+      "modelEssayLabel": "范文参考",
+      "myTemplates": "我的模板",
+      "summaryTitle": "总结"
     },
     "rubric": {
+      "sectionTitle": "各维度评分",
       "consigne": "遵守题目要求",
       "sociolinguistique": "社会语言适切性",
       "faits": "事实陈述",
@@ -415,6 +470,33 @@
       "placeholder": "在此处修改您的作文…",
       "wordCount": "当前字数：{{count}} 词"
     }
+  },
+  "template": {
+    "drawerTitle": "我的模板",
+    "quotaUsed": "已用 {{used}} / {{cap}}",
+    "quotaUnlimited": "不限",
+    "quotaExceeded": "已达套餐上限，升级解锁更多模板",
+    "upgradeAlert": "自定义作文模板是 AI 版起的功能。升级后可保存自己的常用句型与结构。",
+    "new": "新建",
+    "systemTab": "官方模板",
+    "phraseTab": "句型库",
+    "structureTab": "结构框架",
+    "empty": "暂无模板，点击「新建」创建",
+    "insert": "插入",
+    "inserted": "已插入作文框",
+    "editTitle": "编辑模板",
+    "createTitle": "新建模板",
+    "typeLabel": "类型",
+    "titleLabel": "标题",
+    "titlePlaceholder": "例：论证句式 / 引言框架",
+    "contentLabel": "内容",
+    "contentPlaceholder": "输入常用句型或文章结构框架…",
+    "save": "保存",
+    "saveError": "保存失败",
+    "deleteError": "删除失败",
+    "confirmDelete": "确认删除此模板？",
+    "confirmYes": "删除",
+    "confirmNo": "取消"
   },
   "orders": {
     "title": "我的订单",
@@ -472,7 +554,7 @@
   },
   "oral": {
     "exam": {
-      "subtitle": "DELF B2 口语全真模拟：30 分钟准备 → 5 分钟独白 → 与考官辩论 → AI 自动评分。",
+      "subtitle": "DELF B2 口语全真模拟：30 分钟准备 → 10 分钟独白 → 与考官辩论 → AI 自动评分。",
       "stepPrep": "准备",
       "stepMono": "独白",
       "stepDebat": "辩论",
@@ -488,6 +570,7 @@
       "monologueTitle": "Partie 1 · 持续独白",
       "monologueHint": "围绕主题陈述并论证你的观点，最长 {{sec}} 秒，超时自动结束。",
       "yourNotes": "我的笔记",
+      "notesEmpty": "（准备阶段未记录笔记）",
       "debatTitle": "Partie 2 · 与考官辩论",
       "debatHint": "考官提出问题，请在 {{sec}} 秒内作答并捍卫你的立场。",
       "examinerQuestion": "考官提问",
@@ -497,6 +580,8 @@
       "submitting": "正在提交评分…",
       "submittingDesc": "AI 正在转写并评分，稍后将自动跳转至成绩页。",
       "submitFailed": "提交失败，请检查网络后重试。",
+      "missingMonologue": "独白尚未录制，请先完成独白录音。",
+      "missingFollowUp": "第 {{n}} 个问题尚未录制，请先完成此段录音。",
       "retrySubmit": "重试",
       "quotaUsed": "本月已用",
       "upgradeRequired": "需要付费套餐",
@@ -554,6 +639,9 @@
       "segments": "段",
       "segMonologue": "独白",
       "segFollowUp": "回答 {{n}}",
+      "segNotRecorded": "（未录制）",
+      "loadingAudio": "录音加载中…",
+      "playbackError": "录音加载失败",
       "regrade": "重新评分",
       "regradeWith": "使用 {{model}} 重评",
       "retry": "重试",
@@ -580,8 +668,27 @@
     "tabs": {
       "overview": "概览",
       "catalog": "商品价目",
+      "pricingReview": "价格审阅",
       "orders": "订单",
       "contracts": "订阅合约"
+    },
+    "pricingReview": {
+      "title": "价格审阅（按实时汇率）",
+      "refresh": "刷新",
+      "monthly": "月付",
+      "cached": "缓存中",
+      "fxLine": "汇率（{{date}}）：1 USD = ¥{{cny}} CNY / €{{eur}} EUR · 来源 frankfurter.app (ECB)",
+      "col": {
+        "months": "周期",
+        "currency": "币种",
+        "listed": "标价",
+        "usdEquivalent": "USD 等值",
+        "usdAnchor": "USD 锚定价",
+        "usdAnchorTip": "同套餐同周期的 USD 价格，用作其他币种的对照基准",
+        "deviation": "偏离",
+        "deviationTip": "本币按实时汇率换成 USD 后，与 USD 锚定价的差距。≥{{warn}}% 橙色，≥{{alert}}% 红色",
+        "priceCode": "Price Code"
+      }
     },
     "common": {
       "refresh": "刷新",

@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Pour ou contre la télémédecine ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Pour ou contre la télémédecine ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Bientôt, il sera possible de prendre rendez-vous avec un médecin et d'obtenir un diagnostic en ligne, le tout grâce à la « télémédecine ». Ce mot désigne l'ensemble des consultations et des actes médicaux réalisés à distance, au moyen d'un dispositif utilisant les technologies de l'information et de la communication (webcaméra, mail, etc.). La télémédecine est notamment prévue pour améliorer de façon significative l'accès aux soins, surtout dans les régions dites « fragiles », où il y a moins de deux médecins pour 1 000 habitants. D'après une enquête récente, les Français sont très partagés : pour beaucoup de personnes interrogées, ce qui plaide en faveur de la télémédecine, c'est qu'elle permettra au malade de rester chez lui, ou qu'elle offrira un gain de temps et une intervention rapide en cas d'urgence. Mais parmi les principaux freins, beaucoup regrettent le contact direct avec le médecin. Par conséquent, s'ils devaient consulter à distance, ils le feraient essentiellement pour des maladies sans gravité.",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Seriez-vous prêt(e) à consulter un médecin en ligne ?",
+          "expectedAngle": "个人意愿"
+        },
+        {
+          "order": 1,
+          "text": "Quels sont, selon vous, les avantages de la télémédecine ?",
+          "expectedAngle": "优点"
+        },
+        {
+          "order": 2,
+          "text": "Pensez-vous que le contact direct avec le médecin est important ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 3,
+          "text": "La technologie peut-elle vraiment améliorer la santé ?",
+          "expectedAngle": "观点"
+        }
+      ]
+    }
+  ]
+}

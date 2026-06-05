@@ -1,0 +1,54 @@
+{
+  "title": "DELF B2 听力示例 · 测试版",
+  "year": 2024,
+  "description": "听力模块功能演示 —— 用于验证音频播放、播放次数限制（2 次）与签名 URL 流式播放。共 3 题，全部可由管理员后台上传 MP3。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "D'après l'enregistrement, quel est le sujet principal du document ?",
+      "passage": "[录音稿示例] La nouvelle politique environnementale de la ville vise principalement à réduire la pollution de l'air en limitant la circulation automobile dans le centre-ville.",
+      "audioUrl": null,
+      "explanation": "Le locuteur précise dès le début que la politique cible la pollution de l'air. — 录音稿仅后端保留，前端考试中不展示。",
+      "points": 2,
+      "options": [
+        { "label": "A", "text": "La pollution de l'air en ville", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "Le coût des transports publics", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "Le bruit dans le centre-ville", "isCorrect": false, "order": 2 },
+        { "label": "D", "text": "La construction de pistes cyclables", "isCorrect": false, "order": 3 }
+      ]
+    },
+    {
+      "skill": "CO",
+      "type": "MULTIPLE",
+      "order": 2,
+      "prompt": "Quelles mesures sont citées par le locuteur ? (Plusieurs réponses possibles)",
+      "passage": "[录音稿示例] Les mesures incluent la création de zones piétonnes, la gratuité des transports publics le week-end, et l'installation de nouvelles bornes de recharge pour véhicules électriques.",
+      "audioUrl": null,
+      "explanation": "Trois mesures sont citées : zones piétonnes, transports publics gratuits le week-end, bornes de recharge.",
+      "points": 3,
+      "options": [
+        { "label": "A", "text": "Zones piétonnes", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "Transports publics gratuits le week-end", "isCorrect": true, "order": 1 },
+        { "label": "C", "text": "Bornes de recharge pour véhicules électriques", "isCorrect": true, "order": 2 },
+        { "label": "D", "text": "Interdiction totale des voitures", "isCorrect": false, "order": 3 }
+      ]
+    },
+    {
+      "skill": "CO",
+      "type": "TRUE_FALSE",
+      "order": 3,
+      "prompt": "Le locuteur affirme que la politique a déjà donné des résultats mesurables.",
+      "passage": "[录音稿示例] Il est encore trop tôt pour évaluer l'impact réel de cette politique, mais les premières observations sont encourageantes.",
+      "audioUrl": null,
+      "explanation": "Faux. Le locuteur dit explicitement « il est encore trop tôt pour évaluer l'impact réel ».",
+      "points": 2,
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": false, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": true, "order": 1 }
+      ]
+    }
+  ]
+}

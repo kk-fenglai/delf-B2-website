@@ -1,0 +1,125 @@
+{
+  "title": "DELF B2 阅读 CE · 2021-11 中国场 · Texte 1（La mobilité du XXe siècle）",
+  "year": 2021,
+  "description": "2021年11月中国考场真题 阅读第1篇。分值统一记为1分（后台仅接受整数分值）。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Le ton de cet article est…",
+      "passage": "La mobilité du XXe siècle, de type « mono modale » avec plus de 80 % d'usagers des transports utilisant une voiture individuelle, est le reflet de l'évolution de la société, entièrement tournée vers l'individu, à un moment où les classes moyennes ont bénéficié à la fois d'une hausse considérable de leur pouvoir d'achat et de congés payés, leur permettant de s'évader au volant du véhicule motorisé individuel.\n\nPourtant, cette mobilité prouve chaque jour ses limites avec la hausse constante des coûts qui lui sont liés : pollution, bruit, insécurité, encombrement de l'espace public, embouteillages, stress, etc. Les chiffres sont significatifs : 80 % d'automobilistes dans des pays où seulement 20 % de la population vit à la campagne. Par ailleurs, la surface occupée par un véhicule particulier en ville pour stationner et circuler est similaire à celle qu'occupe un citadin pour se loger, soit de l'ordre de 40 mètres carrés par individu en moyenne. Or, si l'habitat a été superposé sur 5 étages en général dans les cités européennes pour garantir à chacun un minimum d'espace vital, la circulation est rapidement devenue infernale pour les motifs évoqués ci-dessus, et aussi notamment en raison du fait que, mathématiquement, il est impossible d'assurer à chacun une place de stationnement à son véhicule, sans quoi l'agglomération sera rapidement devenue un vaste espace de circulation à étages multiples, comme habitat !\n\nAutrement dit, le concept « chacun sa voiture » a fait son temps, et l'enjeu principal de la mobilité du XXe siècle consiste précisément à tirer parti des atouts de la concentration urbaine pour canaliser les mouvements bien identifiés issus de l'habitat, des commerces, des industries, des services, et ce, au moyen d'un système de transports hiérarchisé en fonction de deux exigences clés : la capacité de transport garantie par le service utilisé et son coût sociétal. Profitons ici de l'occasion pour briser le stéréotype selon lequel les voitures « propres » constituent une alternative sérieuse et de long terme : en premier lieu, elles n'améliorent en rien l'encombrement urbain, l'insécurité, le stress et le manque d'activité physique de leurs occupants, mais en plus elles ne présentent aucun gain sur le plan environnemental, du fait qu'elles fonctionnent à l'électricité dont l'origine est encore très largement fossile (80 %).\n\nDès lors, l'orientation des transports devient simple : l'essentiel des mouvements doit être assuré par le train, le tramway ou le métro en interconnexion directe avec le réseau de bus d'une part pour desservir les zones en périphérie immédiate des axes les plus fréquentés, avec les itinéraires cyclables et piétonniers d'autre part, et enfin avec les parkings-relais quand le réseau de transports en commun n'est plus rentable.\n\nEn conclusion, les premiers signes de l'évolution vers une mobilité apaisée et rationnelle sont déjà visibles avec la réhabilitation – parfois massive ! – du tramway urbain et des parkings-relais. Mais une large majorité d'usagers est encore très en faveur de la voiture particulière. Les années à venir sont déterminantes pour montrer comment se déplacer selon les modes les plus durables sans gêner la liberté de déplacement. Gageons que les clubs et les spécialistes techniques de la mobilité sauront faire preuve de clairvoyance pour assurer un financement cohérent et continu des infrastructures nécessaires au bon développement durable de leurs régions.",
+      "points": 1,
+      "explanation": "答案：A。文章用客观、有论据支撑的语气分析问题，语气克制（mesuré）。",
+      "options": [
+        { "label": "A", "text": "mesuré", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "alarmiste", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "enthousiaste", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 2,
+      "prompt": "Comment David Balme explique-t-il le succès de la voiture au XXe siècle ?",
+      "points": 1,
+      "explanation": "评分要点：需提及中产阶级购买力上升、带薪假期、以及以个人为中心的社会。",
+      "modelEssay": "Par l'augmentation du pouvoir d'achat des classes moyennes, l'obtention de congés payés et une société centrée sur l'individu."
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 3,
+      "prompt": "Vrai ou faux ? (justifiez) D'après David Balme, il existe un lien entre l'importance de la population urbaine et le règne de la voiture.",
+      "points": 1,
+      "explanation": "Vrai. Justification : « Les chiffres sont significatifs : 80 % d'automobilistes dans des pays où seulement 20 % de la population vit à la campagne. »",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": true, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": false, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 4,
+      "prompt": "Vrai ou faux ? (justifiez) La place occupée par une voiture serait identique à celle occupée par une personne dans un logement.",
+      "points": 1,
+      "explanation": "Vrai. Justification : « la surface occupée par un véhicule particulier en ville… soit de l'ordre de 40 mètres carrés par individu en moyenne. »",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": true, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": false, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 5,
+      "prompt": "Vrai ou faux ? (justifiez) Selon l'auteur de l'article, l'agencement des immeubles en cinq étages permet tout à fait d'assurer une place de stationnement à chacun.",
+      "points": 1,
+      "explanation": "Faux. Justification : « si l'habitat a été superposé… la circulation est rapidement devenue infernale… il est impossible d'assurer à chacun une place de stationnement à son véhicule. »",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": false, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": true, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 6,
+      "prompt": "D'après David Balme, l'avenir des transports collectifs semble…",
+      "points": 1,
+      "explanation": "答案：C envisageable。作者认为公共交通是可行的发展方向。",
+      "options": [
+        { "label": "A", "text": "incertain", "isCorrect": false, "order": 0 },
+        { "label": "B", "text": "irréaliste", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "envisageable", "isCorrect": true, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 7,
+      "prompt": "Citez les deux critères selon lesquels David Balme propose de sélectionner les moyens de transport dans le futur.",
+      "points": 1,
+      "explanation": "评分要点：两个标准——运输能力（capacité de transport garantie）和社会成本（coût sociétal）。",
+      "modelEssay": "La capacité de transport garantie et son coût sociétal."
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 8,
+      "prompt": "Dans ce texte, le terme de voiture « propre » désigne les véhicules qui…",
+      "points": 1,
+      "explanation": "答案：B。指使用比汽油污染更小燃料的车辆。",
+      "options": [
+        { "label": "A", "text": "servent à transporter le plus grand nombre possible de passagers.", "isCorrect": false, "order": 0 },
+        { "label": "B", "text": "utilisent des carburants moins nocifs pour la nature comparés à l'essence.", "isCorrect": true, "order": 1 },
+        { "label": "C", "text": "respectent des normes de construction respectueuses de l'environnement.", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 9,
+      "prompt": "Expliquez pourquoi la mobilité « mono modale » n'aura plus de sens dans le futur, selon David Balme.",
+      "points": 1,
+      "explanation": "评分要点：诸多弊端使单一出行模式不再合理；作者主张分级的交通系统，发挥城市集中的优势并与多种交通方式互联。",
+      "modelEssay": "La mobilité « mono modale » n'aura plus de sens dans le futur à cause de nombreux inconvénients. L'auteur propose à la place un système de transports hiérarchisé, qui tire parti des atouts de la concentration urbaine et qui est en interconnexion avec divers modes de transport."
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 10,
+      "prompt": "L'avenir d'un système réfléchi des transports se joue dans la bonne gestion à une échelle…",
+      "points": 1,
+      "explanation": "答案：A locale。文末强调各地区（régions）层面的基础设施融资与发展。",
+      "options": [
+        { "label": "A", "text": "locale", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "nationale", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "mondiale", "isCorrect": false, "order": 2 }
+      ]
+    }
+  ]
+}

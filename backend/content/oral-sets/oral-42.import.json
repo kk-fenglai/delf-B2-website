@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · La folie des textos",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : huffingtonpost.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« La folie des textos »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Nous vivons aujourd'hui à une époque où il suffit de cliquer sur un bouton pour communiquer. Nos messages sont presque toujours instantanés : par téléphone, par messagerie, etc. Notre société est la plus connectée de l'histoire de l'humanité, mais sans doute de manière superficielle. Pendant la journée, il nous arrive souvent de regarder notre téléphone et de prendre le temps de lire nos messages, mais nous n'avons pas toujours le temps d'y répondre. Pourtant, l'attente d'une réponse est devenue presque insupportable et peut même être prise comme une insulte. Avant, nous attendions que notre interlocuteur réponde à son rythme ; cela devient aujourd'hui impossible. Faut-il mesurer l'attachement que l'on a pour ses amis en fonction de notre temps de réponse aux SMS ? Autrefois, ne menions-nous pas une vie bien pleine en dehors des smartphones et des réseaux sociaux ? Ou sommes-nous désormais branchés en permanence sur nos téléphones, à vérifier régulièrement nos messages, sans pour autant avoir le temps d'y répondre de façon aussi satisfaisante que nous le souhaiterions ?",
+      "explanation": "Document d'appui — source : huffingtonpost.fr. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Répondez-vous tout de suite à vos messages ? Pourquoi ?",
+          "expectedAngle": "个人习惯"
+        },
+        {
+          "order": 1,
+          "text": "Pensez-vous qu'on passe trop de temps sur son téléphone ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Les textos ont-ils changé notre façon d'être amis ?",
+          "expectedAngle": "影响"
+        },
+        {
+          "order": 3,
+          "text": "Pourrait-on vivre aujourd'hui sans smartphone ?",
+          "expectedAngle": "假设/反思"
+        }
+      ]
+    }
+  ]
+}

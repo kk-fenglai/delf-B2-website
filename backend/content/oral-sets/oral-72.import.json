@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Je consomme, donc je suis",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Elle。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Je consomme, donc je suis »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Depuis trente ans, la société de consommation conditionne les habitants des pays développés à acheter toujours plus, et il est très difficile de s'extraire de cette offre. Presque malgré eux, les consommateurs sont entraînés dans une course effrénée* pour posséder le dernier portable. Malgré tous les discours sur l'être, l'avoir est devenu une valeur : consommer rassure sur le fait que l'on est vivant et agit comme un pansement sur les doutes existentiels. Mais, depuis peu, les psychologues alertent l'opinion publique sur les effets négatifs de ces achats futiles*. Selon eux, il existerait un vrai contentement à ne pas consommer et à être ainsi dans la réalité de soi-même, plutôt que dans l'illusion d'être heureux grâce à la consommation. Décider de ne pas acheter un produit et s'apercevoir ensuite qu'il ne nous manque pas, renoncer à s'offrir un livre parce que sa bibliothèque est pleine d'ouvrages qu'on n'a pas lus… autant d'exemples qui procureraient plus de plaisir que de consommer.\n* effréné : excessif. * futile : superficiel.",
+      "explanation": "Document d'appui — source : Elle. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pensez-vous qu'on achète trop de choses aujourd'hui ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Acheter rend-il vraiment heureux, selon vous ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 2,
+          "text": "Avez-vous déjà renoncé à acheter quelque chose ? Comment l'avez-vous vécu ?",
+          "expectedAngle": "经历"
+        },
+        {
+          "order": 3,
+          "text": "Comment consommer de façon plus raisonnable ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

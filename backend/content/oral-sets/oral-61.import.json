@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · La fête des voisins : à quoi sert cette fête ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« La fête des voisins : à quoi sert cette fête ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "La fête des voisins est devenue, depuis sa création en 2000, un rendez-vous incontournable. C'est une occasion festive et conviviale de rencontrer ceux et celles qui vivent tout près de chez nous. On se retrouve avec les habitants de son immeuble ou de sa rue, un jour par an, fin mai ou début juin, pour faire plus ample connaissance autour d'un verre ou d'un buffet : cette idée simple rencontre un succès grandissant et répond à un vrai besoin de convivialité. Qu'on le veuille ou non, nous avons tous des voisins ! Ils peuvent être sympathiques et serviables, indifférents ou désagréables, souriants ou bruyants. Mais nous savons bien qu'entretenir de bonnes relations de voisinage facilite la vie au quotidien. Le but est également de rompre l'anonymat et l'isolement qui existent souvent dans nos villes. Mais si une soirée de fête dans l'année est l'occasion de nouer ou de renouer le contact avec ses voisins et incite à les respecter, cela peut-il vraiment permettre d'instaurer une solidarité de proximité ?",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Connaissez-vous bien vos voisins ?",
+          "expectedAngle": "个人现状"
+        },
+        {
+          "order": 1,
+          "text": "Est-il important d'avoir de bonnes relations avec ses voisins ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Une fête des voisins est-elle une bonne idée, selon vous ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 3,
+          "text": "Comment lutter contre l'isolement dans les villes ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

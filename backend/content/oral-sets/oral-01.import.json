@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · C'EST QUOI, LE “JOUR DU DÉPASSEMENT” ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Document d'appui — source : geoado.com. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« C'EST QUOI, LE “JOUR DU DÉPASSEMENT” ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Les activités humaines pèsent lourdement sur la planète : le mode de vie des pays développés est en effet très gourmand en énergie et en ressources diverses. Il ne s'agit pas seulement des matières premières non renouvelables, comme le pétrole ou le charbon, mais aussi de choses que nous avons pris l'habitude de considérer comme abondantes, comme le bois, l'eau ou la nourriture.\nEn 2017, le « jour du dépassement » est tombé le 2 août. Cela signifie qu'à partir de cette date et jusqu'à la fin de l'année, l'humanité vit « à crédit », en consommant des ressources que la Terre n'aura pas le temps de reconstituer...\nQuelles solutions ? Recycler ses déchets, acheter des produits locaux et de saison, réduire sa consommation d'eau, c'est un bon début. Mais on peut aussi agir en nettoyant régulièrement sa boîte mail ! En effet, 2 % des émissions de CO2 viennent de la pollution numérique, ce qui est énorme ! D'autres suggestions ?",
+      "explanation": "Document d'appui — source : geoado.com. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pensez-vous que chacun peut vraiment agir pour protéger la planète ?",
+          "expectedAngle": "个人能否有所作为，能举例"
+        },
+        {
+          "order": 1,
+          "text": "Qui doit faire le plus d'efforts : les habitants, les entreprises ou l'État ?",
+          "expectedAngle": "区分三方责任并选择"
+        },
+        {
+          "order": 2,
+          "text": "Faut-il obliger les gens à consommer moins, ou simplement les informer ?",
+          "expectedAngle": "强制 vs 引导，权衡"
+        },
+        {
+          "order": 3,
+          "text": "Et vous, que faites-vous au quotidien pour protéger l'environnement ?",
+          "expectedAngle": "落到个人日常具体做法"
+        }
+      ]
+    }
+  ]
+}

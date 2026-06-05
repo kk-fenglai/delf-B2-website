@@ -1,0 +1,244 @@
+{
+  "title": "DELF B2 阅读 CE · 2024-03 中国场 · Texte 2（Manger mieux pour jeter moins）",
+  "year": 2024,
+  "description": "2024年3月中国考场真题 阅读第2篇。分值统一记为1分。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Ce texte a pour objectif principal de montrer…",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "que les grands chefs manquent d'initiatives.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "que le gaspillage alimentaire peut être évité.",
+          "isCorrect": true,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "que les jeunes cuisiniers sont entreprenants.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 2,
+      "prompt": "Vrai ou faux ? (justifiez) Les restaurants sont responsables de la plus grosse partie du gaspillage.",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": "Faux. Justification : « Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 3,
+      "prompt": "Depuis 2016, quelle est la nouvelle obligation des restaurateurs ?",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "Trier les déchets du restaurant.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "Utiliser moins de produits industriels.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "Réutiliser les produits non consommés.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 4,
+      "prompt": "Vrai ou faux ? (justifiez) Les chefs cuisiniers sont très actifs dans la lutte contre le gaspillage alimentaire.",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": "Vrai. Justification : « Les chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": false,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 5,
+      "prompt": "Comment les grands chefs utilisent-ils les aliments ?",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Ils n'utilisent que certaines parties des produits (les meilleures) et jettent le reste.",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 6,
+      "prompt": "Quel est le but de l'entreprise créée à Bordeaux par Charles Regnaudin et Maxime Bonnabry-Duval ?",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "Cuisiner des plats avec les meilleurs aliments.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "Préparer des plats avec des produits jetés habituellement.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "Limiter la production de déchets quand ils préparent des plats.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 7,
+      "prompt": "L'équipe de François Pasteau cherche à promouvoir…",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "la cuisine traditionnelle et les plats régionaux.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "une alimentation plus saine et plus équilibrée.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "une manière plus globale d'éviter le gaspillage.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 8,
+      "prompt": "Comment expliquez-vous l'expression « alimentation durable » ?",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Une alimentation qui respecte l'environnement (produits naturels, de saison, locaux, circuits courts, limitation du gaspillage).",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 9,
+      "prompt": "D'après le texte, à part l'aspect écologique, quel autre avantage y a-t-il à utiliser plusieurs fois un produit ?",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Un avantage économique : le produit étant utilisé deux ou trois fois, on y gagne aussi de l'argent, ce qui permet d'investir dans d'autres gestes écologiques et citoyens.",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 10,
+      "prompt": "Vrai ou faux ? (justifiez) La collecte des déchets alimentaires à Paris ne fonctionne pas très bien.",
+      "passage": "En France, plus de 10 millions de tonnes d'aliments sont jetés chaque année, dont 1,2 million pourraient encore être consommés : un véritable gaspillage ! Et les pertes sont partout, notamment dans l'agriculture et la grande distribution. 19 % viennent ensuite des particuliers et 14 % de la restauration (cantines scolaires et d'entreprises, hôpitaux, restaurants…). Depuis la loi de 2016, les restaurateurs parisiens doivent mettre en place un tri sélectif et sont encouragés à proposer aux clients qui n'ont pas fini leur assiette d'emporter les restes. Mais cela ne suffit pas. Dans la restauration, le problème est renforcé par l'utilisation importante de produits industriels, prêts à servir, contenant beaucoup d'emballages.\n\nLes chefs cuisiniers développent eux aussi ce concept de restauration responsable et sont à la tête de ce mouvement. Ils ont exprimé d'abord leurs idées à la télévision et ils sont nombreux aujourd'hui à porter publiquement l'idée qu'un bon cuisinier ne jette pas mais récupère (têtes de poisson, pain dur…).\n\n« Dans les restaurants des palaces, chez des chefs très connus, on ne sert que les meilleures parties du produit. Pour certains poissons, on ne travaille que le filet central, le reste est jeté à la poubelle… », racontent Charles Regnaudin et Maxime Bonnabry-Duval, récemment diplômés d'une école de gastronomie. L'objectif de leur projet professionnel de fin d'études s'est très vite concentré autour de la lutte contre le gaspillage alimentaire. « On voulait donner du sens à nos métiers... avec des produits transformés, issus du gaspillage », racontent-ils. Ils montent alors un restaurant pour les plus pauvres, à Paris, à partir de produits abîmés ou proches de la date limite de vente, récupérés sur des marchés ou chez des producteurs. Puis, ils lancent à Bordeaux leur entreprise qui regroupe un restaurant gastronomique, une épicerie fine, un camion pour les événements et des cours de cuisine pour apprendre à imaginer des repas sans gaspillage.\n\nManger mieux, de saison, local et gaspiller moins pour que la révolution verte passe aussi par les assiettes, c'est la devise qui motive toute l'équipe de François Pasteau, chef d'un restaurant parisien. « La lutte contre le gaspillage, c'est un tout, un ensemble. Elle intervient dans l'acte d'achat, quand on privilégie les produits naturels et les circuits courts de distribution, mais aussi dans la gestion du tri, dans la manière de cuisiner et parfois de jeter ce que nous ne pouvons pas recycler », explique le cuisinier, président de l'association Bon pour le Climat, qui rassemble des professionnels engagés dans la promotion d'une alimentation durable.\n\n« Le produit est utilisé deux ou trois fois, donc on y gagne aussi économiquement et cela permet d'investir dans d'autres gestes écologiques et citoyens », explique Stéphan Martinez en racontant son combat gagné pour participer à la mise en place d'une expérimentation parisienne de ramassage des déchets issus de la nourriture. « La restauration traditionnelle est en train de bouger », se réjouit-il. Il a expérimenté la collecte des déchets chez 80 professionnels du cœur historique de Paris, pour les recycler. « Si on y arrive là, on y arrivera partout », se dit-il alors. L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés.\n\nD'après L'Humanité",
+      "audioUrl": null,
+      "explanation": "Faux. Justification : « L'expérience connaît un vrai succès : l'entreprise collecte aujourd'hui les déchets verts de grands hôtels-restaurants, de nombreuses cantines scolaires, de bars de quartier ou de marchés. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    }
+  ]
+}

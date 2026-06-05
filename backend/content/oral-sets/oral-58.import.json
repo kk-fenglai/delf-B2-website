@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · La pharmacie en ligne légalisée",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : AFP, Le Point。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« La pharmacie en ligne légalisée »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "La vente en ligne de médicaments en libre accès a désormais un cadre légal. La ministre de la Santé a présenté un texte pour encadrer cette pratique, à la condition que la vente soit effectuée à partir du site Internet d'une pharmacie. Cette activité « n'est autorisée que pour les pharmaciens » et devra être exercée « en conformité avec les dispositions du Code de déontologie et avec les bonnes pratiques de dispensation par Internet ». Mais l'Ordre national des pharmaciens n'a cessé de mettre le gouvernement en garde. « Le médicament n'est pas un bien de consommation ordinaire », a rappelé l'Ordre. Dans ce document critique, l'Ordre estime également : « Rien ne peut remplacer le conseil relatif au médicament donné en face à face par le pharmacien. » Au-delà de la sécurité du patient, l'Ordre s'inquiète de la confidentialité des données, de la falsification des médicaments, du non-respect des règles de la profession et de l'automédication des personnes. Après les courses en ligne, la santé en ligne ?",
+      "explanation": "Document d'appui — source : AFP, Le Point. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Achèteriez-vous des médicaments sur Internet ?",
+          "expectedAngle": "个人意愿"
+        },
+        {
+          "order": 1,
+          "text": "Le conseil du pharmacien est-il important, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Acheter des médicaments en ligne : quels sont les risques ?",
+          "expectedAngle": "风险"
+        },
+        {
+          "order": 3,
+          "text": "Peut-on tout acheter sur Internet ?",
+          "expectedAngle": "反思"
+        }
+      ]
+    }
+  ]
+}

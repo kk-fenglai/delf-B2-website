@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2023年3月（国内） — 维修咖啡馆计划",
+  "year": 2023,
+  "description": "维修咖啡馆计划。来源：2023年3月（国内） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous vivez dans une ville française et vous aimeriez développer un concept de café mêlant commerce et projet associatif. Vous écrivez une lettre au Maire dans laquelle vous expliquez le projet et les divers avantages d'une telle initiative pour les habitants de la ville. Vous lui demandez également la mise à disposition d'un lieu pour accueillir le « café pour réparer ».",
+      "passage": "Document — « Réparer ensemble, c'est l'idée des “Cafés pour réparer” dont l'entrée est ouverte à tous. Outils et matériel sont disponibles pour faire toutes les réparations possibles et imaginables : vêtements, meubles, appareils électriques, bicyclettes, vaisselle, jouets, et autres.\nQuel est le principe ?\nOn y apporte des objets que l'on possède à la maison. Et on apprend à les réparer avec les gens du métier. Il y a toujours quelque chose à apprendre au “Café pour réparer”. »",
+      "audioUrl": null,
+      "explanation": "来源：2023 年 3 月国内 DELF B2 写作真题（回忆版）。体裁：致市长的书信。要点：介绍“维修咖啡馆”理念、对居民的益处，并请求市政府提供场地。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

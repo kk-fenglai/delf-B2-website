@@ -33,7 +33,8 @@ function init() {
 async function sendMail({ to, subject, html, text }) {
   init();
   if (mode === 'console') {
-    console.log('\n═══════════ 📧 [DEV EMAIL — would send] ═══════════');
+    console.log('\n═══════════ 📧 [邮件未真实发送 — 仅控制台] ═══════════');
+    console.log('提示：邮箱收件箱不会出现此邮件。请在 backend/.env 配置 SMTP_HOST、SMTP_USER、SMTP_PASS（及可选 SMTP_FROM）后重启服务。');
     console.log(`To:      ${to}`);
     console.log(`Subject: ${subject}`);
     console.log(`Body:    ${text || html}`);
@@ -106,10 +107,34 @@ function renderAdminPasswordChangedEmail({ name, byAdmin }) {
   return { subject, text, html };
 }
 
+/** Admin changed their own password in the console (not a super-admin reset of another user). */
+function renderAdminSelfPasswordChangedEmail({ name, email }) {
+  const safeName = name || '';
+  const subject = '[DELFluent] Admin password updated / 管理员密码已修改';
+  const text = `Bonjour ${safeName},\n\nThe password for DELFluent admin account ${email} was just changed. If this was not you, secure the account immediately.\n\n— DELFluent`;
+  const html = `
+    <div style="font-family:system-ui,sans-serif;max-width:540px;margin:0 auto;padding:24px;color:#1f2937">
+      <h2 style="color:#1e40af">DELFluent Admin · 密码已修改</h2>
+      <p>您好 <b>${safeName}</b>，</p>
+      <p>管理员账户 <code>${email}</code> 的登录密码刚刚在后台被修改。</p>
+      <p style="color:#6b7280;font-size:14px">若非本人操作，请尽快检查服务器安全并重置密码。</p>
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0">
+      <p style="font-size:12px;color:#9ca3af">— DELFluent</p>
+    </div>`;
+  return { subject, text, html };
+}
+
+function getMailerMode() {
+  init();
+  return mode;
+}
+
 module.exports = {
   sendMail,
+  getMailerMode,
   renderPasswordResetEmail,
   renderAdmin2FAEmail,
   renderAdminPasswordChangedEmail,
+  renderAdminSelfPasswordChangedEmail,
   renderVerifyEmail,
 };

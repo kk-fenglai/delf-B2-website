@@ -10,7 +10,7 @@ const { Text } = Typography;
 // the user can still see the upgrade path.
 const ALL_MODELS: Array<{ key: ClaudeModelKey; label: string; tier: ModelTier }> = [
   { key: 'qwen-turbo',    label: 'Qwen Turbo',   tier: 'fast' },
-  { key: 'deepseek-chat', label: 'DeepSeek V3',  tier: 'balanced' },
+  { key: 'deepseek-chat', label: 'DeepSeek V4 Flash', tier: 'balanced' },
   { key: 'qwen-plus',     label: 'Qwen Plus',    tier: 'precise' },
 ];
 

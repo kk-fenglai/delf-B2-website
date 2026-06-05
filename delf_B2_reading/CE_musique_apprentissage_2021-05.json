@@ -1,0 +1,250 @@
+{
+  "title": "DELF B2 CE · L'apprentissage de la musique (2021-05 中国场)",
+  "year": 2021,
+  "description": "2021 年 5 月中国场 DELF B2 阅读 Texte 1 — 关于儿童音乐学习的议论文（10题）",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Que souhaite faire l'auteur de l'article ?",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "作者旨在说服读者音乐启蒙对儿童的益处，故选 B。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "Promouvoir les écoles qui proposent des cours de musique.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "Convaincre de l'utilité d'initier les enfants à la musique classique.",
+          "isCorrect": true,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "Moderniser l'image traditionnelle de l'apprentissage de la musique.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 2,
+      "prompt": "Selon l'auteur, quel est le premier bienfait résultant de la découverte de la musique ?",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "评分要点：提及「音乐听觉的发展」即可得分，需用法语简短作答。",
+      "modelEssay": "Le développement de l'oreille musicale.",
+      "points": 2,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 3,
+      "prompt": "D'après l'auteur, la théorie de Bernstein montre...",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "Bernstein 的理论表明语言与音乐存在平行性，故选 A。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "qu'il existe un parallèle entre les langues et la musique.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "que les enfants musiciens sont plus sensibles aux émotions.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "que le talent musical est une prédisposition propre à l'homme.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 4,
+      "prompt": "Il est scientifiquement établi que la pratique d'un instrument favorise les facultés d'apprentissage.",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "正确引文参考：L'auteur mentionne que l'apprentissage musical est excellent pour la mémoire et que la zone cérébrale stimulée est la même que celle destinée à la mémorisation. V/F 与引文同时正确方可得分。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": false,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 5,
+      "prompt": "Selon l'auteur, quelle opportunité les cours de musique pourraient-ils donner aux enfants ?",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "评分要点：提及「对某门艺术学科产生热情」即可。",
+      "modelEssay": "Se passionner pour une discipline artistique.",
+      "points": 2,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 6,
+      "prompt": "Selon l'auteur, pour quelles raisons certains parents désapprouvent-ils l'apprentissage de la musique pour leurs enfants ? (Deux réponses attendues)",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "评分要点：需同时给出两个原因（各 1 分）：① 「bourgeoisies」② 「sociétales」。只答出一个得 1 分。",
+      "modelEssay": "Des raisons « bourgeoises » et des raisons « sociétales ».",
+      "points": 2,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 7,
+      "prompt": "Pour l'auteur, l'initiation à la musique offre aux enfants la possibilité de découvrir d'autres disciplines artistiques liées au monde musical.",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "正确引文参考：L'article ne mentionne pas que l'initiation à la musique offre aux enfants la possibilité de découvrir d'autres disciplines artistiques liées au monde musical. V/F 与引文同时正确方可得分。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 8,
+      "prompt": "Pour l'auteur, la découverte de la musique permet surtout...",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "文章核心论点是音乐有助于培养广泛的音乐文化素养，故选 A。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "d'acquérir une culture musicale générale.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "de développer ses facultés intellectuelles.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "d'entretenir la popularité de ces œuvres classiques.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 9,
+      "prompt": "Pour l'auteur, priver un enfant de cours de musique revient à...",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "剥夺音乐课等于削弱一个国家的文化丰富性，故选 A。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "appauvrir la richesse culturelle d'un pays.",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "considérer la musique comme un art inférieur.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "sous-estimer les aptitudes naturelles des enfants.",
+          "isCorrect": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 10,
+      "prompt": "Quel est le ton de l'article ?",
+      "passage": "Arrêtez de tirer sur la musique classique\n*Laissez vos enfants avec de la musique classique !*, titrait récemment un article de journal. Un refrain dans l'air du temps qui agace ceux pour qui l'enseignement de la musique possède de\nnombreux bienfaits. L'auteur de cet article proteste contre l'inutilité de l'apprentissage d'un\ninstrument de musique pour les enfants. Pourtant, la musique classique et son apprentissage sont\nextrêmement bénéfiques. L'initiation musicale est tout d'abord une priorité car elle permet aux jeunes enfants de\nreconnaître les œuvres de beauté. Car on a beau adorer une musique plus moderne, une œuvre\nclassique n'en reste pas moins de grande qualité. L'apprentissage de la musique permet à l'enfant\nd'initier son oreille, de la modeler. Jouer de la musique dès son plus jeune âge, c'est apprendre à\ncoûter. En plus d'être la langue des émotions, la musique joue un rôle clé dans l'apprentissage des\nlangues comme l'a répété Leonard Bernstein. Selon lui, les structures linguistiques sont adaptables\nen musique, et inversement. La faculté naturelle des grands musiciens à parler de nombreuses\nlangues va dans le sens de cette thèse. Outre le développement des capacités linguistiques, l'apprentissage d'un instrument est\nexcellent pour la mémoire : la zone cérébrale stimulée est la même que celle destinée à la\nmémorisation. Désapprouver son apprentissage pour des raisons \"bourgeoises\" et \"sociétales\" est\nune bien triste vulgarisation de la musique, et une ignorance de faits pourtant scientifiques. S'opposer à l'apprentissage de la musique constitue une attaque contre les capacités humaines\net un crime contre la culture. Le conservatoire, les cours de musique et de danse n'ont pas pour but\npremier la formation d'élites de la profession. Mais inscrire un enfant à un cours de musique ou de\ndanse, c'est lui offrir la chance de se passionner pour une discipline, et quelle discipline ! Si les\nconservatoires se vident du fait de la réticence des parents, il y aura moins de \"révélations\", d'enfants qui grandissent en se passionnant pour un instrument. Si la France a aujourd'hui la chance de disposer d'orchestres, d'opéras et de ballets partout sur\nson territoire, c'est en grande partie grâce aux cours de musique. S'y opposer sous prétexte que\nc'est une activité \"conservatrice et snob\" et pour un bien-être présumé de l'enfant, \"qu'il ne perde\npas de temps à faire quelque chose qu'il n'aime pas\", c'est s'attaquer indirectement à une partie\nentière de l'économie française, qui fait la richesse culturelle de notre pays. L'apprentissage\nmusical revient à perpétuer un héritage artistique. Enfin, l'apprentissage musical permet à l'enfant de s'initier à un certain nombre de\ncompositeurs, de morceaux, de ballets ou d'opéras. Et sans s'y familiariser dès le plus jeune âge, la\nrencontre privilégiée entre \"Le Lac des cygnes\" et nos enfants pourrait ne jamais avoir lieu. Ne\nserait-ce pas misérable de voir notre patrimoine musical européen tomber dans l'oubli ? Ce qui est\ntrop souvent oublié, c'est que l'apprentissage musical est une initiation culturelle. Un cours de\nmusique est le meilleur endroit pour découvrir les chefs-d'œuvre des siècles passés. Imaginez que\nnos enfants n'écoutent jamais Bach, qu'ils ne soient jamais confrontés à cette culture classique, que\nrestera-t-il aux générations suivantes ?",
+      "audioUrl": null,
+      "explanation": "文章采用论证/示范性语气逐步展开论述，故选 C（Démonstratif）。",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "Critique.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "Ironique.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "Démonstratif.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    }
+  ]
+}

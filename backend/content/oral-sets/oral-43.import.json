@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Une entreprise sans courriel ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.leparisien.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Une entreprise sans courriel ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Dans certaines entreprises, un vendredi par mois, le mail est remplacé par le téléphone et les discussions orales. « Si tout le monde reçoit moins de courriels ce jour-là, c'est moins de stress pour le week-end et lors du retour au travail le lundi matin, puisqu'il y a moins de réponses », souligne le directeur d'une entreprise parisienne qui, comme plusieurs autres entreprises en France, limite l'usage de la messagerie électronique à ses salariés pour les aider à mieux communiquer. Il n'est évidemment pas question de supprimer les courriels : c'est juste un moyen de faire de la pédagogie sur leurs avantages et leurs inconvénients. « Vouloir toujours tout faire immédiatement et par écrit n'est pas toujours bon. Répondre trop vite à trop de gens à la fois engendre parfois des dégâts importants », souligne le patron. « Des malentendus peuvent être évités quand c'est dit de vive voix. » Cette déconnexion ne fait pourtant pas l'unanimité auprès des employés, qui ont l'impression de perdre du temps.",
+      "explanation": "Document d'appui — source : www.leparisien.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Envoyez-vous beaucoup de courriels ou de messages chaque jour ?",
+          "expectedAngle": "个人习惯"
+        },
+        {
+          "order": 1,
+          "text": "Préférez-vous communiquer par écrit ou de vive voix ?",
+          "expectedAngle": "偏好"
+        },
+        {
+          "order": 2,
+          "text": "Trop de courriels, est-ce une source de stress, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 3,
+          "text": "Une journée sans messagerie au travail : bonne idée ?",
+          "expectedAngle": "观点"
+        }
+      ]
+    }
+  ]
+}

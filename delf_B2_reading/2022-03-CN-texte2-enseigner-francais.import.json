@@ -1,0 +1,126 @@
+{
+  "title": "DELF B2 阅读 CE · 2022-03 中国场 · Texte 2（Enseigner en français !）",
+  "year": 2022,
+  "description": "2022年3月中国考场真题 阅读第2篇（Lire un texte argumentatif）。分值统一记为1分（后台仅接受整数分值）。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Quel est le thème principal du document ?",
+      "passage": "Depuis quelque temps, des voix s'élèvent, tant en France qu'à l'étranger, sur l'opportunité d'offrir aux étudiants étrangers, dans nos universités et nos grandes écoles, un certain nombre de cours en anglais. L'argument avancé est que ces étudiants pourraient participer à certains cours spécialisés dès leur arrivée et prendre parallèlement des cours de perfectionnement en français pour être rapidement en mesure de bénéficier des autres cours. Ces voix avancent que si nous ne le faisons pas, nous serons marginalisés dans l'immense marché du savoir à venir.\n\nNon seulement cela serait contraire à la Constitution (qui prévoit dans son article 2 que « la langue de la République est le français »), mais on ne peut pas imaginer une idée plus discutable, plus contreproductive, plus dangereuse et plus contraire à l'intérêt de notre langue et de notre pays.\n\nPlus discutable parce que la France n'a aucun mal aujourd'hui à recruter des étudiants étrangers, et de très haut niveau ; ils constituent 13 % des effectifs totaux, soit bien plus que dans certains pays européens qui enseignent en anglais. Et si danger il y a, il est plutôt de perdre des étudiants francophones, en raison de la langue qui serait utilisée dans nos universités.\n\nPlus contreproductive parce que les pays qui enseignent en anglais, quand ce n'est pas la langue maternelle des enseignants, voient inévitablement le niveau de leur enseignement baisser. Alors que quand notre enseignement est excellent, comme c'est le cas par exemple en mathématiques et en médecine (pour ne citer que ces deux matières), les étudiants se précipitent pour venir étudier en français et en France ; et les chercheurs de ces disciplines peuvent même publier des articles en français dans des revues anglophones.\n\nPlus dangereuse parce que cela entraînera un recul du nombre d'étrangers apprenant le français, ce qui n'est pas dans notre intérêt et parce que d'autres demanderont ensuite qu'on fasse cours en allemand, en turc, en arabe, jusque dans le secondaire et le primaire, et même qu'on soit autorisé à le parler dans les administrations.\n\nPlus contraire à l'intérêt de la France enfin, parce que la francophonie est un formidable atout pour l'avenir. Le français, parlé par 220 millions de personnes, est la cinquième langue au monde, derrière le chinois, l'anglais, l'espagnol, le hindi. Elle sera dans quarante ans la quatrième, parlée par près d'un milliard de personnes, si nous réussissons à maintenir notre enseignement du français en Afrique et en Asie, ce qui dépend évidemment de la langue de notre propre enseignement supérieur, en France et sur internet. Alors que passer à l'anglais serait renoncer à faire connaître notre culture, notre civilisation, notre art de vivre qui constituent aussi un des atouts principaux de la marque France.\n\nS'il est des réformes urgentes à entreprendre en ce domaine, elles doivent aller dans le sens d'une amélioration de la réception des étudiants étrangers en France, en leur simplifiant les procédures de visas, les formalités d'inscription, la recherche d'un logement, la délivrance d'une carte de bibliothèque et de restaurant. Il faut ensuite améliorer l'apprentissage de l'anglais pour les doctorants français et enfin continuer à améliorer la qualité de nos enseignements en français, pour qu'ils se maintiennent à un niveau mondial.\n\nD'après Jacques ATTALI, www.lexpress.fr",
+      "points": 1,
+      "explanation": "答案：A。",
+      "options": [
+        { "label": "A", "text": "La langue d'enseignement dans les universités.", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "L'influence de l'anglais dans les grandes écoles.", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "La diminution du nombre d'étudiants à l'université.", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 2,
+      "prompt": "D'après le document, enseigner dans une autre langue que l'anglais représente…",
+      "points": 1,
+      "explanation": "答案：A。",
+      "options": [
+        { "label": "A", "text": "un handicap pour la compétitivité des universités françaises.", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "une réduction des chances pour les candidats à l'expatriation.", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "une difficulté supplémentaire pour les étudiants non francophones.", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 3,
+      "prompt": "Selon Jacques Attali, pourquoi cette idée est-elle injustifiée en ce qui concerne le nombre d'étudiants étrangers reçus en France ?",
+      "points": 1,
+      "explanation": "评分要点：法国本就吸引了大量外国学生（即便用法语授课）/在法外国学生比某些用英语授课的国家更多。",
+      "modelEssay": "Parce que la France attire déjà de nombreux étudiants étrangers (malgré un enseignement en français). OU Parce qu'il y a plus d'étudiants étrangers en France que dans d'autres pays qui enseignent en anglais."
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 4,
+      "prompt": "Selon Jacques Attali, les étudiants francophones pourraient se détourner de la France pour leurs études à cause…",
+      "points": 1,
+      "explanation": "答案：A。",
+      "options": [
+        { "label": "A", "text": "de la langue d'enseignement.", "isCorrect": true, "order": 0 },
+        { "label": "B", "text": "de la difficulté du système éducatif français.", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "d'un choix limité des matières enseignées.", "isCorrect": false, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 5,
+      "prompt": "Pour Jacques Attali, quel inconvénient y a-t-il à enseigner dans une autre langue que sa propre langue ?",
+      "points": 1,
+      "explanation": "答案：C。",
+      "options": [
+        { "label": "A", "text": "La communication devient difficile.", "isCorrect": false, "order": 0 },
+        { "label": "B", "text": "La préparation prend plus de temps.", "isCorrect": false, "order": 1 },
+        { "label": "C", "text": "Le contenu du cours perd en qualité.", "isCorrect": true, "order": 2 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 6,
+      "prompt": "Vrai ou faux ? (justifiez) Selon Jacques Attali, enseigner les sciences en français empêche les chercheurs d'écrire et de publier des travaux en anglais.",
+      "points": 1,
+      "explanation": "Faux. Justification : « les chercheurs de ces disciplines peuvent même publier des articles en français dans des revues anglophones ».",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": false, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": true, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 7,
+      "prompt": "Vrai ou faux ? (justifiez) Selon Jacques Attali, l'enseignement en langue étrangère risque de s'étendre à d'autres établissements.",
+      "points": 1,
+      "explanation": "Vrai. Justification : « d'autres demanderont ensuite qu'on fasse cours en allemand, en turc, en arabe, jusque dans le secondaire et le primaire, et même qu'on soit autorisé à le parler dans les administrations ».",
+      "options": [
+        { "label": "V", "text": "Vrai", "isCorrect": true, "order": 0 },
+        { "label": "F", "text": "Faux", "isCorrect": false, "order": 1 }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 8,
+      "prompt": "D'après Jacques Attali, à quelle condition le nombre de locuteurs francophones pourra-t-il augmenter dans l'avenir ?",
+      "points": 1,
+      "explanation": "评分要点：在非洲和亚洲维持法语教学。",
+      "modelEssay": "À condition de maintenir l'enseignement du français en Afrique et en Asie."
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 9,
+      "prompt": "Pour Jacques Attali, quelles sont les deux notions inséparables de la langue française pour la promotion du pays ?",
+      "points": 1,
+      "explanation": "评分要点：文化/文明，以及生活方式/生活艺术（每个正确答案 0.5 分）。",
+      "modelEssay": "La culture / la civilisation et le mode de vie / l'art de vivre."
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 10,
+      "prompt": "Quelle mesure prioritaire Jacques Attali recommande-t-il ?",
+      "points": 1,
+      "explanation": "答案：B。",
+      "options": [
+        { "label": "A", "text": "Une meilleure formation des enseignants français.", "isCorrect": false, "order": 0 },
+        { "label": "B", "text": "Une meilleure intégration des étudiants étrangers.", "isCorrect": true, "order": 1 },
+        { "label": "C", "text": "De meilleurs échanges internationaux entre universités.", "isCorrect": false, "order": 2 }
+      ]
+    }
+  ]
+}

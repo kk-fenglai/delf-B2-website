@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Espaces verts, espaces chers ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : consofutur.com。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Espaces verts, espaces chers ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Le souhait d'avoir des centres-villes plus verts est de plus en plus fort dans les projets des municipalités. Des études scientifiques cherchent aujourd'hui à évaluer précisément les avantages des villes vertes. Le premier, c'est que certaines plantes permettraient de lutter contre la pollution. Un autre effet recherché est la lutte contre les températures élevées dans les zones urbaines denses : l'ombre des arbres limite le réchauffement des surfaces bétonnées et, plus généralement, les plantes rafraîchissent l'air. De plus, les façades végétalisées des immeubles réduisent les nuisances sonores au niveau de la rue. Mais il faut aussi regarder les inconvénients, comme l'augmentation de la circulation des pollens (le nombre de personnes allergiques augmente), la nécessité de réguler les espèces animales invasives, ou encore le coût énorme de ces installations et de leur entretien. Un sondage révèle que, pour plus de 8 Français sur 10, habiter près d'un espace vert est un critère important au moment de choisir leur logement.",
+      "explanation": "Document d'appui — source : consofutur.com. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pour vous, est-il important d'avoir des espaces verts en ville ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Habitez-vous près d'un parc ? Est-ce agréable ?",
+          "expectedAngle": "经历"
+        },
+        {
+          "order": 2,
+          "text": "La nature en ville coûte cher : qui devrait payer, selon vous ?",
+          "expectedAngle": "成本/责任"
+        },
+        {
+          "order": 3,
+          "text": "Comment rendre les villes plus vertes ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

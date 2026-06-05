@@ -22,41 +22,44 @@ const TYPE_BG: Record<CorrectionType, string> = {
   syntaxe: 'rgba(114,46,209,0.14)',
 };
 
+const CIRCLED = ['①','②','③','④','⑤','⑥','⑦','⑧'];
+
 type Segment =
   | { kind: 'text'; value: string }
-  | { kind: 'mark'; value: string; correction: EssayCorrection };
+  | { kind: 'mark'; value: string; correction: EssayCorrection; index: number };
 
 function splitByCorrections(text: string, corrections: EssayCorrection[]) {
-  // Greedy, first-match-wins per correction. We walk corrections in document
-  // order (by found offset) and cut the text into segments. If a correction's
-  // excerpt doesn't appear at all, it stays in the "unmatched" list.
-  const matches: Array<{ start: number; end: number; correction: EssayCorrection }> = [];
-  const unmatched: EssayCorrection[] = [];
+  const matches: Array<{ start: number; end: number; correction: EssayCorrection; origIndex: number }> = [];
+  const unmatchedIndices: number[] = [];
   const claimed: boolean[] = Array(text.length).fill(false);
 
-  for (const c of corrections) {
-    if (!c.excerpt) { unmatched.push(c); continue; }
+  corrections.forEach((c, origIndex) => {
+    if (!c.excerpt) { unmatchedIndices.push(origIndex); return; }
     const idx = text.indexOf(c.excerpt);
-    if (idx < 0) { unmatched.push(c); continue; }
-    // Skip if any character in range is already claimed (overlapping matches).
+    if (idx < 0) { unmatchedIndices.push(origIndex); return; }
     let clash = false;
     for (let i = idx; i < idx + c.excerpt.length; i++) if (claimed[i]) { clash = true; break; }
-    if (clash) { unmatched.push(c); continue; }
+    if (clash) { unmatchedIndices.push(origIndex); return; }
     for (let i = idx; i < idx + c.excerpt.length; i++) claimed[i] = true;
-    matches.push({ start: idx, end: idx + c.excerpt.length, correction: c });
-  }
+    matches.push({ start: idx, end: idx + c.excerpt.length, correction: c, origIndex });
+  });
   matches.sort((a, b) => a.start - b.start);
+
+  // Assign display numbers in document order for matched, then unmatched.
+  const indexMap = new Map<number, number>();
+  matches.forEach((m, i) => indexMap.set(m.origIndex, i));
+  unmatchedIndices.forEach((origIdx, i) => indexMap.set(origIdx, matches.length + i));
 
   const segments: Segment[] = [];
   let cursor = 0;
   for (const m of matches) {
     if (m.start > cursor) segments.push({ kind: 'text', value: text.slice(cursor, m.start) });
-    segments.push({ kind: 'mark', value: text.slice(m.start, m.end), correction: m.correction });
+    segments.push({ kind: 'mark', value: text.slice(m.start, m.end), correction: m.correction, index: indexMap.get(m.origIndex)! });
     cursor = m.end;
   }
   if (cursor < text.length) segments.push({ kind: 'text', value: text.slice(cursor) });
 
-  return { segments, unmatched };
+  return { segments, indexMap, unmatchedIndices };
 }
 
 type Props = {
@@ -66,13 +69,14 @@ type Props = {
 
 export default function EssayInlineAnnotations({ text, corrections }: Props) {
   const { t } = useTranslation();
-  const { segments, unmatched } = useMemo(
+  const { segments, indexMap, unmatchedIndices } = useMemo(
     () => splitByCorrections(text, corrections),
     [text, corrections]
   );
 
   return (
     <div>
+      {/* Original text with highlighted excerpts */}
       <div className="whitespace-pre-wrap leading-relaxed text-sm">
         {segments.map((s, i) =>
           s.kind === 'text' ? (
@@ -83,7 +87,7 @@ export default function EssayInlineAnnotations({ text, corrections }: Props) {
               title={
                 <div className="text-xs">
                   <div className="font-semibold mb-1">
-                    {t(`essay.correctionType.${s.correction.type}`)}
+                    {CIRCLED[s.index] ?? `(${s.index + 1})`} {t(`essay.correctionType.${s.correction.type}`)}
                   </div>
                   <div className="mb-1"><em>{s.correction.issue}</em></div>
                   <div>→ {s.correction.suggestion}</div>
@@ -97,30 +101,46 @@ export default function EssayInlineAnnotations({ text, corrections }: Props) {
                   padding: '0 2px',
                   borderRadius: 2,
                   cursor: 'help',
+                  position: 'relative',
                 }}
               >
                 {s.value}
+                <sup style={{ fontSize: 9, color: TYPE_COLOUR[s.correction.type], marginLeft: 1 }}>
+                  {CIRCLED[s.index] ?? s.index + 1}
+                </sup>
               </mark>
             </Tooltip>
           )
         )}
       </div>
 
-      {unmatched.length > 0 && (
-        <div className="mt-4 text-xs">
-          <div className="font-semibold mb-1 text-gray-600">
-            {t('essay.grade.corrections')}
-          </div>
-          <ul className="list-disc pl-5 text-gray-600">
-            {unmatched.map((c, i) => (
-              <li key={i}>
-                <Tag color={TYPE_COLOUR[c.type]} style={{ color: '#fff' }}>
-                  {t(`essay.correctionType.${c.type}`)}
-                </Tag>{' '}
-                <em>{c.issue}</em> → {c.suggestion}
-              </li>
-            ))}
-          </ul>
+      {/* Unified correction list for all corrections */}
+      {corrections.length > 0 && (
+        <div className="mt-4 border-t pt-3">
+          <ol className="list-none pl-0 space-y-2">
+            {corrections.map((c, origIdx) => {
+              const displayIdx = indexMap.get(origIdx) ?? origIdx;
+              const isUnmatched = unmatchedIndices.includes(origIdx);
+              return (
+                <li key={origIdx} className="flex gap-2 text-xs text-gray-700">
+                  <span style={{ color: TYPE_COLOUR[c.type], fontWeight: 600, minWidth: 16 }}>
+                    {CIRCLED[displayIdx] ?? `(${displayIdx + 1})`}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <Tag color={TYPE_COLOUR[c.type]} style={{ color: '#fff', fontSize: 10 }}>
+                      {t(`essay.correctionType.${c.type}`)}
+                    </Tag>
+                    {isUnmatched && c.excerpt && (
+                      <span className="italic text-gray-500 mr-1">「{c.excerpt}」</span>
+                    )}
+                    <em className="text-gray-600">{c.issue}</em>
+                    <span className="text-gray-400 mx-1">→</span>
+                    <span className="text-gray-800">{c.suggestion}</span>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       )}
     </div>

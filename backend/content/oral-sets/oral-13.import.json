@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Est-on sérieux quand on s'engage à 17 ans ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Est-on sérieux quand on s'engage à 17 ans ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "À l'âge du lycée, on a parfois envie de changer le monde. Pourtant, les jeunes se méfient de la politique. Beaucoup de lycéens privilégient des actions protestataires comme la signature de pétitions, les manifestations ou le boycott de produits. Certains décident de s'engager dans des associations humanitaires ou pour l'environnement. C'est le cas de Matéo, 17 ans, qui a rejoint un mouvement citoyen inspiré par Greta Thunberg, une jeune militante écologiste médiatisée à l'âge de 15 ans. « Cela m'a permis de mieux comprendre et de réaliser qu'il est urgent d'agir. Depuis que je me suis engagé, je me sens utile, ça m'évite de culpabiliser. » Pourtant, les jeunes confient qu'ils ne se sentent pas toujours écoutés ou pris au sérieux par les adultes. À un âge perçu comme difficile et instable, cette démarche n'est pas toujours valorisée et peut même sembler suspecte. Les adultes soupçonnent vite les jeunes d'être manipulés, et les parents craignent aussi que cet investissement ne prenne du temps sur les études.",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Selon vous, les jeunes s'intéressent-ils à la politique ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 1,
+          "text": "Pensez-vous qu'on est assez sérieux à 17 ans pour s'engager ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Vous êtes-vous déjà engagé(e) pour une cause ? Laquelle ?",
+          "expectedAngle": "经历"
+        },
+        {
+          "order": 3,
+          "text": "Faut-il, selon vous, écouter davantage les jeunes ?",
+          "expectedAngle": "立场"
+        }
+      ]
+    }
+  ]
+}

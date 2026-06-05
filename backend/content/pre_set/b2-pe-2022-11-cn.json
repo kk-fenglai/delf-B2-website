@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2022年11月（国内） — 老板卧底纪录片",
+  "year": 2022,
+  "description": "老板卧底纪录片。来源：2022年11月（国内） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Sous prétexte de filmer un documentaire sur la réinsertion d'un chômeur, les caméras suivent un patron déguisé — pour éviter d'être reconnu — qui effectue, de façon anonyme, plusieurs stages dans sa propre entreprise pendant 5 jours, pour observer ses employés. Un patron qui a participé à cette émission estime que « tous les 5 ou 10 ans, les directeurs devraient s'introduire incognito parmi les salariés de leur entreprise car cela permet de mieux comprendre le personnel ». Vous venez de lire cet article et vous décidez d'écrire au magazine pour donner votre avis sur une telle expérience. Vous vous interrogez sur l'intérêt de la démarche, mais aussi sur les risques que cela implique, tant du point de vue des employés que des dirigeants.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2022 年 11 月国内 DELF B2 写作真题（回忆版）。体裁：致杂志的读者来信。要点：评价老板“卧底”体验的意义，并权衡其对员工与管理者双方带来的风险。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

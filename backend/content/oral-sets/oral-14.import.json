@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Lutte contre l'incivisme",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.davidlisnard.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Lutte contre l'incivisme »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "La nouvelle campagne de communication réalisée par la Mairie de Cannes, dans le cadre de la lutte contre l'incivisme, insiste sur la responsabilité de chacun vis-à-vis du bien commun. Un nouveau message, qui s'accompagne d'un Guide du civisme, pour rappeler les règles élémentaires de respect en collectivité et les mesures mises en place pour inciter à les observer. Parce qu'adopter un comportement civique et transmettre les bons réflexes relève de notre responsabilité à tous. Lutter contre l'incivisme relève d'une volonté forte de défendre et d'améliorer la qualité de vie des Cannois, pour une ville plus agréable à vivre, plus pratique, plus dynamique et prospère, mieux protégée et solidaire et, enfin, fidèle à son identité. Cette lutte devra être transversale et répondre à quatre objectifs : la préservation de l'environnement et des espaces publics ; la propreté des espaces verts, des rues et des quartiers ; la protection des contribuables ; la responsabilité individuelle et la prise de conscience collective d'appartenance à une même communauté.",
+      "explanation": "Document d'appui — source : www.davidlisnard.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Qu'est-ce qu'un comportement incivique pour vous ? Donnez un exemple.",
+          "expectedAngle": "定义+例子"
+        },
+        {
+          "order": 1,
+          "text": "L'incivisme est-il un vrai problème dans votre ville ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 2,
+          "text": "Comment encourager les gens à être plus respectueux ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Faut-il punir les incivilités ou plutôt éduquer ?",
+          "expectedAngle": "惩罚 vs 教育"
+        }
+      ]
+    }
+  ]
+}

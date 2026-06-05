@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Une loi pour mannequins difficile à appliquer",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.leparisien.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Une loi pour mannequins difficile à appliquer »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Rien n'a changé dans les expositions de mode. Les profils des mannequins* qui défilent pour les plus grandes marques sont toujours les mêmes : les femmes sont très grandes et d'une minceur extrême. Une loi de santé a pourtant été adoptée, dont deux articles sont aujourd'hui connus comme étant la « loi mannequins ». Ces deux articles, attendus depuis longtemps par une grande partie de la population, devaient instituer la mention « photographie retouchée » dans les magazines, ainsi que l'obligation d'une visite médicale et d'un indice de masse corporelle minimal pour les modèles désirant travailler en France. Des mesures pour lutter contre les problèmes de poids et une image de la femme dangereuse pour la santé. Du côté de la profession, le silence est absolu : les grandes agences de mannequins refusent de communiquer. Impossible donc de savoir si elles envisagent de modifier leurs habitudes.\n* mannequin : personne qui présente les collections de mode au public en portant des vêtements.",
+      "explanation": "Document d'appui — source : www.leparisien.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "La mode donne-t-elle une image irréaliste du corps, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Faut-il indiquer quand une photo a été retouchée ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 2,
+          "text": "La mode a-t-elle une influence sur la façon dont on se voit ?",
+          "expectedAngle": "影响"
+        },
+        {
+          "order": 3,
+          "text": "Comment protéger la santé des mannequins ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

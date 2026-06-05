@@ -25,13 +25,13 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const params = skill ? { skill } : {};
+    const params = mockMode ? { mock: 'true' } : skill ? { skill } : {};
     setLoading(true);
     api
       .get('/exams', { params })
       .then((r) => setSets(r.data.sets))
       .finally(() => setLoading(false));
-  }, [skill]);
+  }, [skill, mockMode]);
 
   const runnerPathFor = (examId: string) => {
     if (mockMode) return `/practice/mock/${examId}`;

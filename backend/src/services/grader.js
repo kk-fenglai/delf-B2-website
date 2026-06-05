@@ -33,6 +33,16 @@ function gradeAnswer(question, userAnswer) {
       const isCorrect = expected.includes(u);
       return { isCorrect, score: isCorrect ? question.points : 0 };
     }
+    case 'TRUE_FALSE_JUSTIFY': {
+      // V/F choice is auto-graded; justification requires human/AI review.
+      // Wrong V/F → 0 immediately. Correct V/F → pending (isCorrect: null).
+      let parsed = {};
+      try { parsed = JSON.parse(String(userAnswer || '{}')); } catch { /* ignore */ }
+      const choice = String(parsed.choice || '').trim().toUpperCase();
+      const vfCorrect = correctLabels.length === 1 && choice === correctLabels[0];
+      if (!vfCorrect) return { isCorrect: false, score: 0 };
+      return { isCorrect: null, score: 0 }; // justification pending review
+    }
     case 'ESSAY':
     case 'SPEAKING':
       // Not auto-graded in MVP (requires AI correction — Phase 3)

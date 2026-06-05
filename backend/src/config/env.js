@@ -1,8 +1,24 @@
 // Startup environment validation. Import at the top of src/index.js so the
 // process fails fast (exit 1) if anything critical is missing or dangerously
 // weak. Never ship to production without a .env that passes this check.
+//
+// IMPORTANT: load backend/.env regardless of current working directory.
+// Users sometimes start the server from repo root (e.g. `node backend/src/index.js`),
+// which would otherwise make dotenv look for <repo>/.env and miss backend/.env.
+const path = require('path');
+const fs = require('fs');
+require('dotenv').config({
+  override: true,
+  path: path.resolve(__dirname, '../../.env'),
+});
 
-require('dotenv').config({ override: true });
+// Local override (gitignored). Useful for pointing DATABASE_URL at a dev
+// Neon branch without editing the production .env. Loaded AFTER .env so its
+// values win.
+const localEnv = path.resolve(__dirname, '../../.env.local');
+if (fs.existsSync(localEnv)) {
+  require('dotenv').config({ override: true, path: localEnv });
+}
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const IS_PROD = NODE_ENV === 'production';
@@ -34,10 +50,10 @@ requireEnv('FRONTEND_URL');
 requireEnv('DEEPSEEK_API_KEY', { minLength: 30, prodOnly: true });
 requireEnv('DASHSCOPE_API_KEY', { minLength: 30, prodOnly: true });
 if (!IS_PROD && !process.env.DEEPSEEK_API_KEY) {
-  warnings.push('DEEPSEEK_API_KEY is not set — DeepSeek essay grading will 503 until configured');
+  warnings.push('DEEPSEEK_API_KEY is not set — DeepSeek essay/oral grading will 503 until configured');
 }
-if (!IS_PROD && !process.env.DASHSCOPE_API_KEY) {
-  warnings.push('DASHSCOPE_API_KEY is not set — Qwen essay grading will 503 until configured');
+if (!IS_PROD && !process.env.OPENAI_API_KEY) {
+  warnings.push('OPENAI_API_KEY is not set — Whisper STT (oral transcription) will 503 until configured');
 }
 
 // Hard-block boilerplate placeholder secrets from .env.example
@@ -141,6 +157,7 @@ module.exports = {
   DEEPSEEK_BASE_URL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
   DASHSCOPE_API_KEY: process.env.DASHSCOPE_API_KEY || '',
   DASHSCOPE_BASE_URL: process.env.DASHSCOPE_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
 
   // Payments
   WECHAT_CONFIGURED,

@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Les robots vont-ils vraiment voler nos emplois ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.20minutes.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Les robots vont-ils vraiment voler nos emplois ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "« Les pays qui ont le plus de robots sont aussi ceux qui ont le moins de chômage. Alors que les pays sous-équipés en robots sont ceux où l'industrie est la plus faible et où le chômage est le plus élevé », notait le journaliste économique François Lenglet, souhaitant combattre « l'idée selon laquelle les robots créent le chômage ». « Intégrer des robots dans l'industrie, c'est la solution pour maintenir nos emplois industriels ! », estime pour sa part le Syndicat des machines et technologies de production, qui souligne que l'implantation de robots peut augmenter la productivité, donc créer des embauches. Le Forum économique mondial affirmait que 5 millions d'emplois seraient détruits dans le monde du fait de l'apparition des robots dans le monde du travail. Les plus touchés seraient les employés qui réalisent des tâches administratives. Cependant, ce phénomène devrait être compensé par la création de 2,1 millions de nouveaux emplois, principalement dans les domaines spécialisés, tels que l'informatique, les mathématiques et l'ingénierie.",
+      "explanation": "Document d'appui — source : www.20minutes.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pensez-vous que les robots vont supprimer beaucoup d'emplois ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Quels métiers pourraient être remplacés par des robots ?",
+          "expectedAngle": "举例"
+        },
+        {
+          "order": 2,
+          "text": "Les robots peuvent-ils aussi créer des emplois ?",
+          "expectedAngle": "积极面"
+        },
+        {
+          "order": 3,
+          "text": "Aimeriez-vous travailler avec des robots ? Pourquoi ?",
+          "expectedAngle": "个人"
+        }
+      ]
+    }
+  ]
+}

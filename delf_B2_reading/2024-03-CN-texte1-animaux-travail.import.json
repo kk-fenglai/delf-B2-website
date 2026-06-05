@@ -1,0 +1,244 @@
+{
+  "title": "DELF B2 阅读 CE · 2024-03 中国场 · Texte 1（Les animaux et le travail）",
+  "year": 2024,
+  "description": "2024年3月中国考场真题 阅读第1篇。原题第6题含a/b两小题，已拆分为独立题。分值统一记为1分。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Dans cet article, l'auteur cherche à…",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "décrire les différents types de travail animal.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "dénoncer l'exploitation de l'animal par l'homme.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "informer des recherches récentes sur le travail animal.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 2,
+      "prompt": "Comment comprenez-vous l'expression « le travail était le propre de l'homme » ?",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "On considérait traditionnellement que seul l'homme était capable de travailler, d'accomplir des tâches nécessitant de la réflexion, de la planification et de l'effort.",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 3,
+      "prompt": "Pourquoi le langage utilisé pour parler des tâches de certains animaux a-t-il intéressé les chercheurs ?",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Parce qu'il reflète une certaine reconnaissance de la capacité des animaux à travailler (on parle de recrutement, d'éducation, de retraite).",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 4,
+      "prompt": "D'après Sébastien Mouret, le travail consiste à…",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "interpréter les consignes données.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "suivre correctement des instructions.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "utiliser ses capacités dans un but défini.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "ESSAY",
+      "order": 5,
+      "prompt": "En quoi l'exemple des éléphants de l'Inde aide-t-il à comprendre comment les animaux apprennent à travailler ?",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": "Il montre que les éléphants sont capables d'accomplir des tâches complexes de manière autonome, sans être guidés à chaque étape par un humain (ils apprennent par imitation de leurs congénères).",
+      "points": 1,
+      "options": []
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 6,
+      "prompt": "Vrai ou faux ? (justifiez) Les scientifiques ont pris en compte le travail de l'animal depuis longtemps.",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": "Faux. Justification : « La question fait l'objet d'un tout nouveau champ de recherche. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 7,
+      "prompt": "Vrai ou faux ? (justifiez) Les éléphants de l'Inde doivent être accompagnés dans toutes les étapes de leur travail.",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": "Faux. Justification : « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 8,
+      "prompt": "D'après les chercheurs, qu'est-ce qui encourage le plus les animaux à travailler ?",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "Les récompenses sous forme de nourriture.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "L'autorité de la personne qui les accompagne.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "Les liens affectifs avec la personne avec qui ils travaillent.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "TRUE_FALSE_JUSTIFY",
+      "order": 9,
+      "prompt": "Vrai ou faux ? (justifiez) De nombreuses choses restent à découvrir sur le travail des animaux.",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": "Vrai. Justification : « La question du travail animal est loin d'avoir été épuisée par les chercheurs. »",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "V",
+          "text": "Vrai",
+          "isCorrect": true,
+          "order": 0
+        },
+        {
+          "label": "F",
+          "text": "Faux",
+          "isCorrect": false,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "skill": "CE",
+      "type": "SINGLE",
+      "order": 10,
+      "prompt": "D'après le texte, la reconnaissance du travail animal change selon…",
+      "passage": "Les chiens d'aveugle ou de berger, les animaux de cirque ou de spectacle travaillent-ils ? Oui, répondent certains chercheurs, car ces animaux mobilisent leur intelligence et leur sensibilité au-delà du simple conditionnement.\n\nLa question fait l'objet d'un tout nouveau champ de recherche. D'après Sébastien Mouret, sociologue, « Le travail était le propre de l'homme et l'animal était exclu du monde du travail. » Le sujet, entre sciences de la nature et sciences humaines et sociales, n'était en fin de compte abordé ni par les unes, ni par les autres. Qui, alors, pour étudier les tâches accomplies par les millions d'animaux engagés dans le monde du travail partout sur la planète ?\n\nC'est en se penchant sur la relation de l'homme à l'animal dans divers univers de travail que les chercheurs ont commencé à se poser la question du travail de l'animal. « Le vocabulaire employé est symptomatique », explique Jocelyne Porcher. Pour les chiens d'aveugle ou les chiens militaires, on parle du recrutement, de l'éducation et de retraite. Mais la vraie question est : qu'est-ce qui définit le travail et cette définition peut-elle s'appliquer aux animaux ?\n\n« Le travail, en sciences sociales, se définit comme la mobilisation par les individus de leur intelligence, leur sensibilité, tout ce qu'ils mettent en œuvre et qui vient d'eux pour accomplir une tâche. », indique Sébastien Mouret. Le travail ne consiste donc pas seulement à obéir à des ordres : il faut la collaboration de l'individu. Or les observations menées par les chercheurs ces dernières années montrent clairement que les tâches accomplies par l'animal ne sont pas le seul résultat de l'exercice d'une autorité.\n\nLe cas des éléphants utilisés en Inde est, à cet égard, éclairant. « Les cornacs laissent une grande part d'autonomie à leurs éléphants. », raconte l'ethnologue Nicolas Lainé. « L'éléphant traîne les troncs d'arbre dans la forêt sans personne sur son dos pour le guider. Au moment du chargement, il choisit l'ordre dans lequel il les saisit. » Plus étonnant : ces éléphants n'ont pas été dressés à cela, ce sont leurs congénères qui leur ont appris comment s'y prendre. « Ce n'est que lorsqu'ils accompagnent les autres éléphants adultes en forêt qu'ils commencent leur apprentissage par imitation. »\n\nAutre élément clé : la motivation. Si les hommes peuvent tirer une satisfaction de leur travail, les motivations de l'animal sont tout autres selon les chercheurs : « Le vrai moteur, c'est l'affection que l'animal porte à la personne avec laquelle il travaille ». Liée à la motivation, la reconnaissance donnée à l'animal est fondamentale et va au-delà de la simple récompense alimentaire. Ce qui compte pour l'animal, c'est qui la donne et comment il la donne.\n\nLa question du travail animal est loin d'avoir été épuisée par les chercheurs. Mais elle pose déjà de vrais défis. Le travail animal soulève la question du statut de l'animal, de ses droits et de ses conditions de vie. Les chiens d'aveugle ont déjà droit à des pauses régulières et à une retraite. Mais qu'en est-il des parcs animaliers et des animaux de cinéma ?\n\n* les chiens d'aveugle aident les aveugles à se déplacer ; les chiens de berger aident à surveiller les troupeaux.\n* cornacs : personnes responsables de l'éléphant.",
+      "audioUrl": null,
+      "explanation": null,
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "les pays.",
+          "isCorrect": false,
+          "order": 0
+        },
+        {
+          "label": "B",
+          "text": "le type d'animal.",
+          "isCorrect": false,
+          "order": 1
+        },
+        {
+          "label": "C",
+          "text": "le type d'activité.",
+          "isCorrect": true,
+          "order": 2
+        }
+      ]
+    }
+  ]
+}

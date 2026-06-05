@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Faut-il changer radicalement les systèmes éducatifs ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Le Nouvel Observateur。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Faut-il changer radicalement les systèmes éducatifs ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "La Webacadémie, un organisme presque unique en France, a pour but de sauver des jeunes déscolarisés, passionnés d'ordinateurs, de jeux vidéo et de programmes informatiques. Rien à voir avec l'école classique : à la Webacadémie, ambiance détendue, animateurs peu classiques et rock en fond sonore. Les jeunes se lèvent quand ils veulent et peuvent travailler en groupe, selon le mode et le rythme voulus (l'école est même ouverte la nuit), pour devenir en deux ans développeurs internet. David, un élève, témoigne : « J'avais laissé tomber le lycée parce que je trouvais le milieu trop strict, conventionnel, infantilisant. Pourtant, j'avais de la rigueur : j'étais capable de passer toute une nuit à réparer un ordinateur ! Mais quand on ne rentre pas dans le moule*, on est immédiatement taxé de mauvais élève. Ici, c'est fini, le rapport classique prof / élève : on est traités comme des adultes responsables. » À une époque où les jeunes qui décrochent de l'école sont de plus en plus nombreux, faut-il s'intéresser davantage à ce genre d'initiative ?\n* rentrer dans le moule : faire comme tout le monde, être conforme.",
+      "explanation": "Document d'appui — source : Le Nouvel Observateur. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "L'école classique convient-elle à tous les élèves ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Pourquoi certains jeunes quittent-ils l'école, selon vous ?",
+          "expectedAngle": "成因"
+        },
+        {
+          "order": 2,
+          "text": "Faut-il changer la façon d'enseigner aujourd'hui ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 3,
+          "text": "Comment garder les jeunes motivés à l'école ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

@@ -1,11 +1,58 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const { z } = require('zod');
 const prisma = require('../prisma');
 const { requireAuth } = require('../middleware/auth');
+const passwordPolicy = require('../utils/passwordPolicy');
+const { revokeAllForUser } = require('../services/refreshTokens');
 const { predictScore } = require('../services/prediction');
 const { gradeAnswer } = require('../services/grader');
+const { signAudioUrl } = require('../utils/audioToken');
+const { PLAN_CAPS } = require('../constants/planMatrix');
 
 const router = express.Router();
+
+// GET /api/user/sessions/quota
+// FREE-plan monthly session usage by bucket (CE / CO / MOCK). Paid plans
+// return freeSessions: null. The frontend uses this to render remaining
+// counts on practice cards and to drive the upgrade modal.
+router.get('/sessions/quota', requireAuth, async (req, res, next) => {
+  try {
+    const plan = req.userPlan || 'FREE';
+    const caps = PLAN_CAPS[plan] || PLAN_CAPS.FREE;
+    const monthStart = new Date();
+    monthStart.setUTCDate(1);
+    monthStart.setUTCHours(0, 0, 0, 0);
+    const nextMonth = new Date(monthStart);
+    nextMonth.setUTCMonth(nextMonth.getUTCMonth() + 1);
+
+    if (!caps.freeMonthlySessions) {
+      return res.json({ plan, freeSessions: null, resetAt: nextMonth });
+    }
+
+    const [ceUsed, coUsed, mockUsed] = await Promise.all([
+      prisma.examSession.count({
+        where: { userId: req.userId, startedAt: { gte: monthStart }, mode: 'PRACTICE', skill: 'CE' },
+      }),
+      prisma.examSession.count({
+        where: { userId: req.userId, startedAt: { gte: monthStart }, mode: 'PRACTICE', skill: 'CO' },
+      }),
+      prisma.examSession.count({
+        where: { userId: req.userId, startedAt: { gte: monthStart }, mode: 'EXAM' },
+      }),
+    ]);
+
+    res.json({
+      plan,
+      freeSessions: {
+        CE: { used: ceUsed, cap: caps.freeMonthlySessions.CE },
+        CO: { used: coUsed, cap: caps.freeMonthlySessions.CO },
+        MOCK: { used: mockUsed, cap: caps.freeMonthlySessions.MOCK },
+      },
+      resetAt: nextMonth,
+    });
+  } catch (e) { next(e); }
+});
 
 // GET /api/user/me
 router.get('/me', requireAuth, async (req, res, next) => {
@@ -205,7 +252,7 @@ router.get('/mistakes', requireAuth, async (req, res, next) => {
         type: q.type,
         prompt: q.prompt,
         passage: q.passage,
-        audioUrl: q.audioUrl,
+        audioUrl: signAudioUrl(q.audioUrl),
         explanation: q.explanation,
         points: q.points,
         options: q.options
@@ -291,6 +338,54 @@ router.get('/mistakes/stats', requireAuth, async (req, res, next) => {
       if (bySkill[s] !== undefined) bySkill[s]++;
     }
     res.json({ total: wrong.length, bySkill });
+  } catch (e) { next(e); }
+});
+
+// POST /api/user/change-password  { oldPassword, newPassword }
+const changePwdSchema = z.object({
+  oldPassword: z.string().min(1),
+  newPassword: z
+    .string()
+    .min(10)
+    .max(100)
+    .refine((p) => passwordPolicy.validate(p).ok, (p) => ({
+      message: passwordPolicy.validate(p).reasons.join('; ') || 'Weak password',
+    })),
+});
+
+router.post('/change-password', requireAuth, async (req, res, next) => {
+  try {
+    const { oldPassword, newPassword } = changePwdSchema.parse(req.body);
+
+    const me = await prisma.user.findUnique({
+      where: { id: req.userId },
+      select: {
+        id: true,
+        passwordHash: true,
+        status: true,
+        deletedAt: true,
+        role: true,
+      },
+    });
+    if (!me || me.status !== 'ACTIVE' || me.deletedAt) {
+      return res.status(403).json({ error: '账户不可用' });
+    }
+    if (me.role === 'ADMIN' || me.role === 'SUPER_ADMIN') {
+      return res.status(403).json({ error: '管理员账户请在管理后台修改密码' });
+    }
+
+    const ok = await bcrypt.compare(oldPassword, me.passwordHash);
+    if (!ok) return res.status(401).json({ error: '旧密码错误' });
+
+    const hash = await bcrypt.hash(newPassword, 12);
+    await prisma.user.update({
+      where: { id: me.id },
+      data: { passwordHash: hash, failedLoginCount: 0, lockedUntil: null },
+    });
+
+    try { await revokeAllForUser(me.id, { reason: 'PASSWORD_CHANGE' }); } catch { /* ignore */ }
+
+    res.json({ ok: true });
   } catch (e) { next(e); }
 });
 

@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Les crèches d'entreprise",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Le Figaro。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Les crèches d'entreprise »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "PME* et grands groupes multiplient les actions et les services innovants afin de trouver des solutions d'accueil pour les enfants de leurs collaborateurs. Une manière de contourner l'embouteillage toujours plus dense aux portes des crèches : seul un enfant de moins de 3 ans sur neuf a aujourd'hui une place dans ces structures ! Les entreprises mesurent mieux l'importance d'une politique favorisant la conciliation entre vie professionnelle et vie familiale. Elles y trouvent un moyen de fidéliser leurs salariés, de lutter contre l'absentéisme et les congés parentaux prolongés, de motiver l'esprit de groupe et d'améliorer ainsi la productivité. « Les collaborateurs sont plus investis dans leur travail, l'entreprise a tout à y gagner. C'est un investissement social et humain », estiment-elles. Cette logique répond par ailleurs à une très forte demande des parents salariés : 97 % d'entre eux estiment que l'équilibre entre ces différents temps est un sujet de préoccupation majeur et 53 % choisissent en priorité les crèches d'entreprise comme service à mettre en place.\n* PME : Petites et Moyennes Entreprises.",
+      "explanation": "Document d'appui — source : Le Figaro. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Est-ce une bonne idée que les entreprises ouvrent des crèches ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Est-il difficile de trouver un mode de garde pour les enfants ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 2,
+          "text": "Comment mieux concilier travail et vie de famille ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Les entreprises doivent-elles aider les parents qui travaillent ?",
+          "expectedAngle": "责任观点"
+        }
+      ]
+    }
+  ]
+}

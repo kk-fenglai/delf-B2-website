@@ -1,0 +1,18 @@
+{
+  "title": "DELF B2 写作真题 · 2024年2月（法国） — 推行远程办公",
+  "year": 2024,
+  "description": "推行远程办公。来源：2024年2月（法国） DELF B2 写作考试回忆题。DELF B2 Production écrite，满分 25 分，要求 ≥ 250 词。非 FEI 官方样题。",
+  "isFreePreview": true,
+  "questions": [
+    {
+      "skill": "PE",
+      "type": "ESSAY",
+      "order": 1,
+      "prompt": "Vous travaillez dans une entreprise française. Vous avez discuté avec plusieurs collègues des avantages liés au fait de pouvoir « télétravailler » — c'est-à-dire travailler depuis la maison grâce aux nouvelles technologies — au moins une journée par semaine, et d'aller au bureau les autres jours, comme cela se pratique déjà dans certaines entreprises. Vous rédigez un courrier à votre directeur, dans lequel vous lui proposez de mettre en place cette idée pour tout le personnel de l'entreprise. Vous essayez de le convaincre en lui expliquant l'intérêt du projet, à la fois pour les employés et pour l'entreprise.",
+      "passage": null,
+      "audioUrl": null,
+      "explanation": "来源：2024 年 2 月法国 DELF B2 写作真题（回忆版）。体裁：致公司经理的书信。要点：论证远程办公（télétravail）对员工和企业的双重益处并提出实施建议。注：与 2021 年 6 月法国题为同一题。≥ 250 mots。",
+      "points": 25
+    }
+  ]
+}

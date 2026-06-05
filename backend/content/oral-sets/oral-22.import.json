@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Les étudiants pensent repartir vivre chez leurs parents",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source non identifiée。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Les étudiants pensent repartir vivre chez leurs parents »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Appartements trop petits, loyers trop chers et précarité : les étudiants sont les premières victimes de la crise. Selon l'Observatoire de la vie étudiante, seuls 13 % des étudiants vivent dans des « établissements conçus pour les étudiants » ; le reste se loge sur le marché traditionnel, beaucoup plus cher. Pire, ils seraient 40 % à envisager de retourner vivre dans le cocon familial si leur situation financière ne s'améliore pas. Les étudiants sont ainsi de plus en plus nombreux à exercer un petit boulot pour subvenir à leurs besoins et alléger le poids financier que portent leurs parents. « Avec la crise économique et la montée du coût des études, ils en ont besoin pour vivre. Nous sommes obligés de tenir compte de leur état de fatigue, d'allonger les délais de remise des devoirs, d'enrichir les cours pour qu'ils se suffisent à eux-mêmes », témoigne un maître de conférences. Ces étudiants manquent certains cours pour rejoindre leur travail et leur taux de réussite aux examens s'en trouve sérieusement affecté.",
+      "explanation": "Document d'appui — source non identifiée sur l'original (à vérifier). Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Est-il difficile pour les étudiants de se loger dans votre pays ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 1,
+          "text": "Faut-il travailler pendant ses études, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Vivre chez ses parents pendant les études : bonne ou mauvaise idée ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 3,
+          "text": "Comment aider financièrement les étudiants ?",
+          "expectedAngle": "措施"
+        }
+      ]
+    }
+  ]
+}

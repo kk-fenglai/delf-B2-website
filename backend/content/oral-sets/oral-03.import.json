@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · QU'ALLONS-NOUS MANGER DEMAIN ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Document d'appui — source : lemonde.fr. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Questions de relance générées par la plateforme.。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« QU'ALLONS-NOUS MANGER DEMAIN ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Qui n'a jamais ressenti une sorte de malaise face à la répétition des produits alimentaires proposés dans nos immenses supermarchés ? Qui ne s'est inquiété de l'appauvrissement des denrées, des fruits et légumes ? Qui ne s'est demandé si nos enfants ne mangeront pas tous demain la même chose : un peu de couscous, un peu de sushi, un peu de pizza et de riz cantonais... le tout grâce à la mondialisation et au développement d'une grande cuisine internationale qui ne variera guère d'un pays à l'autre ?\nLes experts ne le nient pas : ils lui ont même donné un nom, l'homogénéisation des pratiques alimentaires. Les raisons de cette uniformisation sont connues et multiples : la puissance de l'agriculture industrielle, les effets de la mondialisation et de la grande distribution, la hausse du pouvoir d'achat dans les pays émergents, les recommandations des nutritionnistes, l'urbanisation croissante des populations et la montée du végétarisme...\nCette évolution est-elle pour autant irrémédiable ?",
+      "explanation": "Document d'appui — source : lemonde.fr. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Questions de relance générées par la plateforme.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pensez-vous que nous mangeons tous de plus en plus la même chose ?",
+          "expectedAngle": "是否认同现象，举例"
+        },
+        {
+          "order": 1,
+          "text": "Est-ce un problème si les plats deviennent les mêmes partout ?",
+          "expectedAngle": "评估利弊，文化多样性"
+        },
+        {
+          "order": 2,
+          "text": "La mondialisation de la nourriture a-t-elle aussi de bons côtés ?",
+          "expectedAngle": "让步，承认积极面"
+        },
+        {
+          "order": 3,
+          "text": "Que peut-on faire pour garder les plats traditionnels ?",
+          "expectedAngle": "提出具体做法"
+        }
+      ]
+    }
+  ]
+}

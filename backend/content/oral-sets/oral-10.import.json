@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · École : bientôt le retour du redoublement ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : Le Monde。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« École : bientôt le retour du redoublement ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "En 2014, la ministre de l'éducation nationale de l'époque avait pris un décret affirmant « le caractère exceptionnel du redoublement* », soit une quasi-interdiction de faire redoubler les élèves. Deux raisons expliquaient cette décision. La première, c'est que le redoublement coûtait cher : environ 2 milliards d'euros par an. La seconde, c'est qu'il est le plus souvent inefficace. Pourtant, on aurait pu penser qu'un élève peut progresser l'année du redoublement, puisqu'il refait le même programme. Mais à long terme, « le redoublement n'a pas d'effet sur les performances scolaires », affirmait, en janvier 2015, le Conseil national d'évaluation du système scolaire dans un rapport. Aujourd'hui, le nouveau ministre français de l'éducation veut autoriser à nouveau les conseils de classe à faire redoubler les élèves qui ne sont pas au niveau. Et vous, que pensez-vous du redoublement ? Bonne ou mauvaise idée ?\n* redoublement : fait, pour un élève, de recommencer une année dans la même classe.",
+      "explanation": "Document d'appui — source : Le Monde. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Pour vous, le redoublement est-il une bonne ou une mauvaise idée ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Connaissez-vous quelqu'un qui a redoublé ? Comment ça s'est passé ?",
+          "expectedAngle": "经历/例子"
+        },
+        {
+          "order": 2,
+          "text": "Comment aider un élève en difficulté, sans le faire redoubler ?",
+          "expectedAngle": "替代方案"
+        },
+        {
+          "order": 3,
+          "text": "L'école devrait-elle s'adapter à chaque élève, selon vous ?",
+          "expectedAngle": "观点"
+        }
+      ]
+    }
+  ]
+}

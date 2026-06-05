@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Une nouvelle formule pour combattre le chômage chez les jeunes",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : huffingtonpost.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Une nouvelle formule pour combattre le chômage chez les jeunes »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "L'Union européenne doit aider les jeunes. En effet, la crise économique a provoqué une forte augmentation du chômage parmi eux et, bien que la situation change peu à peu, aujourd'hui encore presque un jeune sur cinq se trouve sans emploi. Dans ce contexte, les jeunes demandent aux gouvernements de leurs pays respectifs de prendre des mesures pour améliorer les systèmes d'apprentissage. Cependant, ces dernières ne sont pas toujours mises en place. C'est pourquoi la Commission européenne a décidé de les aider. Pour cela, elle a annoncé le début de l'initiative « Erasmus Pro », qui permet à des jeunes de partir faire leur formation dans un autre pays de l'Union européenne. Ce programme devrait donc permettre aux jeunes Européens de réaliser non seulement une partie, mais aussi, s'ils le souhaitent, l'ensemble de leur formation dans un autre pays. Mais cette initiative provoquerait-elle une fuite des jeunes vers l'étranger, comme certains le craignent ?",
+      "explanation": "Document d'appui — source : huffingtonpost.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Le chômage des jeunes est-il un problème dans votre pays ?",
+          "expectedAngle": "现状"
+        },
+        {
+          "order": 1,
+          "text": "Partir se former à l'étranger : bonne idée pour trouver un emploi ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 2,
+          "text": "Que peut-on faire pour aider les jeunes à trouver du travail ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Faut-il craindre que les jeunes partent travailler à l'étranger ?",
+          "expectedAngle": "人才外流"
+        }
+      ]
+    }
+  ]
+}

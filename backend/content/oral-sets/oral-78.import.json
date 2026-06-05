@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Faut-il emmener ses enfants avec soi en vacances ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.slate.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Faut-il emmener ses enfants avec soi en vacances ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Vous avez choisi d'avoir des enfants ? Cela ne veut pas dire que vous devez les emmener partout, tout le temps, avec vous. En effet, partir en vacances avec des enfants n'est pas très facile, surtout quand ils n'ont pas le même âge. Selon certains parents, il vaudrait mieux éviter de partir loin avec eux. D'autres se plaignent du fait que la présence des enfants ne permet pas de profiter réellement des vacances : si l'on peut envoyer les enfants au club de plage ou avoir l'aide des grands-parents, c'est mieux, car on retrouve généralement les enfants beaucoup plus fatigués. Parce que, là aussi, il faut les nourrir, les soigner, les surveiller : ces activités laissent peu de temps pour lire ou se reposer sur la plage. De fait, certains parents préfèrent ne pas emmener leurs jeunes enfants en vacances. C'est pourquoi les hôtels interdits aux enfants connaissent, partout dans le monde, de plus en plus de succès.",
+      "explanation": "Document d'appui — source : www.slate.fr. Transcription partiellement reconstruite (filigrane sur l'original) — à vérifier. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Les vacances en famille sont-elles toujours reposantes, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "Que pensez-vous des hôtels interdits aux enfants ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 2,
+          "text": "Comment réussir des vacances en famille ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Préférez-vous partir en famille, entre amis ou seul ?",
+          "expectedAngle": "偏好"
+        }
+      ]
+    }
+  ]
+}

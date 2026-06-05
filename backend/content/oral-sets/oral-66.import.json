@@ -1,0 +1,41 @@
+{
+  "title": "DELF B2 口语 · Danger des écrans : quelles solutions ?",
+  "year": 2024,
+  "description": "Production Orale（PO）主题卡。Source : www.franceinter.fr。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "PO",
+      "type": "SPEAKING",
+      "order": 1,
+      "prompt": "« Danger des écrans : quelles solutions ? »\n\nDégagez le problème soulevé par ce document, puis présentez votre opinion sur le sujet sous la forme d'un exposé personnel et construit. Vous pourrez ensuite débattre de votre point de vue avec l'examinateur.",
+      "passage": "Anne-Lise Ducanda, médecin à Paris, constate des symptômes chroniques chez les moins de quatre ans qui passent plusieurs heures par jour sur des tablettes ou des smartphones : ce sont souvent des enfants renfermés sur eux-mêmes, qui ne la regardent pas quand elle leur parle, qui ont des retards de langage, des troubles du sommeil, etc. Et le plus frappant, c'est qu'il suffit de conseiller aux parents de couper l'accès aux écrans pour que les choses s'arrangent. Les parents à qui le docteur Ducanda en parle lui répondent tous : « Pourquoi ne nous a-t-on rien dit ? » Elle tient à ne surtout pas les culpabiliser, car la plupart ne pensent pas à mal : ils occupent leur enfant avec une tablette le temps de préparer le dîner. Ils ne s'imaginaient pas que c'était aussi dangereux et se posent deux questions essentielles : « Faut-il faire une différence entre les écrans ? » et « Comment limiter l'exposition des enfants aux écrans dans le monde d'aujourd'hui ? »",
+      "explanation": "Document d'appui — source : www.franceinter.fr. Les questions de relance (Partie 2 / débat) ont été générées par la plateforme à titre d'entraînement et ne font pas partie du sujet original.",
+      "points": 25,
+      "options": [],
+      "followUps": [
+        {
+          "order": 0,
+          "text": "Les enfants passent-ils trop de temps devant les écrans, selon vous ?",
+          "expectedAngle": "立场"
+        },
+        {
+          "order": 1,
+          "text": "À partir de quel âge un enfant peut-il utiliser une tablette ?",
+          "expectedAngle": "观点"
+        },
+        {
+          "order": 2,
+          "text": "Comment limiter le temps d'écran des enfants ?",
+          "expectedAngle": "措施"
+        },
+        {
+          "order": 3,
+          "text": "Les écrans ont-ils aussi des avantages pour les enfants ?",
+          "expectedAngle": "辩证"
+        }
+      ]
+    }
+  ]
+}
