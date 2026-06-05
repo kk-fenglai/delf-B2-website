@@ -1,10 +1,9 @@
 # Fly.io config for delfluent-backend.
-# Region: hkg (Hong Kong) — closest to overseas Chinese students in Asia,
-# acceptable to Europe (~250ms) and North America (~180ms via SFO transit).
+# Region: sin (Singapore) — hkg deprecated on Fly; closest Asia-Pacific alternative.
 # Adjust app name + region after `fly launch` if you pick something different.
 
-app = "delfluent-backend"
-primary_region = "hkg"
+app = "delf-b2-website"
+primary_region = "sin"
 
 [build]
   dockerfile = "Dockerfile"
