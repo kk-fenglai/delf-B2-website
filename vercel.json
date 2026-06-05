@@ -1,0 +1,12 @@
+{
+  "framework": "vite",
+  "installCommand": "cd frontend && npm ci",
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://delf-b2-website.fly.dev/api/:path*"
+    }
+  ]
+}
