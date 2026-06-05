@@ -1,0 +1,25 @@
+# Deploy backend to Fly.io from the backend/ subdirectory (monorepo).
+# Setup: fly tokens create deploy -x 999999h
+#        → add as GitHub repo secret FLY_API_TOKEN
+
+name: Fly Deploy Backend
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/fly-deploy.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
