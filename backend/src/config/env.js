@@ -48,12 +48,20 @@ requireEnv('FRONTEND_URL');
 // At least ONE provider must be configured in prod, but we check each independently so
 // the error message is clear (we don't try to short-circuit "either one is fine").
 requireEnv('DEEPSEEK_API_KEY', { minLength: 30, prodOnly: true });
-requireEnv('DASHSCOPE_API_KEY', { minLength: 30, prodOnly: true });
 if (!IS_PROD && !process.env.DEEPSEEK_API_KEY) {
-  warnings.push('DEEPSEEK_API_KEY is not set — DeepSeek essay/oral grading will 503 until configured');
+  warnings.push('DEEPSEEK_API_KEY is not set — DeepSeek essay grading will 503 until configured');
 }
-if (!IS_PROD && !process.env.OPENAI_API_KEY) {
-  warnings.push('OPENAI_API_KEY is not set — Whisper STT (oral transcription) will 503 until configured');
+if (!process.env.DASHSCOPE_API_KEY) {
+  warnings.push('DASHSCOPE_API_KEY is not set — Qwen essay tiers disabled until configured');
+}
+if (!process.env.OPENAI_API_KEY) {
+  warnings.push('OPENAI_API_KEY is not set — Whisper STT (oral transcription) will fail until configured');
+}
+
+// Oral AI: Whisper STT + DeepSeek grading. Enabled unless explicitly disabled.
+const ENABLE_ORAL_AI = process.env.ENABLE_ORAL_AI !== 'false';
+if (ENABLE_ORAL_AI && !process.env.DEEPSEEK_API_KEY) {
+  errors.push('Oral AI grading requires DEEPSEEK_API_KEY');
 }
 
 // Hard-block boilerplate placeholder secrets from .env.example
@@ -158,6 +166,7 @@ module.exports = {
   DASHSCOPE_API_KEY: process.env.DASHSCOPE_API_KEY || '',
   DASHSCOPE_BASE_URL: process.env.DASHSCOPE_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1',
   OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
+  ENABLE_ORAL_AI,
 
   // Payments
   WECHAT_CONFIGURED,

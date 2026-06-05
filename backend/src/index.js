@@ -194,8 +194,7 @@ const server = app.listen(env.PORT, () => {
   essayQueue.startWorker().catch((err) => {
     logger.error({ err }, 'essayQueue.startWorker.fail');
   });
-  // Oral worker: STT + LLM scoring for Production Orale rows. Same dev/prod
-  // tolerance as essayQueue — DASHSCOPE_API_KEY missing in dev only warns.
+  // Oral worker: Whisper STT + DeepSeek grading for Production Orale rows.
   oralQueue.startWorker().catch((err) => {
     logger.error({ err }, 'oralQueue.startWorker.fail');
   });
