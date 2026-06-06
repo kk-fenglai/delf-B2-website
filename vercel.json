@@ -7,6 +7,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://delf-b2-website.fly.dev/api/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
