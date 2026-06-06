@@ -33,7 +33,7 @@ function checkoutExtras() {
 
 function checkoutCurrency(price) {
   if (env.STRIPE?.ADAPTIVE_PRICING) {
-    return String(env.STRIPE.ANCHOR_CURRENCY || 'USD').toLowerCase();
+    return String(env.STRIPE.ANCHOR_CURRENCY || 'EUR').toLowerCase();
   }
   return String(price.currency || 'USD').toLowerCase();
 }
@@ -102,7 +102,7 @@ async function createCheckoutSession({
     return { sessionId: session.id, url: session.url, mode: 'subscription' };
   }
 
-  // One-time purchase. With Adaptive Pricing enabled we anchor in USD and let
+  // One-time purchase. With Adaptive Pricing enabled we anchor in EUR and let
   // Stripe localize at Checkout (card only — WeChat/Alipay require fixed CNY).
   const paymentMethodTypes = env.STRIPE?.ADAPTIVE_PRICING
     ? ['card']

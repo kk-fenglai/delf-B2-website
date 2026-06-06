@@ -58,7 +58,7 @@ router.get('/products', async (_req, res, next) => {
 
     res.json({
       adaptivePricing: Boolean(env.STRIPE?.ADAPTIVE_PRICING),
-      anchorCurrency: env.STRIPE?.ANCHOR_CURRENCY || 'USD',
+      anchorCurrency: env.STRIPE?.ANCHOR_CURRENCY || 'EUR',
       products: products.map((p) => ({
         id: p.id,
         code: p.code,

@@ -46,7 +46,7 @@ export default function Pricing() {
 
   const [products, setProducts] = useState<CatalogProduct[] | null>(null);
   const [adaptivePricing, setAdaptivePricing] = useState(false);
-  const [anchorCurrency, setAnchorCurrency] = useState<Currency>('USD');
+  const [anchorCurrency, setAnchorCurrency] = useState<Currency>('EUR');
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [cycle, setCycle] = useState<BillingCycle>('monthly');
   const [currency, setCurrency] = useState<Currency>(() =>

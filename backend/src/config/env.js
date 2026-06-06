@@ -198,6 +198,6 @@ module.exports = {
     // Adaptive Pricing: Stripe converts anchor-currency prices at Checkout (150+ countries).
     // Set STRIPE_ADAPTIVE_PRICING=false to revert to fixed multi-currency catalog.
     ADAPTIVE_PRICING: process.env.STRIPE_ADAPTIVE_PRICING !== 'false',
-    ANCHOR_CURRENCY: (process.env.STRIPE_ANCHOR_CURRENCY || 'USD').toUpperCase(),
+    ANCHOR_CURRENCY: (process.env.STRIPE_ANCHOR_CURRENCY || 'EUR').toUpperCase(),
   },
 };

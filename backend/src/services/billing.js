@@ -131,8 +131,8 @@ async function resolvePriceOrThrow(priceId) {
 
 // Stripe Adaptive Pricing uses one settlement-currency anchor; map any selected
 // catalog row to the same product+months in that currency before checkout.
-async function resolveStripeAnchorPrice(price, { anchorCurrency = 'USD' } = {}) {
-  const anchor = String(anchorCurrency || 'USD').toUpperCase();
+async function resolveStripeAnchorPrice(price, { anchorCurrency = 'EUR' } = {}) {
+  const anchor = String(anchorCurrency || 'EUR').toUpperCase();
   if (String(price.currency || '').toUpperCase() === anchor) return price;
   const anchorPrice = await prisma.price.findFirst({
     where: {
