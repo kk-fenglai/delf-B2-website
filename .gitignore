@@ -27,3 +27,12 @@ frontend/tsconfig.tsbuildinfo
 
 # Local test-account credentials (contains admin / demo passwords)
 注意事项.txt
+
+# Internal docs (local only — pricing, payment ops, deployment, product specs)
+定价标准.md
+支付功能.md
+PLAN_subscription_overhaul.md
+AI批改作文.md
+AI口语.md
+DEPLOYMENT.md
+PRD.md
