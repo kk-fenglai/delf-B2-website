@@ -14,6 +14,7 @@
 
 const prisma = require('../../prisma');
 const { logger } = require('../../utils/logger');
+const env = require('../../config/env');
 const wechat = require('./wechat');
 const alipay = require('./alipay');
 const stripe = require('./stripe');
@@ -110,12 +111,15 @@ async function recoverLostNotifies() {
         if (!client) continue;
         const session = await client.checkout.sessions.retrieve(o.providerOrderNo);
         if (session && session.payment_status === 'paid') {
+          const paidCents = typeof session.amount_total === 'number' ? session.amount_total : null;
+          const currency = session.currency ? String(session.currency).toUpperCase() : null;
           await stripeSettle({
             sessionId: session.id,
             orderId: session.metadata?.orderId || session.client_reference_id,
             externalTradeNo: session.payment_intent || session.id,
-            paidCents: typeof session.amount_total === 'number' ? session.amount_total : null,
-            currency: session.currency ? String(session.currency).toUpperCase() : null,
+            paidCents,
+            currency,
+            presentment: env.STRIPE?.ADAPTIVE_PRICING ? { paidCents, currency } : null,
           });
           logger.info({ orderId: o.id }, '[reconcile.recover] stripe settled via query');
         }

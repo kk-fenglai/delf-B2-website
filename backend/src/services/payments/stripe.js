@@ -26,6 +26,18 @@ function verifyWebhookEvent({ rawBodyBuffer, signature }) {
   }
 }
 
+function checkoutExtras() {
+  if (!env.STRIPE?.ADAPTIVE_PRICING) return {};
+  return { adaptive_pricing: { enabled: true } };
+}
+
+function checkoutCurrency(price) {
+  if (env.STRIPE?.ADAPTIVE_PRICING) {
+    return String(env.STRIPE.ANCHOR_CURRENCY || 'USD').toLowerCase();
+  }
+  return String(price.currency || 'USD').toLowerCase();
+}
+
 // Unified entry: one-time payment (mode='payment') or recurring subscription
 // (mode='subscription'). The caller decides via `subscribe`. Subscription mode
 // requires `price.stripePriceId` to point at a recurring Price already created
@@ -42,9 +54,10 @@ async function createCheckoutSession({
   const client = getClient();
   if (!client) throw Object.assign(new Error('Stripe not configured'), { code: 'PAY_NOT_CONFIGURED' });
 
-  const currency = String(price.currency || 'USD').toLowerCase();
+  const currency = checkoutCurrency(price);
   const planLabel = price.product?.plan || 'Subscription';
   const productName = `DELFluent ${price.product?.name || planLabel} ${price.months}m`;
+  const extras = checkoutExtras();
 
   if (subscribe) {
     if (!price.stripePriceId) {
@@ -56,8 +69,6 @@ async function createCheckoutSession({
     // Card-only for recurring: WeChat Pay / Alipay through Stripe do not support
     // saved payment methods, so they cannot back a subscription.
     const session = await client.checkout.sessions.create({
-      // Stripe API 2026+ (stripe-node 22): hosted redirect uses `hosted_page`.
-      // Omitting ui_mode can yield non-hosted sessions with no `url` for redirect.
       ui_mode: 'hosted_page',
       mode: 'subscription',
       payment_method_types: ['card'],
@@ -66,8 +77,7 @@ async function createCheckoutSession({
       cancel_url: cancelUrl,
       client_reference_id: orderId,
       ...(customerEmail ? { customer_email: customerEmail } : {}),
-      // metadata on the session is mirrored on the first invoice — we re-read
-      // it inside webhook handlers to find the local PaymentOrder row.
+      ...extras,
       metadata: {
         orderId,
         userId,
@@ -92,17 +102,18 @@ async function createCheckoutSession({
     return { sessionId: session.id, url: session.url, mode: 'subscription' };
   }
 
-  // One-time purchase (existing behavior). Card + WeChat Pay + Alipay through
-  // one Stripe Checkout session. WeChat/Alipay are async — confirmation arrives
-  // via checkout.session.async_payment_succeeded. Stripe will reject the session
-  // at create-time if the price currency is not enabled on the account.
+  // One-time purchase. With Adaptive Pricing enabled we anchor in USD and let
+  // Stripe localize at Checkout (card only — WeChat/Alipay require fixed CNY).
+  const paymentMethodTypes = env.STRIPE?.ADAPTIVE_PRICING
+    ? ['card']
+    : ['card', 'wechat_pay', 'alipay'];
   const session = await client.checkout.sessions.create({
     ui_mode: 'hosted_page',
     mode: 'payment',
-    payment_method_types: ['card', 'wechat_pay', 'alipay'],
-    payment_method_options: {
-      wechat_pay: { client: 'web' },
-    },
+    payment_method_types: paymentMethodTypes,
+    ...(paymentMethodTypes.includes('wechat_pay')
+      ? { payment_method_options: { wechat_pay: { client: 'web' } } }
+      : {}),
     line_items: [
       {
         quantity: 1,
@@ -117,6 +128,7 @@ async function createCheckoutSession({
     cancel_url: cancelUrl,
     client_reference_id: orderId,
     ...(customerEmail ? { customer_email: customerEmail } : {}),
+    ...extras,
     metadata: {
       orderId,
       userId,

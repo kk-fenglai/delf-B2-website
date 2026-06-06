@@ -129,6 +129,30 @@ async function resolvePriceOrThrow(priceId) {
   return price;
 }
 
+// Stripe Adaptive Pricing uses one settlement-currency anchor; map any selected
+// catalog row to the same product+months in that currency before checkout.
+async function resolveStripeAnchorPrice(price, { anchorCurrency = 'USD' } = {}) {
+  const anchor = String(anchorCurrency || 'USD').toUpperCase();
+  if (String(price.currency || '').toUpperCase() === anchor) return price;
+  const anchorPrice = await prisma.price.findFirst({
+    where: {
+      productId: price.productId,
+      months: price.months,
+      currency: anchor,
+      active: true,
+      product: { active: true },
+    },
+    include: { product: true },
+  });
+  if (!anchorPrice) {
+    const e = new Error(`No ${anchor} price configured for this plan`);
+    e.status = 400;
+    e.code = 'INVALID_PRICE';
+    throw e;
+  }
+  return anchorPrice;
+}
+
 // Manual refund orchestration. Admin-triggered flow:
 //   1) Create RefundOrder row (PENDING).
 //   2) Call channel refund API.
@@ -284,5 +308,6 @@ module.exports = {
   applyPurchaseToUser,
   revokePurchaseFromOrder,
   resolvePriceOrThrow,
+  resolveStripeAnchorPrice,
   refundOrder,
 };

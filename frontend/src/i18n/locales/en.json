@@ -158,6 +158,7 @@
       "mockSectionTitle": "Full mock exam",
       "mockTag": "4 skills",
       "comingSoonTag": "Coming soon",
+      "poDisabledDesc": "AI speaking evaluation is temporarily unavailable.",
       "aiGradedTag": "AI graded"
     },
     "po": {
@@ -292,9 +293,11 @@
   },
   "pricing": {
     "title": "Choose your plan",
-    "subtitle": "WeChat Pay / Alipay · Cancel anytime · 7-day refund",
+    "subtitle": "Secured by Stripe · Cancel anytime · 7-day refund",
     "popular": "Most popular",
     "paymentNote": "💳 Secured by Stripe (cards · WeChat Pay · Alipay)",
+    "adaptivePricingNote": "Prices shown in {{currency}}. Stripe converts to your local currency at checkout.",
+    "adaptivePaymentNote": "💳 Secured by Stripe — local currency at checkout (cards)",
     "plans": {
       "free": {
         "name": "Free",

@@ -45,15 +45,15 @@ export default function Pricing() {
   const user = useAuthStore((s) => s.user);
 
   const [products, setProducts] = useState<CatalogProduct[] | null>(null);
+  const [adaptivePricing, setAdaptivePricing] = useState(false);
+  const [anchorCurrency, setAnchorCurrency] = useState<Currency>('USD');
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [cycle, setCycle] = useState<BillingCycle>('monthly');
-  // Initial currency uses the UI locale; we replace it with an IP-derived
-  // value once /pay/preferred-currency responds. User changes always win
-  // over both — we only set state if they haven't picked one yet.
   const [currency, setCurrency] = useState<Currency>(() =>
     defaultCurrencyForLocale(i18n.language)
   );
   const [userSelectedCurrency, setUserSelectedCurrency] = useState(false);
+  const displayCurrency: Currency = adaptivePricing ? anchorCurrency : currency;
 
   const [open, setOpen] = useState(false);
   const [buyingProduct, setBuyingProduct] = useState<CatalogProduct | null>(null);
@@ -68,7 +68,17 @@ export default function Pricing() {
     (async () => {
       try {
         const { data } = await api.get('/pay/products');
-        if (!cancelled) setProducts(data.products || []);
+        if (!cancelled) {
+          setProducts(data.products || []);
+          if (data.adaptivePricing) {
+            setAdaptivePricing(true);
+            const anchor = data.anchorCurrency;
+            if (anchor === 'CNY' || anchor === 'USD' || anchor === 'EUR') {
+              setAnchorCurrency(anchor);
+              setCurrency(anchor);
+            }
+          }
+        }
       } catch {
         if (!cancelled) setProducts([]);
       } finally {
@@ -82,6 +92,7 @@ export default function Pricing() {
   // the catalog render; if it fails or the user already picked, we leave
   // the locale-based default alone.
   useEffect(() => {
+    if (adaptivePricing || userSelectedCurrency) return;
     let cancelled = false;
     api.get('/pay/preferred-currency')
       .then((r) => {
@@ -94,7 +105,7 @@ export default function Pricing() {
       .catch(() => { /* fall back to locale-based default */ });
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [adaptivePricing]);
 
   // Find the Price matching BOTH the requested cycle and the selected
   // currency. Returns null when the product has no row for that combo —
@@ -103,7 +114,7 @@ export default function Pricing() {
   function priceForCycle(product: CatalogProduct, c: BillingCycle): CatalogPrice | null {
     const months = c === 'monthly' ? 1 : 12;
     return (
-      product.prices.find((p) => p.months === months && p.currency === currency) || null
+      product.prices.find((p) => p.months === months && p.currency === displayCurrency) || null
     );
   }
 
@@ -184,19 +195,27 @@ export default function Pricing() {
             { label: t('pricing.checkout.yearly'), value: 'yearly' },
           ]}
         />
-        <Segmented
-          value={currency}
-          onChange={(v) => {
-            setCurrency(v as Currency);
-            setUserSelectedCurrency(true);
-          }}
-          size="large"
-          options={SUPPORTED_CURRENCIES.map((cur) => ({
-            label: `${CURRENCY_SYMBOL[cur]} ${cur}`,
-            value: cur,
-          }))}
-        />
+        {!adaptivePricing && (
+          <Segmented
+            value={currency}
+            onChange={(v) => {
+              setCurrency(v as Currency);
+              setUserSelectedCurrency(true);
+            }}
+            size="large"
+            options={SUPPORTED_CURRENCIES.map((cur) => ({
+              label: `${CURRENCY_SYMBOL[cur]} ${cur}`,
+              value: cur,
+            }))}
+          />
+        )}
       </div>
+
+      {adaptivePricing && (
+        <Paragraph className="text-center mb-8" style={{ color: 'var(--textMuted)' }}>
+          {t('pricing.adaptivePricingNote', { currency: anchorCurrency })}
+        </Paragraph>
+      )}
 
       {catalogLoading ? (
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -332,7 +351,7 @@ export default function Pricing() {
         className="text-center mt-10 text-sm"
         style={{ color: 'var(--textMuted)' }}
       >
-        {t('pricing.paymentNote')}
+        {t(adaptivePricing ? 'pricing.adaptivePaymentNote' : 'pricing.paymentNote')}
       </div>
 
       <Modal

@@ -6,7 +6,7 @@ const prisma = require('../../prisma');
 const { requireAuth } = require('../../middleware/auth');
 const env = require('../../config/env');
 const stripePay = require('../../services/payments/stripe');
-const { resolvePriceOrThrow, applyPurchaseToUser } = require('../../services/billing');
+const { resolvePriceOrThrow, resolveStripeAnchorPrice, applyPurchaseToUser } = require('../../services/billing');
 const { writeAdminLog } = require('../../middleware/admin');
 const { logger } = require('../../utils/logger');
 
@@ -49,7 +49,13 @@ router.post('/checkout', requireAuth, async (req, res, next) => {
       return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
     }
     const { priceId, subscribe } = checkoutSchema.parse(req.body);
-    const price = await resolvePriceOrThrow(priceId);
+    let price = await resolvePriceOrThrow(priceId);
+
+    if (env.STRIPE?.ADAPTIVE_PRICING) {
+      price = await resolveStripeAnchorPrice(price, {
+        anchorCurrency: env.STRIPE.ANCHOR_CURRENCY,
+      });
+    }
 
     const wantsSubscription = Boolean(subscribe);
     if (wantsSubscription) {
@@ -237,6 +243,7 @@ router.post('/webhook', async (req, res) => {
 // --- One-time Checkout settle (existing flow, kept verbatim aside from currency check) ---
 async function handleOneTimeCheckoutCompleted(session) {
   if (!session?.id) return;
+  if (session.payment_status && session.payment_status !== 'paid') return;
   const orderId = session?.metadata?.orderId || session?.client_reference_id;
   const amountTotal = session?.amount_total;
   const currency = session?.currency ? String(session.currency).toUpperCase() : null;
@@ -247,10 +254,18 @@ async function handleOneTimeCheckoutCompleted(session) {
     externalTradeNo: session?.payment_intent || session.id,
     paidCents: typeof amountTotal === 'number' ? amountTotal : null,
     currency,
+    presentment: env.STRIPE?.ADAPTIVE_PRICING ? { paidCents: amountTotal, currency } : null,
   });
 }
 
-async function settleOrder({ sessionId, orderId, externalTradeNo, paidCents, currency }) {
+async function settleOrder({
+  sessionId,
+  orderId,
+  externalTradeNo,
+  paidCents,
+  currency,
+  presentment = null,
+}) {
   let order = null;
 
   if (sessionId) {
@@ -266,28 +281,43 @@ async function settleOrder({ sessionId, orderId, externalTradeNo, paidCents, cur
   if (!order) return { claimed: false, reason: 'order_not_found' };
   if (order.status === 'PAID') return { claimed: false, reason: 'already_paid' };
 
-  if (paidCents && paidCents !== order.amountCents) {
-    logger.error({ sessionId, expected: order.amountCents, got: paidCents }, '[stripe.settle] amount mismatch');
-    await writeAdminLog({
-      adminId: order.userId,
-      action: 'PAYMENT_FAILED',
-      targetType: 'PAYMENT',
-      targetId: order.id,
-      payload: { reason: 'AMOUNT_MISMATCH', expected: order.amountCents, got: paidCents, currency },
-    });
-    return { claimed: false, reason: 'amount_mismatch' };
-  }
+  const adaptive = env.STRIPE?.ADAPTIVE_PRICING;
 
-  if (currency && order.currency && currency !== order.currency.toUpperCase()) {
-    logger.error({ sessionId, expected: order.currency, got: currency }, '[stripe.settle] currency mismatch');
-    await writeAdminLog({
-      adminId: order.userId,
-      action: 'PAYMENT_FAILED',
-      targetType: 'PAYMENT',
-      targetId: order.id,
-      payload: { reason: 'CURRENCY_MISMATCH', expected: order.currency, got: currency, paidCents },
-    });
-    return { claimed: false, reason: 'currency_mismatch' };
+  if (!adaptive) {
+    if (paidCents && paidCents !== order.amountCents) {
+      logger.error({ sessionId, expected: order.amountCents, got: paidCents }, '[stripe.settle] amount mismatch');
+      await writeAdminLog({
+        adminId: order.userId,
+        action: 'PAYMENT_FAILED',
+        targetType: 'PAYMENT',
+        targetId: order.id,
+        payload: { reason: 'AMOUNT_MISMATCH', expected: order.amountCents, got: paidCents, currency },
+      });
+      return { claimed: false, reason: 'amount_mismatch' };
+    }
+
+    if (currency && order.currency && currency !== order.currency.toUpperCase()) {
+      logger.error({ sessionId, expected: order.currency, got: currency }, '[stripe.settle] currency mismatch');
+      await writeAdminLog({
+        adminId: order.userId,
+        action: 'PAYMENT_FAILED',
+        targetType: 'PAYMENT',
+        targetId: order.id,
+        payload: { reason: 'CURRENCY_MISMATCH', expected: order.currency, got: currency, paidCents },
+      });
+      return { claimed: false, reason: 'currency_mismatch' };
+    }
+  } else if (presentment?.currency && presentment.currency !== order.currency?.toUpperCase()) {
+    logger.info(
+      {
+        sessionId,
+        anchorCents: order.amountCents,
+        anchorCurrency: order.currency,
+        presentmentCents: presentment.paidCents,
+        presentmentCurrency: presentment.currency,
+      },
+      '[stripe.settle] adaptive pricing presentment'
+    );
   }
 
   const claim = await prisma.paymentOrder.updateMany({
@@ -310,7 +340,16 @@ async function settleOrder({ sessionId, orderId, externalTradeNo, paidCents, cur
     action: 'PAYMENT_COMPLETED',
     targetType: 'PAYMENT',
     targetId: order.id,
-    payload: { provider: 'stripe', amountCents: order.amountCents, sessionId, externalTradeNo, currency },
+    payload: {
+      provider: 'stripe',
+      amountCents: order.amountCents,
+      sessionId,
+      externalTradeNo,
+      currency: order.currency,
+      ...(adaptive && presentment
+        ? { presentmentCents: presentment.paidCents, presentmentCurrency: presentment.currency }
+        : {}),
+    },
   });
 
   return { claimed: true };

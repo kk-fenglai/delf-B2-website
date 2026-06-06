@@ -160,6 +160,7 @@
       "mockSectionTitle": "完整模拟考",
       "mockTag": "4 技能连做",
       "comingSoonTag": "即将上线",
+      "poDisabledDesc": "AI 口语评分功能暂时下线，敬请期待。",
       "aiGradedTag": "AI 评分"
     },
     "po": {
@@ -294,9 +295,11 @@
   },
   "pricing": {
     "title": "选择适合你的订阅方案",
-    "subtitle": "支持微信支付 / 支付宝 · 随时取消 · 7天无理由退款",
+    "subtitle": "Stripe 安全支付 · 随时取消 · 7 天无理由退款",
     "popular": "最受欢迎",
     "paymentNote": "💳 支持 Stripe 安全支付（信用卡 / 微信支付 / 支付宝）",
+    "adaptivePricingNote": "页面价格为 {{currency}} 参考价，结账时 Stripe 将按您所在地区自动换算为本地货币。",
+    "adaptivePaymentNote": "💳 Stripe 安全支付 — 结账时自动换算为本地货币（信用卡）",
     "plans": {
       "free": {
         "name": "免费版",

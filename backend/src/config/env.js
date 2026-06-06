@@ -195,5 +195,9 @@ module.exports = {
     WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || '',
     CHECKOUT_SUCCESS_URL: process.env.STRIPE_CHECKOUT_SUCCESS_URL || '',
     CHECKOUT_CANCEL_URL: process.env.STRIPE_CHECKOUT_CANCEL_URL || '',
+    // Adaptive Pricing: Stripe converts anchor-currency prices at Checkout (150+ countries).
+    // Set STRIPE_ADAPTIVE_PRICING=false to revert to fixed multi-currency catalog.
+    ADAPTIVE_PRICING: process.env.STRIPE_ADAPTIVE_PRICING !== 'false',
+    ANCHOR_CURRENCY: (process.env.STRIPE_ANCHOR_CURRENCY || 'USD').toUpperCase(),
   },
 };
