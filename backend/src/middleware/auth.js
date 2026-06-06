@@ -12,6 +12,7 @@ const prisma = require('../prisma');
 // Paths that a logged-in but email-unverified user can still hit. Keep tight.
 const EMAIL_UNVERIFIED_ALLOW = new Set([
   '/api/user/me',
+  '/api/user/trial/status',
   '/api/auth/resend-verification',
   '/api/auth/verify-email',
   '/api/auth/logout',

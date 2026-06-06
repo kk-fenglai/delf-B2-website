@@ -4,10 +4,10 @@
 //   GET    /products                   — list all products with their prices
 //   POST   /products                   — create product
 //   PATCH  /products/:id               — update product (name/plan/active)
-//   DELETE /products/:id               — soft-disable (set active=false)
+//   DELETE /products/:id               — soft-disable (set active=false); ?hard=true permanent delete
 //   POST   /prices                     — create price row
 //   PATCH  /prices/:id                 — update price (amountCents/active/supportsAutoRenew)
-//   DELETE /prices/:id                 — soft-disable price
+//   DELETE /prices/:id                 — soft-disable price; ?hard=true permanent delete
 //
 //   GET    /payment-orders             — paginated order list with filters
 //   GET    /payment-orders/:id         — single order + its refunds
@@ -27,12 +27,67 @@ const wechat = require('../services/payments/wechat');
 const alipay = require('../services/payments/alipay');
 const stripePay = require('../services/payments/stripe');
 const env = require('../config/env');
+const { trialConfig } = require('../services/trial');
 const { logger } = require('../utils/logger');
 
 const router = express.Router();
 router.use(requireAdmin);
 
 const VALID_PLANS = ['FREE', 'STANDARD', 'AI', 'AI_UNLIMITED'];
+
+async function countPriceReferences(priceIds) {
+  if (!priceIds.length) return { orderCount: 0, contractCount: 0 };
+  const [orderCount, contractCount] = await Promise.all([
+    prisma.paymentOrder.count({ where: { priceId: { in: priceIds } } }),
+    prisma.payContract.count({ where: { priceId: { in: priceIds } } }),
+  ]);
+  return { orderCount, contractCount };
+}
+
+/** One price row per (product, billing cycle, currency). */
+async function assertUniquePriceSlot({ productId, months, currency, excludePriceId }) {
+  const cur = String(currency || '').toUpperCase();
+  const conflict = await prisma.price.findFirst({
+    where: {
+      productId,
+      months,
+      currency: cur,
+      ...(excludePriceId ? { id: { not: excludePriceId } } : {}),
+    },
+    select: { id: true, code: true },
+  });
+  if (conflict) {
+    const e = new Error(
+      `This product already has a price for ${months} month(s) in ${cur} (${conflict.code})`,
+    );
+    e.status = 409;
+    e.code = 'PRICE_SLOT_TAKEN';
+    e.existingCode = conflict.code;
+    throw e;
+  }
+}
+
+function priceSlotErrorResponse(err, res) {
+  if (err.code === 'PRICE_SLOT_TAKEN') {
+    return res.status(409).json({
+      error: err.message,
+      code: err.code,
+      existingCode: err.existingCode,
+    });
+  }
+  return null;
+}
+
+// GET /api/admin/trial-config — public trial settings for admin UI banners.
+router.get('/trial-config', (_req, res) => {
+  const cfg = trialConfig();
+  res.json({
+    enabled: cfg.enabled,
+    days: cfg.days,
+    plan: cfg.plan,
+    autoGrantOnVerify: cfg.enabled,
+  });
+});
 
 // --------------------------------------------------------------------
 // Products
@@ -43,7 +98,7 @@ router.get('/products', async (_req, res, next) => {
     const products = await prisma.product.findMany({
       orderBy: { createdAt: 'asc' },
       include: {
-        prices: { orderBy: { months: 'asc' }, include: { stripeMappings: true } },
+        prices: { orderBy: [{ months: 'asc' }, { currency: 'asc' }, { code: 'asc' }], include: { stripeMappings: true } },
       },
     });
     res.json({
@@ -67,23 +122,22 @@ async function fetchFxRates() {
   if (fxCache.rates && Date.now() - fxCache.fetchedAt < FX_TTL_MS) {
     return { ...fxCache, cached: true };
   }
-  // Frankfurter is ECB-backed, free, no API key. We ask for USD-base so
-  // every reported rate is "1 USD = X (target)".
-  const r = await fetch('https://api.frankfurter.app/latest?from=USD&to=CNY,EUR', {
+  // Frankfurter is ECB-backed. EUR-base: "1 EUR = X (target)".
+  const r = await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD,CNY', {
     signal: AbortSignal.timeout(5000),
   });
   if (!r.ok) throw new Error(`Frankfurter ${r.status}`);
   const j = await r.json();
   fxCache = {
     fetchedAt: Date.now(),
-    rates: { USD: 1, CNY: j.rates?.CNY, EUR: j.rates?.EUR, date: j.date },
+    rates: { EUR: 1, USD: j.rates?.USD, CNY: j.rates?.CNY, date: j.date },
   };
   return { ...fxCache, cached: false };
 }
 
 // GET /api/admin/pricing-report — read-only audit table: for each (product,
-// price) row, show the listed price, what it converts to in USD at today's
-// ECB rate, and the % drift versus the canonical USD price of the same
+// price) row, show the listed price, what it converts to in EUR at today's
+// ECB rate, and the % drift versus the canonical EUR price of the same
 // product+cycle. Use it quarterly to spot prices that have drifted >10% off
 // because of FX moves.
 router.get('/pricing-report', async (_req, res, next) => {
@@ -104,8 +158,8 @@ router.get('/pricing-report', async (_req, res, next) => {
     }
     const rates = fx.rates;
 
-    // For each (product, months) group, pick the USD price as the anchor
-    // and compute deviation of CNY/EUR prices against it (after FX).
+    // For each (product, months) group, pick the EUR price as the anchor
+    // and compute deviation of USD/CNY prices against it (after FX).
     const report = products.map((p) => {
       const groups = new Map(); // months -> { USD, CNY, EUR }
       for (const pr of p.prices) {
@@ -114,17 +168,18 @@ router.get('/pricing-report', async (_req, res, next) => {
       }
       const rows = [];
       for (const [months, byCur] of groups) {
-        const usdPrice = byCur.USD;
-        const usdAnchor = usdPrice ? usdPrice.amountCents / 100 : null;
+        const eurPrice = byCur.EUR;
+        const eurAnchor = eurPrice ? eurPrice.amountCents / 100 : null;
         for (const cur of ['CNY', 'USD', 'EUR']) {
           const pr = byCur[cur];
           if (!pr) continue;
           const local = pr.amountCents / 100;
-          // Convert local → USD via FX. rate[cur] is "1 USD = X cur", so
-          // local / rate[cur] is the USD-equivalent of the local price.
-          const usdEquivalent = rates[cur] ? local / rates[cur] : null;
-          const deviationPct = usdAnchor && usdEquivalent
-            ? ((usdEquivalent - usdAnchor) / usdAnchor) * 100
+          // rate[cur] is "1 EUR = X cur", so local / rate[cur] → EUR equivalent.
+          const eurEquivalent = cur === 'EUR'
+            ? local
+            : (rates[cur] ? local / rates[cur] : null);
+          const deviationPct = eurAnchor && eurEquivalent
+            ? ((eurEquivalent - eurAnchor) / eurAnchor) * 100
             : null;
           rows.push({
             priceId: pr.id,
@@ -133,9 +188,12 @@ router.get('/pricing-report', async (_req, res, next) => {
             currency: cur,
             amountCents: pr.amountCents,
             amountDisplay: local.toFixed(2),
-            usdEquivalent: usdEquivalent != null ? Number(usdEquivalent.toFixed(2)) : null,
-            usdAnchor,
+            eurEquivalent: eurEquivalent != null ? Number(eurEquivalent.toFixed(2)) : null,
+            eurAnchor,
             deviationPct: deviationPct != null ? Number(deviationPct.toFixed(1)) : null,
+            // Legacy aliases for older admin UI builds
+            usdEquivalent: eurEquivalent,
+            usdAnchor: eurAnchor,
           });
         }
       }
@@ -199,19 +257,45 @@ router.patch('/products/:id', async (req, res, next) => {
 
 router.delete('/products/:id', async (req, res, next) => {
   try {
-    const before = await prisma.product.findUnique({ where: { id: req.params.id } });
-    if (!before) return res.status(404).json({ error: 'Product not found' });
-    // Soft disable — hard delete would cascade-delete prices/orders.
-    const product = await prisma.product.update({
-      where: { id: before.id },
-      data: { active: false },
+    const hard = String(req.query.hard || '') === 'true';
+    const before = await prisma.product.findUnique({
+      where: { id: req.params.id },
+      include: { prices: { select: { id: true } } },
     });
+    if (!before) return res.status(404).json({ error: 'Product not found' });
+
+    if (!hard) {
+      const product = await prisma.product.update({
+        where: { id: before.id },
+        data: { active: false },
+      });
+      await writeAdminLog({
+        adminId: req.admin.id, action: 'PRODUCT_DISABLE',
+        targetType: 'PRODUCT', targetId: product.id,
+        ip: clientIp(req),
+      });
+      return res.json({ ok: true, soft: true });
+    }
+
+    const priceIds = before.prices.map((p) => p.id);
+    const { orderCount, contractCount } = await countPriceReferences(priceIds);
+    if (orderCount > 0 || contractCount > 0) {
+      return res.status(409).json({
+        error: 'Cannot delete product: linked payment orders or subscriptions exist',
+        code: 'PRODUCT_IN_USE',
+        orderCount,
+        contractCount,
+      });
+    }
+
+    await prisma.product.delete({ where: { id: before.id } });
     await writeAdminLog({
-      adminId: req.admin.id, action: 'PRODUCT_DISABLE',
-      targetType: 'PRODUCT', targetId: product.id,
+      adminId: req.admin.id, action: 'PRODUCT_DELETE',
+      targetType: 'PRODUCT', targetId: before.id,
+      payload: { code: before.code, priceCount: priceIds.length },
       ip: clientIp(req),
     });
-    res.json({ ok: true });
+    res.json({ ok: true, deleted: true });
   } catch (e) { next(e); }
 });
 
@@ -225,7 +309,7 @@ const priceCreateSchema = z.object({
   // Optional display label (FE often sends explicit null when cleared — needs nullish)
   name: z.string().trim().max(100).nullish(),
   months: z.number().int().min(1).max(36),
-  currency: z.string().default('CNY'),
+  currency: z.string().default('CNY').transform((s) => s.toUpperCase()),
   amountCents: z.number().int().min(0),
   supportsAutoRenew: z.boolean().default(false),
   active: z.boolean().default(true),
@@ -246,6 +330,11 @@ router.post('/prices', async (req, res, next) => {
     if (!product) return res.status(404).json({ error: 'Product not found' });
     const exists = await prisma.price.findUnique({ where: { code: data.code } });
     if (exists) return res.status(409).json({ error: 'Price code already exists' });
+    await assertUniquePriceSlot({
+      productId: data.productId,
+      months: data.months,
+      currency: data.currency,
+    });
     const price = await prisma.price.create({ data, include: { stripeMappings: true } });
     await writeAdminLog({
       adminId: req.admin.id, action: 'PRICE_CREATE',
@@ -253,7 +342,17 @@ router.post('/prices', async (req, res, next) => {
       payload: data, ip: clientIp(req),
     });
     res.status(201).json(price);
-  } catch (e) { next(e); }
+  } catch (e) {
+    const handled = priceSlotErrorResponse(e, res);
+    if (handled) return handled;
+    if (e.code === 'P2002') {
+      return res.status(409).json({
+        error: 'This product already has a price for that cycle and currency',
+        code: 'PRICE_SLOT_TAKEN',
+      });
+    }
+    next(e);
+  }
 });
 
 const priceUpdateSchema = z.object({
@@ -266,6 +365,8 @@ const priceUpdateSchema = z.object({
   amountCents: z.number().int().min(0).optional(),
   supportsAutoRenew: z.boolean().optional(),
   active: z.boolean().optional(),
+  months: z.number().int().min(1).max(36).optional(),
+  currency: z.string().transform((s) => s.toUpperCase()).optional(),
   // Pass null to clear; omit to leave unchanged.
   stripePriceId: z.string().trim().min(1).max(100).nullish(),
 });
@@ -278,6 +379,8 @@ router.patch('/prices/:id', async (req, res, next) => {
     if (parsed.amountCents !== undefined) data.amountCents = parsed.amountCents;
     if (parsed.supportsAutoRenew !== undefined) data.supportsAutoRenew = parsed.supportsAutoRenew;
     if (parsed.active !== undefined) data.active = parsed.active;
+    if (parsed.months !== undefined) data.months = parsed.months;
+    if (parsed.currency !== undefined) data.currency = parsed.currency;
     if (parsed.stripePriceId !== undefined) data.stripePriceId = parsed.stripePriceId;
     if (parsed.name !== undefined && parsed.name !== null) {
       data.name = parsed.name === '' ? null : parsed.name;
@@ -286,6 +389,18 @@ router.patch('/prices/:id', async (req, res, next) => {
     }
     const before = await prisma.price.findUnique({ where: { id: req.params.id } });
     if (!before) return res.status(404).json({ error: 'Price not found' });
+
+    const slotMonths = parsed.months ?? before.months;
+    const slotCurrency = parsed.currency ?? before.currency;
+    if (parsed.months !== undefined || parsed.currency !== undefined) {
+      await assertUniquePriceSlot({
+        productId: before.productId,
+        months: slotMonths,
+        currency: slotCurrency,
+        excludePriceId: before.id,
+      });
+    }
+
     const price = await prisma.$transaction(async (tx) => {
       const updated = await tx.price.update({ where: { id: before.id }, data });
       if (parsed.stripeMappings) {
@@ -312,23 +427,56 @@ router.patch('/prices/:id', async (req, res, next) => {
       payload: { before, after: data }, ip: clientIp(req),
     });
     res.json(price);
-  } catch (e) { next(e); }
+  } catch (e) {
+    const handled = priceSlotErrorResponse(e, res);
+    if (handled) return handled;
+    if (e.code === 'P2002') {
+      return res.status(409).json({
+        error: 'This product already has a price for that cycle and currency',
+        code: 'PRICE_SLOT_TAKEN',
+      });
+    }
+    next(e);
+  }
 });
 
 router.delete('/prices/:id', async (req, res, next) => {
   try {
+    const hard = String(req.query.hard || '') === 'true';
     const before = await prisma.price.findUnique({ where: { id: req.params.id } });
     if (!before) return res.status(404).json({ error: 'Price not found' });
-    const price = await prisma.price.update({
-      where: { id: before.id },
-      data: { active: false },
-    });
+
+    if (!hard) {
+      const price = await prisma.price.update({
+        where: { id: before.id },
+        data: { active: false },
+      });
+      await writeAdminLog({
+        adminId: req.admin.id, action: 'PRICE_DISABLE',
+        targetType: 'PRICE', targetId: price.id,
+        ip: clientIp(req),
+      });
+      return res.json({ ok: true, soft: true });
+    }
+
+    const { orderCount, contractCount } = await countPriceReferences([before.id]);
+    if (orderCount > 0 || contractCount > 0) {
+      return res.status(409).json({
+        error: 'Cannot delete price: linked payment orders or subscriptions exist',
+        code: 'PRICE_IN_USE',
+        orderCount,
+        contractCount,
+      });
+    }
+
+    await prisma.price.delete({ where: { id: before.id } });
     await writeAdminLog({
-      adminId: req.admin.id, action: 'PRICE_DISABLE',
-      targetType: 'PRICE', targetId: price.id,
+      adminId: req.admin.id, action: 'PRICE_DELETE',
+      targetType: 'PRICE', targetId: before.id,
+      payload: { code: before.code, currency: before.currency },
       ip: clientIp(req),
     });
-    res.json({ ok: true });
+    res.json({ ok: true, deleted: true });
   } catch (e) { next(e); }
 });
 

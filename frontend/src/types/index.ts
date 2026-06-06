@@ -1,4 +1,22 @@
 export type Plan = 'FREE' | 'STANDARD' | 'AI' | 'AI_UNLIMITED';
+
+export interface TrialStatus {
+  enabled: boolean;
+  days: number;
+  plan: Plan;
+  eligible: boolean;
+  used: boolean;
+  active: boolean;
+  daysLeft: number;
+  endsAt: string | null;
+  usedAt: string | null;
+}
+
+export interface TrialPublicConfig {
+  enabled: boolean;
+  days: number;
+  plan: Plan;
+}
 export type Skill = 'CO' | 'CE' | 'PE' | 'PO';
 export type QuestionType = 'SINGLE' | 'MULTIPLE' | 'TRUE_FALSE' | 'TRUE_FALSE_JUSTIFY' | 'FILL' | 'ESSAY' | 'SPEAKING';
 
@@ -7,6 +25,9 @@ export interface User {
   email: string;
   name?: string;
   plan: Plan;
+  effectivePlan?: Plan;
+  subscriptionEnd?: string | null;
+  trial?: TrialStatus;
 }
 
 export interface QuestionOption {

@@ -143,6 +143,7 @@ async function resolveStripeAnchorPrice(price, { anchorCurrency = 'EUR' } = {}) 
       product: { active: true },
     },
     include: { product: true },
+    orderBy: { code: 'asc' },
   });
   if (!anchorPrice) {
     const e = new Error(`No ${anchor} price configured for this plan`);

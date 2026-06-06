@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import {
-  PlusOutlined, EditOutlined, StopOutlined, ReloadOutlined, UndoOutlined,
+  PlusOutlined, EditOutlined, StopOutlined, ReloadOutlined, UndoOutlined, DeleteOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { adminApi } from '../../../api/adminClient';
@@ -20,10 +20,17 @@ export interface BillingConfig {
   checkoutMode: 'embedded' | 'hosted';
 }
 
+interface TrialConfig {
+  enabled: boolean;
+  days: number;
+  plan: string;
+}
+
 export default function Catalog() {
   const { t } = useTranslation();
   const [products, setProducts] = useState<ProductRow[]>([]);
   const [billing, setBilling] = useState<BillingConfig | null>(null);
+  const [trialConfig, setTrialConfig] = useState<TrialConfig | null>(null);
   const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   // Hidden by default — disabled rows are kept in the DB so historical orders
@@ -41,9 +48,13 @@ export default function Catalog() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await adminApi.get('/products');
-      setProducts(data.products || []);
-      setBilling(data.billing || null);
+      const [productsRes, trialRes] = await Promise.all([
+        adminApi.get('/products'),
+        adminApi.get('/trial-config').catch(() => ({ data: null })),
+      ]);
+      setProducts(productsRes.data.products || []);
+      setBilling(productsRes.data.billing || null);
+      setTrialConfig(trialRes.data || null);
     } catch (e: any) {
       message.error(e?.response?.data?.error || t('adminPayments.common.operationFailed'));
     } finally {
@@ -99,6 +110,42 @@ export default function Catalog() {
     }
   }
 
+  async function deleteProduct(p: ProductRow) {
+    setBusyId(p.id);
+    try {
+      await adminApi.delete(`/products/${p.id}`, { params: { hard: true } });
+      message.success(t('adminPayments.catalog.deleted'));
+      await load();
+    } catch (e: any) {
+      const code = e?.response?.data?.code;
+      if (code === 'PRODUCT_IN_USE') {
+        message.error(t('adminPayments.catalog.deleteInUse'));
+      } else {
+        message.error(e?.response?.data?.error || t('adminPayments.common.operationFailed'));
+      }
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function deletePrice(price: PriceRow) {
+    setBusyId(price.id);
+    try {
+      await adminApi.delete(`/prices/${price.id}`, { params: { hard: true } });
+      message.success(t('adminPayments.catalog.deleted'));
+      await load();
+    } catch (e: any) {
+      const code = e?.response?.data?.code;
+      if (code === 'PRICE_IN_USE') {
+        message.error(t('adminPayments.catalog.deleteInUse'));
+      } else {
+        message.error(e?.response?.data?.error || t('adminPayments.common.operationFailed'));
+      }
+    } finally {
+      setBusyId(null);
+    }
+  }
+
   return (
     <Spin spinning={loading && products.length === 0}>
       <div
@@ -147,6 +194,18 @@ export default function Catalog() {
         />
       )}
 
+      {trialConfig?.enabled && (
+        <Alert
+          type="success"
+          showIcon
+          style={{ marginBottom: 16 }}
+          message={t('adminPayments.catalog.trialBanner', {
+            days: trialConfig.days,
+            plan: trialConfig.plan,
+          })}
+        />
+      )}
+
       {products.length === 0 && !loading ? (
         <Empty description={t('adminPayments.common.empty')} />
       ) : (
@@ -168,6 +227,8 @@ export default function Catalog() {
               }
               onDisablePrice={(price) => disablePrice(price)}
               onReactivatePrice={(price) => reactivatePrice(price)}
+              onDeleteProduct={() => deleteProduct(product)}
+              onDeletePrice={(price) => deletePrice(price)}
             />
           ))}
         </Space>
@@ -202,6 +263,8 @@ interface CardProps {
   onEditPrice: (p: PriceRow) => void;
   onDisablePrice: (p: PriceRow) => void;
   onReactivatePrice: (p: PriceRow) => void;
+  onDeleteProduct: () => void;
+  onDeletePrice: (p: PriceRow) => void;
 }
 
 function ProductCard({
@@ -215,6 +278,8 @@ function ProductCard({
   onEditPrice,
   onDisablePrice,
   onReactivatePrice,
+  onDeleteProduct,
+  onDeletePrice,
 }: CardProps) {
   const { t } = useTranslation();
 
@@ -332,7 +397,7 @@ function ProductCard({
     },
     {
       title: t('adminPayments.catalog.priceCol.actions'),
-      width: 110,
+      width: 140,
       fixed: 'right',
       render: (_v, row) => (
         <Space size={0}>
@@ -360,19 +425,35 @@ function ProductCard({
               </Tooltip>
             </Popconfirm>
           ) : (
-            <Popconfirm
-              title={t('adminPayments.catalog.confirmReactivate')}
-              onConfirm={() => onReactivatePrice(row)}
-            >
-              <Tooltip title={t('adminPayments.catalog.tooltipReactivate')}>
-                <Button
-                  type="text"
-                  size="small"
-                  icon={<UndoOutlined style={{ color: '#52c41a' }} />}
-                  loading={busyId === row.id}
-                />
-              </Tooltip>
-            </Popconfirm>
+            <>
+              <Popconfirm
+                title={t('adminPayments.catalog.confirmReactivate')}
+                onConfirm={() => onReactivatePrice(row)}
+              >
+                <Tooltip title={t('adminPayments.catalog.tooltipReactivate')}>
+                  <Button
+                    type="text"
+                    size="small"
+                    icon={<UndoOutlined style={{ color: '#52c41a' }} />}
+                    loading={busyId === row.id}
+                  />
+                </Tooltip>
+              </Popconfirm>
+              <Popconfirm
+                title={t('adminPayments.catalog.confirmDelete')}
+                onConfirm={() => onDeletePrice(row)}
+              >
+                <Tooltip title={t('adminPayments.catalog.tooltipDelete')}>
+                  <Button
+                    type="text"
+                    size="small"
+                    danger
+                    icon={<DeleteOutlined />}
+                    loading={busyId === row.id}
+                  />
+                </Tooltip>
+              </Popconfirm>
+            </>
           )}
         </Space>
       ),
@@ -411,6 +492,21 @@ function ProductCard({
               {t('adminPayments.common.disable')}
             </Button>
           </Popconfirm>
+          {!product.active && (
+            <Popconfirm
+              title={t('adminPayments.catalog.confirmDeleteProduct')}
+              onConfirm={onDeleteProduct}
+            >
+              <Button
+                size="small"
+                danger
+                icon={<DeleteOutlined />}
+                loading={busyId === product.id}
+              >
+                {t('adminPayments.catalog.permanentDelete')}
+              </Button>
+            </Popconfirm>
+          )}
         </Space>
       }
     >

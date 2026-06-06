@@ -26,6 +26,9 @@ model User {
   emailVerified     Boolean   @default(false)
   emailVerifiedAt   DateTime?
 
+  // --- Free trial (one-time AI_UNLIMITED grant, no payment) ---
+  trialUsedAt       DateTime?
+
   // --- Login telemetry ---
   loginCount        Int       @default(0)
   lastLoginAt       DateTime?
@@ -90,6 +93,7 @@ model Price {
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
 
+  @@unique([productId, months, currency])
   @@index([productId, active])
 }
 

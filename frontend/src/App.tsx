@@ -1,40 +1,43 @@
+import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
 import AppLayout from './components/AppLayout';
-import AdminLayout from './components/AdminLayout';
-import RequireAdmin from './components/RequireAdmin';
-import Landing from './pages/Landing';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import PracticeHub from './pages/PracticeHub';
-import SkillPractice from './pages/SkillPractice';
-import SpeakingExam from './pages/SpeakingExam';
-import ExamRunner from './pages/ExamRunner';
-import ReviewResult from './pages/ReviewResult';
-import MistakeNotebook from './pages/MistakeNotebook';
-import Pricing from './pages/Pricing';
-import Orders from './pages/Orders';
-import StripeCheckoutReturn from './pages/StripeCheckoutReturn';
-import StripeEmbeddedCheckout from './pages/StripeEmbeddedCheckout';
-import StripeCheckoutComplete from './pages/StripeCheckoutComplete';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import VerifyEmail from './pages/VerifyEmail';
-import VerificationSent from './pages/VerificationSent';
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminUsers from './pages/admin/AdminUsers';
-import AdminUserDetail from './pages/admin/AdminUserDetail';
-import AdminLogs from './pages/admin/AdminLogs';
-import AdminLoginHistory from './pages/admin/AdminLoginHistory';
-import AdminExams from './pages/admin/AdminExams';
-import AdminExamEdit from './pages/admin/AdminExamEdit';
-import AdminExamImport from './pages/admin/AdminExamImport';
-import AdminPayments from './pages/admin/AdminPayments';
-import AdminChangePassword from './pages/admin/AdminChangePassword';
-import ChangePassword from './pages/ChangePassword';
+import PageLoader from './components/PageLoader';
 import { useAuthStore } from './stores/auth';
+
+const AdminLayout = lazy(() => import('./components/AdminLayout'));
+const RequireAdmin = lazy(() => import('./components/RequireAdmin'));
+
+const Landing = lazy(() => import('./pages/Landing'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const PracticeHub = lazy(() => import('./pages/PracticeHub'));
+const SkillPractice = lazy(() => import('./pages/SkillPractice'));
+const SpeakingExam = lazy(() => import('./pages/SpeakingExam'));
+const ExamRunner = lazy(() => import('./pages/ExamRunner'));
+const ReviewResult = lazy(() => import('./pages/ReviewResult'));
+const MistakeNotebook = lazy(() => import('./pages/MistakeNotebook'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const Orders = lazy(() => import('./pages/Orders'));
+const StripeCheckoutReturn = lazy(() => import('./pages/StripeCheckoutReturn'));
+const StripeEmbeddedCheckout = lazy(() => import('./pages/StripeEmbeddedCheckout'));
+const StripeCheckoutComplete = lazy(() => import('./pages/StripeCheckoutComplete'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const VerifyEmail = lazy(() => import('./pages/VerifyEmail'));
+const VerificationSent = lazy(() => import('./pages/VerificationSent'));
+const ChangePassword = lazy(() => import('./pages/ChangePassword'));
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
+const AdminUserDetail = lazy(() => import('./pages/admin/AdminUserDetail'));
+const AdminLogs = lazy(() => import('./pages/admin/AdminLogs'));
+const AdminLoginHistory = lazy(() => import('./pages/admin/AdminLoginHistory'));
+const AdminExams = lazy(() => import('./pages/admin/AdminExams'));
+const AdminExamEdit = lazy(() => import('./pages/admin/AdminExamEdit'));
+const AdminExamImport = lazy(() => import('./pages/admin/AdminExamImport'));
+const AdminPayments = lazy(() => import('./pages/admin/AdminPayments'));
+const AdminChangePassword = lazy(() => import('./pages/admin/AdminChangePassword'));
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const user = useAuthStore((s) => s.user);
@@ -50,64 +53,66 @@ export default function App() {
   }, [fetchMe]);
 
   return (
-    <Routes>
-      {/* --- Admin routes (separate layout, no top-bar) --- */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
-        <Route index element={<Navigate to="/admin/dashboard" replace />} />
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="users" element={<AdminUsers />} />
-        <Route path="users/:id" element={<AdminUserDetail />} />
-        <Route path="change-password" element={<AdminChangePassword />} />
-        <Route path="logs" element={<AdminLogs />} />
-        <Route path="logins" element={<AdminLoginHistory />} />
-        <Route path="exams" element={<AdminExams />} />
-        <Route path="payments" element={<AdminPayments />} />
-        <Route path="exams/import" element={<AdminExamImport />} />
-        <Route path="exams/:id" element={<AdminExamEdit />} />
-      </Route>
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        {/* --- Admin routes (separate layout, no top-bar) --- */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="users/:id" element={<AdminUserDetail />} />
+          <Route path="change-password" element={<AdminChangePassword />} />
+          <Route path="logs" element={<AdminLogs />} />
+          <Route path="logins" element={<AdminLoginHistory />} />
+          <Route path="exams" element={<AdminExams />} />
+          <Route path="payments" element={<AdminPayments />} />
+          <Route path="exams/import" element={<AdminExamImport />} />
+          <Route path="exams/:id" element={<AdminExamEdit />} />
+        </Route>
 
-      {/* --- Public + user routes --- */}
-      <Route element={<AppLayout />}>
-        <Route path="/" element={<Landing />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/checkout/stripe" element={<RequireAuth><StripeEmbeddedCheckout /></RequireAuth>} />
-        <Route path="/checkout/stripe/complete" element={<RequireAuth><StripeCheckoutComplete /></RequireAuth>} />
-        <Route path="/checkout/stripe/success" element={<RequireAuth><StripeCheckoutReturn mode="success" /></RequireAuth>} />
-        <Route path="/checkout/stripe/cancel" element={<RequireAuth><StripeCheckoutReturn mode="cancel" /></RequireAuth>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/change-password" element={<RequireAuth><ChangePassword /></RequireAuth>} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/verification-sent" element={<VerificationSent />} />
+        {/* --- Public + user routes --- */}
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Landing />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/checkout/stripe" element={<RequireAuth><StripeEmbeddedCheckout /></RequireAuth>} />
+          <Route path="/checkout/stripe/complete" element={<RequireAuth><StripeCheckoutComplete /></RequireAuth>} />
+          <Route path="/checkout/stripe/success" element={<RequireAuth><StripeCheckoutReturn mode="success" /></RequireAuth>} />
+          <Route path="/checkout/stripe/cancel" element={<RequireAuth><StripeCheckoutReturn mode="cancel" /></RequireAuth>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/change-password" element={<RequireAuth><ChangePassword /></RequireAuth>} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/verification-sent" element={<VerificationSent />} />
 
-        <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+          <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
 
-        {/* Practice hub + per-skill entries */}
-        <Route path="/practice" element={<RequireAuth><PracticeHub /></RequireAuth>} />
-        <Route path="/practice/listening" element={<RequireAuth><SkillPractice skill="CO" /></RequireAuth>} />
-        <Route path="/practice/reading" element={<RequireAuth><SkillPractice skill="CE" /></RequireAuth>} />
-        <Route path="/practice/writing" element={<RequireAuth><SkillPractice skill="PE" /></RequireAuth>} />
-        <Route path="/practice/speaking" element={<RequireAuth><SkillPractice skill="PO" /></RequireAuth>} />
-        <Route path="/practice/mock" element={<RequireAuth><SkillPractice mockMode /></RequireAuth>} />
+          {/* Practice hub + per-skill entries */}
+          <Route path="/practice" element={<RequireAuth><PracticeHub /></RequireAuth>} />
+          <Route path="/practice/listening" element={<RequireAuth><SkillPractice skill="CO" /></RequireAuth>} />
+          <Route path="/practice/reading" element={<RequireAuth><SkillPractice skill="CE" /></RequireAuth>} />
+          <Route path="/practice/writing" element={<RequireAuth><SkillPractice skill="PE" /></RequireAuth>} />
+          <Route path="/practice/speaking" element={<RequireAuth><SkillPractice skill="PO" /></RequireAuth>} />
+          <Route path="/practice/mock" element={<RequireAuth><SkillPractice mockMode /></RequireAuth>} />
 
-        {/* Runner routes — skill-scoped and mock */}
-        <Route path="/practice/listening/:examId" element={<RequireAuth><ExamRunner skill="CO" /></RequireAuth>} />
-        <Route path="/practice/reading/:examId" element={<RequireAuth><ExamRunner skill="CE" /></RequireAuth>} />
-        <Route path="/practice/writing/:examId" element={<RequireAuth><ExamRunner skill="PE" /></RequireAuth>} />
-        <Route path="/practice/speaking/:examId" element={<RequireAuth><SpeakingExam /></RequireAuth>} />
-        <Route path="/practice/mock/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
-        {/* Legacy: /practice/:examId preserved for old session links (full mock) */}
-        <Route path="/practice/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
+          {/* Runner routes — skill-scoped and mock */}
+          <Route path="/practice/listening/:examId" element={<RequireAuth><ExamRunner skill="CO" /></RequireAuth>} />
+          <Route path="/practice/reading/:examId" element={<RequireAuth><ExamRunner skill="CE" /></RequireAuth>} />
+          <Route path="/practice/writing/:examId" element={<RequireAuth><ExamRunner skill="PE" /></RequireAuth>} />
+          <Route path="/practice/speaking/:examId" element={<RequireAuth><SpeakingExam /></RequireAuth>} />
+          <Route path="/practice/mock/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
+          {/* Legacy: /practice/:examId preserved for old session links (full mock) */}
+          <Route path="/practice/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
 
-        <Route path="/review/:sessionId" element={<RequireAuth><ReviewResult /></RequireAuth>} />
-        <Route path="/mistakes" element={<RequireAuth><MistakeNotebook /></RequireAuth>} />
-        <Route path="/orders" element={<RequireAuth><Orders /></RequireAuth>} />
+          <Route path="/review/:sessionId" element={<RequireAuth><ReviewResult /></RequireAuth>} />
+          <Route path="/mistakes" element={<RequireAuth><MistakeNotebook /></RequireAuth>} />
+          <Route path="/orders" element={<RequireAuth><Orders /></RequireAuth>} />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }

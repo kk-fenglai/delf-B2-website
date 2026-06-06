@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Card, Col, Row, Statistic, Typography, Empty, List, Button } from 'antd';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { Card, Col, Row, Statistic, Typography, Empty, List, Button, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
-import ReactECharts from 'echarts-for-react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
 import ScorePredictionCard from '../components/ScorePredictionCard';
+import PageLoader from '../components/PageLoader';
+
+const SkillRadarChart = lazy(() => import('../components/SkillRadarChart'));
 
 const { Title } = Typography;
 
@@ -18,29 +20,43 @@ export default function Dashboard() {
     api.get('/user/progress').then((r) => setData(r.data));
   }, []);
 
-  if (!data) return <div>{t('dashboard.loading')}</div>;
-
-  const radarOption = {
-    radar: {
-      indicator: ['CO', 'CE', 'PE', 'PO'].map((s) => ({ name: t(`skill.${s}`), max: 100 })),
-    },
-    series: [
-      {
-        type: 'radar',
-        data: [
-          {
-            value: ['CO', 'CE', 'PE', 'PO'].map(
-              (s) => data.skillStats.find((x: any) => x.skill === s)?.accuracy || 0
-            ),
-            name: '%',
-            areaStyle: { opacity: 0.3 },
-            lineStyle: { color: '#1A3A5C' },
-            itemStyle: { color: '#1A3A5C' },
-          },
-        ],
+  const radarOption = useMemo(() => {
+    if (!data) return null;
+    return {
+      radar: {
+        indicator: ['CO', 'CE', 'PE', 'PO'].map((s) => ({ name: t(`skill.${s}`), max: 100 })),
       },
-    ],
-  };
+      series: [
+        {
+          type: 'radar',
+          data: [
+            {
+              value: ['CO', 'CE', 'PE', 'PO'].map(
+                (s) => data.skillStats.find((x: any) => x.skill === s)?.accuracy || 0,
+              ),
+              name: '%',
+              areaStyle: { opacity: 0.3 },
+              lineStyle: { color: '#1A3A5C' },
+              itemStyle: { color: '#1A3A5C' },
+            },
+          ],
+        },
+      ],
+    };
+  }, [data, t]);
+
+  if (!data) {
+    return (
+      <div className="max-w-6xl mx-auto">
+        <Skeleton active paragraph={{ rows: 1 }} className="mb-6" />
+        <Row gutter={16}>
+          <Col xs={12} md={6}><Card><Skeleton active /></Card></Col>
+          <Col xs={12} md={6}><Card><Skeleton active /></Card></Col>
+          <Col xs={24} md={12}><Card><Skeleton active /></Card></Col>
+        </Row>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -77,9 +93,11 @@ export default function Dashboard() {
           <Card title={t('dashboard.radarTitle')} className="mb-4">
             {data.skillStats.length === 0 ? (
               <Empty description={t('dashboard.noData')} />
-            ) : (
-              <ReactECharts option={radarOption} style={{ height: 300 }} />
-            )}
+            ) : radarOption ? (
+              <Suspense fallback={<PageLoader />}>
+                <SkillRadarChart option={radarOption} />
+              </Suspense>
+            ) : null}
           </Card>
         </Col>
         <Col xs={24} md={12}>
@@ -106,6 +124,8 @@ export default function Dashboard() {
           </Card>
         </Col>
       </Row>
+
+      <ScorePredictionCard />
     </div>
   );
 }

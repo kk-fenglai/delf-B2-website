@@ -1,4 +1,4 @@
-import { Layout, Menu, Button, Dropdown, Avatar, Tag, theme as antdTheme } from 'antd';
+import { Layout, Menu, Button, Dropdown, Avatar, Tag, theme as antdTheme, Alert } from 'antd';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,10 @@ export default function AppLayout() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const { token } = antdTheme.useToken();
+
+  const displayPlan = user?.effectivePlan || user?.plan;
+  const trialActive = Boolean(user?.trial?.active);
+  const trialDaysLeft = user?.trial?.daysLeft ?? 0;
 
   const navItems = [
     { key: '/', label: <Link to="/">{t('nav.home')}</Link> },
@@ -62,7 +66,7 @@ export default function AppLayout() {
         <LanguageSwitcher />
         {user ? (
           <div className="flex items-center gap-3 ml-3">
-            <Tag color={planColor[user.plan]}>{t(`plan.${user.plan}`)}</Tag>
+            <Tag color={planColor[displayPlan || 'FREE']}>{t(`plan.${displayPlan || 'FREE'}`)}</Tag>
             <Dropdown menu={userMenu}>
               <div className="flex items-center gap-2 cursor-pointer" style={{ color: token.colorText }}>
                 <Avatar icon={<UserOutlined />} />
@@ -77,6 +81,21 @@ export default function AppLayout() {
           </div>
         )}
       </Header>
+      {trialActive && (
+        <div className="px-6 pt-3">
+          <Alert
+            type="info"
+            showIcon
+            banner
+            message={t('pricing.trial.topBar', { days: trialDaysLeft })}
+            action={(
+              <Button size="small" type="primary" ghost onClick={() => navigate('/pricing')}>
+                {t('pricing.trial.subscribeNow')}
+              </Button>
+            )}
+          />
+        </div>
+      )}
       <Content className="p-6" style={{ backgroundColor: token.colorBgBase }}>
         <Outlet />
       </Content>

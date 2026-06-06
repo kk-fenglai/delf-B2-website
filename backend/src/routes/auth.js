@@ -11,6 +11,7 @@ const {
 const { clientIp } = require('../middleware/admin');
 const passwordPolicy = require('../utils/passwordPolicy');
 const { logger } = require('../utils/logger');
+const { startTrial } = require('../services/trial');
 const {
   sendMail,
   renderVerifyEmail,
@@ -24,6 +25,17 @@ const LOGIN_LOCK_DURATION_MS = 15 * 60 * 1000;
 const VERIFY_TTL_MS = 24 * 60 * 60 * 1000;
 
 function sha256(s) { return crypto.createHash('sha256').update(String(s)).digest('hex'); }
+
+async function grantTrialAfterVerification(userId) {
+  try {
+    await startTrial(userId, { source: 'email_verify' });
+  } catch (err) {
+    if (err.code === 'TRIAL_ALREADY_USED' || err.code === 'TRIAL_ALREADY_SUBSCRIBED') {
+      return;
+    }
+    logger.warn({ err: err.message, code: err.code, userId }, '[auth.verify] trial grant skipped');
+  }
+}
 
 const registerSchema = z.object({
   email: z.string().email().max(255),
@@ -264,6 +276,7 @@ router.get('/verify-email', async (req, res, next) => {
         data: { usedAt: new Date() },
       }),
     ]);
+    await grantTrialAfterVerification(rec.userId);
     res.redirect(`${base}/verify-email?result=ok`);
   } catch (e) { next(e); }
 });
@@ -293,7 +306,18 @@ router.post('/verify-email', async (req, res, next) => {
         data: { usedAt: new Date() },
       }),
     ]);
-    res.json({ ok: true });
+    const trialResult = await startTrial(rec.userId, { source: 'email_verify' }).catch((err) => {
+      if (err.code === 'TRIAL_ALREADY_USED' || err.code === 'TRIAL_ALREADY_SUBSCRIBED') {
+        return null;
+      }
+      logger.warn({ err: err.message, code: err.code, userId: rec.userId }, '[auth.verify] trial grant skipped');
+      return null;
+    });
+    res.json({
+      ok: true,
+      trialStarted: Boolean(trialResult?.started),
+      trial: trialResult?.trial || null,
+    });
   } catch (e) { next(e); }
 });
 

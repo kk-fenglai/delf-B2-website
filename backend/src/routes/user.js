@@ -2,13 +2,15 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { z } = require('zod');
 const prisma = require('../prisma');
-const { requireAuth } = require('../middleware/auth');
+const { requireAuth, requireVerifiedEmail } = require('../middleware/auth');
 const passwordPolicy = require('../utils/passwordPolicy');
 const { revokeAllForUser } = require('../services/refreshTokens');
 const { predictScore } = require('../services/prediction');
 const { gradeAnswer } = require('../services/grader');
 const { signAudioUrl } = require('../utils/audioToken');
 const { PLAN_CAPS } = require('../constants/planMatrix');
+const { getTrialStatusForUser, startTrial, trialConfig } = require('../services/trial');
+const { effectivePlan } = require('../middleware/requirePlan');
 
 const router = express.Router();
 
@@ -54,6 +56,27 @@ router.get('/sessions/quota', requireAuth, async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// GET /api/user/trial/status — trial eligibility + remaining days for logged-in user.
+router.get('/trial/status', requireAuth, async (req, res, next) => {
+  try {
+    const trial = await getTrialStatusForUser(req.userId);
+    res.json({ trial });
+  } catch (e) { next(e); }
+});
+
+// POST /api/user/trial/start — manual trial activation (pricing page fallback).
+router.post('/trial/start', requireAuth, requireVerifiedEmail, async (req, res, next) => {
+  try {
+    const result = await startTrial(req.userId, { source: 'manual' });
+    res.status(201).json(result);
+  } catch (e) {
+    if (e.code) {
+      return res.status(e.status || 400).json({ error: e.message, code: e.code });
+    }
+    next(e);
+  }
+});
+
 // GET /api/user/me
 router.get('/me', requireAuth, async (req, res, next) => {
   try {
@@ -66,6 +89,7 @@ router.get('/me', requireAuth, async (req, res, next) => {
           name: true,
           plan: true,
           subscriptionEnd: true,
+          trialUsedAt: true,
           createdAt: true,
         },
       }),
@@ -75,9 +99,8 @@ router.get('/me', requireAuth, async (req, res, next) => {
       }),
     ]);
     const now = Date.now();
-    const effective = user?.subscriptionEnd && new Date(user.subscriptionEnd).getTime() > now
-      ? user.plan
-      : 'FREE';
+    const effective = effectivePlan(user);
+    const trial = await getTrialStatusForUser(req.userId);
     res.json({
       user: {
         ...user,
@@ -86,6 +109,7 @@ router.get('/me', requireAuth, async (req, res, next) => {
         autoRenew: activeContract
           ? { provider: activeContract.provider, nextChargeAt: activeContract.nextChargeAt }
           : null,
+        trial,
       },
     });
   } catch (e) { next(e); }
@@ -94,35 +118,31 @@ router.get('/me', requireAuth, async (req, res, next) => {
 // GET /api/user/progress - dashboard stats
 router.get('/progress', requireAuth, async (req, res, next) => {
   try {
-    const [sessions, attempts] = await Promise.all([
+    const userId = req.userId;
+    const [sessions, totalAttempts, skillRows] = await Promise.all([
       prisma.examSession.findMany({
-        where: { userId: req.userId, completedAt: { not: null } },
+        where: { userId, completedAt: { not: null } },
         orderBy: { completedAt: 'desc' },
         take: 20,
         include: { examSet: { select: { title: true, year: true } } },
       }),
-      prisma.userAttempt.findMany({
-        where: { userId: req.userId },
-        include: {
-          question: { select: { skill: true } },
-        },
-      }),
+      prisma.userAttempt.count({ where: { userId } }),
+      prisma.$queryRaw`
+        SELECT q.skill AS skill,
+               COUNT(*)::int AS total,
+               SUM(CASE WHEN ua."isCorrect" = true THEN 1 ELSE 0 END)::int AS correct
+        FROM "UserAttempt" ua
+        INNER JOIN "Question" q ON ua."questionId" = q.id
+        WHERE ua."userId" = ${userId}
+        GROUP BY q.skill
+      `,
     ]);
 
-    // Accuracy by skill
-    const bySkill = {};
-    for (const a of attempts) {
-      const k = a.question.skill;
-      bySkill[k] = bySkill[k] || { total: 0, correct: 0 };
-      bySkill[k].total++;
-      if (a.isCorrect) bySkill[k].correct++;
-    }
-
-    const skillStats = Object.entries(bySkill).map(([skill, v]) => ({
-      skill,
-      total: v.total,
-      correct: v.correct,
-      accuracy: v.total ? Math.round((v.correct / v.total) * 100) : 0,
+    const skillStats = skillRows.map((row) => ({
+      skill: row.skill,
+      total: row.total,
+      correct: row.correct,
+      accuracy: row.total ? Math.round((row.correct / row.total) * 100) : 0,
     }));
 
     res.json({
@@ -135,7 +155,7 @@ router.get('/progress', requireAuth, async (req, res, next) => {
         completedAt: s.completedAt,
       })),
       skillStats,
-      totalAttempts: attempts.length,
+      totalAttempts,
     });
   } catch (e) { next(e); }
 });
@@ -143,33 +163,50 @@ router.get('/progress', requireAuth, async (req, res, next) => {
 // GET /api/user/prediction - exam score & pass-probability forecast
 router.get('/prediction', requireAuth, async (req, res, next) => {
   try {
-    // Pull all attempts with question skill/type/points. We de-dup to the most
-    // recent attempt per question so re-practising doesn't double-count.
-    const raw = await prisma.userAttempt.findMany({
-      where: { userId: req.userId },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        question: { select: { skill: true, type: true, points: true } },
-      },
-    });
+    const userId = req.userId;
+    // One row per question (latest attempt) — avoids loading the full history.
+    const [latestRows, totalAttempts, lastPractice] = await Promise.all([
+      prisma.$queryRaw`
+        SELECT DISTINCT ON (ua."questionId")
+          ua."questionId",
+          ua."isCorrect",
+          ua."score",
+          ua."createdAt",
+          q.skill,
+          q.type,
+          q.points
+        FROM "UserAttempt" ua
+        INNER JOIN "Question" q ON ua."questionId" = q.id
+        WHERE ua."userId" = ${userId}
+        ORDER BY ua."questionId", ua."createdAt" DESC
+      `,
+      prisma.userAttempt.count({ where: { userId } }),
+      prisma.userAttempt.findFirst({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+        select: { createdAt: true },
+      }),
+    ]);
 
-    const seen = new Set();
-    const latest = [];
-    for (const a of raw) {
-      if (seen.has(a.questionId)) continue;
-      seen.add(a.questionId);
-      latest.push(a);
-    }
+    const latest = latestRows.map((row) => ({
+      questionId: row.questionId,
+      isCorrect: row.isCorrect,
+      score: row.score,
+      createdAt: row.createdAt,
+      question: {
+        skill: row.skill,
+        type: row.type,
+        points: row.points,
+      },
+    }));
 
     const prediction = predictScore(latest);
 
-    const lastPracticeAt = raw.length > 0 ? raw[0].createdAt : null;
-
     res.json({
       ...prediction,
-      totalAttempts: raw.length,
+      totalAttempts,
       uniqueQuestions: latest.length,
-      lastPracticeAt,
+      lastPracticeAt: lastPractice?.createdAt ?? null,
     });
   } catch (e) { next(e); }
 });

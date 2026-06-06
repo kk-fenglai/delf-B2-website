@@ -22,6 +22,7 @@ interface UserRow {
   status: string;
   role: string;
   subscriptionEnd?: string;
+  trialUsedAt?: string;
   lastLoginAt?: string;
   lastLoginIp?: string;
   loginCount: number;
@@ -232,6 +233,10 @@ export default function AdminUsers() {
       render: (s: string) => <Tag color={STATUS_COLORS[s]}>{s}</Tag>,
     },
     { title: '角色', dataIndex: 'role', render: (r: string) => r !== 'USER' ? <Tag color="red">{r}</Tag> : r },
+    {
+      title: '已试用', dataIndex: 'trialUsedAt',
+      render: (d?: string) => d ? new Date(d).toLocaleDateString() : '—',
+    },
     {
       title: '最后登录', dataIndex: 'lastLoginAt',
       render: (d?: string) => d ? new Date(d).toLocaleString() : '—',

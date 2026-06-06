@@ -15,8 +15,8 @@ type ReportRow = {
   currency: 'CNY' | 'USD' | 'EUR';
   amountCents: number;
   amountDisplay: string;
-  usdEquivalent: number | null;
-  usdAnchor: number | null;
+  eurEquivalent: number | null;
+  eurAnchor: number | null;
   deviationPct: number | null;
 };
 type ProductReport = {
@@ -28,7 +28,7 @@ type ProductReport = {
 type Report = {
   report: ProductReport[];
   fx: {
-    rates: { USD: number; CNY: number; EUR: number; date: string };
+    rates: { EUR: number; USD: number; CNY: number; date: string };
     fetchedAt: string;
     cached: boolean;
     source: string;
@@ -94,18 +94,24 @@ export default function PricingReview() {
       ),
     },
     {
-      title: t('adminPayments.pricingReview.col.usdEquivalent'),
-      dataIndex: 'usdEquivalent',
-      render: (v: number | null) => (v == null ? '—' : `$${v.toFixed(2)}`),
+      title: t('adminPayments.pricingReview.col.eurEquivalent'),
+      dataIndex: 'eurEquivalent',
+      render: (v: number | null, row) => {
+        const val = v ?? (row as ReportRow & { usdEquivalent?: number | null }).usdEquivalent;
+        return val == null ? '—' : `€${val.toFixed(2)}`;
+      },
     },
     {
       title: (
-        <Tooltip title={t('adminPayments.pricingReview.col.usdAnchorTip')}>
-          {t('adminPayments.pricingReview.col.usdAnchor')}
+        <Tooltip title={t('adminPayments.pricingReview.col.eurAnchorTip')}>
+          {t('adminPayments.pricingReview.col.eurAnchor')}
         </Tooltip>
       ),
-      dataIndex: 'usdAnchor',
-      render: (v: number | null) => (v == null ? '—' : `$${v.toFixed(2)}`),
+      dataIndex: 'eurAnchor',
+      render: (v: number | null, row) => {
+        const val = v ?? (row as ReportRow & { usdAnchor?: number | null }).usdAnchor;
+        return val == null ? '—' : `€${val.toFixed(2)}`;
+      },
     },
     {
       title: (
@@ -117,9 +123,7 @@ export default function PricingReview() {
       render: (pct: number | null, row) => {
         if (pct == null) return '—';
         const color = deviationTagColor(pct);
-        // USD anchor row always shows 0% — render it muted so it doesn't
-        // distract from the actual signal (CNY/EUR drift).
-        if (row.currency === 'USD') {
+        if (row.currency === 'EUR') {
           return <Text type="secondary">0.0%</Text>;
         }
         const sign = pct > 0 ? '+' : '';
@@ -150,8 +154,8 @@ export default function PricingReview() {
           message={
             <span>
               {t('adminPayments.pricingReview.fxLine', {
+                usd: data.fx.rates.USD?.toFixed(4),
                 cny: data.fx.rates.CNY?.toFixed(4),
-                eur: data.fx.rates.EUR?.toFixed(4),
                 date: data.fx.rates.date,
               })}
               {data.fx.cached && (

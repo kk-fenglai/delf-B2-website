@@ -212,4 +212,11 @@ module.exports = {
     // hosted = redirect to Stripe hosted page. Set STRIPE_CHECKOUT_UI=hosted to force.
     CHECKOUT_UI: process.env.STRIPE_CHECKOUT_UI || 'embedded',
   },
+
+  // Free trial (no payment — grants plan + subscriptionEnd for N days)
+  TRIAL: {
+    ENABLED: process.env.TRIAL_ENABLED !== 'false',
+    DAYS: Math.max(1, Number(process.env.TRIAL_DAYS || 3)),
+    PLAN: (process.env.TRIAL_PLAN || 'AI_UNLIMITED').toUpperCase(),
+  },
 };

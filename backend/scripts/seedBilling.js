@@ -21,7 +21,7 @@ async function main() {
           code: pr.code,
           productId: product.id,
           months: pr.months,
-          currency: 'CNY',
+          currency: pr.currency || 'EUR',
           amountCents: pr.amountCents,
           supportsAutoRenew: pr.supportsAutoRenew,
           active: true,
@@ -30,6 +30,7 @@ async function main() {
         update: {
           productId: product.id,
           months: pr.months,
+          currency: pr.currency || 'EUR',
           amountCents: pr.amountCents,
           supportsAutoRenew: pr.supportsAutoRenew,
           active: true,

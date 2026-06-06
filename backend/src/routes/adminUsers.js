@@ -64,6 +64,7 @@ router.get('/', async (req, res, next) => {
         take: pageSize,
         select: {
           id: true, email: true, name: true, plan: true, subscriptionEnd: true,
+          trialUsedAt: true,
           role: true, status: true, loginCount: true, lastLoginAt: true,
           lastLoginIp: true, createdAt: true,
         },
@@ -85,6 +86,7 @@ router.get('/:id', async (req, res, next) => {
       where: { id: req.params.id },
       select: {
         id: true, email: true, name: true, plan: true, subscriptionEnd: true,
+        trialUsedAt: true,
         role: true, status: true, loginCount: true, lastLoginAt: true,
         lastLoginIp: true, failedLoginCount: true, lockedUntil: true,
         deletedAt: true, createdAt: true, updatedAt: true,

@@ -148,11 +148,17 @@ export default function PriceFormDrawer({
       onSaved();
       onClose();
     } catch (e: any) {
-      // Log to console too — without this, devtools shows nothing and silent
-      // backend rejections are nearly impossible to diagnose from the UI alone.
       // eslint-disable-next-line no-console
       console.error('[PriceFormDrawer] save failed', e?.response?.data || e);
-      message.error(e?.response?.data?.error || t('adminPayments.common.saveFailed'));
+      const code = e?.response?.data?.code;
+      const existingCode = e?.response?.data?.existingCode;
+      if (code === 'PRICE_SLOT_TAKEN') {
+        message.error(
+          t('adminPayments.priceForm.slotTaken', { code: existingCode || '?' }),
+        );
+      } else {
+        message.error(e?.response?.data?.error || t('adminPayments.common.saveFailed'));
+      }
     } finally {
       setBusy(false);
     }

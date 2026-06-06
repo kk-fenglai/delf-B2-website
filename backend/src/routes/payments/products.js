@@ -2,6 +2,7 @@ const express = require('express');
 const prisma = require('../../prisma');
 const env = require('../../config/env');
 const stripePay = require('../../services/payments/stripe');
+const { trialConfig } = require('../../services/trial');
 
 const router = express.Router();
 
@@ -51,16 +52,23 @@ router.get('/products', async (_req, res, next) => {
       include: {
         prices: {
           where: { active: true },
-          orderBy: { months: 'asc' },
+          orderBy: [{ months: 'asc' }, { currency: 'asc' }, { code: 'asc' }],
         },
       },
       orderBy: { createdAt: 'asc' },
     });
 
+    const cfg = trialConfig();
+    res.setHeader('Cache-Control', 'public, max-age=120, stale-while-revalidate=300');
     res.json({
       adaptivePricing: Boolean(env.STRIPE?.ADAPTIVE_PRICING),
       anchorCurrency: env.STRIPE?.ANCHOR_CURRENCY || 'EUR',
       checkoutMode: stripePay.useEmbeddedCheckout() ? 'embedded' : 'hosted',
+      trial: {
+        enabled: cfg.enabled,
+        days: cfg.days,
+        plan: cfg.plan,
+      },
       products: products.map((p) => ({
         id: p.id,
         code: p.code,

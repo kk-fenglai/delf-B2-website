@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  Typography, Button, Modal, Segmented, Space, message, Checkbox, Skeleton,
+  Typography, Button, Modal, Segmented, Space, message, Checkbox, Skeleton, Alert,
 } from 'antd';
 import {
   CheckOutlined, SafetyCertificateOutlined, CreditCardOutlined,
@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
-import type { CatalogProduct, CatalogPrice, Plan } from '../types';
+import type { CatalogProduct, CatalogPrice, Plan, TrialPublicConfig, TrialStatus } from '../types';
 
 const { Title, Paragraph } = Typography;
 
@@ -44,8 +44,11 @@ export default function Pricing() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
+  const fetchMe = useAuthStore((s) => s.fetchMe);
 
   const [products, setProducts] = useState<CatalogProduct[] | null>(null);
+  const [trialPublic, setTrialPublic] = useState<TrialPublicConfig | null>(null);
+  const [trialStatus, setTrialStatus] = useState<TrialStatus | null>(null);
   const [adaptivePricing, setAdaptivePricing] = useState(false);
   const [embeddedCheckout, setEmbeddedCheckout] = useState(false);
   const [anchorCurrency, setAnchorCurrency] = useState<Currency>('EUR');
@@ -62,8 +65,13 @@ export default function Pricing() {
   const [selectedPrice, setSelectedPrice] = useState<CatalogPrice | null>(null);
   const [enableAutoRenew, setEnableAutoRenew] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [trialLoading, setTrialLoading] = useState(false);
 
   const isLoggedIn = !!user;
+  const trialDays = trialPublic?.days ?? trialStatus?.days ?? 3;
+  const showTrialFeature = Boolean(trialPublic?.enabled ?? trialStatus?.enabled);
+  const trialEligible = Boolean(trialStatus?.eligible);
+  const trialActive = Boolean(trialStatus?.active);
 
   useEffect(() => {
     let cancelled = false;
@@ -72,6 +80,7 @@ export default function Pricing() {
         const { data } = await api.get('/pay/products');
         if (!cancelled) {
           setProducts(data.products || []);
+          if (data.trial) setTrialPublic(data.trial);
           if (data.adaptivePricing) {
             setAdaptivePricing(true);
             const anchor = data.anchorCurrency;
@@ -92,6 +101,48 @@ export default function Pricing() {
     })();
     return () => { cancelled = true; };
   }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setTrialStatus(null);
+      return;
+    }
+    if (user?.trial) {
+      setTrialStatus(user.trial);
+      return;
+    }
+    let cancelled = false;
+    api.get('/user/trial/status')
+      .then((r) => { if (!cancelled) setTrialStatus(r.data.trial); })
+      .catch(() => { if (!cancelled) setTrialStatus(null); });
+    return () => { cancelled = true; };
+  }, [isLoggedIn, user?.trial, user?.id]);
+
+  async function startFreeTrial() {
+    if (!isLoggedIn) {
+      message.info(t('pricing.checkout.loginFirst'));
+      navigate('/register');
+      return;
+    }
+    setTrialLoading(true);
+    try {
+      const { data } = await api.post('/user/trial/start');
+      if (data?.trial) setTrialStatus(data.trial);
+      await fetchMe();
+      message.success(t('pricing.trial.startSuccess', { days: trialDays }));
+      navigate('/practice');
+    } catch (e: unknown) {
+      const err = e as { response?: { data?: { error?: string; code?: string } } };
+      const code = err.response?.data?.code;
+      if (code === 'EMAIL_NOT_VERIFIED') {
+        message.warning(t('pricing.trial.verifyEmailFirst'));
+      } else {
+        message.error(err.response?.data?.error || t('pricing.trial.startFailed'));
+      }
+    } finally {
+      setTrialLoading(false);
+    }
+  }
 
   // Pull the IP-derived currency from the edge proxy header. Doesn't block
   // the catalog render; if it fails or the user already picked, we leave
@@ -118,9 +169,12 @@ export default function Pricing() {
   // of falling through to a row in a different currency.
   function priceForCycle(product: CatalogProduct, c: BillingCycle): CatalogPrice | null {
     const months = c === 'monthly' ? 1 : 12;
-    return (
-      product.prices.find((p) => p.months === months && p.currency === displayCurrency) || null
+    const matches = product.prices.filter(
+      (p) => p.months === months && p.currency === displayCurrency,
     );
+    if (matches.length === 0) return null;
+    matches.sort((a, b) => a.code.localeCompare(b.code));
+    return matches[0];
   }
 
   function openCheckout(product: CatalogProduct) {
@@ -201,6 +255,49 @@ export default function Pricing() {
         </Paragraph>
       </div>
 
+      {showTrialFeature && (
+        <div className="mb-8 max-w-3xl mx-auto">
+          {trialActive ? (
+            <Alert
+              type="success"
+              showIcon
+              message={t('pricing.trial.activeBanner', { days: trialStatus?.daysLeft ?? trialDays })}
+              action={(
+                <Space>
+                  <Button size="small" onClick={() => navigate('/practice')}>
+                    {t('pricing.trial.goPractice')}
+                  </Button>
+                </Space>
+              )}
+            />
+          ) : (
+            <Alert
+              type="info"
+              showIcon
+              message={t('pricing.trial.promoBanner', { days: trialDays })}
+              description={
+                !isLoggedIn
+                  ? t('pricing.trial.registerHint', { days: trialDays })
+                  : trialEligible
+                    ? t('pricing.trial.eligibleHint', { days: trialDays })
+                    : t('pricing.trial.usedHint')
+              }
+              action={
+                trialEligible ? (
+                  <Button type="primary" size="small" loading={trialLoading} onClick={startFreeTrial}>
+                    {t('pricing.trial.startButton', { days: trialDays })}
+                  </Button>
+                ) : !isLoggedIn ? (
+                  <Link to="/register">
+                    <Button type="primary" size="small">{t('nav.register')}</Button>
+                  </Link>
+                ) : undefined
+              }
+            />
+          )}
+        </div>
+      )}
+
       <div className="flex justify-center mb-10 gap-3 flex-wrap">
         <Segmented
           value={cycle}
@@ -211,7 +308,7 @@ export default function Pricing() {
             { label: t('pricing.checkout.yearly'), value: 'yearly' },
           ]}
         />
-        {!adaptivePricing && (
+        {!catalogLoading && !adaptivePricing && (
           <Segmented
             value={currency}
             onChange={(v) => {
@@ -326,38 +423,54 @@ export default function Pricing() {
                 </div>
 
                 {isFree ? (
-                  <Link to="/register">
+                  <Space direction="vertical" className="w-full" size="small">
+                    <Link to="/register">
+                      <Button
+                        block
+                        size="large"
+                        style={{
+                          background: 'rgba(37, 99, 235, 0.08)',
+                          color: '#2563eb',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {showTrialFeature
+                          ? t('pricing.trial.registerCta', { days: trialDays })
+                          : t('pricing.plans.free.cta')}
+                      </Button>
+                    </Link>
+                  </Space>
+                ) : (
+                  <Space direction="vertical" className="w-full" size="small">
                     <Button
+                      type={highlight ? 'primary' : 'default'}
                       block
                       size="large"
-                      style={{
-                        background: 'rgba(37, 99, 235, 0.08)',
-                        color: '#2563eb',
-                        fontWeight: 600,
-                      }}
+                      disabled={!price}
+                      onClick={() => c.product && openCheckout(c.product)}
+                      style={
+                        highlight
+                          ? { fontWeight: 600 }
+                          : {
+                              background: 'rgba(37, 99, 235, 0.08)',
+                              color: '#2563eb',
+                              fontWeight: 600,
+                            }
+                      }
                     >
-                      {t('pricing.plans.free.cta')}
+                      {t('pricing.checkout.buyNow')}
                     </Button>
-                  </Link>
-                ) : (
-                  <Button
-                    type={highlight ? 'primary' : 'default'}
-                    block
-                    size="large"
-                    disabled={!price}
-                    onClick={() => c.product && openCheckout(c.product)}
-                    style={
-                      highlight
-                        ? { fontWeight: 600 }
-                        : {
-                            background: 'rgba(37, 99, 235, 0.08)',
-                            color: '#2563eb',
-                            fontWeight: 600,
-                          }
-                    }
-                  >
-                    {t('pricing.checkout.buyNow')}
-                  </Button>
+                    {showTrialFeature && trialEligible && !trialActive && (
+                      <Button
+                        block
+                        size="large"
+                        loading={trialLoading}
+                        onClick={startFreeTrial}
+                      >
+                        {t('pricing.trial.startButton', { days: trialDays })}
+                      </Button>
+                    )}
+                  </Space>
                 )}
               </div>
             );
@@ -424,6 +537,16 @@ export default function Pricing() {
             >
               {t('pricing.checkout.stripeAutoRenew', t('pricing.checkout.autoRenew'))}
             </Checkbox>
+          )}
+
+          {trialEligible && !trialActive && (
+            <div className="text-center text-sm" style={{ color: 'var(--textMuted)' }}>
+              {t('pricing.trial.modalHint', { days: trialDays })}
+              {' '}
+              <Button type="link" size="small" loading={trialLoading} onClick={startFreeTrial} style={{ padding: 0 }}>
+                {t('pricing.trial.startButton', { days: trialDays })}
+              </Button>
+            </div>
           )}
 
           <Button

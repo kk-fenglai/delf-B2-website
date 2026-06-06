@@ -67,6 +67,9 @@ export default function AdminUserDetail() {
           <Descriptions.Item label="订阅到期">
             {u.subscriptionEnd ? new Date(u.subscriptionEnd).toLocaleString() : '—'}
           </Descriptions.Item>
+          <Descriptions.Item label="试用开通">
+            {u.trialUsedAt ? new Date(u.trialUsedAt).toLocaleString() : '—'}
+          </Descriptions.Item>
           <Descriptions.Item label="登录次数">{u.loginCount}</Descriptions.Item>
           <Descriptions.Item label="连续失败">{u.failedLoginCount}</Descriptions.Item>
           <Descriptions.Item label="锁定至">
