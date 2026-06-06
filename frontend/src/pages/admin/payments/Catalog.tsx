@@ -14,9 +14,16 @@ import {
 import ProductFormDrawer from './ProductFormDrawer';
 import PriceFormDrawer from './PriceFormDrawer';
 
+export interface BillingConfig {
+  adaptivePricing: boolean;
+  anchorCurrency: string;
+  checkoutMode: 'embedded' | 'hosted';
+}
+
 export default function Catalog() {
   const { t } = useTranslation();
   const [products, setProducts] = useState<ProductRow[]>([]);
+  const [billing, setBilling] = useState<BillingConfig | null>(null);
   const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   // Hidden by default — disabled rows are kept in the DB so historical orders
@@ -36,6 +43,7 @@ export default function Catalog() {
     try {
       const { data } = await adminApi.get('/products');
       setProducts(data.products || []);
+      setBilling(data.billing || null);
     } catch (e: any) {
       message.error(e?.response?.data?.error || t('adminPayments.common.operationFailed'));
     } finally {
@@ -125,6 +133,20 @@ export default function Catalog() {
         </Space>
       </div>
 
+      {billing?.adaptivePricing && billing.checkoutMode === 'embedded' && (
+        <Alert
+          type="info"
+          showIcon
+          style={{ marginBottom: 16 }}
+          message={t('adminPayments.catalog.billingBannerEmbedded', {
+            currency: billing.anchorCurrency,
+          })}
+          description={t('adminPayments.catalog.eurOnlyHint', {
+            currency: billing.anchorCurrency,
+          })}
+        />
+      )}
+
       {products.length === 0 && !loading ? (
         <Empty description={t('adminPayments.common.empty')} />
       ) : (
@@ -133,6 +155,7 @@ export default function Catalog() {
             <ProductCard
               key={product.id}
               product={product}
+              billing={billing}
               busyId={busyId}
               showDisabled={showDisabled}
               onEditProduct={() => setProductDrawer({ open: true, editing: product })}
@@ -160,6 +183,7 @@ export default function Catalog() {
         open={priceDrawer.open}
         productId={priceDrawer.productId}
         editing={priceDrawer.editing}
+        billing={billing}
         onClose={() => setPriceDrawer({ open: false, productId: null, editing: null })}
         onSaved={load}
       />
@@ -169,6 +193,7 @@ export default function Catalog() {
 
 interface CardProps {
   product: ProductRow;
+  billing: BillingConfig | null;
   busyId: string | null;
   showDisabled: boolean;
   onEditProduct: () => void;
@@ -181,6 +206,7 @@ interface CardProps {
 
 function ProductCard({
   product,
+  billing,
   busyId,
   showDisabled,
   onEditProduct,
@@ -197,14 +223,28 @@ function ProductCard({
     [product.prices, showDisabled],
   );
 
+  const anchorCurrency = (billing?.anchorCurrency || 'EUR').toUpperCase();
+  const eurAnchorMode = Boolean(billing?.adaptivePricing && billing.checkoutMode === 'embedded');
+
   const missingStripeIdCount = product.prices.filter((p) => {
     if (!p.active || !p.supportsAutoRenew) return false;
-    const currency = (p.currency || 'CNY').toUpperCase();
+    if (eurAnchorMode && (p.currency || '').toUpperCase() !== anchorCurrency) return false;
+    const currency = (p.currency || anchorCurrency).toUpperCase();
     const mapped = (p.stripeMappings || []).some((m) => m.currency.toUpperCase() === currency && !!m.stripePriceId);
     return !mapped && !p.stripePriceId;
   }).length;
 
   const columns: ColumnsType<PriceRow> = [
+    {
+      title: t('adminPayments.catalog.priceCol.currency'),
+      dataIndex: 'currency',
+      width: 80,
+      render: (v: string, row) => {
+        const cur = (v || '—').toUpperCase();
+        const isAnchor = eurAnchorMode && cur === anchorCurrency;
+        return isAnchor ? <Tag color="blue">{cur}</Tag> : <span style={{ color: row.active ? undefined : '#bbb' }}>{cur}</span>;
+      },
+    },
     {
       title: t('adminPayments.catalog.priceCol.code'),
       dataIndex: 'code',

@@ -26,6 +26,7 @@ const { refundOrder } = require('../services/billing');
 const wechat = require('../services/payments/wechat');
 const alipay = require('../services/payments/alipay');
 const stripePay = require('../services/payments/stripe');
+const env = require('../config/env');
 const { logger } = require('../utils/logger');
 
 const router = express.Router();
@@ -45,7 +46,14 @@ router.get('/products', async (_req, res, next) => {
         prices: { orderBy: { months: 'asc' }, include: { stripeMappings: true } },
       },
     });
-    res.json({ products });
+    res.json({
+      billing: {
+        adaptivePricing: Boolean(env.STRIPE?.ADAPTIVE_PRICING),
+        anchorCurrency: env.STRIPE?.ANCHOR_CURRENCY || 'EUR',
+        checkoutMode: stripePay.useEmbeddedCheckout() ? 'embedded' : 'hosted',
+      },
+      products,
+    });
   } catch (e) { next(e); }
 });
 

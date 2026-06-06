@@ -28,6 +28,10 @@ COPY src ./src
 COPY scripts ./scripts
 COPY eng.traineddata ./
 
+# Writable dirs for oral recordings + admin audio uploads (process runs as USER node).
+RUN mkdir -p content/recordings content/fei-samples \
+ && chown -R node:node content
+
 EXPOSE 4000
 USER node
 ENTRYPOINT ["dumb-init", "--"]

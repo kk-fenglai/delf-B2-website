@@ -14,6 +14,12 @@ function isEnabled() {
   return Boolean(env.STRIPE?.SECRET_KEY && env.STRIPE?.WEBHOOK_SECRET);
 }
 
+function useEmbeddedCheckout() {
+  if (env.STRIPE?.CHECKOUT_UI === 'hosted') return false;
+  if (env.STRIPE?.CHECKOUT_UI === 'embedded') return true;
+  return Boolean(env.STRIPE?.ADAPTIVE_PRICING);
+}
+
 function verifyWebhookEvent({ rawBodyBuffer, signature }) {
   const client = getClient();
   if (!client) throw Object.assign(new Error('Stripe not configured'), { code: 'PAY_NOT_CONFIGURED' });
@@ -38,6 +44,17 @@ function checkoutCurrency(price) {
   return String(price.currency || 'USD').toLowerCase();
 }
 
+function orderMetadata({ orderId, userId, price, planLabel }) {
+  return {
+    orderId,
+    userId,
+    priceId: price.id,
+    priceCode: price.code || '',
+    plan: planLabel,
+    months: String(price.months || 1),
+  };
+}
+
 // Unified entry: one-time payment (mode='payment') or recurring subscription
 // (mode='subscription'). The caller decides via `subscribe`. Subscription mode
 // requires `price.stripePriceId` to point at a recurring Price already created
@@ -48,16 +65,26 @@ async function createCheckoutSession({
   price,
   successUrl,
   cancelUrl,
+  returnUrl,
   subscribe = false,
   customerEmail,
 }) {
   const client = getClient();
   if (!client) throw Object.assign(new Error('Stripe not configured'), { code: 'PAY_NOT_CONFIGURED' });
 
+  const embedded = useEmbeddedCheckout();
   const currency = checkoutCurrency(price);
   const planLabel = price.product?.plan || 'Subscription';
   const productName = `DELFluent ${price.product?.name || planLabel} ${price.months}m`;
   const extras = checkoutExtras();
+  const metadata = orderMetadata({ orderId, userId, price, planLabel });
+
+  const sessionBase = {
+    client_reference_id: orderId,
+    ...(customerEmail ? { customer_email: customerEmail } : {}),
+    ...extras,
+    metadata,
+  };
 
   if (subscribe) {
     if (!price.stripePriceId) {
@@ -66,44 +93,67 @@ async function createCheckoutSession({
         status: 400,
       });
     }
-    // Card-only for recurring: WeChat Pay / Alipay through Stripe do not support
-    // saved payment methods, so they cannot back a subscription.
-    const session = await client.checkout.sessions.create({
-      ui_mode: 'hosted_page',
+
+    const sessionParams = {
       mode: 'subscription',
-      payment_method_types: ['card'],
       line_items: [{ price: price.stripePriceId, quantity: 1 }],
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-      client_reference_id: orderId,
-      ...(customerEmail ? { customer_email: customerEmail } : {}),
-      ...extras,
-      metadata: {
-        orderId,
-        userId,
-        priceId: price.id,
-        priceCode: price.code || '',
-        plan: planLabel,
-        months: String(price.months || 1),
-      },
-      // Subscription-level metadata is what `customer.subscription.*` events
-      // carry (session metadata is not on those events).
-      subscription_data: {
-        metadata: {
-          orderId,
-          userId,
-          priceId: price.id,
-          priceCode: price.code || '',
-          plan: planLabel,
-          months: String(price.months || 1),
-        },
-      },
-    });
-    return { sessionId: session.id, url: session.url, mode: 'subscription' };
+      subscription_data: { metadata },
+      ...sessionBase,
+    };
+
+    if (embedded) {
+      Object.assign(sessionParams, {
+        ui_mode: 'elements',
+        return_url: returnUrl,
+      });
+    } else {
+      Object.assign(sessionParams, {
+        ui_mode: 'hosted_page',
+        payment_method_types: ['card'],
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+      });
+    }
+
+    const session = await client.checkout.sessions.create(sessionParams);
+    return {
+      sessionId: session.id,
+      url: session.url || null,
+      clientSecret: session.client_secret || null,
+      mode: 'subscription',
+      embedded,
+    };
   }
 
-  // One-time purchase. With Adaptive Pricing enabled we anchor in EUR and let
-  // Stripe localize at Checkout (card only — WeChat/Alipay require fixed CNY).
+  const lineItems = [
+    {
+      quantity: 1,
+      price_data: {
+        currency,
+        unit_amount: price.amountCents,
+        product_data: { name: productName },
+      },
+    },
+  ];
+
+  if (embedded) {
+    const session = await client.checkout.sessions.create({
+      ui_mode: 'elements',
+      mode: 'payment',
+      line_items: lineItems,
+      return_url: returnUrl,
+      ...sessionBase,
+    });
+    return {
+      sessionId: session.id,
+      url: session.url || null,
+      clientSecret: session.client_secret || null,
+      mode: 'payment',
+      embedded,
+    };
+  }
+
+  // Hosted one-time purchase. With Adaptive Pricing we anchor in EUR (card only).
   const paymentMethodTypes = env.STRIPE?.ADAPTIVE_PRICING
     ? ['card']
     : ['card', 'wechat_pay', 'alipay'];
@@ -114,31 +164,47 @@ async function createCheckoutSession({
     ...(paymentMethodTypes.includes('wechat_pay')
       ? { payment_method_options: { wechat_pay: { client: 'web' } } }
       : {}),
-    line_items: [
-      {
-        quantity: 1,
-        price_data: {
-          currency,
-          unit_amount: price.amountCents,
-          product_data: { name: productName },
-        },
-      },
-    ],
+    line_items: lineItems,
     success_url: successUrl,
     cancel_url: cancelUrl,
-    client_reference_id: orderId,
-    ...(customerEmail ? { customer_email: customerEmail } : {}),
-    ...extras,
-    metadata: {
-      orderId,
-      userId,
-      priceId: price.id,
-      plan: planLabel,
-      months: String(price.months || 1),
-    },
+    ...sessionBase,
   });
 
-  return { sessionId: session.id, url: session.url, mode: 'payment' };
+  return {
+    sessionId: session.id,
+    url: session.url,
+    clientSecret: session.client_secret || null,
+    mode: 'payment',
+    embedded: false,
+  };
+}
+
+async function retrieveCheckoutSession(sessionId) {
+  const client = getClient();
+  if (!client) throw Object.assign(new Error('Stripe not configured'), { code: 'PAY_NOT_CONFIGURED' });
+  if (!sessionId) throw Object.assign(new Error('Missing session id'), { code: 'STRIPE_NO_SESSION', status: 400 });
+  return client.checkout.sessions.retrieve(sessionId, {
+    expand: ['payment_intent', 'subscription'],
+  });
+}
+
+function sessionStatusPayload(session) {
+  const paymentIntent = session.payment_intent && typeof session.payment_intent === 'object'
+    ? session.payment_intent
+    : null;
+  const subscription = session.subscription && typeof session.subscription === 'object'
+    ? session.subscription
+    : null;
+
+  return {
+    status: session.status,
+    payment_status: session.payment_status,
+    payment_intent_id: paymentIntent?.id || (typeof session.payment_intent === 'string' ? session.payment_intent : null),
+    payment_intent_status: paymentIntent?.status || null,
+    subscription_id: subscription?.id || (typeof session.subscription === 'string' ? session.subscription : null),
+    subscription_status: subscription?.status || null,
+    orderId: session.metadata?.orderId || session.client_reference_id || null,
+  };
 }
 
 // Stripe Customer Portal — self-service for users to update card, cancel
@@ -169,8 +235,11 @@ async function cancelSubscription(stripeSubscriptionId) {
 module.exports = {
   isEnabled,
   getClient,
+  useEmbeddedCheckout,
   verifyWebhookEvent,
   createCheckoutSession,
+  retrieveCheckoutSession,
+  sessionStatusPayload,
   createPortalSession,
   cancelSubscription,
 };

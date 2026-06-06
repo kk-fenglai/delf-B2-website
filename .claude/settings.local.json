@@ -30,7 +30,9 @@
       "Bash(DATABASE_URL=\"file:./dev.db\" npx prisma generate)",
       "Bash(DATABASE_URL=\"file:./dev.db\" node prisma/seed.js)",
       "Bash(timeout 5 node src/index.js)",
-      "Bash(node -e \"require\\('./src/config/env'\\); console.log\\('env OK'\\);\")"
+      "Bash(node -e \"require\\('./src/config/env'\\); console.log\\('env OK'\\);\")",
+      "Bash(npx tsc *)",
+      "Skill(update-config)"
     ]
   }
 }

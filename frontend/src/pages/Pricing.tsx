@@ -5,7 +5,7 @@ import {
 import {
   CheckOutlined, SafetyCertificateOutlined, CreditCardOutlined,
 } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
@@ -42,10 +42,12 @@ function formatPrice(cents: number, currency: string | null | undefined): string
 
 export default function Pricing() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
 
   const [products, setProducts] = useState<CatalogProduct[] | null>(null);
   const [adaptivePricing, setAdaptivePricing] = useState(false);
+  const [embeddedCheckout, setEmbeddedCheckout] = useState(false);
   const [anchorCurrency, setAnchorCurrency] = useState<Currency>('EUR');
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [cycle, setCycle] = useState<BillingCycle>('monthly');
@@ -77,6 +79,9 @@ export default function Pricing() {
               setAnchorCurrency(anchor);
               setCurrency(anchor);
             }
+          }
+          if (data.checkoutMode === 'embedded') {
+            setEmbeddedCheckout(true);
           }
         }
       } catch {
@@ -148,6 +153,17 @@ export default function Pricing() {
         priceId: selectedPrice.id,
         subscribe,
       });
+      if (data?.checkoutMode === 'embedded' && data?.clientSecret) {
+        setOpen(false);
+        navigate('/checkout/stripe', {
+          state: {
+            clientSecret: data.clientSecret,
+            orderId: data.orderId,
+            sessionId: data.sessionId,
+          },
+        });
+        return;
+      }
       if (data?.redirectUrl) {
         window.location.href = data.redirectUrl;
         return;
@@ -213,7 +229,9 @@ export default function Pricing() {
 
       {adaptivePricing && (
         <Paragraph className="text-center mb-8" style={{ color: 'var(--textMuted)' }}>
-          {t('pricing.adaptivePricingNote', { currency: anchorCurrency })}
+          {embeddedCheckout
+            ? t('pricing.embeddedPricingNote', { currency: anchorCurrency })
+            : t('pricing.adaptivePricingNote', { currency: anchorCurrency })}
         </Paragraph>
       )}
 
@@ -392,7 +410,9 @@ export default function Pricing() {
 
           <StripeProviderRow
             label={t('pricing.checkout.stripe')}
-            sub={t('pricing.checkout.stripeHint')}
+            sub={embeddedCheckout
+              ? t('pricing.checkout.stripeEmbeddedHint')
+              : t('pricing.checkout.stripeHint')}
           />
 
           {/* Auto-renew checkbox is only relevant for monthly auto-renewable
@@ -415,7 +435,9 @@ export default function Pricing() {
             disabled={!isLoggedIn}
             style={{ fontWeight: 600 }}
           >
-            {t('pricing.checkout.redirectToPay')}
+            {embeddedCheckout
+              ? t('pricing.checkout.continueToCheckout')
+              : t('pricing.checkout.redirectToPay')}
           </Button>
         </Space>
       </Modal>

@@ -36,6 +36,72 @@ function cancelUrlForOrder(orderId) {
   return frontendUrl(`/checkout/stripe/cancel?orderId=${encodeURIComponent(orderId)}`);
 }
 
+function returnUrlForOrder(orderId) {
+  const base = frontendUrl('/checkout/stripe/complete');
+  return `${base}?session_id={CHECKOUT_SESSION_ID}&orderId=${encodeURIComponent(orderId)}`;
+}
+
+function stripeBillingPublic() {
+  const embedded = stripePay.useEmbeddedCheckout();
+  return {
+    adaptivePricing: Boolean(env.STRIPE?.ADAPTIVE_PRICING),
+    anchorCurrency: env.STRIPE?.ANCHOR_CURRENCY || 'EUR',
+    checkoutMode: embedded ? 'embedded' : 'hosted',
+  };
+}
+
+// GET /api/pay/stripe/config — publishable key + billing mode for the frontend SDK.
+router.get('/config', (_req, res) => {
+  if (!stripePay.isEnabled()) {
+    return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
+  }
+  const publishableKey = env.STRIPE?.PUBLISHABLE_KEY || '';
+  if (!publishableKey) {
+    return res.status(503).json({ error: 'Stripe publishable key not configured', code: 'PAY_NOT_CONFIGURED' });
+  }
+  res.json({ publishableKey, ...stripeBillingPublic() });
+});
+
+// GET /api/pay/stripe/session-status?session_id= — poll after return_url redirect.
+router.get('/session-status', requireAuth, async (req, res, next) => {
+  try {
+    if (!stripePay.isEnabled()) {
+      return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
+    }
+    const sessionId = String(req.query.session_id || '').trim();
+    if (!sessionId) {
+      return res.status(400).json({ error: 'session_id required', code: 'INVALID_REQUEST' });
+    }
+    const session = await stripePay.retrieveCheckoutSession(sessionId);
+    res.json(stripePay.sessionStatusPayload(session));
+  } catch (e) { next(e); }
+});
+
+// GET /api/pay/stripe/checkout/:orderId/client-secret — resume an open embedded session.
+router.get('/checkout/:orderId/client-secret', requireAuth, async (req, res, next) => {
+  try {
+    if (!stripePay.isEnabled()) {
+      return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
+    }
+    const order = await prisma.paymentOrder.findFirst({
+      where: { id: req.params.orderId, userId: req.userId, provider: 'stripe', status: 'PENDING' },
+    });
+    if (!order?.providerOrderNo) {
+      return res.status(404).json({ error: 'Pending Stripe order not found', code: 'ORDER_NOT_FOUND' });
+    }
+    const session = await stripePay.retrieveCheckoutSession(order.providerOrderNo);
+    if (session.status !== 'open' || !session.client_secret) {
+      return res.status(409).json({ error: 'Checkout session expired', code: 'SESSION_EXPIRED' });
+    }
+    res.json({
+      orderId: order.id,
+      sessionId: session.id,
+      clientSecret: session.client_secret,
+      checkoutMode: 'embedded',
+    });
+  } catch (e) { next(e); }
+});
+
 function randomProviderOrderNo(prefix = 'cs') {
   return `${prefix}_${Date.now()}_${crypto.randomBytes(8).toString('hex')}`;
 }
@@ -108,6 +174,7 @@ router.post('/checkout', requireAuth, async (req, res, next) => {
         price,
         successUrl: successUrlForOrder(order.id),
         cancelUrl: cancelUrlForOrder(order.id),
+        returnUrl: returnUrlForOrder(order.id),
         subscribe: wantsSubscription,
         customerEmail: user?.email || undefined,
       });
@@ -143,6 +210,37 @@ router.post('/checkout', requireAuth, async (req, res, next) => {
       });
     }
 
+    if (session.embedded) {
+      if (!session.clientSecret) {
+        try {
+          await prisma.paymentOrder.update({
+            where: { id: order.id },
+            data: { status: 'FAILED', externalTradeNo: 'NO_CLIENT_SECRET' },
+          });
+        } catch (logErr) {
+          logger.error({ err: logErr, orderId: order.id }, '[stripe.checkout] failed to mark order FAILED after missing client_secret');
+        }
+        return res.status(502).json({
+          error: 'Stripe returned no client secret — check ui_mode=elements and Stripe API version.',
+          code: 'STRIPE_CHECKOUT_NO_SECRET',
+        });
+      }
+
+      await prisma.paymentOrder.update({
+        where: { id: order.id },
+        data: { providerOrderNo: session.sessionId, redirectUrl: null },
+      });
+
+      return res.status(201).json({
+        orderId: order.id,
+        provider: 'stripe',
+        mode: session.mode,
+        checkoutMode: 'embedded',
+        sessionId: session.sessionId,
+        clientSecret: session.clientSecret,
+      });
+    }
+
     if (!session.url) {
       try {
         await prisma.paymentOrder.update({
@@ -163,7 +261,13 @@ router.post('/checkout', requireAuth, async (req, res, next) => {
       data: { providerOrderNo: session.sessionId, redirectUrl: session.url },
     });
 
-    res.status(201).json({ orderId: order.id, provider: 'stripe', mode: session.mode, redirectUrl: session.url });
+    res.status(201).json({
+      orderId: order.id,
+      provider: 'stripe',
+      mode: session.mode,
+      checkoutMode: 'hosted',
+      redirectUrl: session.url,
+    });
   } catch (e) { next(e); }
 });
 

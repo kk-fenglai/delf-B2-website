@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
 import type {
   PayProvider, OrderStatus, PaymentOrderSummary,
@@ -83,6 +83,7 @@ function formatDate(iso: string | null) {
 
 export default function Orders() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [orders, setOrders] = useState<PaymentOrderSummary[] | null>(null);
   const [contracts, setContracts] = useState<ContractRow[] | null>(null);
@@ -165,7 +166,16 @@ export default function Orders() {
     try {
       const { data } = await api.get(`/pay/orders/${orderId}`);
       const o: OrderDetail = data.order;
-      if (o.status !== 'PENDING' || !(o.codeUrl || o.redirectUrl)) {
+      if (o.status !== 'PENDING') {
+        message.info(t('orders.status.' + o.status));
+        await reload();
+        return;
+      }
+      if (o.provider === 'stripe') {
+        navigate('/checkout/stripe', { state: { orderId: o.id } });
+        return;
+      }
+      if (!(o.codeUrl || o.redirectUrl)) {
         message.info(t('orders.status.' + o.status));
         await reload();
         return;

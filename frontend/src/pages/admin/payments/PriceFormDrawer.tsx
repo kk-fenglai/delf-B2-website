@@ -7,11 +7,13 @@ import { adminApi } from '../../../api/adminClient';
 import {
   SUPPORTED_CURRENCIES, currencySymbol, type PriceRow,
 } from './_shared';
+import type { BillingConfig } from './Catalog';
 
 interface Props {
   open: boolean;
   productId: string | null;
   editing: PriceRow | null;
+  billing: BillingConfig | null;
   onClose: () => void;
   onSaved: () => void;
 }
@@ -32,7 +34,7 @@ const EMPTY: FormState = {
   code: '',
   displayName: '',
   months: 1,
-  currency: 'USD',
+  currency: 'EUR',
   amountYuan: 0,
   supportsAutoRenew: false,
   active: true,
@@ -40,10 +42,16 @@ const EMPTY: FormState = {
   stripeRecurringPriceId: '',
 };
 
-export default function PriceFormDrawer({ open, productId, editing, onClose, onSaved }: Props) {
+export default function PriceFormDrawer({
+  open, productId, editing, billing, onClose, onSaved,
+}: Props) {
   const { t } = useTranslation();
   const [form, setForm] = useState<FormState>(EMPTY);
   const [busy, setBusy] = useState(false);
+
+  const anchorCurrency = (billing?.anchorCurrency || 'EUR').toUpperCase();
+  const eurAnchorMode = Boolean(billing?.adaptivePricing && billing.checkoutMode === 'embedded');
+  const lockCurrency = eurAnchorMode && !editing;
 
   useEffect(() => {
     if (!open) return;
@@ -62,9 +70,12 @@ export default function PriceFormDrawer({ open, productId, editing, onClose, onS
         stripeRecurringPriceId: mapped,
       });
     } else {
-      setForm(EMPTY);
+      setForm({
+        ...EMPTY,
+        currency: eurAnchorMode ? anchorCurrency : EMPTY.currency,
+      });
     }
-  }, [open, editing]);
+  }, [open, editing, eurAnchorMode, anchorCurrency]);
 
   // Subscription mode requires a Stripe Price ID. We surface that as a warning
   // but don't block save — admins may want to create the row first and add the
@@ -166,6 +177,15 @@ export default function PriceFormDrawer({ open, productId, editing, onClose, onS
       }
     >
       <Form layout="vertical">
+        {eurAnchorMode && (
+          <Alert
+            type="info"
+            showIcon
+            message={t('adminPayments.priceForm.eurAnchorHint', { currency: anchorCurrency })}
+            style={{ marginBottom: 16 }}
+          />
+        )}
+
         <Form.Item
           label={t('adminPayments.priceForm.code')}
           extra={t('adminPayments.priceForm.codeHint')}
@@ -216,9 +236,9 @@ export default function PriceFormDrawer({ open, productId, editing, onClose, onS
           >
             <Select
               value={form.currency}
-              disabled={!!editing}
+              disabled={!!editing || lockCurrency}
               onChange={(v) => setForm((s) => ({ ...s, currency: v }))}
-              options={SUPPORTED_CURRENCIES.map((c) => ({
+              options={(lockCurrency ? [anchorCurrency] : SUPPORTED_CURRENCIES).map((c) => ({
                 value: c,
                 label: `${c} (${currencySymbol(c)})`,
               }))}

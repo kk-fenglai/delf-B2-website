@@ -132,8 +132,16 @@ if (IS_PROD) {
     errors.push('PAY_MOCK_ENABLED=true is forbidden in production — remove it from .env');
   }
   if (STRIPE_CONFIGURED) {
-    if (!process.env.STRIPE_CHECKOUT_SUCCESS_URL || !process.env.STRIPE_CHECKOUT_CANCEL_URL) {
-      warnings.push('STRIPE_CHECKOUT_SUCCESS_URL / STRIPE_CHECKOUT_CANCEL_URL not set — Stripe checkout will fall back to FRONTEND_URL based redirects');
+    const adaptive = process.env.STRIPE_ADAPTIVE_PRICING !== 'false';
+    const embedded = process.env.STRIPE_CHECKOUT_UI !== 'hosted'
+      && (process.env.STRIPE_CHECKOUT_UI === 'embedded' || adaptive);
+    if (embedded && !process.env.STRIPE_PUBLISHABLE_KEY) {
+      warnings.push('STRIPE_PUBLISHABLE_KEY not set — embedded checkout requires the publishable key on the frontend');
+    }
+    if (!embedded) {
+      if (!process.env.STRIPE_CHECKOUT_SUCCESS_URL || !process.env.STRIPE_CHECKOUT_CANCEL_URL) {
+        warnings.push('STRIPE_CHECKOUT_SUCCESS_URL / STRIPE_CHECKOUT_CANCEL_URL not set — hosted Stripe checkout will fall back to FRONTEND_URL based redirects');
+      }
     }
   }
 } else {
@@ -192,6 +200,7 @@ module.exports = {
   },
   STRIPE: {
     SECRET_KEY: process.env.STRIPE_SECRET_KEY || '',
+    PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY || '',
     WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || '',
     CHECKOUT_SUCCESS_URL: process.env.STRIPE_CHECKOUT_SUCCESS_URL || '',
     CHECKOUT_CANCEL_URL: process.env.STRIPE_CHECKOUT_CANCEL_URL || '',
@@ -199,5 +208,8 @@ module.exports = {
     // Set STRIPE_ADAPTIVE_PRICING=false to revert to fixed multi-currency catalog.
     ADAPTIVE_PRICING: process.env.STRIPE_ADAPTIVE_PRICING !== 'false',
     ANCHOR_CURRENCY: (process.env.STRIPE_ANCHOR_CURRENCY || 'EUR').toUpperCase(),
+    // embedded (default when adaptive) = ui_mode elements + Currency Selector on site.
+    // hosted = redirect to Stripe hosted page. Set STRIPE_CHECKOUT_UI=hosted to force.
+    CHECKOUT_UI: process.env.STRIPE_CHECKOUT_UI || 'embedded',
   },
 };

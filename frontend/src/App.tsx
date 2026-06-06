@@ -16,6 +16,8 @@ import MistakeNotebook from './pages/MistakeNotebook';
 import Pricing from './pages/Pricing';
 import Orders from './pages/Orders';
 import StripeCheckoutReturn from './pages/StripeCheckoutReturn';
+import StripeEmbeddedCheckout from './pages/StripeEmbeddedCheckout';
+import StripeCheckoutComplete from './pages/StripeCheckoutComplete';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import VerifyEmail from './pages/VerifyEmail';
@@ -69,6 +71,8 @@ export default function App() {
       <Route element={<AppLayout />}>
         <Route path="/" element={<Landing />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/checkout/stripe" element={<RequireAuth><StripeEmbeddedCheckout /></RequireAuth>} />
+        <Route path="/checkout/stripe/complete" element={<RequireAuth><StripeCheckoutComplete /></RequireAuth>} />
         <Route path="/checkout/stripe/success" element={<RequireAuth><StripeCheckoutReturn mode="success" /></RequireAuth>} />
         <Route path="/checkout/stripe/cancel" element={<RequireAuth><StripeCheckoutReturn mode="cancel" /></RequireAuth>} />
         <Route path="/login" element={<Login />} />
