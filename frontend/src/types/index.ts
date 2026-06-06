@@ -73,7 +73,7 @@ export interface OralFollowUp {
 export interface ExamSetBrief {
   id: string;
   title: string;
-  year: number;
+  year?: number | null;
   description?: string;
   isFreePreview: boolean;
   totalQuestions: number;
@@ -83,7 +83,7 @@ export interface ExamSetBrief {
 export interface ExamSetDetail {
   id: string;
   title: string;
-  year: number;
+  year?: number | null;
   description?: string;
   questions: Question[];
   audioDocuments?: AudioDocument[];
@@ -398,7 +398,7 @@ export interface MistakeItem {
   options: Array<{ id: string; label: string; text: string; isCorrect: boolean }>;
   correctAnswer: string[];
   userAnswer: string | string[];
-  examSet: { id: string; title: string; year: number };
+  examSet: { id: string; title: string; year?: number | null };
   attemptedAt: string;
 }
 

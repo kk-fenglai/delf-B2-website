@@ -2,6 +2,7 @@ const express = require('express');
 const prisma = require('../prisma');
 const { optionalAuth, requireAuth } = require('../middleware/auth');
 const { signAudioUrl } = require('../utils/audioToken');
+const { sanitizeExamTitle, sanitizeExamDescription } = require('../utils/examTitle');
 
 const router = express.Router();
 
@@ -59,7 +60,7 @@ router.get('/', optionalAuth, async (req, res, next) => {
 
     const sets = await prisma.examSet.findMany({
       where: { isPublished: true },
-      orderBy: [{ year: 'desc' }, { createdAt: 'desc' }],
+      orderBy: [{ year: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
       include: {
         questions: {
           select: { id: true, skill: true },
@@ -74,9 +75,8 @@ router.get('/', optionalAuth, async (req, res, next) => {
       }, {});
       return {
         id: s.id,
-        title: s.title,
-        year: s.year,
-        description: s.description,
+        title: sanitizeExamTitle(s.title),
+        description: sanitizeExamDescription(s.description),
         isFreePreview: s.isFreePreview,
         totalQuestions: s.questions.length,
         countsBySkill: counts,
@@ -156,9 +156,8 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
 
     res.json({
       id: set.id,
-      title: set.title,
-      year: set.year,
-      description: set.description,
+      title: sanitizeExamTitle(set.title),
+      description: sanitizeExamDescription(set.description),
       questions: safeQuestions,
       audioDocuments,
     });

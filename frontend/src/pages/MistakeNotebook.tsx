@@ -128,7 +128,7 @@ function MistakeCard({
           <Tag color="red">{t(`skill.${item.skill}`)}</Tag>
           <Tag>{item.type}</Tag>
           <Text type="secondary" className="text-xs">
-            {item.examSet.title} · {item.examSet.year}
+            {item.examSet.title}
           </Text>
         </div>
       }

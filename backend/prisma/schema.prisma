@@ -324,7 +324,7 @@ model TwoFactorToken {
 model ExamSet {
   id           String     @id @default(cuid())
   title        String
-  year         Int
+  year         Int?
   description  String?
   isPublished  Boolean    @default(true)
   isFreePreview Boolean   @default(false)

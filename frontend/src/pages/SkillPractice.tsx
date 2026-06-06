@@ -87,7 +87,7 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
                   ]}
                 >
                   <Paragraph className="text-muted mb-2">
-                    {s.description || `${t('practice.year')}: ${s.year}`}
+                    {s.description || null}
                   </Paragraph>
                   {mockMode ? (
                     <div className="flex flex-wrap gap-1">

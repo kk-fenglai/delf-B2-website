@@ -11,6 +11,7 @@ const { signAudioUrl } = require('../utils/audioToken');
 const { PLAN_CAPS } = require('../constants/planMatrix');
 const { getTrialStatusForUser, startTrial, trialConfig } = require('../services/trial');
 const { effectivePlan } = require('../middleware/requirePlan');
+const { sanitizeExamTitle } = require('../utils/examTitle');
 
 const router = express.Router();
 
@@ -124,7 +125,7 @@ router.get('/progress', requireAuth, async (req, res, next) => {
         where: { userId, completedAt: { not: null } },
         orderBy: { completedAt: 'desc' },
         take: 20,
-        include: { examSet: { select: { title: true, year: true } } },
+        include: { examSet: { select: { title: true } } },
       }),
       prisma.userAttempt.count({ where: { userId } }),
       prisma.$queryRaw`
@@ -148,8 +149,7 @@ router.get('/progress', requireAuth, async (req, res, next) => {
     res.json({
       recentSessions: sessions.map((s) => ({
         id: s.id,
-        title: s.examSet.title,
-        year: s.examSet.year,
+        title: sanitizeExamTitle(s.examSet.title),
         totalScore: s.totalScore,
         maxScore: s.maxScore,
         completedAt: s.completedAt,
@@ -237,7 +237,7 @@ async function collectLatestWrong(userId, skill) {
       question: {
         include: {
           options: true,
-          examSet: { select: { id: true, title: true, year: true } },
+          examSet: { select: { id: true, title: true } },
         },
       },
     },
@@ -297,7 +297,10 @@ router.get('/mistakes', requireAuth, async (req, res, next) => {
           .map((o) => ({ id: o.id, label: o.label, text: o.text, isCorrect: o.isCorrect })),
         correctAnswer: correctLabels,
         userAnswer: parseUserAnswer(a.answer),
-        examSet: a.question.examSet,
+        examSet: {
+          id: a.question.examSet.id,
+          title: sanitizeExamTitle(a.question.examSet.title),
+        },
         attemptedAt: a.createdAt,
       };
     });

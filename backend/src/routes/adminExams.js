@@ -6,6 +6,8 @@ const multer = require('multer');
 const { z } = require('zod');
 const prisma = require('../prisma');
 const { requireAdmin, writeAdminLog, clientIp } = require('../middleware/admin');
+const { resolveExamSetYear } = require('../utils/examSetYear');
+const { sanitizeExamTitle, sanitizeExamDescription } = require('../utils/examTitle');
 
 const router = express.Router();
 router.use(requireAdmin);
@@ -99,7 +101,7 @@ const questionSchema = z.object({
 
 const examSetSchema = z.object({
   title: z.string().min(1).max(200),
-  year: z.number().int().min(2000).max(2100),
+  year: z.number().int().min(2000).max(2100).optional().nullable(),
   description: z.string().optional().nullable(),
   isPublished: z.boolean().default(false),
   isFreePreview: z.boolean().default(false),
@@ -150,7 +152,7 @@ router.get('/', async (req, res, next) => {
 
     const sets = await prisma.examSet.findMany({
       where,
-      orderBy: [{ year: 'desc' }, { createdAt: 'desc' }],
+      orderBy: [{ year: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
       include: { questions: { select: { id: true, skill: true } } },
     });
 
@@ -281,7 +283,14 @@ router.post(
 router.post('/', async (req, res, next) => {
   try {
     const data = examSetSchema.parse(req.body);
-    const created = await prisma.examSet.create({ data });
+    const created = await prisma.examSet.create({
+      data: {
+        ...data,
+        title: sanitizeExamTitle(data.title),
+        description: data.description != null ? sanitizeExamDescription(data.description) : data.description,
+        year: resolveExamSetYear({ title: data.title, year: data.year, skills: [] }),
+      },
+    });
     await logAction(req, { action: 'EXAM_CREATE', targetType: 'EXAM', targetId: created.id });
     res.status(201).json({ set: created });
   } catch (e) { next(e); }
@@ -293,9 +302,31 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   try {
     const data = examSetSchema.partial().parse(req.body);
+    const current = await prisma.examSet.findUnique({
+      where: { id: req.params.id },
+      include: { questions: { select: { skill: true } } },
+    });
+    if (!current) return res.status(404).json({ error: 'NOT_FOUND' });
+
+    const skills = [...new Set(current.questions.map((q) => q.skill))];
+    const patch = { ...data };
+    if (data.title !== undefined) patch.title = sanitizeExamTitle(data.title);
+    if (data.description !== undefined) {
+      patch.description = data.description != null
+        ? sanitizeExamDescription(data.description)
+        : data.description;
+    }
+    if (data.title !== undefined || data.year !== undefined) {
+      patch.year = resolveExamSetYear({
+        title: patch.title ?? current.title,
+        year: data.year !== undefined ? data.year : current.year,
+        skills,
+      });
+    }
+
     const updated = await prisma.examSet.update({
       where: { id: req.params.id },
-      data,
+      data: patch,
     });
     await logAction(req, {
       action: 'EXAM_UPDATE', targetType: 'EXAM', targetId: req.params.id,
@@ -482,11 +513,14 @@ router.post('/import', async (req, res, next) => {
     }
 
     const created = await prisma.$transaction(async (tx) => {
+      const skills = [...new Set(data.questions.map((q) => q.skill))];
       const set = await tx.examSet.create({
         data: {
-          title: data.title,
-          year: data.year,
-          description: data.description || null,
+          title: sanitizeExamTitle(data.title),
+          year: resolveExamSetYear({ title: data.title, year: data.year, skills }),
+          description: data.description != null
+            ? sanitizeExamDescription(data.description)
+            : (data.description || null),
           isPublished: data.isPublished,
           isFreePreview: data.isFreePreview,
         },

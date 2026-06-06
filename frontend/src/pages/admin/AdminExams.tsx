@@ -15,7 +15,7 @@ const { Title } = Typography;
 interface ExamRow {
   id: string;
   title: string;
-  year: number;
+  year?: number | null;
   description?: string;
   isPublished: boolean;
   isFreePreview: boolean;
@@ -72,8 +72,8 @@ export default function AdminExams() {
   const createExam = async () => {
     try {
       const values = await form.validateFields();
-      // 年份已从后台界面移除：创建时用当前年份兜底（后端 year 仍为必填字段）。
-      const { data } = await adminApi.post('/exams', { ...values, year: new Date().getFullYear() });
+      // 年份可选：主题类口语题无考试年份，不再用当前年兜底。
+      const { data } = await adminApi.post('/exams', values);
       message.success('套题已创建（草稿）');
       setCreateOpen(false);
       form.resetFields();

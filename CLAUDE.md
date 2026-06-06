@@ -51,4 +51,38 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
+5. GitHub & Secrets (project-specific)
+This repo may be public on GitHub. Keep internal business docs and secrets local only.
+
+Never commit:
+
+- `.env` / credentials (already in `.gitignore`)
+- Internal docs listed in `.gitignore` under `# Internal docs`:
+  - `定价标准.md` — pricing & margin analysis
+  - `支付功能.md` — payment architecture & ops
+  - `DEPLOYMENT.md` — infra & deployment details
+  - `PLAN_subscription_overhaul.md` — internal plans
+  - `AI批改作文.md` / `AI口语.md` — product specs
+  - `PRD.md` — product requirements
+  - `注意事项.txt` — test account passwords
+
+When adding new internal-only markdown (pricing, ops, deployment, specs):
+
+1. Add the filename to `.gitignore` before creating or editing locally.
+2. Do not link it from `README.md` or other tracked docs.
+3. If a doc was accidentally committed: `git rm --cached <file>`, commit, push — files stay on disk locally.
+
+Limits:
+
+- `git rm --cached` removes files from the latest tree only; old commits still contain them. For full erasure, history rewrite (`git filter-repo` / BFG) + key rotation if secrets were exposed.
+- To hide all source code, change repo visibility to **Private** on GitHub (Settings → Danger Zone); re-authorize Vercel / Fly.io after.
+
+Public README should point to code (`backend/src/constants/pricing.js`, admin UI) instead of internal markdown for pricing/payment details.
+
+6. Exam titles (learner-visible)
+Do not put exam session year/month/region in titles shown to users (e.g. avoid `2021年3月（法国）`, `2024-01 法国场`).
+
+- Use `DELF B2 写作 · <topic>` / `DELF B2 阅读 · <topic>` / `DELF B2 口语 · <topic>`.
+- On import, `backend/src/utils/examTitle.js` (`sanitizeExamTitle`) strips date/region; apply via admin import and `scripts/stripExamTitleDates.js` for bulk fixes.
+- Public `/api/exams` does not expose `year`; keep provenance in admin-only fields or question `explanation` if needed.
 

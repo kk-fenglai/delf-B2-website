@@ -115,8 +115,8 @@ const TEMPLATE_MOCK = {
 
 const FIELD_REFERENCE = `
 顶层字段
-  title           必填，套题标题
-  year            必填，整数年份
+  title           必填，套题标题（勿写考试年月/场次，如「DELF B2 写作 · 主题名」）
+  year            可选，仅后台排序用，不会展示给学员
   description     可选，简介
   isPublished     可选，默认 false（草稿）
   isFreePreview   可选，默认 false
@@ -281,8 +281,7 @@ export default function AdminExamImport() {
     },
   };
 
-  // Sequentially import every parsed file. Dedupe by title+year against the
-  // existing sets so re-running the same batch is safe (skips, doesn't dupe).
+  // Sequentially import every parsed file. Dedupe by title (+ year when present).
   const runBatchImport = async () => {
     const targets = batchItems.filter((it) => it.status === 'ready' || it.status === 'error');
     if (targets.length === 0) {
@@ -294,15 +293,15 @@ export default function AdminExamImport() {
       let existingKeys = new Set<string>();
       try {
         const { data } = await adminApi.get('/exams');
-        existingKeys = new Set((data.sets || []).map((s: any) => `${s.title}|${s.year}`));
+        existingKeys = new Set((data.sets || []).map((s: any) => `${s.title}|${s.year ?? ''}`));
       } catch {
         message.warning('无法获取已有套题列表，本次跳过去重检查');
       }
 
       for (const it of targets) {
-        const key = `${it.parsed?.title}|${it.parsed?.year}`;
+        const key = `${it.parsed?.title}|${it.parsed?.year ?? ''}`;
         if (existingKeys.has(key)) {
-          updateItem(it.uid, { status: 'skipped', message: '同名+同年份已存在，已跳过' });
+          updateItem(it.uid, { status: 'skipped', message: '同名套题已存在，已跳过' });
           continue;
         }
         updateItem(it.uid, { status: 'importing', message: undefined });

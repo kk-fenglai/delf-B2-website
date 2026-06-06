@@ -11,6 +11,8 @@
 const path = require('path');
 const fs = require('fs');
 const prisma = require('../src/prisma');
+const { resolveExamSetYear } = require('../src/utils/examSetYear');
+const { sanitizeExamTitle, sanitizeExamDescription } = require('../src/utils/examTitle');
 
 const outDir = path.join(__dirname, '..', 'content', 'oral-sets');
 
@@ -27,7 +29,12 @@ async function importOne(filePath, { freePreview = false } = {}) {
   assert(q.skill === 'PO' && q.type === 'SPEAKING', `${filePath}: expected one PO SPEAKING question`);
   assert(Array.isArray(q.followUps) && q.followUps.length >= 1, `${filePath}: followUps required`);
 
-  const existing = await prisma.examSet.findFirst({ where: { title: data.title } });
+  const existing = await prisma.examSet.findFirst({ where: { title: sanitizeExamTitle(data.title) } });
+
+  const skills = ['PO'];
+  const cleanTitle = sanitizeExamTitle(data.title);
+  const cleanDesc = data.description != null ? sanitizeExamDescription(data.description) : null;
+  const resolvedYear = resolveExamSetYear({ title: data.title, year: data.year, skills });
 
   if (existing) {
     await prisma.questionOption.deleteMany({
@@ -40,8 +47,8 @@ async function importOne(filePath, { freePreview = false } = {}) {
     await prisma.examSet.update({
       where: { id: existing.id },
       data: {
-        year: data.year || new Date().getFullYear(),
-        description: data.description || null,
+        year: resolvedYear,
+        description: cleanDesc,
         isPublished: true,
         isFreePreview: freePreview || !!data.isFreePreview,
       },
@@ -50,9 +57,9 @@ async function importOne(filePath, { freePreview = false } = {}) {
 
   const examSet = existing || await prisma.examSet.create({
     data: {
-      title: data.title,
-      year: data.year || new Date().getFullYear(),
-      description: data.description || null,
+      title: cleanTitle,
+      year: resolvedYear,
+      description: cleanDesc,
       isPublished: true,
       isFreePreview: freePreview || !!data.isFreePreview,
     },
