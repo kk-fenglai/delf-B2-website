@@ -10,6 +10,7 @@
 // followed by 4-8s of LLM grading, and STT calls can be RAM-heavy when the
 // audio file is read off disk into a stream.
 
+const fs = require('fs');
 const path = require('path');
 const prisma = require('../prisma');
 const { logger } = require('../utils/logger');
@@ -38,7 +39,7 @@ let tickTimer = null;
 // Transient: keep the row queued for another pass.
 // Terminal: mark error, surface to user.
 const TRANSIENT_AI_CODES = new Set(['AI_RATE_LIMITED', 'AI_PROVIDER_DOWN', 'AI_CALL_FAILED']);
-const TRANSIENT_STT_CODES = new Set(['STT_RATE_LIMITED', 'STT_PROVIDER_DOWN', 'STT_CALL_FAILED']);
+const TRANSIENT_STT_CODES = new Set(['STT_RATE_LIMITED', 'STT_PROVIDER_DOWN', 'STT_CALL_FAILED', 'STT_FILE_MISSING']);
 
 async function claimOne() {
   const candidate = await prisma.oral.findFirst({
@@ -100,6 +101,11 @@ async function transcribePending(oralRow) {
     if (!abs.startsWith(RECORDINGS_DIR)) {
       const e = new Error(`Audio path outside recordings dir: ${rec.audioPath}`);
       e.code = 'STT_BAD_AUDIO';
+      throw e;
+    }
+    if (!fs.existsSync(abs)) {
+      const e = new Error(`Audio file not found on this server: ${rec.audioPath}`);
+      e.code = 'STT_FILE_MISSING';
       throw e;
     }
   }

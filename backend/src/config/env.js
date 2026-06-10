@@ -64,6 +64,19 @@ if (ENABLE_ORAL_AI && !process.env.DEEPSEEK_API_KEY) {
   errors.push('Oral AI grading requires DEEPSEEK_API_KEY');
 }
 
+// Background workers (essay/oral queues, payment reconcile). Default ON in
+// production, OFF in dev — prevents a local `npm run dev` from stealing
+// queued jobs that belong to Fly.io (recordings live on the server's disk).
+const RUN_BG_WORKERS = process.env.RUN_BG_WORKERS != null
+  ? process.env.RUN_BG_WORKERS === 'true'
+  : IS_PROD;
+if (!IS_PROD && RUN_BG_WORKERS) {
+  warnings.push('RUN_BG_WORKERS=true in development — oral/essay queues will compete with production if DATABASE_URL is shared');
+}
+if (!IS_PROD && !RUN_BG_WORKERS) {
+  warnings.push('RUN_BG_WORKERS=false — essay/oral grading queues disabled locally (use production or set RUN_BG_WORKERS=true)');
+}
+
 // Hard-block boilerplate placeholder secrets from .env.example
 const placeholderMatchers = [/^change_?me/i, /xxx+/i];
 ['JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET'].forEach((k) => {
@@ -175,6 +188,7 @@ module.exports = {
   DASHSCOPE_BASE_URL: process.env.DASHSCOPE_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1',
   OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
   ENABLE_ORAL_AI,
+  RUN_BG_WORKERS,
 
   // Payments
   WECHAT_CONFIGURED,

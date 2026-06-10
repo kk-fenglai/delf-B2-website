@@ -187,21 +187,17 @@ app.use(errorHandler);
 
 const server = app.listen(env.PORT, () => {
   logger.info({ port: env.PORT, env: env.NODE_ENV }, 'DELFluent backend started');
-  // Kick off the AI essay grader worker. Missing DEEPSEEK_API_KEY is tolerated
-  // in dev (env.js only warns): worker will try to claim rows, aiGrader will
-  // throw AI_NOT_CONFIGURED, the queue will mark them 'error' with a clear
-  // message. Production startup already failed in env.js if key was missing.
-  essayQueue.startWorker().catch((err) => {
-    logger.error({ err }, 'essayQueue.startWorker.fail');
-  });
-  // Oral worker: Whisper STT + DeepSeek grading for Production Orale rows.
-  oralQueue.startWorker().catch((err) => {
-    logger.error({ err }, 'oralQueue.startWorker.fail');
-  });
-  // Payment reconcile worker: close expired PENDING orders + recover orders
-  // that paid on the channel side but whose notify we never received. Runs
-  // in-process; for multi-instance deploys replace with a dedicated cron.
-  reconcile.startWorker();
+  if (env.RUN_BG_WORKERS) {
+    essayQueue.startWorker().catch((err) => {
+      logger.error({ err }, 'essayQueue.startWorker.fail');
+    });
+    oralQueue.startWorker().catch((err) => {
+      logger.error({ err }, 'oralQueue.startWorker.fail');
+    });
+    reconcile.startWorker();
+  } else {
+    logger.info('RUN_BG_WORKERS=false — essay/oral/reconcile workers not started');
+  }
 });
 
 // --- Graceful shutdown ---
@@ -213,15 +209,14 @@ function shutdown(signal) {
   // Stop accepting new connections.
   server.close(async (err) => {
     if (err) logger.error({ err }, 'error while closing http server');
-    // Let in-flight AI grading finish (or time out at 12s) before tearing
-    // down the DB connection — otherwise prisma.update in processOne would
-    // race with prisma.disconnect.
-    await essayQueue.drain({ timeoutMs: 12000 }).catch((e) => {
-      logger.error({ err: e }, 'essayQueue.drain.fail');
-    });
-    await oralQueue.drain({ timeoutMs: 15000 }).catch((e) => {
-      logger.error({ err: e }, 'oralQueue.drain.fail');
-    });
+    if (env.RUN_BG_WORKERS) {
+      await essayQueue.drain({ timeoutMs: 12000 }).catch((e) => {
+        logger.error({ err: e }, 'essayQueue.drain.fail');
+      });
+      await oralQueue.drain({ timeoutMs: 15000 }).catch((e) => {
+        logger.error({ err: e }, 'oralQueue.drain.fail');
+      });
+    }
     await reconcile.stopWorker().catch((e) => {
       logger.error({ err: e }, 'reconcile.stopWorker.fail');
     });

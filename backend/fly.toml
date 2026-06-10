@@ -11,6 +11,10 @@ primary_region = "sin"
 [env]
   NODE_ENV = "production"
   PORT = "4000"
+  # Run the in-process essay/oral grading + payment-reconcile workers on this
+  # (single, always-on) machine. Without this the queues never drain — essays
+  # sit at status='queued' forever and the UI shows the "service busy" warning.
+  RUN_BG_WORKERS = "true"
 
 [http_service]
   internal_port = 4000
@@ -36,3 +40,8 @@ primary_region = "sin"
   # Apply Postgres migrations before the new release replaces the running
   # machine. Safe because Prisma migrations are forward-only and idempotent.
   release_command = "npx prisma migrate deploy"
+
+# Persist user oral recordings across deploys (ephemeral root fs otherwise).
+[mounts]
+  source = "recordings_data"
+  destination = "/app/content/recordings"
