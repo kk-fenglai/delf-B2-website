@@ -8,6 +8,7 @@
 
 const { verifyAccessToken } = require('../utils/jwt');
 const prisma = require('../prisma');
+const { effectivePlan } = require('./requirePlan');
 
 // Paths that a logged-in but email-unverified user can still hit. Keep tight.
 const EMAIL_UNVERIFIED_ALLOW = new Set([
@@ -62,7 +63,10 @@ async function requireAuth(req, res, next) {
 
     req.user = user;
     req.userId = user.id;
-    req.userPlan = user.plan;
+    // Use the effective plan (honours subscriptionEnd) so exams.js / sessions.js
+    // gate the same way /api/user/me echoes and requirePlan() enforces. A paid
+    // plan with a null/expired end resolves to FREE here too — no split brain.
+    req.userPlan = effectivePlan(user);
     req.impersonatedBy = decoded.impersonatedBy || null;
     next();
   } catch (e) {
@@ -87,7 +91,7 @@ async function optionalAuth(req, _res, next) {
     const { user, decoded } = await loadUserForToken(token);
     req.user = user;
     req.userId = user.id;
-    req.userPlan = user.plan;
+    req.userPlan = effectivePlan(user);
     req.impersonatedBy = decoded.impersonatedBy || null;
   } catch { /* ignore */ }
   next();

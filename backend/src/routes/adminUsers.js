@@ -187,10 +187,21 @@ router.post('/:id/change-plan', async (req, res, next) => {
     if (!before) return res.status(404).json({ error: 'User not found' });
 
     let newEnd = before.subscriptionEnd;
-    if (months > 0) {
+    if (plan === 'FREE') {
+      // Downgrading clears the paid window so effectivePlan() agrees (a stale
+      // future end on a FREE row would be confusing, though harmless).
+      newEnd = null;
+    } else if (months > 0) {
       const base = (before.subscriptionEnd && before.subscriptionEnd > new Date())
         ? before.subscriptionEnd : new Date();
       newEnd = new Date(base.getTime() + months * 30 * 24 * 3600 * 1000);
+    } else if (!newEnd || newEnd <= new Date()) {
+      // Paid plan with no duration and no live end date would resolve to FREE
+      // via effectivePlan() — refuse rather than silently grant a broken plan.
+      return res.status(400).json({
+        error: '设置付费套餐需指定有效时长（months > 0），否则到期日为空会被视为未订阅（FREE）',
+        code: 'PAID_PLAN_NEEDS_DURATION',
+      });
     }
 
     const updated = await prisma.user.update({
