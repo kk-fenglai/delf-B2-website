@@ -1,0 +1,176 @@
+{
+  "title": "DELF B2 听力 · 短听力：仿生学（biomimétisme）",
+  "year": 2023,
+  "description": "短听力专项（EXERCICE 2，7 分）。主题：le biomimétisme（仿生学 / 模仿自然进行技术创新，France Info 环境专栏）。来源：DELF B2 旧题型短听力真题（OCR 转录补全）。共 7 题。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CO",
+      "type": "FILL",
+      "order": 1,
+      "prompt": "D'après le journaliste, quelle est la double fonction de la loi sur la biodiversité ?",
+      "passage": "Journaliste : C'est ma planète maintenant, la chronique environnement de France Info avec vous, Anne-Laure Barral. Avec la loi sur la biodiversité, il ne s'agit pas seulement de protéger les petites fleurs et les oiseaux mais aussi nos innovations technologiques de demain. Anne-Laure, expliquez-nous ça.\nAnne-Laure Barral : Je suis sûre que vous avez déjà entendu parler de la bardane, cette plante qui s'accroche à votre pull quand vous passez dans des buissons, et bien c'est en l'étudiant que des chercheurs ont mis au point la bande Velcro. Le tissu des parachutes aussi qui sont plus résistants grâce à la toile des araignées. C'est ce que l'on appelle le biomimétisme : imiter la nature pour trouver une solution à nos problèmes d'aujourd'hui. Et les exemples ne manquent pas : la nature a tout inventé. Le vol des oiseaux pour améliorer la portance des avions. Le nez du Shinkansen, le train japonais inspiré du martin-pêcheur. L'eau qui coule sur la feuille de lotus intéresse beaucoup par exemple Saint-Gobain, qui se demande si on ne peut pas inventer des parebrises qui n'auraient plus besoin d'essuie-glaces, par exemple. Le chant nuptial des crapauds les soirs de printemps vous paraît une incroyable cacophonie, mais pour certains chercheurs, cela pourrait améliorer les ondes wifi si on arrivait à les reproduire.\nJ : Et d'ailleurs, un centre européen en biomimétisme vient d'ouvrir ses portes à Senlis, dans l'Oise. À quoi ça ressemble ?\nALB : Eh bien, c'est une sorte de campus où les ingénieurs en recherche et développement de nombreuses entreprises peuvent venir se former et échanger sur leurs découvertes. On sait aussi, en connaissant mieux certaines plantes ou certains vers marins, que l'on pourrait trouver les médicaments du futur, capables de soigner le cancer. Des primatologues étudient aussi les gestes des grands singes qui utilisent des plantes, soit en les mangeant, soit en se frottant la peau avec. Ces pratiques pourraient nous aider à mieux cicatriser ou à éviter l'attaque de certains parasites. L'idée du centre est aussi de passer un message de protection de la nature pour ne pas perdre nos innovations de demain.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2023-11-cn.m4a",
+      "explanation": "参考答案（官方 1 分）：既保护环境（自然、花草鸟类），也保护我们未来的技术创新（protéger l'environnement et favoriser / préserver les innovations technologiques de demain）。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 2,
+      "prompt": "D'après le reportage, l'étude de la toile des araignées a permis de rendre le tissu des parachutes plus...",
+      "passage": "Journaliste : C'est ma planète maintenant, la chronique environnement de France Info avec vous, Anne-Laure Barral. Avec la loi sur la biodiversité, il ne s'agit pas seulement de protéger les petites fleurs et les oiseaux mais aussi nos innovations technologiques de demain. Anne-Laure, expliquez-nous ça.\nAnne-Laure Barral : Je suis sûre que vous avez déjà entendu parler de la bardane, cette plante qui s'accroche à votre pull quand vous passez dans des buissons, et bien c'est en l'étudiant que des chercheurs ont mis au point la bande Velcro. Le tissu des parachutes aussi qui sont plus résistants grâce à la toile des araignées. C'est ce que l'on appelle le biomimétisme : imiter la nature pour trouver une solution à nos problèmes d'aujourd'hui. Et les exemples ne manquent pas : la nature a tout inventé. Le vol des oiseaux pour améliorer la portance des avions. Le nez du Shinkansen, le train japonais inspiré du martin-pêcheur. L'eau qui coule sur la feuille de lotus intéresse beaucoup par exemple Saint-Gobain, qui se demande si on ne peut pas inventer des parebrises qui n'auraient plus besoin d'essuie-glaces, par exemple. Le chant nuptial des crapauds les soirs de printemps vous paraît une incroyable cacophonie, mais pour certains chercheurs, cela pourrait améliorer les ondes wifi si on arrivait à les reproduire.\nJ : Et d'ailleurs, un centre européen en biomimétisme vient d'ouvrir ses portes à Senlis, dans l'Oise. À quoi ça ressemble ?\nALB : Eh bien, c'est une sorte de campus où les ingénieurs en recherche et développement de nombreuses entreprises peuvent venir se former et échanger sur leurs découvertes. On sait aussi, en connaissant mieux certaines plantes ou certains vers marins, que l'on pourrait trouver les médicaments du futur, capables de soigner le cancer. Des primatologues étudient aussi les gestes des grands singes qui utilisent des plantes, soit en les mangeant, soit en se frottant la peau avec. Ces pratiques pourraient nous aider à mieux cicatriser ou à éviter l'attaque de certains parasites. L'idée du centre est aussi de passer un message de protection de la nature pour ne pas perdre nos innovations de demain.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2023-11-cn.m4a",
+      "explanation": "正确答案：A（官方 1 分）。「Le tissu des parachutes... plus résistants grâce à la toile des araignées」——蜘蛛丝研究让降落伞布料更结实（solide / résistant）。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "solide.",
+          "order": 0,
+          "isCorrect": true
+        },
+        {
+          "label": "B",
+          "text": "esthétique.",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "imperméable.",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "FILL",
+      "order": 3,
+      "prompt": "Selon la journaliste, qu'est-ce que le biomimétisme ?",
+      "passage": "Journaliste : C'est ma planète maintenant, la chronique environnement de France Info avec vous, Anne-Laure Barral. Avec la loi sur la biodiversité, il ne s'agit pas seulement de protéger les petites fleurs et les oiseaux mais aussi nos innovations technologiques de demain. Anne-Laure, expliquez-nous ça.\nAnne-Laure Barral : Je suis sûre que vous avez déjà entendu parler de la bardane, cette plante qui s'accroche à votre pull quand vous passez dans des buissons, et bien c'est en l'étudiant que des chercheurs ont mis au point la bande Velcro. Le tissu des parachutes aussi qui sont plus résistants grâce à la toile des araignées. C'est ce que l'on appelle le biomimétisme : imiter la nature pour trouver une solution à nos problèmes d'aujourd'hui. Et les exemples ne manquent pas : la nature a tout inventé. Le vol des oiseaux pour améliorer la portance des avions. Le nez du Shinkansen, le train japonais inspiré du martin-pêcheur. L'eau qui coule sur la feuille de lotus intéresse beaucoup par exemple Saint-Gobain, qui se demande si on ne peut pas inventer des parebrises qui n'auraient plus besoin d'essuie-glaces, par exemple. Le chant nuptial des crapauds les soirs de printemps vous paraît une incroyable cacophonie, mais pour certains chercheurs, cela pourrait améliorer les ondes wifi si on arrivait à les reproduire.\nJ : Et d'ailleurs, un centre européen en biomimétisme vient d'ouvrir ses portes à Senlis, dans l'Oise. À quoi ça ressemble ?\nALB : Eh bien, c'est une sorte de campus où les ingénieurs en recherche et développement de nombreuses entreprises peuvent venir se former et échanger sur leurs découvertes. On sait aussi, en connaissant mieux certaines plantes ou certains vers marins, que l'on pourrait trouver les médicaments du futur, capables de soigner le cancer. Des primatologues étudient aussi les gestes des grands singes qui utilisent des plantes, soit en les mangeant, soit en se frottant la peau avec. Ces pratiques pourraient nous aider à mieux cicatriser ou à éviter l'attaque de certains parasites. L'idée du centre est aussi de passer un message de protection de la nature pour ne pas perdre nos innovations de demain.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2023-11-cn.m4a",
+      "explanation": "参考答案（官方 1 分）：模仿自然来为我们当下的问题寻找解决方案（s'inspirer de / imiter la nature pour trouver des solutions à nos problèmes）。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 4,
+      "prompt": "D'après le reportage, le train japonais doit... à un animal.",
+      "passage": "Journaliste : C'est ma planète maintenant, la chronique environnement de France Info avec vous, Anne-Laure Barral. Avec la loi sur la biodiversité, il ne s'agit pas seulement de protéger les petites fleurs et les oiseaux mais aussi nos innovations technologiques de demain. Anne-Laure, expliquez-nous ça.\nAnne-Laure Barral : Je suis sûre que vous avez déjà entendu parler de la bardane, cette plante qui s'accroche à votre pull quand vous passez dans des buissons, et bien c'est en l'étudiant que des chercheurs ont mis au point la bande Velcro. Le tissu des parachutes aussi qui sont plus résistants grâce à la toile des araignées. C'est ce que l'on appelle le biomimétisme : imiter la nature pour trouver une solution à nos problèmes d'aujourd'hui. Et les exemples ne manquent pas : la nature a tout inventé. Le vol des oiseaux pour améliorer la portance des avions. Le nez du Shinkansen, le train japonais inspiré du martin-pêcheur. L'eau qui coule sur la feuille de lotus intéresse beaucoup par exemple Saint-Gobain, qui se demande si on ne peut pas inventer des parebrises qui n'auraient plus besoin d'essuie-glaces, par exemple. Le chant nuptial des crapauds les soirs de printemps vous paraît une incroyable cacophonie, mais pour certains chercheurs, cela pourrait améliorer les ondes wifi si on arrivait à les reproduire.\nJ : Et d'ailleurs, un centre européen en biomimétisme vient d'ouvrir ses portes à Senlis, dans l'Oise. À quoi ça ressemble ?\nALB : Eh bien, c'est une sorte de campus où les ingénieurs en recherche et développement de nombreuses entreprises peuvent venir se former et échanger sur leurs découvertes. On sait aussi, en connaissant mieux certaines plantes ou certains vers marins, que l'on pourrait trouver les médicaments du futur, capables de soigner le cancer. Des primatologues étudient aussi les gestes des grands singes qui utilisent des plantes, soit en les mangeant, soit en se frottant la peau avec. Ces pratiques pourraient nous aider à mieux cicatriser ou à éviter l'attaque de certains parasites. L'idée du centre est aussi de passer un message de protection de la nature pour ne pas perdre nos innovations de demain.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2023-11-cn.m4a",
+      "explanation": "正确答案：B（官方 1 分）。「Le nez du Shinkansen... inspiré du martin-pêcheur」——新干线的车头形状（sa forme）取自翠鸟。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "son nom",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "sa forme",
+          "order": 1,
+          "isCorrect": true
+        },
+        {
+          "label": "C",
+          "text": "sa couleur",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 5,
+      "prompt": "Le Centre européen en biomimétisme a principalement pour vocation de...",
+      "passage": "Journaliste : C'est ma planète maintenant, la chronique environnement de France Info avec vous, Anne-Laure Barral. Avec la loi sur la biodiversité, il ne s'agit pas seulement de protéger les petites fleurs et les oiseaux mais aussi nos innovations technologiques de demain. Anne-Laure, expliquez-nous ça.\nAnne-Laure Barral : Je suis sûre que vous avez déjà entendu parler de la bardane, cette plante qui s'accroche à votre pull quand vous passez dans des buissons, et bien c'est en l'étudiant que des chercheurs ont mis au point la bande Velcro. Le tissu des parachutes aussi qui sont plus résistants grâce à la toile des araignées. C'est ce que l'on appelle le biomimétisme : imiter la nature pour trouver une solution à nos problèmes d'aujourd'hui. Et les exemples ne manquent pas : la nature a tout inventé. Le vol des oiseaux pour améliorer la portance des avions. Le nez du Shinkansen, le train japonais inspiré du martin-pêcheur. L'eau qui coule sur la feuille de lotus intéresse beaucoup par exemple Saint-Gobain, qui se demande si on ne peut pas inventer des parebrises qui n'auraient plus besoin d'essuie-glaces, par exemple. Le chant nuptial des crapauds les soirs de printemps vous paraît une incroyable cacophonie, mais pour certains chercheurs, cela pourrait améliorer les ondes wifi si on arrivait à les reproduire.\nJ : Et d'ailleurs, un centre européen en biomimétisme vient d'ouvrir ses portes à Senlis, dans l'Oise. À quoi ça ressemble ?\nALB : Eh bien, c'est une sorte de campus où les ingénieurs en recherche et développement de nombreuses entreprises peuvent venir se former et échanger sur leurs découvertes. On sait aussi, en connaissant mieux certaines plantes ou certains vers marins, que l'on pourrait trouver les médicaments du futur, capables de soigner le cancer. Des primatologues étudient aussi les gestes des grands singes qui utilisent des plantes, soit en les mangeant, soit en se frottant la peau avec. Ces pratiques pourraient nous aider à mieux cicatriser ou à éviter l'attaque de certains parasites. L'idée du centre est aussi de passer un message de protection de la nature pour ne pas perdre nos innovations de demain.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2023-11-cn.m4a",
+      "explanation": "正确答案：A（官方 1 分）。「un campus où les ingénieurs en recherche et développement... peuvent venir se former et échanger」——主要是培训工程师。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "former des ingénieurs.",
+          "order": 0,
+          "isCorrect": true
+        },
+        {
+          "label": "B",
+          "text": "faire de nouvelles découvertes.",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "faire découvrir les recherches au public.",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 6,
+      "prompt": "D'après le reportage, certaines études peuvent aider les scientifiques à trouver des solutions pour...",
+      "passage": "Journaliste : C'est ma planète maintenant, la chronique environnement de France Info avec vous, Anne-Laure Barral. Avec la loi sur la biodiversité, il ne s'agit pas seulement de protéger les petites fleurs et les oiseaux mais aussi nos innovations technologiques de demain. Anne-Laure, expliquez-nous ça.\nAnne-Laure Barral : Je suis sûre que vous avez déjà entendu parler de la bardane, cette plante qui s'accroche à votre pull quand vous passez dans des buissons, et bien c'est en l'étudiant que des chercheurs ont mis au point la bande Velcro. Le tissu des parachutes aussi qui sont plus résistants grâce à la toile des araignées. C'est ce que l'on appelle le biomimétisme : imiter la nature pour trouver une solution à nos problèmes d'aujourd'hui. Et les exemples ne manquent pas : la nature a tout inventé. Le vol des oiseaux pour améliorer la portance des avions. Le nez du Shinkansen, le train japonais inspiré du martin-pêcheur. L'eau qui coule sur la feuille de lotus intéresse beaucoup par exemple Saint-Gobain, qui se demande si on ne peut pas inventer des parebrises qui n'auraient plus besoin d'essuie-glaces, par exemple. Le chant nuptial des crapauds les soirs de printemps vous paraît une incroyable cacophonie, mais pour certains chercheurs, cela pourrait améliorer les ondes wifi si on arrivait à les reproduire.\nJ : Et d'ailleurs, un centre européen en biomimétisme vient d'ouvrir ses portes à Senlis, dans l'Oise. À quoi ça ressemble ?\nALB : Eh bien, c'est une sorte de campus où les ingénieurs en recherche et développement de nombreuses entreprises peuvent venir se former et échanger sur leurs découvertes. On sait aussi, en connaissant mieux certaines plantes ou certains vers marins, que l'on pourrait trouver les médicaments du futur, capables de soigner le cancer. Des primatologues étudient aussi les gestes des grands singes qui utilisent des plantes, soit en les mangeant, soit en se frottant la peau avec. Ces pratiques pourraient nous aider à mieux cicatriser ou à éviter l'attaque de certains parasites. L'idée du centre est aussi de passer un message de protection de la nature pour ne pas perdre nos innovations de demain.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2023-11-cn.m4a",
+      "explanation": "正确答案：A（官方 1 分）。「on pourrait trouver les médicaments du futur, capables de soigner le cancer」——有助于治疗疾病。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "guérir des maladies.",
+          "order": 0,
+          "isCorrect": true
+        },
+        {
+          "label": "B",
+          "text": "lutter contre la pollution.",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "prévenir les problèmes de peau.",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "FILL",
+      "order": 7,
+      "prompt": "D'après la journaliste, pourquoi les scientifiques observent-ils les grands singes ?",
+      "passage": "Journaliste : C'est ma planète maintenant, la chronique environnement de France Info avec vous, Anne-Laure Barral. Avec la loi sur la biodiversité, il ne s'agit pas seulement de protéger les petites fleurs et les oiseaux mais aussi nos innovations technologiques de demain. Anne-Laure, expliquez-nous ça.\nAnne-Laure Barral : Je suis sûre que vous avez déjà entendu parler de la bardane, cette plante qui s'accroche à votre pull quand vous passez dans des buissons, et bien c'est en l'étudiant que des chercheurs ont mis au point la bande Velcro. Le tissu des parachutes aussi qui sont plus résistants grâce à la toile des araignées. C'est ce que l'on appelle le biomimétisme : imiter la nature pour trouver une solution à nos problèmes d'aujourd'hui. Et les exemples ne manquent pas : la nature a tout inventé. Le vol des oiseaux pour améliorer la portance des avions. Le nez du Shinkansen, le train japonais inspiré du martin-pêcheur. L'eau qui coule sur la feuille de lotus intéresse beaucoup par exemple Saint-Gobain, qui se demande si on ne peut pas inventer des parebrises qui n'auraient plus besoin d'essuie-glaces, par exemple. Le chant nuptial des crapauds les soirs de printemps vous paraît une incroyable cacophonie, mais pour certains chercheurs, cela pourrait améliorer les ondes wifi si on arrivait à les reproduire.\nJ : Et d'ailleurs, un centre européen en biomimétisme vient d'ouvrir ses portes à Senlis, dans l'Oise. À quoi ça ressemble ?\nALB : Eh bien, c'est une sorte de campus où les ingénieurs en recherche et développement de nombreuses entreprises peuvent venir se former et échanger sur leurs découvertes. On sait aussi, en connaissant mieux certaines plantes ou certains vers marins, que l'on pourrait trouver les médicaments du futur, capables de soigner le cancer. Des primatologues étudient aussi les gestes des grands singes qui utilisent des plantes, soit en les mangeant, soit en se frottant la peau avec. Ces pratiques pourraient nous aider à mieux cicatriser ou à éviter l'attaque de certains parasites. L'idée du centre est aussi de passer un message de protection de la nature pour ne pas perdre nos innovations de demain.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2023-11-cn.m4a",
+      "explanation": "参考答案（官方 1 分）：因为大猩猩使用植物（食用或涂抹皮肤）的做法可能帮助人类更好地愈合伤口、抵御寄生虫（leurs pratiques pourraient aider l'homme à mieux cicatriser / à éviter certains parasites）。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [],
+      "followUps": []
+    }
+  ]
+}

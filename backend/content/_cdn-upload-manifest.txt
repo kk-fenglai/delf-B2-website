@@ -1,0 +1,18 @@
+# 待上传到 CDN 的听力录音清单
+# 本地源目录: backend/content/fei-samples/
+# 目标对象键(建议): co/<文件名>
+# 上传后最终 URL = <CDN_BASE>/co/<文件名>
+
+本地文件 (fei-samples/)                  大小KB  -> CDN对象键
+long-2021-05-cn.m4a                  3982  -> co/long-2021-05-cn.m4a
+long-2021-11-cn.m4a                  3804  -> co/long-2021-11-cn.m4a
+long-2022-03-cn.mp3                  5608  -> co/long-2022-03-cn.mp3
+long-2023-11-cn.m4a                  5795  -> co/long-2023-11-cn.m4a
+long-2024-03-fr.m4a                  3820  -> co/long-2024-03-fr.m4a
+new-format-01.m4a                   16575  -> co/new-format-01.m4a
+short-2021-11-cn.m4a                 1437  -> co/short-2021-11-cn.m4a
+short-2022-03-cn.m4a                 1372  -> co/short-2022-03-cn.m4a
+short-2023-11-cn.m4a                 1303  -> co/short-2023-11-cn.m4a
+short-2024-01-fr.m4a                 1274  -> co/short-2024-01-fr.m4a
+
+合计 10 个文件, 约 43 MB

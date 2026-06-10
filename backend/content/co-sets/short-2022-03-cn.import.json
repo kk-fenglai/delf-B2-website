@@ -1,0 +1,214 @@
+{
+  "title": "DELF B2 听力 · 短听力：志愿服务（bénévolat）",
+  "year": 2022,
+  "description": "短听力专项（EXERCICE 2，7 分）。主题：le bénévolat（志愿服务,巴黎市政厅 speed-dating 与红十字会）。来源：DELF B2 旧题型短听力真题（OCR 转录补全）。共 7 题。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Ce reportage a lieu dans le contexte d'une mobilisation...",
+      "passage": "Le présentateur : Il est 6 h 16, Grand Angle sur la journée mondiale du bénévolat. Ce sera demain, mais dès hier à Paris, la mairie a organisé un speed-dating pour permettre aux apprentis-bénévoles de rencontrer les associations. Le bénévolat, 14 millions de Français s'en préoccupent, répartis dans 1 million d'associations. Le speed-dating hier dans les locaux de l'Hôtel de ville de Paris, rencontre entre une vingtaine d'associations et 150 candidats bénévoles. Le reportage de Philippe Randet.\nLoïc, représentant de la Croix-Rouge : Ce que vous pouvez faire c'est nous laisser vos coordonnées...\nLe journaliste : D'un côté Loïc, 23 ans, il est un des représentants de la Croix-Rouge française. Face à lui : Maude, 37 ans. Entre eux il n'aura suffi que de quelques minutes : Maude rejoindra la Croix-Rouge. Loïc lui est admiratif de sa démarche.\nLoïc, représentant de la Croix-Rouge : Je crois que c'est la chose la plus dure à faire : aller à la rencontre de l'association et se dire « bon ben tiens, voilà, j'essaye, j'y vais, je pousse la porte ». Il y a une petite phrase comme ça, c'est « la Croix-Rouge, on ne sait pas trop pourquoi on y rentre, mais on sait pourquoi on y reste ».\nLe journaliste : Loïc rappellera Maude dans quelques jours pour organiser la première maraude, et la jeune femme est déjà impatiente.\nMaude, bénévole : Pour moi c'est une évidence. Si on a un tout petit peu de jugeote, la solidarité est à mon avis une base nécessaire de toute vie en société.\nLe journaliste : La France est un des pays-phares en termes d'associations, avec plus d'un million de structures. Et si le profil-type du bénévole est un retraité de classe moyenne, les jeunes sont de plus en plus nombreux. Élisabeth Pacaud est la présidente de France Bénévolat Paris.\nÉlisabeth Pacaud : Les bénévoles, on dit, c'est tous des vieux, c'est pas vrai ! Il y en a quand même 2 sur 5 qui ont moins de 50 ans. Simplement, ce qui a évolué beaucoup c'est que les bénévoles d'autrefois qui venaient plus par leur parti politique, par leur religion, etc., étaient certainement plus malléables, j'ai envie de dire ; tandis que les bénévoles d'aujourd'hui, ils veulent que ça marche et si ça marche pas : ils s'en vont. On est plus bénévole par choix personnel, je pense.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2022-03-cn.m4a",
+      "explanation": "正确答案：C（官方 1 分）。「la journée mondiale du bénévolat」——世界志愿者日,属国际性活动。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "régionale.",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "nationale.",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "internationale.",
+          "order": 2,
+          "isCorrect": true
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 2,
+      "prompt": "Le journaliste aborde le thème du bénévolat à l'occasion...",
+      "passage": "Le présentateur : Il est 6 h 16, Grand Angle sur la journée mondiale du bénévolat. Ce sera demain, mais dès hier à Paris, la mairie a organisé un speed-dating pour permettre aux apprentis-bénévoles de rencontrer les associations. Le bénévolat, 14 millions de Français s'en préoccupent, répartis dans 1 million d'associations. Le speed-dating hier dans les locaux de l'Hôtel de ville de Paris, rencontre entre une vingtaine d'associations et 150 candidats bénévoles. Le reportage de Philippe Randet.\nLoïc, représentant de la Croix-Rouge : Ce que vous pouvez faire c'est nous laisser vos coordonnées...\nLe journaliste : D'un côté Loïc, 23 ans, il est un des représentants de la Croix-Rouge française. Face à lui : Maude, 37 ans. Entre eux il n'aura suffi que de quelques minutes : Maude rejoindra la Croix-Rouge. Loïc lui est admiratif de sa démarche.\nLoïc, représentant de la Croix-Rouge : Je crois que c'est la chose la plus dure à faire : aller à la rencontre de l'association et se dire « bon ben tiens, voilà, j'essaye, j'y vais, je pousse la porte ». Il y a une petite phrase comme ça, c'est « la Croix-Rouge, on ne sait pas trop pourquoi on y rentre, mais on sait pourquoi on y reste ».\nLe journaliste : Loïc rappellera Maude dans quelques jours pour organiser la première maraude, et la jeune femme est déjà impatiente.\nMaude, bénévole : Pour moi c'est une évidence. Si on a un tout petit peu de jugeote, la solidarité est à mon avis une base nécessaire de toute vie en société.\nLe journaliste : La France est un des pays-phares en termes d'associations, avec plus d'un million de structures. Et si le profil-type du bénévole est un retraité de classe moyenne, les jeunes sont de plus en plus nombreux. Élisabeth Pacaud est la présidente de France Bénévolat Paris.\nÉlisabeth Pacaud : Les bénévoles, on dit, c'est tous des vieux, c'est pas vrai ! Il y en a quand même 2 sur 5 qui ont moins de 50 ans. Simplement, ce qui a évolué beaucoup c'est que les bénévoles d'autrefois qui venaient plus par leur parti politique, par leur religion, etc., étaient certainement plus malléables, j'ai envie de dire ; tandis que les bénévoles d'aujourd'hui, ils veulent que ça marche et si ça marche pas : ils s'en vont. On est plus bénévole par choix personnel, je pense.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2022-03-cn.m4a",
+      "explanation": "正确答案：A（官方 1 分）。市政厅办了一场「speed-dating」让候选志愿者与协会见面,即协会与未来志愿者的交流活动。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "d'un forum entre associations et futurs bénévoles.",
+          "order": 0,
+          "isCorrect": true
+        },
+        {
+          "label": "B",
+          "text": "d'une enquête sociologique sur le profil des bénévoles.",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "de la création d'une nouvelle antenne de la Croix-Rouge.",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "FILL",
+      "order": 3,
+      "prompt": "Selon le journaliste, combien de bénévoles y a-t-il en France ?",
+      "passage": "Le présentateur : Il est 6 h 16, Grand Angle sur la journée mondiale du bénévolat. Ce sera demain, mais dès hier à Paris, la mairie a organisé un speed-dating pour permettre aux apprentis-bénévoles de rencontrer les associations. Le bénévolat, 14 millions de Français s'en préoccupent, répartis dans 1 million d'associations. Le speed-dating hier dans les locaux de l'Hôtel de ville de Paris, rencontre entre une vingtaine d'associations et 150 candidats bénévoles. Le reportage de Philippe Randet.\nLoïc, représentant de la Croix-Rouge : Ce que vous pouvez faire c'est nous laisser vos coordonnées...\nLe journaliste : D'un côté Loïc, 23 ans, il est un des représentants de la Croix-Rouge française. Face à lui : Maude, 37 ans. Entre eux il n'aura suffi que de quelques minutes : Maude rejoindra la Croix-Rouge. Loïc lui est admiratif de sa démarche.\nLoïc, représentant de la Croix-Rouge : Je crois que c'est la chose la plus dure à faire : aller à la rencontre de l'association et se dire « bon ben tiens, voilà, j'essaye, j'y vais, je pousse la porte ». Il y a une petite phrase comme ça, c'est « la Croix-Rouge, on ne sait pas trop pourquoi on y rentre, mais on sait pourquoi on y reste ».\nLe journaliste : Loïc rappellera Maude dans quelques jours pour organiser la première maraude, et la jeune femme est déjà impatiente.\nMaude, bénévole : Pour moi c'est une évidence. Si on a un tout petit peu de jugeote, la solidarité est à mon avis une base nécessaire de toute vie en société.\nLe journaliste : La France est un des pays-phares en termes d'associations, avec plus d'un million de structures. Et si le profil-type du bénévole est un retraité de classe moyenne, les jeunes sont de plus en plus nombreux. Élisabeth Pacaud est la présidente de France Bénévolat Paris.\nÉlisabeth Pacaud : Les bénévoles, on dit, c'est tous des vieux, c'est pas vrai ! Il y en a quand même 2 sur 5 qui ont moins de 50 ans. Simplement, ce qui a évolué beaucoup c'est que les bénévoles d'autrefois qui venaient plus par leur parti politique, par leur religion, etc., étaient certainement plus malléables, j'ai envie de dire ; tandis que les bénévoles d'aujourd'hui, ils veulent que ça marche et si ça marche pas : ils s'en vont. On est plus bénévole par choix personnel, je pense.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2022-03-cn.m4a",
+      "explanation": "参考答案（官方 1 分）：1400 万 / 14 millions（de Français）。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 4,
+      "prompt": "D'après Loïc, un représentant de la Croix-Rouge, le plus dur dans le bénévolat c'est...",
+      "passage": "Le présentateur : Il est 6 h 16, Grand Angle sur la journée mondiale du bénévolat. Ce sera demain, mais dès hier à Paris, la mairie a organisé un speed-dating pour permettre aux apprentis-bénévoles de rencontrer les associations. Le bénévolat, 14 millions de Français s'en préoccupent, répartis dans 1 million d'associations. Le speed-dating hier dans les locaux de l'Hôtel de ville de Paris, rencontre entre une vingtaine d'associations et 150 candidats bénévoles. Le reportage de Philippe Randet.\nLoïc, représentant de la Croix-Rouge : Ce que vous pouvez faire c'est nous laisser vos coordonnées...\nLe journaliste : D'un côté Loïc, 23 ans, il est un des représentants de la Croix-Rouge française. Face à lui : Maude, 37 ans. Entre eux il n'aura suffi que de quelques minutes : Maude rejoindra la Croix-Rouge. Loïc lui est admiratif de sa démarche.\nLoïc, représentant de la Croix-Rouge : Je crois que c'est la chose la plus dure à faire : aller à la rencontre de l'association et se dire « bon ben tiens, voilà, j'essaye, j'y vais, je pousse la porte ». Il y a une petite phrase comme ça, c'est « la Croix-Rouge, on ne sait pas trop pourquoi on y rentre, mais on sait pourquoi on y reste ».\nLe journaliste : Loïc rappellera Maude dans quelques jours pour organiser la première maraude, et la jeune femme est déjà impatiente.\nMaude, bénévole : Pour moi c'est une évidence. Si on a un tout petit peu de jugeote, la solidarité est à mon avis une base nécessaire de toute vie en société.\nLe journaliste : La France est un des pays-phares en termes d'associations, avec plus d'un million de structures. Et si le profil-type du bénévole est un retraité de classe moyenne, les jeunes sont de plus en plus nombreux. Élisabeth Pacaud est la présidente de France Bénévolat Paris.\nÉlisabeth Pacaud : Les bénévoles, on dit, c'est tous des vieux, c'est pas vrai ! Il y en a quand même 2 sur 5 qui ont moins de 50 ans. Simplement, ce qui a évolué beaucoup c'est que les bénévoles d'autrefois qui venaient plus par leur parti politique, par leur religion, etc., étaient certainement plus malléables, j'ai envie de dire ; tandis que les bénévoles d'aujourd'hui, ils veulent que ça marche et si ça marche pas : ils s'en vont. On est plus bénévole par choix personnel, je pense.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2022-03-cn.m4a",
+      "explanation": "正确答案：A（官方 1 分）。「c'est la chose la plus dure à faire : aller à la rencontre de l'association... je pousse la porte」——最难的是迈出第一步去接触协会。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "d'aller à la rencontre d'une association.",
+          "order": 0,
+          "isCorrect": true
+        },
+        {
+          "label": "B",
+          "text": "de trouver la bonne association à aider.",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "de trouver du temps à consacrer au bénévolat.",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 5,
+      "prompt": "Maude, la future bénévole interviewée, voit la solidarité comme...",
+      "passage": "Le présentateur : Il est 6 h 16, Grand Angle sur la journée mondiale du bénévolat. Ce sera demain, mais dès hier à Paris, la mairie a organisé un speed-dating pour permettre aux apprentis-bénévoles de rencontrer les associations. Le bénévolat, 14 millions de Français s'en préoccupent, répartis dans 1 million d'associations. Le speed-dating hier dans les locaux de l'Hôtel de ville de Paris, rencontre entre une vingtaine d'associations et 150 candidats bénévoles. Le reportage de Philippe Randet.\nLoïc, représentant de la Croix-Rouge : Ce que vous pouvez faire c'est nous laisser vos coordonnées...\nLe journaliste : D'un côté Loïc, 23 ans, il est un des représentants de la Croix-Rouge française. Face à lui : Maude, 37 ans. Entre eux il n'aura suffi que de quelques minutes : Maude rejoindra la Croix-Rouge. Loïc lui est admiratif de sa démarche.\nLoïc, représentant de la Croix-Rouge : Je crois que c'est la chose la plus dure à faire : aller à la rencontre de l'association et se dire « bon ben tiens, voilà, j'essaye, j'y vais, je pousse la porte ». Il y a une petite phrase comme ça, c'est « la Croix-Rouge, on ne sait pas trop pourquoi on y rentre, mais on sait pourquoi on y reste ».\nLe journaliste : Loïc rappellera Maude dans quelques jours pour organiser la première maraude, et la jeune femme est déjà impatiente.\nMaude, bénévole : Pour moi c'est une évidence. Si on a un tout petit peu de jugeote, la solidarité est à mon avis une base nécessaire de toute vie en société.\nLe journaliste : La France est un des pays-phares en termes d'associations, avec plus d'un million de structures. Et si le profil-type du bénévole est un retraité de classe moyenne, les jeunes sont de plus en plus nombreux. Élisabeth Pacaud est la présidente de France Bénévolat Paris.\nÉlisabeth Pacaud : Les bénévoles, on dit, c'est tous des vieux, c'est pas vrai ! Il y en a quand même 2 sur 5 qui ont moins de 50 ans. Simplement, ce qui a évolué beaucoup c'est que les bénévoles d'autrefois qui venaient plus par leur parti politique, par leur religion, etc., étaient certainement plus malléables, j'ai envie de dire ; tandis que les bénévoles d'aujourd'hui, ils veulent que ça marche et si ça marche pas : ils s'en vont. On est plus bénévole par choix personnel, je pense.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2022-03-cn.m4a",
+      "explanation": "正确答案：B（官方 1 分）。「la solidarité est une base nécessaire de toute vie en société」——她视团结互助为社会生活的必要基础,惠及所有人。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "une démarche qui aide à se réaliser.",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "une action sociale qui profite à tous.",
+          "order": 1,
+          "isCorrect": true
+        },
+        {
+          "label": "C",
+          "text": "un geste citoyen qui devrait être obligatoire.",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 6,
+      "prompt": "Selon la présidente de France Bénévolat Paris, le bénévolat aujourd'hui concerne...",
+      "passage": "Le présentateur : Il est 6 h 16, Grand Angle sur la journée mondiale du bénévolat. Ce sera demain, mais dès hier à Paris, la mairie a organisé un speed-dating pour permettre aux apprentis-bénévoles de rencontrer les associations. Le bénévolat, 14 millions de Français s'en préoccupent, répartis dans 1 million d'associations. Le speed-dating hier dans les locaux de l'Hôtel de ville de Paris, rencontre entre une vingtaine d'associations et 150 candidats bénévoles. Le reportage de Philippe Randet.\nLoïc, représentant de la Croix-Rouge : Ce que vous pouvez faire c'est nous laisser vos coordonnées...\nLe journaliste : D'un côté Loïc, 23 ans, il est un des représentants de la Croix-Rouge française. Face à lui : Maude, 37 ans. Entre eux il n'aura suffi que de quelques minutes : Maude rejoindra la Croix-Rouge. Loïc lui est admiratif de sa démarche.\nLoïc, représentant de la Croix-Rouge : Je crois que c'est la chose la plus dure à faire : aller à la rencontre de l'association et se dire « bon ben tiens, voilà, j'essaye, j'y vais, je pousse la porte ». Il y a une petite phrase comme ça, c'est « la Croix-Rouge, on ne sait pas trop pourquoi on y rentre, mais on sait pourquoi on y reste ».\nLe journaliste : Loïc rappellera Maude dans quelques jours pour organiser la première maraude, et la jeune femme est déjà impatiente.\nMaude, bénévole : Pour moi c'est une évidence. Si on a un tout petit peu de jugeote, la solidarité est à mon avis une base nécessaire de toute vie en société.\nLe journaliste : La France est un des pays-phares en termes d'associations, avec plus d'un million de structures. Et si le profil-type du bénévole est un retraité de classe moyenne, les jeunes sont de plus en plus nombreux. Élisabeth Pacaud est la présidente de France Bénévolat Paris.\nÉlisabeth Pacaud : Les bénévoles, on dit, c'est tous des vieux, c'est pas vrai ! Il y en a quand même 2 sur 5 qui ont moins de 50 ans. Simplement, ce qui a évolué beaucoup c'est que les bénévoles d'autrefois qui venaient plus par leur parti politique, par leur religion, etc., étaient certainement plus malléables, j'ai envie de dire ; tandis que les bénévoles d'aujourd'hui, ils veulent que ça marche et si ça marche pas : ils s'en vont. On est plus bénévole par choix personnel, je pense.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2022-03-cn.m4a",
+      "explanation": "正确答案：C（官方 1 分）。「il y en a quand même 2 sur 5 qui ont moins de 50 ans」——五分之二不到 50 岁,在职者与退休者数量相当接近。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "bien plus d'actifs que de retraités.",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "quasiment exclusivement des retraités.",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "presque autant d'actifs que de retraités.",
+          "order": 2,
+          "isCorrect": true
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 7,
+      "prompt": "Aujourd'hui, ce qui motive à faire du bénévolat, ce sont plutôt des convictions...",
+      "passage": "Le présentateur : Il est 6 h 16, Grand Angle sur la journée mondiale du bénévolat. Ce sera demain, mais dès hier à Paris, la mairie a organisé un speed-dating pour permettre aux apprentis-bénévoles de rencontrer les associations. Le bénévolat, 14 millions de Français s'en préoccupent, répartis dans 1 million d'associations. Le speed-dating hier dans les locaux de l'Hôtel de ville de Paris, rencontre entre une vingtaine d'associations et 150 candidats bénévoles. Le reportage de Philippe Randet.\nLoïc, représentant de la Croix-Rouge : Ce que vous pouvez faire c'est nous laisser vos coordonnées...\nLe journaliste : D'un côté Loïc, 23 ans, il est un des représentants de la Croix-Rouge française. Face à lui : Maude, 37 ans. Entre eux il n'aura suffi que de quelques minutes : Maude rejoindra la Croix-Rouge. Loïc lui est admiratif de sa démarche.\nLoïc, représentant de la Croix-Rouge : Je crois que c'est la chose la plus dure à faire : aller à la rencontre de l'association et se dire « bon ben tiens, voilà, j'essaye, j'y vais, je pousse la porte ». Il y a une petite phrase comme ça, c'est « la Croix-Rouge, on ne sait pas trop pourquoi on y rentre, mais on sait pourquoi on y reste ».\nLe journaliste : Loïc rappellera Maude dans quelques jours pour organiser la première maraude, et la jeune femme est déjà impatiente.\nMaude, bénévole : Pour moi c'est une évidence. Si on a un tout petit peu de jugeote, la solidarité est à mon avis une base nécessaire de toute vie en société.\nLe journaliste : La France est un des pays-phares en termes d'associations, avec plus d'un million de structures. Et si le profil-type du bénévole est un retraité de classe moyenne, les jeunes sont de plus en plus nombreux. Élisabeth Pacaud est la présidente de France Bénévolat Paris.\nÉlisabeth Pacaud : Les bénévoles, on dit, c'est tous des vieux, c'est pas vrai ! Il y en a quand même 2 sur 5 qui ont moins de 50 ans. Simplement, ce qui a évolué beaucoup c'est que les bénévoles d'autrefois qui venaient plus par leur parti politique, par leur religion, etc., étaient certainement plus malléables, j'ai envie de dire ; tandis que les bénévoles d'aujourd'hui, ils veulent que ça marche et si ça marche pas : ils s'en vont. On est plus bénévole par choix personnel, je pense.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2022-03-cn.m4a",
+      "explanation": "正确答案：C（官方 1 分）。过去志愿者多出于政党、宗教;如今「On est plus bénévole par choix personnel」——更多是出于个人选择/信念。",
+      "modelEssay": null,
+      "points": 1,
+      "options": [
+        {
+          "label": "A",
+          "text": "politiques.",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "religieuses.",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "individuelles.",
+          "order": 2,
+          "isCorrect": true
+        }
+      ],
+      "followUps": []
+    }
+  ]
+}

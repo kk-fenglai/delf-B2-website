@@ -1,0 +1,286 @@
+{
+  "title": "DELF B2 听力 · 短听力：全球创业周",
+  "year": 2021,
+  "description": "短听力专项。来源：DELF B2旧题型短听力真题（5篇）。共 14 题。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "L'événement présent dans le document est...",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : C",
+      "modelEssay": "C",
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "national",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "européen.",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "international.",
+          "order": 2,
+          "isCorrect": true
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 2,
+      "prompt": "Cet événement propose des idées pour",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : A",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "démarrer sa propre entreprise.",
+          "order": 0,
+          "isCorrect": true
+        },
+        {
+          "label": "B",
+          "text": "suivre des formations pratiques",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "découvrir des métiers alternatifs",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 3,
+      "prompt": "Selon le responsable du bureau de transferts de technologies et de compétences, de quoi les jeunes ont-ils besoin ?",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : B",
+      "modelEssay": "B",
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "D'argent.",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "De soutien.",
+          "order": 1,
+          "isCorrect": true
+        },
+        {
+          "label": "C",
+          "text": "D'informations",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 4,
+      "prompt": "Quel est le slogan de l'événement présent dans le document ?",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : Libérer nos idées",
+      "modelEssay": "Libérer nos idées",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 5,
+      "prompt": "Quel est le but de l'événement présenté dans le document ?",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : C",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "Informer sur les professions manuelles",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "Favoriser L'entraide entre entrepreneurs",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "Encourager L'esprit d'initiative des jeunes",
+          "order": 2,
+          "isCorrect": true
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 6,
+      "prompt": "Auparavant, que souhaitaient les jeunes ?",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : C",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "Devenir leur propre patron.",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "Travailler pour une entreprise",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "Faire partie d'une société internationale.",
+          "order": 2,
+          "isCorrect": true
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 7,
+      "prompt": "À quels jeunes s'adresse surtout l'événement présenté dans le document ? Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine mondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès sont organisées par l'université de Genève, les Nations unies, le service de la promotion économique de l'État de Genève et Genilem, Yves-Alain. Yves-Alain : Oui, conférences nombreuses et variées autour de la création d'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte. Le but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on souhaite l'exploiter, il suffit parfois d'oser se lancer. Présentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase. Oser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent Miéville, bonjour. Laurent Miville : Bonjour. Présentatrice : Vous êtes responsable d'Unité, le bureau de transferts de technologies et de compétences de l'Université de Genève. Alors vous allez nous en dire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine mondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment ça se passe ? LM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé avec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont plein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la confiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la semaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils n'ont pas toujours le courage de libérer. YA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types d'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour exercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent avoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce public-là que vous visez cette semaine ? LM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je pense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont juste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être aussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin. Il y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient travailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de réaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est ça qui est possible et que les outils existent pour les aider à le faire.",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : Les jeunes qui ont une idée intéressante et originale à développer, qui veulent réaliser un rêve ou un projet personnel.",
+      "modelEssay": "Les jeunes qui ont une idée intéressante et originale à développer, qui veulent réaliser un rêve ou un projet personnel.",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 8,
+      "prompt": "C",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : C",
+      "modelEssay": "C",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 9,
+      "prompt": "A",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : A",
+      "modelEssay": "A",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 10,
+      "prompt": "B",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : B",
+      "modelEssay": "B",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 11,
+      "prompt": "Libérer nos idées",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : Libérer nos idées",
+      "modelEssay": "Libérer nos idées",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 12,
+      "prompt": "C",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : C",
+      "modelEssay": "C",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 13,
+      "prompt": "C",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : C",
+      "modelEssay": "C",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 14,
+      "prompt": "Les jeunes qui ont une idée intéressante et originale à développer, qui veulent réaliser un rêve ou un projet personnel.",
+      "passage": "Présentatrice : Aujourd’hui lundi 18 novembre , Coup d'envoi de la semaine\nmondiale de l'entrepreneuriat. À Genève, une multitude de conférences en libre accès\nsont organisées par l'université de Genève, les Nations unies, le service de la\npromotion économique de l'État de Genève et Genilem, Yves-Alain.\nYves-Alain : Oui, conférences nombreuses et variées autour de la création\nd'entreprise et pas seulement sous l'angle pratique de comment se mettre à son compte.\nLe but est aussi de donner l'impulsion, de montrer que si on a une bonne idée et qu'on\nsouhaite l'exploiter, il suffit parfois d'oser se lancer.\nPrésentatrice : Il suffit parfois... On se réjouit de commenter cette petite phrase.\nOser se lancer, ce n'est sûrement pas aussi simple que cela. On accueille Laurent\nMiéville, bonjour.\nLaurent Miville : Bonjour.\nPrésentatrice : Vous êtes responsable d'Unité, le bureau de transferts de\ntechnologies et de compétences de l'Université de Genève. Alors vous allez nous en\ndire plus sur les possibilités de libérer nos idées, comme dit le slogan de cette semaine\nmondiale. Alors, nos idées, il suffit comme ça de les libérer ? Concrètement, comment\nça se passe ?\nLM:Oui, tout à fait. L'expérience qu'on a eue avec les jeunes qui ont travaillé\navec nous, c'est déjà la troisième édition donc on en avait déjà deux passées, ils ont\nplein d'idées, il faut leur donner la possibilité de les libérer, il faut leur donner la\nconfiance de faire quelque chose avec leurs idées, et je pense que c'est ça que veut la\nsemaine ; c'est vraiment donner envie de libérer ces idées que les gens ont mais qu'ils\nn'ont pas toujours le courage de libérer.\nYA : Donc, en fait, si je comprends bien, il y a en quelque sorte deux types\nd'entrepreneurs : il y a ceux plutôt classiques qui se mettent à leur compte pour\nexercer un métier courant, dans le bâtiment par exemple, et il y a ceux qui pensent\navoir une idée intéressante et qui cherchent à la commercialiser. C'est plutôt ce\npublic-là que vous visez cette semaine ?\nLM : Oui, alors moi, je n'utiliserais pas le terme révolutionnaire parce que je\npense que beaucoup d'idées ne sont pas nécessairement révolutionnaires. Elles sont\n\njuste intéressantes et originales. Il y a beaucoup de jeunes qui recherchent peut-être\naussi des voies de carrière un peu alternatives. On parlait des multinationales ce matin.\nIl y a peut-être une dizaine ou une quinzaine d'années, beaucoup de jeunes pensaient\ntravailler dans une multinationale. Maintenant, les jeunes ont plutôt envie parfois de\nréaliser un rêve, un projet personnel. Et c'est aussi ça, on veut leur montrer que c'est\nça qui est possible et que les outils existent pour les aider à le faire.\n答案：\n1. C\n2. A\n3. B\n4. Libérer nos idées\n5. C\n6. C\n7. Les jeunes qui ont une idée intéressante et originale à développer, qui veulent\nréaliser un rêve ou un projet personnel.",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2021-11-cn.m4a",
+      "explanation": "Réponse : Les jeunes qui ont une idée intéressante et originale à développer, qui veulent réaliser un rêve ou un projet personnel.",
+      "modelEssay": "Les jeunes qui ont une idée intéressante et originale à développer, qui veulent réaliser un rêve ou un projet personnel.",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    }
+  ]
+}

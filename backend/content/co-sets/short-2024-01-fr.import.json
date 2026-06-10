@@ -1,0 +1,195 @@
+{
+  "title": "DELF B2 听力 · 短听力：海洋自然保护区",
+  "year": 2024,
+  "description": "短听力专项。来源：DELF B2旧题型短听力真题（3篇）(1)。共 7 题。",
+  "isPublished": false,
+  "isFreePreview": false,
+  "questions": [
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 1,
+      "prompt": "Dans l'océan indien, le gouvernement français a créé une réserve naturelle pour........ （0.5point）",
+      "passage": "Journaliste : Figurez-vous que la France va créer l'une des plus grandes réserves naturelles du monde\npour les poissons et les oiseaux. Ça va se passer dans l'océan Indien, à 2 000 km au sud de La Réunion.\nBonjour Virginie.\nVirginie Guérin : Bonjour Stéphane, bonjour Marina, bonjour à tous.\nMarina : Bonjour Virginie.\nJournaliste : Alors, nous sommes d'accord, c'est une zone gigantesque pour protéger les espèces du\nréchauffement climatique.\nVG : Voilà, une zone grande comme le territoire français, c'est immense, plus de 600 000 kilomètres\ncarrés autour des îles Kerguelen. C'est un coin du monde hostile pour l'homme，les seuls habitants sont des\nscientifiques en anorak , mais elle abrite des milliers d'espèces : des manchots, des poissons lanternes, des\nrequins dormeurs... Et beaucoup sont en danger. L'albatros d'Amsterdam, par exemple : il ne reste que trente\ncouples. Car c'est l'endroit du monde le plus impacté par le réchauffement : il pleut ou il neige deux fois\nmoins qu'il y a trente ans. La glace y fond encore plus vite qu'au pôle Nord. Donc, l'objectif est de laisser\ntoutes ces espèces tranquilles. Car les scientifiques ont remarqué que lorsqu'un écosystème n'est pas perturbé\npar l'homme, il résiste mieux aux changements climatiques. Donc, la pêche et les bateaux vont y être\ninterdits, les poissons des glaces, les grenadiers ou le plancton vont pouvoir s'y développer plus facilement.\nLe plancton, justement, c'est un animal extraordinaire car il capte le gaz carbonique pour grandir et quand il\nmeurt, il coule et emporte au fond de l'océan du carbone qui reste là, piégé pendant des centaines d'années.\nDonc, la Réserve des Terres Australes, c’est son nom, va devenir aussi un puits de carbone ,un moyen pour\nla France de lutter contre le réchauffement et elle devrait être officiellement créée par décret avant la\nConférence climat qui aura lieu en novembre au Maroc. Alors, si vous voulez vous évader un peu\naujourd'hui, allez voir à quoi ressemblent ces paysages magnifiques, ils sont sur rtl.fr.\n答案：\n1. B\n2. C\n3. Les scientifiques（en anorak）\n4. C\n5. B\n6. La pêche et les bateaux\n7. A",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2024-01-fr.m4a",
+      "explanation": "Réponse : B",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "les végétaux et les oiseaux.",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "les oiseaux et les poissons.",
+          "order": 1,
+          "isCorrect": true
+        },
+        {
+          "label": "C",
+          "text": "les végétaux et les poissons.",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 2,
+      "prompt": "Quelle est la taille de la réserve ? （ 0.5point ）",
+      "passage": "Journaliste : Figurez-vous que la France va créer l'une des plus grandes réserves naturelles du monde\npour les poissons et les oiseaux. Ça va se passer dans l'océan Indien, à 2 000 km au sud de La Réunion.\nBonjour Virginie.\nVirginie Guérin : Bonjour Stéphane, bonjour Marina, bonjour à tous.\nMarina : Bonjour Virginie.\nJournaliste : Alors, nous sommes d'accord, c'est une zone gigantesque pour protéger les espèces du\nréchauffement climatique.\nVG : Voilà, une zone grande comme le territoire français, c'est immense, plus de 600 000 kilomètres\ncarrés autour des îles Kerguelen. C'est un coin du monde hostile pour l'homme，les seuls habitants sont des\nscientifiques en anorak , mais elle abrite des milliers d'espèces : des manchots, des poissons lanternes, des\nrequins dormeurs... Et beaucoup sont en danger. L'albatros d'Amsterdam, par exemple : il ne reste que trente\ncouples. Car c'est l'endroit du monde le plus impacté par le réchauffement : il pleut ou il neige deux fois\nmoins qu'il y a trente ans. La glace y fond encore plus vite qu'au pôle Nord. Donc, l'objectif est de laisser\ntoutes ces espèces tranquilles. Car les scientifiques ont remarqué que lorsqu'un écosystème n'est pas perturbé\npar l'homme, il résiste mieux aux changements climatiques. Donc, la pêche et les bateaux vont y être\ninterdits, les poissons des glaces, les grenadiers ou le plancton vont pouvoir s'y développer plus facilement.\nLe plancton, justement, c'est un animal extraordinaire car il capte le gaz carbonique pour grandir et quand il\nmeurt, il coule et emporte au fond de l'océan du carbone qui reste là, piégé pendant des centaines d'années.\nDonc, la Réserve des Terres Australes, c’est son nom, va devenir aussi un puits de carbone ,un moyen pour\nla France de lutter contre le réchauffement et elle devrait être officiellement créée par décret avant la\nConférence climat qui aura lieu en novembre au Maroc. Alors, si vous voulez vous évader un peu\naujourd'hui, allez voir à quoi ressemblent ces paysages magnifiques, ils sont sur rtl.fr.\n答案：\n1. B\n2. C\n3. Les scientifiques（en anorak）\n4. C\n5. B\n6. La pêche et les bateaux\n7. A",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2024-01-fr.m4a",
+      "explanation": "Réponse : C",
+      "modelEssay": "C",
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "60000km2",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "160000 km2",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "600 000 km2",
+          "order": 2,
+          "isCorrect": true
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 3,
+      "prompt": "Qui habite dans cette région aujourd'hui ? （ 1points ）",
+      "passage": "Journaliste : Figurez-vous que la France va créer l'une des plus grandes réserves naturelles du monde\npour les poissons et les oiseaux. Ça va se passer dans l'océan Indien, à 2 000 km au sud de La Réunion.\nBonjour Virginie.\nVirginie Guérin : Bonjour Stéphane, bonjour Marina, bonjour à tous.\nMarina : Bonjour Virginie.\nJournaliste : Alors, nous sommes d'accord, c'est une zone gigantesque pour protéger les espèces du\nréchauffement climatique.\nVG : Voilà, une zone grande comme le territoire français, c'est immense, plus de 600 000 kilomètres\ncarrés autour des îles Kerguelen. C'est un coin du monde hostile pour l'homme，les seuls habitants sont des\nscientifiques en anorak , mais elle abrite des milliers d'espèces : des manchots, des poissons lanternes, des\nrequins dormeurs... Et beaucoup sont en danger. L'albatros d'Amsterdam, par exemple : il ne reste que trente\ncouples. Car c'est l'endroit du monde le plus impacté par le réchauffement : il pleut ou il neige deux fois\nmoins qu'il y a trente ans. La glace y fond encore plus vite qu'au pôle Nord. Donc, l'objectif est de laisser\ntoutes ces espèces tranquilles. Car les scientifiques ont remarqué que lorsqu'un écosystème n'est pas perturbé\npar l'homme, il résiste mieux aux changements climatiques. Donc, la pêche et les bateaux vont y être\ninterdits, les poissons des glaces, les grenadiers ou le plancton vont pouvoir s'y développer plus facilement.\nLe plancton, justement, c'est un animal extraordinaire car il capte le gaz carbonique pour grandir et quand il\nmeurt, il coule et emporte au fond de l'océan du carbone qui reste là, piégé pendant des centaines d'années.\nDonc, la Réserve des Terres Australes, c’est son nom, va devenir aussi un puits de carbone ,un moyen pour\nla France de lutter contre le réchauffement et elle devrait être officiellement créée par décret avant la\nConférence climat qui aura lieu en novembre au Maroc. Alors, si vous voulez vous évader un peu\naujourd'hui, allez voir à quoi ressemblent ces paysages magnifiques, ils sont sur rtl.fr.\n答案：\n1. B\n2. C\n3. Les scientifiques（en anorak）\n4. C\n5. B\n6. La pêche et les bateaux\n7. A",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2024-01-fr.m4a",
+      "explanation": "Réponse : Les scientifiques（en anorak）",
+      "modelEssay": "Les scientifiques（en anorak）",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 4,
+      "prompt": "Quelle est la particularité de cette région ? （ 1point ）",
+      "passage": "Journaliste : Figurez-vous que la France va créer l'une des plus grandes réserves naturelles du monde\npour les poissons et les oiseaux. Ça va se passer dans l'océan Indien, à 2 000 km au sud de La Réunion.\nBonjour Virginie.\nVirginie Guérin : Bonjour Stéphane, bonjour Marina, bonjour à tous.\nMarina : Bonjour Virginie.\nJournaliste : Alors, nous sommes d'accord, c'est une zone gigantesque pour protéger les espèces du\nréchauffement climatique.\nVG : Voilà, une zone grande comme le territoire français, c'est immense, plus de 600 000 kilomètres\ncarrés autour des îles Kerguelen. C'est un coin du monde hostile pour l'homme，les seuls habitants sont des\nscientifiques en anorak , mais elle abrite des milliers d'espèces : des manchots, des poissons lanternes, des\nrequins dormeurs... Et beaucoup sont en danger. L'albatros d'Amsterdam, par exemple : il ne reste que trente\ncouples. Car c'est l'endroit du monde le plus impacté par le réchauffement : il pleut ou il neige deux fois\nmoins qu'il y a trente ans. La glace y fond encore plus vite qu'au pôle Nord. Donc, l'objectif est de laisser\ntoutes ces espèces tranquilles. Car les scientifiques ont remarqué que lorsqu'un écosystème n'est pas perturbé\npar l'homme, il résiste mieux aux changements climatiques. Donc, la pêche et les bateaux vont y être\ninterdits, les poissons des glaces, les grenadiers ou le plancton vont pouvoir s'y développer plus facilement.\nLe plancton, justement, c'est un animal extraordinaire car il capte le gaz carbonique pour grandir et quand il\nmeurt, il coule et emporte au fond de l'océan du carbone qui reste là, piégé pendant des centaines d'années.\nDonc, la Réserve des Terres Australes, c’est son nom, va devenir aussi un puits de carbone ,un moyen pour\nla France de lutter contre le réchauffement et elle devrait être officiellement créée par décret avant la\nConférence climat qui aura lieu en novembre au Maroc. Alors, si vous voulez vous évader un peu\naujourd'hui, allez voir à quoi ressemblent ces paysages magnifiques, ils sont sur rtl.fr.\n答案：\n1. B\n2. C\n3. Les scientifiques（en anorak）\n4. C\n5. B\n6. La pêche et les bateaux\n7. A",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2024-01-fr.m4a",
+      "explanation": "Réponse : C",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "La végétation est très riche.",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "Le climat ne change presque pas,",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "Les espèces animales sont très variées.",
+          "order": 2,
+          "isCorrect": true
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 5,
+      "prompt": "Quel est l'objectif de ce projet ? （ 1point ）",
+      "passage": "Journaliste : Figurez-vous que la France va créer l'une des plus grandes réserves naturelles du monde\npour les poissons et les oiseaux. Ça va se passer dans l'océan Indien, à 2 000 km au sud de La Réunion.\nBonjour Virginie.\nVirginie Guérin : Bonjour Stéphane, bonjour Marina, bonjour à tous.\nMarina : Bonjour Virginie.\nJournaliste : Alors, nous sommes d'accord, c'est une zone gigantesque pour protéger les espèces du\nréchauffement climatique.\nVG : Voilà, une zone grande comme le territoire français, c'est immense, plus de 600 000 kilomètres\ncarrés autour des îles Kerguelen. C'est un coin du monde hostile pour l'homme，les seuls habitants sont des\nscientifiques en anorak , mais elle abrite des milliers d'espèces : des manchots, des poissons lanternes, des\nrequins dormeurs... Et beaucoup sont en danger. L'albatros d'Amsterdam, par exemple : il ne reste que trente\ncouples. Car c'est l'endroit du monde le plus impacté par le réchauffement : il pleut ou il neige deux fois\nmoins qu'il y a trente ans. La glace y fond encore plus vite qu'au pôle Nord. Donc, l'objectif est de laisser\ntoutes ces espèces tranquilles. Car les scientifiques ont remarqué que lorsqu'un écosystème n'est pas perturbé\npar l'homme, il résiste mieux aux changements climatiques. Donc, la pêche et les bateaux vont y être\ninterdits, les poissons des glaces, les grenadiers ou le plancton vont pouvoir s'y développer plus facilement.\nLe plancton, justement, c'est un animal extraordinaire car il capte le gaz carbonique pour grandir et quand il\nmeurt, il coule et emporte au fond de l'océan du carbone qui reste là, piégé pendant des centaines d'années.\nDonc, la Réserve des Terres Australes, c’est son nom, va devenir aussi un puits de carbone ,un moyen pour\nla France de lutter contre le réchauffement et elle devrait être officiellement créée par décret avant la\nConférence climat qui aura lieu en novembre au Maroc. Alors, si vous voulez vous évader un peu\naujourd'hui, allez voir à quoi ressemblent ces paysages magnifiques, ils sont sur rtl.fr.\n答案：\n1. B\n2. C\n3. Les scientifiques（en anorak）\n4. C\n5. B\n6. La pêche et les bateaux\n7. A",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2024-01-fr.m4a",
+      "explanation": "Réponse : B",
+      "modelEssay": null,
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "Observer les effets de la pollution sur les poissons.",
+          "order": 0,
+          "isCorrect": false
+        },
+        {
+          "label": "B",
+          "text": "Protéger les animaux des changements climatiques.",
+          "order": 1,
+          "isCorrect": true
+        },
+        {
+          "label": "C",
+          "text": "Étudier plus tranquillement les plantes et animaux de la région.",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "ESSAY",
+      "order": 6,
+      "prompt": "Quels sont les deux éléments qui seront interdits ? (2 eléments de réponse) （2points）",
+      "passage": "Journaliste : Figurez-vous que la France va créer l'une des plus grandes réserves naturelles du monde\npour les poissons et les oiseaux. Ça va se passer dans l'océan Indien, à 2 000 km au sud de La Réunion.\nBonjour Virginie.\nVirginie Guérin : Bonjour Stéphane, bonjour Marina, bonjour à tous.\nMarina : Bonjour Virginie.\nJournaliste : Alors, nous sommes d'accord, c'est une zone gigantesque pour protéger les espèces du\nréchauffement climatique.\nVG : Voilà, une zone grande comme le territoire français, c'est immense, plus de 600 000 kilomètres\ncarrés autour des îles Kerguelen. C'est un coin du monde hostile pour l'homme，les seuls habitants sont des\nscientifiques en anorak , mais elle abrite des milliers d'espèces : des manchots, des poissons lanternes, des\nrequins dormeurs... Et beaucoup sont en danger. L'albatros d'Amsterdam, par exemple : il ne reste que trente\ncouples. Car c'est l'endroit du monde le plus impacté par le réchauffement : il pleut ou il neige deux fois\nmoins qu'il y a trente ans. La glace y fond encore plus vite qu'au pôle Nord. Donc, l'objectif est de laisser\ntoutes ces espèces tranquilles. Car les scientifiques ont remarqué que lorsqu'un écosystème n'est pas perturbé\npar l'homme, il résiste mieux aux changements climatiques. Donc, la pêche et les bateaux vont y être\ninterdits, les poissons des glaces, les grenadiers ou le plancton vont pouvoir s'y développer plus facilement.\nLe plancton, justement, c'est un animal extraordinaire car il capte le gaz carbonique pour grandir et quand il\nmeurt, il coule et emporte au fond de l'océan du carbone qui reste là, piégé pendant des centaines d'années.\nDonc, la Réserve des Terres Australes, c’est son nom, va devenir aussi un puits de carbone ,un moyen pour\nla France de lutter contre le réchauffement et elle devrait être officiellement créée par décret avant la\nConférence climat qui aura lieu en novembre au Maroc. Alors, si vous voulez vous évader un peu\naujourd'hui, allez voir à quoi ressemblent ces paysages magnifiques, ils sont sur rtl.fr.\n答案：\n1. B\n2. C\n3. Les scientifiques（en anorak）\n4. C\n5. B\n6. La pêche et les bateaux\n7. A",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2024-01-fr.m4a",
+      "explanation": "Réponse : La pêche et les bateaux",
+      "modelEssay": "La pêche et les bateaux",
+      "points": 2,
+      "options": [],
+      "followUps": []
+    },
+    {
+      "skill": "CO",
+      "type": "SINGLE",
+      "order": 7,
+      "prompt": "La création de cette réserve pourrait permettre de... （1point ）",
+      "passage": "Journaliste : Figurez-vous que la France va créer l'une des plus grandes réserves naturelles du monde\npour les poissons et les oiseaux. Ça va se passer dans l'océan Indien, à 2 000 km au sud de La Réunion.\nBonjour Virginie.\nVirginie Guérin : Bonjour Stéphane, bonjour Marina, bonjour à tous.\nMarina : Bonjour Virginie.\nJournaliste : Alors, nous sommes d'accord, c'est une zone gigantesque pour protéger les espèces du\nréchauffement climatique.\nVG : Voilà, une zone grande comme le territoire français, c'est immense, plus de 600 000 kilomètres\ncarrés autour des îles Kerguelen. C'est un coin du monde hostile pour l'homme，les seuls habitants sont des\nscientifiques en anorak , mais elle abrite des milliers d'espèces : des manchots, des poissons lanternes, des\nrequins dormeurs... Et beaucoup sont en danger. L'albatros d'Amsterdam, par exemple : il ne reste que trente\ncouples. Car c'est l'endroit du monde le plus impacté par le réchauffement : il pleut ou il neige deux fois\nmoins qu'il y a trente ans. La glace y fond encore plus vite qu'au pôle Nord. Donc, l'objectif est de laisser\ntoutes ces espèces tranquilles. Car les scientifiques ont remarqué que lorsqu'un écosystème n'est pas perturbé\npar l'homme, il résiste mieux aux changements climatiques. Donc, la pêche et les bateaux vont y être\ninterdits, les poissons des glaces, les grenadiers ou le plancton vont pouvoir s'y développer plus facilement.\nLe plancton, justement, c'est un animal extraordinaire car il capte le gaz carbonique pour grandir et quand il\nmeurt, il coule et emporte au fond de l'océan du carbone qui reste là, piégé pendant des centaines d'années.\nDonc, la Réserve des Terres Australes, c’est son nom, va devenir aussi un puits de carbone ,un moyen pour\nla France de lutter contre le réchauffement et elle devrait être officiellement créée par décret avant la\nConférence climat qui aura lieu en novembre au Maroc. Alors, si vous voulez vous évader un peu\naujourd'hui, allez voir à quoi ressemblent ces paysages magnifiques, ils sont sur rtl.fr.\n答案：\n1. B\n2. C\n3. Les scientifiques（en anorak）\n4. C\n5. B\n6. La pêche et les bateaux\n7. A",
+      "audioUrl": "https://pub-72b0969c5978483fb68d6403d707896a.r2.dev/short-2024-01-fr.m4a",
+      "explanation": "Réponse : A",
+      "modelEssay": "A",
+      "points": 2,
+      "options": [
+        {
+          "label": "A",
+          "text": "retenir du carbone.",
+          "order": 0,
+          "isCorrect": true
+        },
+        {
+          "label": "B",
+          "text": "transformer du carbone",
+          "order": 1,
+          "isCorrect": false
+        },
+        {
+          "label": "C",
+          "text": "consommer du carbone",
+          "order": 2,
+          "isCorrect": false
+        }
+      ],
+      "followUps": []
+    }
+  ]
+}
