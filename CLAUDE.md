@@ -86,3 +86,4 @@ Do not put exam session year/month/region in titles shown to users (e.g. avoid `
 - On import, `backend/src/utils/examTitle.js` (`sanitizeExamTitle`) strips date/region; apply via admin import and `scripts/stripExamTitleDates.js` for bulk fixes.
 - Public `/api/exams` does not expose `year`; keep provenance in admin-only fields or question `explanation` if needed.
 
+7.请将md文件统一整理到一个文件夹docs下面

@@ -12,12 +12,24 @@ build/
 backend/prisma/dev.db
 backend/prisma/dev.db-journal
 
-# FEI sample exam raw files (downloaded PDFs + MP3s - don't commit binaries or copyrighted material)
+# FEI sample exam raw files (downloaded PDFs + audio - don't commit binaries or copyrighted material)
 backend/content/fei-samples/**/*.pdf
 backend/content/fei-samples/**/*.mp3
+backend/content/fei-samples/**/*.m4a
 # Keep parsed.json and READMEs tracked for reproducibility
 !backend/content/fei-samples/**/parsed.json
 !backend/content/fei-samples/**/README.md
+
+# Audio / recordings — never commit to a public repo (served via CDN instead)
+*.m4a
+*.webm
+backend/content/listening-sets/**/*.mp3
+backend/content/recordings/
+
+# Raw exam source material (real DELF papers/audio — copyrighted, local only)
+delfB2_exam/
+delfB2_listen/
+delf_B2_reading/
 
 # OS
 Thumbs.db
@@ -28,11 +40,12 @@ frontend/tsconfig.tsbuildinfo
 # Local test-account credentials (contains admin / demo passwords)
 注意事项.txt
 
-# Internal docs (local only — pricing, payment ops, deployment, product specs)
-定价标准.md
-支付功能.md
-PLAN_subscription_overhaul.md
-AI批改作文.md
-AI口语.md
-DEPLOYMENT.md
-PRD.md
+# Internal docs (local only — now consolidated under docs/, see CLAUDE.md rule 7)
+docs/定价标准.md
+docs/支付功能.md
+docs/PLAN_subscription_overhaul.md
+docs/AI批改作文.md
+docs/AI口语.md
+docs/DEPLOYMENT.md
+docs/PRD.md
+docs/题库导入排查.md
