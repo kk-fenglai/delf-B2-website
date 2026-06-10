@@ -6,6 +6,7 @@ const { logger, httpLogger } = require('./utils/logger');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 
 const prisma = require('./prisma');
@@ -71,6 +72,11 @@ app.use(
     credentials: true,
   })
 );
+
+// gzip JSON/text responses. Audio/CDN binaries are served elsewhere, so this
+// only touches API payloads (e.g. the exam list) — cuts ~20KB to ~4KB on the
+// wire, which matters over the Vercel→Fly proxy hop.
+app.use(compression());
 
 // Capture raw body on JSON routes — required by the WeChat V3 notify handler
 // for signature verification (signed payload = timestamp\nnonce\nbody\n).

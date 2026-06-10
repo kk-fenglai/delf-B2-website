@@ -412,6 +412,8 @@ model QuestionOption {
   text        String
   isCorrect   Boolean  @default(false)
   order       Int      @default(0)
+
+  @@index([questionId])
 }
 
 model ExamSession {

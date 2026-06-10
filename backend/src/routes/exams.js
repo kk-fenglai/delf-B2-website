@@ -61,25 +61,33 @@ router.get('/', optionalAuth, async (req, res, next) => {
     const sets = await prisma.examSet.findMany({
       where: { isPublished: true },
       orderBy: [{ year: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
-      include: {
-        questions: {
-          select: { id: true, skill: true },
-        },
-      },
+      select: { id: true, title: true, description: true, isFreePreview: true },
     });
 
+    // Tally questions per (set, skill) with one grouped query instead of
+    // pulling every question row just to count — far less data over the wire.
+    const grouped = await prisma.question.groupBy({
+      by: ['examSetId', 'skill'],
+      where: { examSetId: { in: sets.map((s) => s.id) } },
+      _count: { _all: true },
+    });
+    const bySet = new Map();
+    for (const row of grouped) {
+      let entry = bySet.get(row.examSetId);
+      if (!entry) { entry = { counts: {}, total: 0 }; bySet.set(row.examSetId, entry); }
+      entry.counts[row.skill] = row._count._all;
+      entry.total += row._count._all;
+    }
+
     const result = sets.map((s) => {
-      const counts = s.questions.reduce((acc, q) => {
-        acc[q.skill] = (acc[q.skill] || 0) + 1;
-        return acc;
-      }, {});
+      const agg = bySet.get(s.id) || { counts: {}, total: 0 };
       return {
         id: s.id,
         title: sanitizeExamTitle(s.title),
         description: sanitizeExamDescription(s.description),
         isFreePreview: s.isFreePreview,
-        totalQuestions: s.questions.length,
-        countsBySkill: counts,
+        totalQuestions: agg.total,
+        countsBySkill: agg.counts,
       };
     });
 
