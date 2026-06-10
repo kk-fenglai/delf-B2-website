@@ -526,13 +526,33 @@ router.post('/import', async (req, res, next) => {
         },
       });
 
-      // Bulk-insert via 3 createMany calls instead of one round-trip per
-      // question. The Fly app (sin) talks to Neon (us-east-1) cross-region
-      // (~200ms RTT); a 49-question set doing nested per-question creates ran
-      // ~50+ sequential round-trips and overflowed even a 30s tx timeout
-      // (P2028). createMany has no nested writes, so we pre-generate question
-      // ids and attach options/follow-ups by questionId. Total: 1 set + 3
-      // createMany ≈ 4 round-trips regardless of question count.
+      // Pre-create one AudioDocument per distinct CO audio URL. The runner
+      // serves listening audio from audioDocuments[] only (a bare CO
+      // question.audioUrl is ignored), so without this a listening import
+      // would be silent until someone ran scripts/backfillAudioDocuments.
+      // Defaults mirror that script; admins can tune play rules afterward.
+      const coAudioDocId = new Map(); // audioUrl -> generated AudioDocument id
+      const audioDocRows = [];
+      for (const q of data.questions) {
+        if (q.skill === 'CO' && q.audioUrl && !coAudioDocId.has(q.audioUrl)) {
+          const docId = crypto.randomUUID();
+          coAudioDocId.set(q.audioUrl, docId);
+          audioDocRows.push({
+            id: docId,
+            examSetId: set.id,
+            order: audioDocRows.length,
+            title: `Document ${audioDocRows.length + 1}`,
+            audioUrl: q.audioUrl,
+            maxPlays: 2, prepSeconds: 60, gapSeconds: 180, answerSeconds: 0,
+          });
+        }
+      }
+
+      // Bulk-insert via createMany instead of one round-trip per question. The
+      // Fly app (sin) talks to Neon cross-region (~200ms RTT); a 49-question
+      // set doing nested per-question creates ran ~50+ sequential round-trips
+      // and overflowed even a 30s tx timeout (P2028). createMany has no nested
+      // writes, so we pre-generate ids and attach children by questionId.
       const questionRows = [];
       const optionRows = [];
       const followUpRows = [];
@@ -547,6 +567,7 @@ router.post('/import', async (req, res, next) => {
           prompt: q.prompt,
           passage: q.passage || null,
           audioUrl: q.audioUrl || null,
+          audioDocumentId: q.skill === 'CO' && q.audioUrl ? coAudioDocId.get(q.audioUrl) : null,
           explanation: q.explanation || null,
           modelEssay: q.modelEssay || null,
           points: q.points,
@@ -567,6 +588,8 @@ router.post('/import', async (req, res, next) => {
         }));
       });
 
+      // AudioDocuments first — question.audioDocumentId references them.
+      if (audioDocRows.length) await tx.audioDocument.createMany({ data: audioDocRows });
       await tx.question.createMany({ data: questionRows });
       if (optionRows.length) await tx.questionOption.createMany({ data: optionRows });
       if (followUpRows.length) await tx.oralFollowUp.createMany({ data: followUpRows });
