@@ -525,39 +525,56 @@ router.post('/import', async (req, res, next) => {
           isFreePreview: data.isFreePreview,
         },
       });
-      for (const [i, q] of data.questions.entries()) {
-        await tx.question.create({
-          data: {
-            examSetId: set.id,
-            skill: q.skill,
-            type: q.type,
-            order: q.order || i + 1,
-            prompt: q.prompt,
-            passage: q.passage || null,
-            audioUrl: q.audioUrl || null,
-            explanation: q.explanation || null,
-            modelEssay: q.modelEssay || null,
-            points: q.points,
-            options: {
-              create: q.options.map((o, j) => ({
-                label: o.label,
-                text: o.text,
-                isCorrect: o.isCorrect,
-                order: o.order || j,
-              })),
-            },
-            followUps: {
-              create: (q.followUps || []).map((f, j) => ({
-                order: f.order || j,
-                text: f.text,
-                audioUrl: f.audioUrl || null,
-                expectedAngle: f.expectedAngle || null,
-              })),
-            },
-          },
+
+      // Bulk-insert via 3 createMany calls instead of one round-trip per
+      // question. The Fly app (sin) talks to Neon (us-east-1) cross-region
+      // (~200ms RTT); a 49-question set doing nested per-question creates ran
+      // ~50+ sequential round-trips and overflowed even a 30s tx timeout
+      // (P2028). createMany has no nested writes, so we pre-generate question
+      // ids and attach options/follow-ups by questionId. Total: 1 set + 3
+      // createMany ≈ 4 round-trips regardless of question count.
+      const questionRows = [];
+      const optionRows = [];
+      const followUpRows = [];
+      data.questions.forEach((q, i) => {
+        const qid = crypto.randomUUID();
+        questionRows.push({
+          id: qid,
+          examSetId: set.id,
+          skill: q.skill,
+          type: q.type,
+          order: q.order || i + 1,
+          prompt: q.prompt,
+          passage: q.passage || null,
+          audioUrl: q.audioUrl || null,
+          explanation: q.explanation || null,
+          modelEssay: q.modelEssay || null,
+          points: q.points,
         });
-      }
+        q.options.forEach((o, j) => optionRows.push({
+          questionId: qid,
+          label: o.label,
+          text: o.text,
+          isCorrect: o.isCorrect,
+          order: o.order || j,
+        }));
+        (q.followUps || []).forEach((f, j) => followUpRows.push({
+          questionId: qid,
+          order: f.order || j,
+          text: f.text,
+          audioUrl: f.audioUrl || null,
+          expectedAngle: f.expectedAngle || null,
+        }));
+      });
+
+      await tx.question.createMany({ data: questionRows });
+      if (optionRows.length) await tx.questionOption.createMany({ data: optionRows });
+      if (followUpRows.length) await tx.oralFollowUp.createMany({ data: followUpRows });
+
       return set;
+    }, {
+      maxWait: 10000,
+      timeout: 30000,
     });
 
     await logAction(req, {
