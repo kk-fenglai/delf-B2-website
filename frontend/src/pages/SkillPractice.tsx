@@ -87,9 +87,6 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
                     </Link>,
                   ]}
                 >
-                  <Paragraph className="text-muted mb-2">
-                    {s.description || null}
-                  </Paragraph>
                   {mockMode ? (
                     <div className="flex flex-wrap gap-1">
                       {Object.entries(s.countsBySkill).map(([k, v]) => (
