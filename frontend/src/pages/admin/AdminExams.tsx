@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Table, Button, Space, Tag, Typography, message, Popconfirm, Select,
-  Modal, Form, Input, Switch, Tabs, Badge,
+  Modal, Form, Input, Switch, Tabs, Badge, Tooltip,
 } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -142,6 +142,20 @@ export default function AdminExams() {
       render: (t: string, row: ExamRow) => (
         <Link to={`/admin/exams/${row.id}`}>{t}</Link>
       ),
+    },
+    {
+      title: '简介',
+      dataIndex: 'description',
+      width: 280,
+      ellipsis: { showTitle: false },
+      render: (d?: string) =>
+        d ? (
+          <Tooltip title={d} placement="topLeft">
+            <span className="text-gray-500">{d}</span>
+          </Tooltip>
+        ) : (
+          <span className="text-gray-300">—</span>
+        ),
     },
     {
       title: '题目分布',
