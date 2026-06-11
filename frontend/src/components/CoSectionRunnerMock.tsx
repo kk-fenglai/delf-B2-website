@@ -1,41 +1,32 @@
-// Strict timeline-driven runner for the DELF B2 Compréhension de l'Oral
-// section. Used by full mock-exam mode (isMock=true) where the real DELF
-// rules must be enforced exactly.
+// Runner for the DELF B2 Compréhension de l'Oral section in full-mock mode.
 //
-// Rules implemented here:
-//   - Each AudioDocument has its own play count (Ex.1 = 2 plays, Ex.2 = 1).
-//   - A fixed reading-the-questions window before the first play
-//     (`prepSeconds`, typically 60s).
-//   - For 2-play documents, a `gapSeconds` window (typically 180s = 3 min)
-//     sits between the two plays. Answer editing IS allowed during the gap.
-//   - After the last play, an optional `answerSeconds` window finalizes
-//     answers for THIS document; once it expires we advance to the next
-//     document automatically. The questions of past documents become
-//     read-only — DELF doesn't let you go back.
-//   - Audio plays automatically at the PLAY phase. No user Play/Pause
-//     button: candidates can't trigger a replay or pause real audio.
+// Behaviour (per product decision — relaxed from the strict DELF timeline):
+//   - Audio NEVER auto-plays. The candidate clicks "Play" to start each
+//     listening, so nothing blasts out on entering the section.
+//   - Play count is still capped per document (Ex.1/Ex.2 long = 2 plays,
+//     Ex.3 short = 1). Once the cap is reached the Play button disappears.
+//   - Answers for the CURRENT document are editable at ALL times — including
+//     while the audio is playing — so candidates can answer as they listen.
+//   - A soft read-time hint counts down before the first play but does NOT
+//     force playback; it's purely informational.
+//   - Documents are shown one at a time; past documents become read-only.
 //
-// State machine (one runtime per document, run sequentially):
+// Per-document phase (no forced timers):
+//   IDLE (Play button shown) --click--> PLAYING --audio end-->
+//        if plays left: back to IDLE (next play)
+//        else:          AFTER (Play hidden, "next document" button)
 //
-//     PREP ──(prepSeconds)──► PLAY (#1) ──(audio end)──► GAP ──(gapSeconds)──► PLAY (#2)
-//                                                              if maxPlays==1, skip GAP+#2
-//     PLAY (last) ──(audio end)──► ANSWER ──(answerSeconds)──► DONE → next doc
-//
-// When all documents reach DONE, onComplete() is called so the parent runner
-// can submit / advance to the next section.
-//
-// For the relaxed practice version (free play/pause/replay, no timed phases)
-// see CoSectionRunner.tsx.
+// For the free-playback practice version see CoSectionRunner.tsx.
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Card, Progress, Steps, Tag, Typography } from 'antd';
-import { ClockCircleOutlined, SoundOutlined } from '@ant-design/icons';
+import { Alert, Button, Card, Steps, Tag, Typography } from 'antd';
+import { ClockCircleOutlined, PlayCircleOutlined, SoundOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import type { AudioDocument, Question } from '../types';
 
 const { Title, Paragraph } = Typography;
 
-type Phase = 'PREP' | 'PLAY' | 'GAP' | 'ANSWER' | 'DONE';
+type Phase = 'IDLE' | 'PLAYING' | 'AFTER';
 
 interface Props {
   /** All AudioDocuments for the CO section, in display order. */
@@ -83,14 +74,8 @@ export default function CoSectionRunnerMock({
     if (orphans.length > 0) {
       ordered.push({
         doc: {
-          id: '__orphan__',
-          order: ordered.length,
-          title: null,
-          audioUrl: null,
-          maxPlays: 1,
-          prepSeconds: 30,
-          gapSeconds: 0,
-          answerSeconds: 60,
+          id: '__orphan__', order: ordered.length, title: null, audioUrl: null,
+          maxPlays: 1, prepSeconds: 30, gapSeconds: 0, answerSeconds: 60,
         },
         qs: orphans,
       });
@@ -99,117 +84,75 @@ export default function CoSectionRunnerMock({
   }, [documents, questions]);
 
   const [docIdx, setDocIdx] = useState(0);
-  const [phase, setPhase] = useState<Phase>('PREP');
-  const [playsDone, setPlaysDone] = useState(0); // for the current document
-  const [remaining, setRemaining] = useState(0);
+  const first = groups[0];
+  const [phase, setPhase] = useState<Phase>(first && first.doc.audioUrl ? 'IDLE' : 'AFTER');
+  const [playsDone, setPlaysDone] = useState(0);
+  const [remaining, setRemaining] = useState(first ? first.doc.prepSeconds : 0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const current = groups[docIdx];
 
-  // Configure the countdown when phase / docIdx changes.
+  // Reset per-document state whenever we move to a new document. Skips the
+  // initial mount (state is already seeded from groups[0] above).
+  const mounted = useRef(false);
   useEffect(() => {
-    if (!current) {
-      if (groups.length > 0) onComplete();
-      return;
-    }
-    if (phase === 'PREP') setRemaining(current.doc.prepSeconds);
-    else if (phase === 'GAP') setRemaining(current.doc.gapSeconds);
-    else if (phase === 'ANSWER') setRemaining(current.doc.answerSeconds);
-    else setRemaining(0);
-    // PLAY duration is driven by the audio's own end event, not a timer.
+    if (!mounted.current) { mounted.current = true; return; }
+    const c = groups[docIdx];
+    if (!c) return;
+    setPlaysDone(0);
+    setPhase(c.doc.audioUrl ? 'IDLE' : 'AFTER');
+    setRemaining(c.doc.prepSeconds);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, docIdx]);
+  }, [docIdx]);
 
-  // Timer driver — runs once per second whenever a fixed-duration phase is
-  // active. Decrements `remaining`; at zero we advance phase.
+  // Soft read-time hint: counts down while waiting to play, then stops.
+  // Purely informational — it never triggers playback.
   useEffect(() => {
-    if (phase === 'PLAY' || phase === 'DONE') return;
-    if (remaining <= 0) {
-      advancePhase();
-      return;
-    }
-    const t = window.setTimeout(() => setRemaining((r) => r - 1), 1000);
-    return () => window.clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (phase !== 'IDLE' || remaining <= 0) return;
+    const id = window.setTimeout(() => setRemaining((r) => r - 1), 1000);
+    return () => window.clearTimeout(id);
   }, [phase, remaining]);
 
-  // When entering PLAY, kick off the audio. When leaving PLAY, hard-stop it.
-  useEffect(() => {
-    if (!current) return;
-    const el = audioRef.current;
-    if (phase === 'PLAY') {
-      if (!current.doc.audioUrl || !el) {
-        // No audio uploaded → treat PLAY as an instant no-op and advance.
-        finishCurrentPlay();
-        return;
-      }
-      try {
-        el.currentTime = 0;
-        el.play().catch(() => { /* user-gesture issues are non-fatal */ });
-      } catch { /* ignore */ }
-    } else if (el) {
-      try { el.pause(); } catch { /* ignore */ }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, docIdx]);
-
-  // Hard-stop on unmount.
+  // Hard-stop audio on unmount.
   useEffect(() => () => {
     try { audioRef.current?.pause(); } catch { /* ignore */ }
   }, []);
-
-  function finishCurrentPlay() {
-    const c = groups[docIdx];
-    if (!c) return;
-    const nextPlays = playsDone + 1;
-    setPlaysDone(nextPlays);
-    if (nextPlays < c.doc.maxPlays) {
-      // Still more plays to go → enter the gap (or skip if gap=0).
-      if (c.doc.gapSeconds > 0) setPhase('GAP');
-      else setPhase('PLAY');
-    } else if (c.doc.answerSeconds > 0) {
-      setPhase('ANSWER');
-    } else {
-      goToNextDoc();
-    }
-  }
-
-  function goToNextDoc() {
-    const next = docIdx + 1;
-    if (next >= groups.length) {
-      setPhase('DONE');
-      onComplete();
-    } else {
-      setDocIdx(next);
-      setPlaysDone(0);
-      setPhase(groups[next].doc.prepSeconds > 0 ? 'PREP' : 'PLAY');
-    }
-  }
-
-  function advancePhase() {
-    if (phase === 'PREP') setPhase('PLAY');
-    else if (phase === 'GAP') setPhase('PLAY');
-    else if (phase === 'ANSWER') goToNextDoc();
-  }
 
   if (!current) {
     return <Alert type="info" message={t('exam.coPhaseDone')} showIcon />;
   }
 
-  const phaseColor: Record<Phase, string> = {
-    PREP: 'blue', PLAY: 'orange', GAP: 'gold', ANSWER: 'green', DONE: 'default',
-  };
-  const phaseLabel: Record<Phase, string> = {
-    PREP: t('exam.coPhasePrep'),
-    PLAY: t('exam.coPhasePlay'),
-    GAP: t('exam.coPhaseGap'),
-    ANSWER: t('exam.coPhaseAnswer'),
-    DONE: t('exam.coPhaseDone'),
-  };
+  const isLastDoc = docIdx >= groups.length - 1;
+  const playsLeft = current.doc.maxPlays - playsDone;
 
-  // Answer editing rules per DELF: locked during PLAY (you're listening,
-  // not writing). Past documents are locked entirely.
-  const isCurrentEditable = phase === 'GAP' || phase === 'ANSWER' || phase === 'PREP';
+  function startPlay() {
+    const el = audioRef.current;
+    if (!el || !current.doc.audioUrl) return;
+    setPhase('PLAYING');
+    try { el.currentTime = 0; el.play().catch(() => { /* gesture issues non-fatal */ }); } catch { /* ignore */ }
+  }
+
+  function onAudioEnded() {
+    const next = playsDone + 1;
+    setPlaysDone(next);
+    setPhase(next < current.doc.maxPlays ? 'IDLE' : 'AFTER');
+    setRemaining(current.doc.gapSeconds);
+  }
+
+  function advanceDoc() {
+    try { audioRef.current?.pause(); } catch { /* ignore */ }
+    if (isLastDoc) onComplete();
+    else setDocIdx(docIdx + 1);
+  }
+
+  const hint =
+    phase === 'PLAYING'
+      ? t('exam.coPhasePlay')
+      : playsDone === 0
+        ? t('exam.coPhasePrep')
+        : phase === 'IDLE'
+          ? t('exam.coPhaseGap')
+          : '';
 
   return (
     <div>
@@ -232,55 +175,41 @@ export default function CoSectionRunnerMock({
         }))}
       />
 
-      <Alert
-        type="info"
-        showIcon
-        icon={phase === 'PLAY' ? <SoundOutlined /> : <ClockCircleOutlined />}
-        className="mb-3"
-        message={
-          <span>
-            <Tag color={phaseColor[phase]}>{phaseLabel[phase]}</Tag>
-            {phase !== 'PLAY' && phase !== 'DONE' && (
-              <span className="ml-2">{t('exam.coCountdown', { sec: remaining })}</span>
-            )}
-            {phase === 'PLAY' && (
-              <span className="ml-2 tabular-nums text-muted">
-                {playsDone + 1} / {current.doc.maxPlays}
-              </span>
-            )}
-          </span>
-        }
-        description={
-          phase !== 'PLAY' && phase !== 'DONE' ? (
-            <Progress
-              percent={
-                phase === 'PREP'
-                  ? Math.round((1 - remaining / Math.max(1, current.doc.prepSeconds)) * 100)
-                  : phase === 'GAP'
-                    ? Math.round((1 - remaining / Math.max(1, current.doc.gapSeconds)) * 100)
-                    : Math.round((1 - remaining / Math.max(1, current.doc.answerSeconds)) * 100)
-              }
-              size="small"
-              showInfo={false}
-            />
-          ) : null
-        }
-      />
+      <Alert type="info" showIcon className="mb-3" message={t('exam.coReadyHint')} />
 
+      {/* Hidden audio element — playback is driven only by the Play button. */}
       <audio
+        key={current.doc.id}
         ref={audioRef}
         src={current.doc.audioUrl || undefined}
         preload="auto"
-        onEnded={finishCurrentPlay}
+        onEnded={onAudioEnded}
       />
 
-      {!current.doc.audioUrl && (
-        <Alert
-          type="warning"
-          showIcon
-          className="mb-3"
-          message={t('exam.audioNotUploaded')}
-        />
+      {current.doc.audioUrl ? (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg mb-4 border border-blue-100 flex items-center flex-wrap gap-3">
+          <Tag color="blue" icon={<SoundOutlined />}>🎧 Audio</Tag>
+          <span className="text-sm" style={{ color: 'var(--textSecondary)' }}>{hint}</span>
+          {phase === 'IDLE' && remaining > 0 && (
+            <span className="text-xs tabular-nums" style={{ color: 'var(--textSecondary)' }}>
+              <ClockCircleOutlined /> {t('exam.coCountdownHint', { sec: remaining })}
+            </span>
+          )}
+          <span className="ml-auto flex items-center gap-2">
+            <span className="text-xs tabular-nums text-muted">
+              {playsDone} / {current.doc.maxPlays}
+            </span>
+            {phase === 'PLAYING' ? (
+              <Tag color="orange">{t('exam.coPlaying')}</Tag>
+            ) : playsLeft > 0 ? (
+              <Button type="primary" icon={<PlayCircleOutlined />} onClick={startPlay}>
+                {t('exam.coPlayBtn', { n: playsDone + 1, total: current.doc.maxPlays })}
+              </Button>
+            ) : null}
+          </span>
+        </div>
+      ) : (
+        <Alert type="warning" showIcon className="mb-3" message={t('exam.audioNotUploaded')} />
       )}
 
       <Card bordered={false} className="app-surface">
@@ -289,15 +218,16 @@ export default function CoSectionRunnerMock({
             <Paragraph className="text-base font-semibold mb-3">
               {qi + 1}. {q.prompt}
             </Paragraph>
-            {renderAnswer(q, !isCurrentEditable)}
-            {!isCurrentEditable && (
-              <div className="text-xs text-muted mt-2">
-                {t('exam.coCannotEditYet')}
-              </div>
-            )}
+            {renderAnswer(q, false)}
           </div>
         ))}
       </Card>
+
+      <div className="flex justify-end mt-4">
+        <Button type={phase === 'AFTER' ? 'primary' : 'default'} onClick={advanceDoc}>
+          {isLastDoc ? t('exam.coFinish') : t('exam.coNextDoc')}
+        </Button>
+      </div>
     </div>
   );
 }
