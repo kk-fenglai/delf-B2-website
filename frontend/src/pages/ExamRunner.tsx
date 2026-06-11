@@ -824,6 +824,18 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     const ceQs = sectionQuestions.filter((x) => x.skill === 'CE');
     const peQs = sectionQuestions.filter((x) => x.skill === 'PE');
     const groups = groupByPassage(ceQs);
+    // One reading text per page; the essay is the final page. A single shared
+    // 120-min countdown; the candidate moves freely (prev / next / jump).
+    const pages: Array<
+      | { kind: 'reading'; group: (typeof groups)[number]; label: string }
+      | { kind: 'writing'; label: string }
+    > = [
+      ...groups.map((g, i) => ({ kind: 'reading' as const, group: g, label: `${t('skill.CE')} ${i + 1}` })),
+      ...(peQs.length ? [{ kind: 'writing' as const, label: t('skill.PE') }] : []),
+    ];
+    const pageIdx = Math.min(Math.max(current, 0), pages.length - 1);
+    const page = pages[pageIdx];
+    const isLastPage = pageIdx >= pages.length - 1;
     return (
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
@@ -843,19 +855,6 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           </Space>
         </div>
 
-        {sections.length > 1 && (
-          <Steps
-            current={sectionIdx}
-            size="small"
-            className="mb-4"
-            items={sections.map((s, i) => ({
-              title: sectionLabel(s.skill),
-              description: `${SECTION_MINUTES[s.skill]} min`,
-              icon: i < sectionIdx ? <LockOutlined /> : undefined,
-            }))}
-          />
-        )}
-
         <Alert
           type="info"
           showIcon
@@ -867,11 +866,19 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           )}
         />
 
-        <Title level={4} className="!mb-3">{t('skill.CE')}</Title>
-        {groups.map((g, gi) => (
-          <Card key={gi} bordered={false} className="mb-6 app-surface">
+        {/* Page stepper — each reading text + the essay; click to jump. */}
+        <Steps
+          current={pageIdx}
+          size="small"
+          className="mb-4"
+          onChange={(i) => setCurrent(i)}
+          items={pages.map((p) => ({ title: p.label }))}
+        />
+
+        {page.kind === 'reading' ? (
+          <Card bordered={false} className="mb-4 app-surface">
             <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start' }}>
-              {g.passage && (
+              {page.group.passage && (
                 <div
                   className="passage p-4 rounded"
                   style={{
@@ -880,15 +887,15 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
                     borderLeft: '4px solid var(--primary)',
                     position: 'sticky',
                     top: 80,
-                    maxHeight: 'calc(100vh - 140px)',
+                    maxHeight: 'calc(100vh - 160px)',
                     overflowY: 'auto',
                   }}
                 >
-                  {renderPassage(g.passage)}
+                  {renderPassage(page.group.passage)}
                 </div>
               )}
               <div style={{ flex: 1, minWidth: 0 }}>
-                {g.questions.map((qq, qi) => (
+                {page.group.questions.map((qq, qi) => (
                   <div key={qq.id} className={qi > 0 ? 'mt-5 pt-5 border-t' : ''}>
                     <Paragraph className="text-base font-semibold mb-3">
                       {qq.order}. {qq.prompt}
@@ -900,28 +907,36 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
               </div>
             </div>
           </Card>
-        ))}
+        ) : (
+          peQs.map((pe) => (
+            <Card key={pe.id} bordered={false} className="mb-4 app-surface">
+              {pe.passage && (
+                <div
+                  className="passage p-4 rounded mb-4"
+                  style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
+                >
+                  {renderPassage(pe.passage)}
+                </div>
+              )}
+              <Paragraph className="text-base font-semibold mb-4">{pe.prompt}</Paragraph>
+              {renderEssayEditor(pe)}
+            </Card>
+          ))
+        )}
 
-        <Title level={4} className="!mb-3 mt-2">{t('skill.PE')}</Title>
-        {peQs.map((pe) => (
-          <Card key={pe.id} bordered={false} className="mb-6 app-surface">
-            {pe.passage && (
-              <div
-                className="passage p-4 rounded mb-4"
-                style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
-              >
-                {renderPassage(pe.passage)}
-              </div>
-            )}
-            <Paragraph className="text-base font-semibold mb-4">{pe.prompt}</Paragraph>
-            {renderEssayEditor(pe)}
-          </Card>
-        ))}
-
-        <div className="flex justify-end">
-          <Button type="primary" loading={submitting} onClick={confirmSubmit}>
-            {hasPO ? t('exam.submitWritten', '提交笔试') : t('exam.submit')}
+        <div className="flex justify-between">
+          <Button disabled={pageIdx === 0} onClick={() => setCurrent(pageIdx - 1)}>
+            {t('exam.prev')}
           </Button>
+          {!isLastPage ? (
+            <Button type="primary" onClick={() => setCurrent(pageIdx + 1)}>
+              {t('exam.next')}
+            </Button>
+          ) : (
+            <Button type="primary" loading={submitting} onClick={confirmSubmit}>
+              {hasPO ? t('exam.submitWritten', '提交笔试') : t('exam.submit')}
+            </Button>
+          )}
         </div>
       </div>
     );
