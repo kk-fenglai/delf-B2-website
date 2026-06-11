@@ -3,25 +3,16 @@ import { useParams, Link } from 'react-router-dom';
 import {
   Card, Typography, Tag, Progress, Button, Alert, Row, Col, Statistic,
 } from 'antd';
-import {
-  CheckCircleFilled, CloseCircleFilled, ClockCircleOutlined,
-} from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import EssayGradeCard from '../components/EssayGradeCard';
 import OralGradeCard from '../components/OralGradeCard';
+import { localizeExamTitle } from '../utils/examTitle';
 import type { SubmitResult, ExamSetDetail, Skill } from '../types';
 
 const { Title, Paragraph } = Typography;
 
 const SKILL_ORDER: Skill[] = ['CO', 'CE', 'PE', 'PO'];
-
-// DELF B2 official: each section scored /25, pass ≥5/25 per section AND
-// ≥50/100 total. When question max ≠ 25 (small skill drills) we scale.
-function scaleTo25(score: number, max: number): number {
-  if (!max) return 0;
-  return Math.round((score / max) * 25 * 10) / 10;
-}
 
 export default function ReviewResult() {
   const { t } = useTranslation();
@@ -73,105 +64,110 @@ export default function ReviewResult() {
   );
 
   const { result, exam, isMock } = data;
+  // A full mock carries a speaking part taken as a separate session. After the
+  // written review the candidate can choose to continue to the oral exam.
+  const hasSpeaking = !!isMock && exam.questions.some((q) => q.type === 'SPEAKING');
   const pct = result.maxScore ? Math.round((result.totalScore / result.maxScore) * 100) : 0;
   const questionMap = new Map(exam.questions.map((q) => [q.id, q]));
   const essayByQuestion = new Map((result.essays || []).map((e) => [e.questionId, e]));
   const oralByQuestion = new Map((result.orals || []).map((o) => [o.questionId, o]));
 
-  // DELF B2 verdict. Only meaningful in mock mode (full exam covers all 4
-  // skills). We scale each section to /25 so the pass gate (≥5/25) applies
-  // consistently even when the mock isn't pinned to 25 raw points per skill.
-  const showMockVerdict = isMock && !!result.perSkill;
-  const thresholds = result.thresholds || { passTotal: 50, passPerSkill: 5, skillMax: 25 };
-  const perSkillScaled = showMockVerdict
-    ? SKILL_ORDER.map((s) => {
-        const b = result.perSkill![s];
-        const scaled = scaleTo25(b.score, b.maxScore);
-        return {
-          skill: s,
-          present: b.maxScore > 0,
-          raw: b.score,
-          rawMax: b.maxScore,
-          scaled,
-          passed: scaled >= thresholds.passPerSkill,
-          pendingAI: b.pendingAI,
-        };
-      }).filter((r) => r.present)
+  // Listening (CO) and Reading (CE) are no longer reported as a /25 score —
+  // we show the question-level correctness rate instead. The full B2 pass
+  // prediction (official gates, correctness-based) lives in the learning
+  // centre (Dashboard → ScorePredictionCard).
+  const showCorrectness = isMock && !!result.perSkill;
+  const correctnessFor = (s: Skill) => {
+    const ds = result.details.filter((d) => {
+      const qq = questionMap.get(d.questionId);
+      return qq && qq.skill === s && qq.type !== 'ESSAY' && qq.type !== 'SPEAKING';
+    });
+    const total = ds.length;
+    const correct = ds.filter((d) => d.isCorrect === true).length;
+    return { skill: s, total, correct, rate: total ? Math.round((correct / total) * 100) : 0 };
+  };
+  // CO/CE objective correctness; PE present in the written session is AI-graded.
+  const autoRates = showCorrectness
+    ? (['CO', 'CE'] as Skill[]).map(correctnessFor).filter((r) => r.total > 0)
     : [];
-  const totalScaled = perSkillScaled.reduce((s, r) => s + r.scaled, 0);
-  const anyBelowGate = perSkillScaled.some((r) => !r.passed && !r.pendingAI);
-  const anyPending = perSkillScaled.some((r) => r.pendingAI);
-  const overallPass = !anyBelowGate && !anyPending && totalScaled >= thresholds.passTotal;
+  const aiPendingSkills = showCorrectness
+    ? SKILL_ORDER.filter(
+        (s) => (s === 'PE' || s === 'PO') && (result.perSkill?.[s]?.maxScore ?? 0) > 0,
+      )
+    : [];
 
   return (
     <div className="max-w-4xl mx-auto">
       <Card className="mb-4">
         <Title level={3} style={{ marginBottom: 4 }}>
-          {t('review.title')} · {exam.title}
+          {t('review.title')} · {localizeExamTitle(exam.title, t)}
           {isMock && <Tag color="purple" className="ml-2">{t('exam.mockBadge')}</Tag>}
         </Title>
       </Card>
 
-      {/* DELF B2 verdict — mock exams only. Shows per-skill /25 scaled scores
-          with the official 5/25 gate marker, plus an overall pass/fail banner. */}
-      {showMockVerdict && (
-        <Card className="mb-4" title={t('review.delfVerdictTitle')}>
+      {/* Written part done — let the candidate review the score below OR
+          continue to the speaking exam (separate session, 3-choose-1). */}
+      {hasSpeaking && (
+        <Alert
+          type="success"
+          showIcon
+          className="mb-4"
+          message={t('review.writtenDoneTitle', '笔试部分已完成')}
+          description={t('review.writtenDoneDesc', '你可以在下方查看笔试成绩，或现在开始口语部分（三选一）。')}
+          action={
+            <Link to={`/practice/speaking/${exam.id}?mode=exam`}>
+              <Button type="primary">{t('review.startSpeaking', '开始口语')}</Button>
+            </Link>
+          }
+        />
+      )}
+
+      {/* Listening / Reading correctness — CO & CE are reported as a correctness
+          rate (not a /25 score). The full B2 pass prediction lives in the
+          learning centre (Dashboard). */}
+      {showCorrectness && (autoRates.length > 0 || aiPendingSkills.length > 0) && (
+        <Card className="mb-4" title={t('review.correctnessTitle', '答题正确率（听力 / 阅读）')}>
           <Alert
-            type={
-              anyPending ? 'info' : overallPass ? 'success' : 'warning'
-            }
+            type="info"
             showIcon
-            icon={anyPending ? <ClockCircleOutlined /> : overallPass ? <CheckCircleFilled /> : <CloseCircleFilled />}
             className="mb-4"
-            message={
-              anyPending
-                ? t('review.delfPending')
-                : overallPass
-                  ? t('review.delfPassed', { score: totalScaled.toFixed(1), min: thresholds.passTotal })
-                  : t('review.delfFailed', { score: totalScaled.toFixed(1), min: thresholds.passTotal })
+            message={t('review.correctnessHint', '听力与阅读不计分，仅按正确率展示。')}
+            description={t('review.predictionHint', '完整的 B2 通过预测（按正确率，含官方及格线）请见学习中心。')}
+            action={
+              <Link to="/dashboard">
+                <Button size="small" type="primary">{t('review.toDashboard')}</Button>
+              </Link>
             }
-            description={t('review.delfGateHint', {
-              skillMin: thresholds.passPerSkill,
-              skillMax: thresholds.skillMax,
-            })}
           />
           <Row gutter={[16, 16]}>
-            {perSkillScaled.map((r) => (
+            {autoRates.map((r) => (
               <Col key={r.skill} xs={12} sm={6}>
-                <Card
-                  size="small"
-                  className={
-                    r.pendingAI
-                      ? 'border-gray-300'
-                      : r.passed
-                        ? 'border-green-400'
-                        : 'border-red-400'
-                  }
-                  style={{ borderWidth: 2 }}
-                >
+                <Card size="small" className="border-blue-300" style={{ borderWidth: 2 }}>
                   <Statistic
-                    title={
-                      <span>
-                        {t(`skill.${r.skill}`)}{' '}
-                        {r.pendingAI ? (
-                          <Tag color="default">{t('review.pendingAI')}</Tag>
-                        ) : r.passed ? (
-                          <Tag color="success">{t('review.passGate')}</Tag>
-                        ) : (
-                          <Tag color="error">{t('review.failGate')}</Tag>
-                        )}
-                      </span>
-                    }
-                    value={r.scaled}
-                    suffix={`/ ${thresholds.skillMax}`}
-                    precision={1}
-                    valueStyle={{
-                      color: r.pendingAI ? '#8c8c8c' : r.passed ? '#389e0d' : '#cf1322',
-                    }}
+                    title={t(`skill.${r.skill}`)}
+                    value={r.rate}
+                    suffix="%"
+                    valueStyle={{ color: '#1677ff' }}
                   />
                   <div className="text-xs text-gray-400 mt-1">
-                    {t('review.rawPoints', { score: r.raw, max: r.rawMax })}
+                    {t('review.correctOf', { correct: r.correct, total: r.total })}
                   </div>
+                </Card>
+              </Col>
+            ))}
+            {aiPendingSkills.map((s) => (
+              <Col key={s} xs={12} sm={6}>
+                <Card size="small" className="border-gray-300" style={{ borderWidth: 2 }}>
+                  <Statistic
+                    title={(
+                      <span>
+                        {t(`skill.${s}`)}{' '}
+                        <Tag color="default">{t('review.pendingAI')}</Tag>
+                      </span>
+                    )}
+                    value="—"
+                    valueStyle={{ color: '#8c8c8c' }}
+                  />
                 </Card>
               </Col>
             ))}

@@ -13,6 +13,7 @@ import { useAuthStore } from '../stores/auth';
 import CoSectionRunner from '../components/CoSectionRunner';
 import CoSectionRunnerMock from '../components/CoSectionRunnerMock';
 import TemplateDrawer from '../components/TemplateDrawer';
+import { localizeExamTitle } from '../utils/examTitle';
 import type { ExamSetDetail, Question, Skill, EssayQuota, ClaudeModelKey } from '../types';
 
 const { Title, Paragraph, Text } = Typography;
@@ -21,8 +22,31 @@ type Props = { skill?: Skill; mockMode?: boolean };
 
 // DELF B2 official time allocation per skill (in minutes)
 const SKILL_MINUTES: Record<Skill, number> = { CO: 30, CE: 30, PE: 60, PO: 20 };
+// In a full mock, Compréhension des écrits + Production écrite are taken as ONE
+// 120-min block the candidate allocates freely. PO is taken separately (its own
+// session) on the speaking page, so it is not a runner section here.
+type SectionSkill = Skill | 'CEPE';
+const SECTION_MINUTES: Record<SectionSkill, number> = {
+  CO: 30, CE: 30, PE: 60, PO: 20, CEPE: 120,
+};
 // Canonical DELF B2 section order.
 const SECTION_ORDER: Skill[] = ['CO', 'CE', 'PE', 'PO'];
+
+// Group questions by their passage text (PDF line-wrap artifacts trimmed) so a
+// reading section can render each passage once with its questions beside it.
+function groupByPassage(questions: Question[]) {
+  const byPassage = new Map<string, Question[]>();
+  for (const qq of questions) {
+    const key = (qq.passage || '').trim();
+    const k = key.length ? key : '__NO_PASSAGE__';
+    if (!byPassage.has(k)) byPassage.set(k, []);
+    byPassage.get(k)!.push(qq);
+  }
+  return [...byPassage.entries()].map(([k, qs]) => ({
+    passage: k === '__NO_PASSAGE__' ? null : k,
+    questions: qs.sort((a, b) => a.order - b.order),
+  }));
+}
 // DELF B2 passing standards
 const PASS_TOTAL = 50;          // /100
 const PASS_PER_SKILL = 5;       // /25
@@ -49,7 +73,7 @@ function formatTime(seconds: number): string {
   return h > 0 ? `${h}:${pad(m)}:${pad(sec)}` : `${pad(m)}:${pad(sec)}`;
 }
 
-type Section = { skill: Skill; questions: Question[] };
+type Section = { skill: SectionSkill; questions: Question[] };
 
 export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const { t, i18n } = useTranslation();
@@ -92,10 +116,15 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     }
     const grouped: Record<Skill, Question[]> = { CO: [], CE: [], PE: [], PO: [] };
     exam.questions.forEach((q) => grouped[q.skill].push(q));
-    return SECTION_ORDER.filter((s) => grouped[s].length > 0).map((s) => ({
-      skill: s,
-      questions: grouped[s],
-    }));
+    const result: Section[] = [];
+    if (grouped.CO.length) result.push({ skill: 'CO', questions: grouped.CO });
+    // CE + PE are taken together as one freely-allocated 120-min block.
+    if (grouped.CE.length || grouped.PE.length) {
+      result.push({ skill: 'CEPE', questions: [...grouped.CE, ...grouped.PE] });
+    }
+    // PO is taken on the speaking page as a separate session (3-choose-1), so
+    // it is intentionally NOT a section in the written runner.
+    return result;
   }, [exam, isMock, skill]);
 
   const currentSection: Section | undefined = sections[sectionIdx];
@@ -107,7 +136,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const sectionSeconds = currentSection
     ? currentSection.skill === 'CO' && !isMock
       ? 0
-      : SKILL_MINUTES[currentSection.skill] * 60
+      : SECTION_MINUTES[currentSection.skill] * 60
     : 0;
   const isLastSection = sectionIdx >= sections.length - 1;
 
@@ -115,6 +144,15 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     () => !!exam?.questions.some((q) => q.type === 'ESSAY'),
     [exam]
   );
+  // Whether this set carries a speaking part. In a mock, finishing the written
+  // block hands off to the speaking page (separate session) instead of review.
+  const hasPO = useMemo(
+    () => !!exam?.questions.some((q) => q.type === 'SPEAKING'),
+    [exam]
+  );
+  // Label a section (handles the synthetic CE+PE block).
+  const sectionLabel = (s: SectionSkill) =>
+    s === 'CEPE' ? t('exam.sectionCEPE', '阅读 + 写作') : t(`skill.${s}`);
 
   // Reading list mode: group questions by passage text and render all at once.
   // Must be declared before any early returns to keep hook order stable.
@@ -271,16 +309,24 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     if (!sessionId || !exam) return;
     setSubmitting(true);
     try {
-      const payload = exam.questions.map((qq) => ({
-        questionId: qq.id,
-        answer: answers[qq.id] ?? (qq.type === 'MULTIPLE' ? [] : ''),
-      }));
+      // In a mock, the written session covers CO+CE+PE only (→ /75). PO is taken
+      // separately on the speaking page, so it must not be part of this payload
+      // (otherwise the backend would score it as an unanswered 0).
+      const payload = exam.questions
+        .filter((qq) => !(isMock && qq.skill === 'PO'))
+        .map((qq) => ({
+          questionId: qq.id,
+          answer: answers[qq.id] ?? (qq.type === 'MULTIPLE' ? [] : ''),
+        }));
       const body: Record<string, unknown> = { answers: payload };
       if (hasEssay) {
         const loc = (i18n.language || 'fr').slice(0, 2);
         body.aiLocale = (['fr', 'en', 'zh'] as const).includes(loc as any) ? loc : 'fr';
       }
       const { data } = await api.post(`/sessions/${sessionId}/submit`, body);
+      // Mock with a speaking part: go to the written review (so the candidate
+      // can see their CO+CE+PE result) where a "start speaking" button lets
+      // them continue to the oral exam (its own session) when ready.
       sessionStorage.setItem(`result-${sessionId}`, JSON.stringify({ result: data, exam, isMock }));
       if (auto) message.info(t('exam.autoSubmitted'), 3);
       navigate(`/review/${sessionId}`);
@@ -305,8 +351,10 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   // Confirmation modal before final submit — shows completion summary and
   // DELF B2 pass criteria so candidates understand the bar they must clear.
   const confirmSubmit = () => {
-    const totalAllQuestions = exam.questions.length;
-    const answeredAll = exam.questions.filter((qq) => {
+    // In a mock the written submit covers CO+CE+PE only; PO is taken separately.
+    const written = exam.questions.filter((qq) => !(isMock && qq.skill === 'PO'));
+    const totalAllQuestions = written.length;
+    const answeredAll = written.filter((qq) => {
       const v = answers[qq.id];
       if (v === undefined || v === null) return false;
       if (Array.isArray(v)) return v.length > 0;
@@ -367,8 +415,8 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
             description={
               nextSkill
                 ? t('exam.advanceNext', {
-                    skill: t(`skill.${nextSkill}`),
-                    minutes: SKILL_MINUTES[nextSkill],
+                    skill: sectionLabel(nextSkill),
+                    minutes: SECTION_MINUTES[nextSkill],
                   })
                 : undefined
             }
@@ -379,6 +427,89 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       cancelText: t('exam.advanceCancel'),
       onOk: () => advanceSection(),
     });
+  };
+
+  // Full essay editor (template drawer + optional OCR + AI tip). Used both by
+  // the single-question view and by the combined CE+PE block in a mock.
+  const renderEssayEditor = (qq: Question) => {
+    const value = answers[qq.id];
+    const update = (val: any) => setAnswers((prev) => ({ ...prev, [qq.id]: val }));
+    const ocrLang = (i18n.language || 'fr').slice(0, 2);
+    return (
+      <div>
+        <div className="flex justify-between items-center mb-2">
+          <Button
+            size="small"
+            icon={<BookOutlined />}
+            onClick={() => setTemplateDrawerOpen(true)}
+          >
+            {t('template.drawerTitle')}
+          </Button>
+          {canUseOcr && (
+            <Upload
+              accept="image/png,image/jpeg,image/webp"
+              showUploadList={false}
+              beforeUpload={(file) => {
+                const isOkType = ['image/png', 'image/jpeg', 'image/webp'].includes(file.type);
+                if (!isOkType) {
+                  message.error(t('exam.ocr.unsupportedType'));
+                  return Upload.LIST_IGNORE;
+                }
+                const maxMb = 8;
+                if (file.size / 1024 / 1024 > maxMb) {
+                  message.error(t('exam.ocr.tooLarge', { maxMb }));
+                  return Upload.LIST_IGNORE;
+                }
+                return true;
+              }}
+              customRequest={async ({ file, onSuccess, onError }) => {
+                try {
+                  setOcrLoading(true);
+                  const form = new FormData();
+                  form.append('image', file as Blob);
+                  form.append('lang', (['fr', 'en', 'zh'] as const).includes(ocrLang as any) ? ocrLang : 'fr');
+                  const { data } = await api.post('/user/essays/ocr', form, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                  });
+                  const text = String(data?.text || '').trim();
+                  if (!text) {
+                    message.warning(t('exam.ocr.noText'));
+                  } else {
+                    update(text);
+                    message.success(t('exam.ocr.success'));
+                  }
+                  onSuccess?.(data, undefined as any);
+                } catch (err: any) {
+                  message.error(err?.response?.data?.error || t('exam.ocr.fail'));
+                  onError?.(err);
+                } finally {
+                  setOcrLoading(false);
+                }
+              }}
+            >
+              <Button loading={ocrLoading} disabled={submitting} size="small">
+                {t('exam.ocr.uploadBtn')}
+              </Button>
+            </Upload>
+          )}
+        </div>
+        <Input.TextArea
+          value={value || ''}
+          onChange={(e) => update(e.target.value)}
+          rows={12}
+          placeholder={t('exam.essayPlaceholder')}
+          showCount
+        />
+        <TemplateDrawer
+          open={templateDrawerOpen}
+          onClose={() => setTemplateDrawerOpen(false)}
+          onInsert={(content) => update((value || '') + content)}
+        />
+        {quota && quota.allowedModels.length > 0 && (
+          <div className="mt-2 text-xs text-muted">{t('exam.essayAITip')}</div>
+        )}
+      </div>
+    );
   };
 
   const renderAnswerInput = () => {
@@ -443,82 +574,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       );
     }
     if (q.type === 'ESSAY') {
-      const ocrLang = (i18n.language || 'fr').slice(0, 2);
-      return (
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <Button
-              size="small"
-              icon={<BookOutlined />}
-              onClick={() => setTemplateDrawerOpen(true)}
-            >
-              {t('template.drawerTitle')}
-            </Button>
-            {canUseOcr && (
-              <Upload
-                accept="image/png,image/jpeg,image/webp"
-                showUploadList={false}
-                beforeUpload={(file) => {
-                  const isOkType = ['image/png', 'image/jpeg', 'image/webp'].includes(file.type);
-                  if (!isOkType) {
-                    message.error(t('exam.ocr.unsupportedType'));
-                    return Upload.LIST_IGNORE;
-                  }
-                  const maxMb = 8;
-                  if (file.size / 1024 / 1024 > maxMb) {
-                    message.error(t('exam.ocr.tooLarge', { maxMb }));
-                    return Upload.LIST_IGNORE;
-                  }
-                  return true;
-                }}
-                customRequest={async ({ file, onSuccess, onError }) => {
-                  try {
-                    setOcrLoading(true);
-                    const form = new FormData();
-                    form.append('image', file as Blob);
-                    form.append('lang', (['fr', 'en', 'zh'] as const).includes(ocrLang as any) ? ocrLang : 'fr');
-                    const { data } = await api.post('/user/essays/ocr', form, {
-                      headers: { 'Content-Type': 'multipart/form-data' },
-                    });
-                    const text = String(data?.text || '').trim();
-                    if (!text) {
-                      message.warning(t('exam.ocr.noText'));
-                    } else {
-                      updateAnswer(text);
-                      message.success(t('exam.ocr.success'));
-                    }
-                    onSuccess?.(data, undefined as any);
-                  } catch (err: any) {
-                    message.error(err?.response?.data?.error || t('exam.ocr.fail'));
-                    onError?.(err);
-                  } finally {
-                    setOcrLoading(false);
-                  }
-                }}
-              >
-                <Button loading={ocrLoading} disabled={submitting} size="small">
-                  {t('exam.ocr.uploadBtn')}
-                </Button>
-              </Upload>
-            )}
-          </div>
-          <Input.TextArea
-            value={value || ''}
-            onChange={(e) => updateAnswer(e.target.value)}
-            rows={12}
-            placeholder={t('exam.essayPlaceholder')}
-            showCount
-          />
-          <TemplateDrawer
-            open={templateDrawerOpen}
-            onClose={() => setTemplateDrawerOpen(false)}
-            onInsert={(content) => updateAnswer((value || '') + content)}
-          />
-          {quota && quota.allowedModels.length > 0 && (
-            <div className="mt-2 text-xs text-muted">{t('exam.essayAITip')}</div>
-          )}
-        </div>
-      );
+      return renderEssayEditor(q);
     }
     return <div>{t('exam.unsupported')}</div>;
   };
@@ -648,7 +704,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           value={value || ''}
           onChange={(e) => update(e.target.value)}
           rows={4}
-          placeholder="请用自己的话作答"
+          placeholder={t('exam.shortAnswerPlaceholder', '请用自己的话作答')}
           showCount
         />
       );
@@ -682,7 +738,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
           <Title level={3} className="!mb-0">
-            {exam.title}
+            {localizeExamTitle(exam.title, t)}
           </Title>
           <Space>
             <Tag icon={<ClockCircleOutlined />} color="blue" className="text-base px-3 py-1">
@@ -760,12 +816,123 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     );
   }
 
+  // Combined CE + PE block (mock only): the 3 reading passages and the essay on
+  // one page, sharing a single 120-min countdown the candidate allocates
+  // freely. On submit, the written session (/75) is saved and the flow hands
+  // off to the speaking page.
+  if (isMock && currentSection.skill === 'CEPE') {
+    const ceQs = sectionQuestions.filter((x) => x.skill === 'CE');
+    const peQs = sectionQuestions.filter((x) => x.skill === 'PE');
+    const groups = groupByPassage(ceQs);
+    return (
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
+          <Title level={3} className="!mb-0">
+            {localizeExamTitle(exam.title, t)}
+            <Tag color="purple" className="ml-2">{t('exam.mockBadge')}</Tag>
+          </Title>
+          <Space>
+            <Tag
+              icon={<ClockCircleOutlined />}
+              color={timerDanger ? 'red' : timerWarning ? 'orange' : 'blue'}
+              className="text-base px-3 py-1"
+            >
+              {formatTime(remaining)}
+            </Tag>
+            <Tag color="blue">{sectionLabel('CEPE')}</Tag>
+          </Space>
+        </div>
+
+        {sections.length > 1 && (
+          <Steps
+            current={sectionIdx}
+            size="small"
+            className="mb-4"
+            items={sections.map((s, i) => ({
+              title: sectionLabel(s.skill),
+              description: `${SECTION_MINUTES[s.skill]} min`,
+              icon: i < sectionIdx ? <LockOutlined /> : undefined,
+            }))}
+          />
+        )}
+
+        <Alert
+          type="info"
+          showIcon
+          className="mb-4"
+          message={t('exam.cepeBannerTitle', '阅读 + 写作 · 共 120 分钟，时间自由分配')}
+          description={t(
+            'exam.cepeBannerDesc',
+            '本部分含 3 篇阅读和 1 篇写作，时间由你自行分配。提交后进入口语部分。',
+          )}
+        />
+
+        <Title level={4} className="!mb-3">{t('skill.CE')}</Title>
+        {groups.map((g, gi) => (
+          <Card key={gi} bordered={false} className="mb-6 app-surface">
+            <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start' }}>
+              {g.passage && (
+                <div
+                  className="passage p-4 rounded"
+                  style={{
+                    flex: '0 0 52%',
+                    background: 'var(--bgElevated)',
+                    borderLeft: '4px solid var(--primary)',
+                    position: 'sticky',
+                    top: 80,
+                    maxHeight: 'calc(100vh - 140px)',
+                    overflowY: 'auto',
+                  }}
+                >
+                  {renderPassage(g.passage)}
+                </div>
+              )}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {g.questions.map((qq, qi) => (
+                  <div key={qq.id} className={qi > 0 ? 'mt-5 pt-5 border-t' : ''}>
+                    <Paragraph className="text-base font-semibold mb-3">
+                      {qq.order}. {qq.prompt}
+                      <Text className="ml-2" type="secondary">({qq.points} {t('exam.points')})</Text>
+                    </Paragraph>
+                    {renderAnswerInputFor(qq)}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+        ))}
+
+        <Title level={4} className="!mb-3 mt-2">{t('skill.PE')}</Title>
+        {peQs.map((pe) => (
+          <Card key={pe.id} bordered={false} className="mb-6 app-surface">
+            {pe.passage && (
+              <div
+                className="passage p-4 rounded mb-4"
+                style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
+              >
+                {renderPassage(pe.passage)}
+              </div>
+            )}
+            <Paragraph className="text-base font-semibold mb-4">{pe.prompt}</Paragraph>
+            {renderEssayEditor(pe)}
+          </Card>
+        ))}
+
+        <div className="flex justify-end">
+          <Button type="primary" loading={submitting} onClick={confirmSubmit}>
+            {hasPO ? t('exam.submitWritten', '提交笔试') : t('exam.submit')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header — title + live countdown */}
       <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
         <Title level={3} className="!mb-0">
-          {exam.title}
+          {localizeExamTitle(exam.title, t)}
           {isMock && <Tag color="purple" className="ml-2">{t('exam.mockBadge')}</Tag>}
         </Title>
         <Space>
@@ -798,8 +965,8 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           size="small"
           className="mb-4"
           items={sections.map((s, i) => ({
-            title: t(`skill.${s.skill}`),
-            description: `${SKILL_MINUTES[s.skill]} min`,
+            title: sectionLabel(s.skill),
+            description: `${SECTION_MINUTES[s.skill]} min`,
             icon: i < sectionIdx ? <LockOutlined /> : undefined,
           }))}
         />
@@ -815,8 +982,8 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         message={
           isMock
             ? t('exam.sectionBanner', {
-                skill: t(`skill.${currentSection.skill}`),
-                minutes: SKILL_MINUTES[currentSection.skill],
+                skill: sectionLabel(currentSection.skill),
+                minutes: SECTION_MINUTES[currentSection.skill],
                 idx: sectionIdx + 1,
                 total: sections.length,
               })
@@ -833,7 +1000,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
                 total: PASS_TOTAL,
                 skillMin: PASS_PER_SKILL,
                 skillMax: SKILL_MAX,
-                duration: SKILL_MINUTES[currentSection.skill],
+                duration: SECTION_MINUTES[currentSection.skill],
               })
         }
       />

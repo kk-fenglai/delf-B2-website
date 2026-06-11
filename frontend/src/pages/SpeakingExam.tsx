@@ -9,6 +9,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import AudioRecorder, { type RecordingResult } from '../components/AudioRecorder';
+import { localizeExamTitle } from '../utils/examTitle';
 import type {
   ExamSetDetail,
   Question,
@@ -22,7 +23,7 @@ const { Title, Paragraph, Text } = Typography;
 // Local-storage key for the per-session prep notes auto-save.
 const noteKey = (examId: string) => `oral-prep-notes:${examId}`;
 
-type Phase = 'preparation' | 'monologue' | 'interaction' | 'submitting' | 'submitted';
+type Phase = 'choose' | 'preparation' | 'monologue' | 'interaction' | 'submitting' | 'submitted';
 
 type Uploaded = {
   // Map: followUpId | 'monologue' → uploaded recording id.
@@ -40,6 +41,9 @@ export default function SpeakingExam() {
   const [loading, setLoading] = useState(true);
   const [blocked, setBlocked] = useState<string | null>(null);
   const [phase, setPhase] = useState<Phase>('preparation');
+  // All SPEAKING topics in this set. In a mock there are 3 — the candidate
+  // picks one (DELF B2 PO is a single subject). Single-topic sets skip the chooser.
+  const [speakingList, setSpeakingList] = useState<Question[]>([]);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [notes, setNotes] = useState('');
   const [prepRemaining, setPrepRemaining] = useState<number>(0);
@@ -76,8 +80,14 @@ export default function SpeakingExam() {
         if (cancelled) return;
         const e: ExamSetDetail = examRes.data;
         setExam(e);
-        const q = e.questions.find((x) => x.type === 'SPEAKING') || null;
-        questionRef.current = q;
+        const list = e.questions.filter((x) => x.type === 'SPEAKING');
+        setSpeakingList(list);
+        if (list.length > 1) {
+          // Mock: present the topics; candidate picks one before preparation.
+          setPhase('choose');
+        } else {
+          questionRef.current = list[0] || null;
+        }
         const quotaData = quotaRes.data as OralQuota;
         setQuota(quotaData);
         if (quotaData.monthlyCap === 0) {
@@ -192,6 +202,13 @@ export default function SpeakingExam() {
   // ------------------------------------------------------------------
   // Phase transitions
   // ------------------------------------------------------------------
+  // Mock 3-choose-1: lock in the chosen topic and start preparation. Prep time
+  // (30 min in EXAM mode) was already seeded from the quota thresholds on load.
+  function chooseTopic(q: Question) {
+    questionRef.current = q;
+    setPhase('preparation');
+  }
+
   function startMonologue() {
     setSkipPrepOpen(false);
     setPhase('monologue');
@@ -327,6 +344,56 @@ export default function SpeakingExam() {
     );
   }
 
+  // Mock 3-choose-1: topic picker shown before the prep phase.
+  if (phase === 'choose' && exam && quota) {
+    return (
+      <div className="max-w-5xl mx-auto">
+        <Breadcrumb
+          className="mb-3"
+          items={[
+            { title: <Link to="/practice">{t('nav.practice')}</Link> },
+            { title: <Link to="/practice/speaking">{t('skill.PO')}</Link> },
+            { title: localizeExamTitle(exam.title, t) },
+          ]}
+        />
+        <Card className="mb-4">
+          <Title level={3} style={{ marginBottom: 4 }}>
+            {localizeExamTitle(exam.title, t)}
+            <Tag color="orange" className="ml-2">{t('skill.PO')}</Tag>
+          </Title>
+          <Paragraph className="text-gray-500 mb-0">
+            {t('oral.exam.chooseSubtitle', '请从以下主题中任选一个作答')}
+          </Paragraph>
+        </Card>
+        <Row gutter={[16, 16]}>
+          {speakingList.map((sq, i) => (
+            <Col xs={24} lg={8} key={sq.id}>
+              <Card
+                title={t('oral.exam.topicN', { n: i + 1, defaultValue: `主题 ${i + 1}` })}
+                style={{ height: '100%' }}
+                actions={[
+                  <Button type="primary" onClick={() => chooseTopic(sq)}>
+                    {t('oral.exam.chooseThis', '选择此题')}
+                  </Button>,
+                ]}
+              >
+                <Paragraph strong>{sq.prompt}</Paragraph>
+                {sq.passage && (
+                  <div
+                    className="text-sm text-gray-600 whitespace-pre-wrap"
+                    style={{ maxHeight: 220, overflowY: 'auto' }}
+                  >
+                    {sq.passage}
+                  </div>
+                )}
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
+    );
+  }
+
   if (!question || !exam || !quota) {
     return (
       <Alert
@@ -347,7 +414,7 @@ export default function SpeakingExam() {
         items={[
           { title: <Link to="/practice">{t('nav.practice')}</Link> },
           { title: <Link to="/practice/speaking">{t('skill.PO')}</Link> },
-          { title: exam.title },
+          { title: localizeExamTitle(exam.title, t) },
         ]}
       />
 
@@ -355,7 +422,7 @@ export default function SpeakingExam() {
         <div className="flex justify-between items-center flex-wrap gap-3">
           <div>
             <Title level={3} style={{ marginBottom: 4 }}>
-              {exam.title}
+              {localizeExamTitle(exam.title, t)}
               <Tag color="orange" className="ml-2">{t('skill.PO')}</Tag>
             </Title>
             <Paragraph className="text-gray-500 mb-0">

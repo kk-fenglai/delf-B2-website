@@ -3,6 +3,7 @@ import { Card, Col, Row, Tag, Typography, Button, Empty, Breadcrumb, Spin } from
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
+import { localizeExamTitle } from '../utils/examTitle';
 import type { ExamSetBrief, Skill } from '../types';
 
 const { Title, Paragraph } = Typography;
@@ -78,7 +79,7 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
                 <Card
                   bordered={false}
                   className="app-surface"
-                  title={s.title}
+                  title={localizeExamTitle(s.title, t)}
                   extra={s.isFreePreview && <Tag color="green">{t('practice.freePreview')}</Tag>}
                   actions={[
                     <Link key="go" to={runnerPathFor(s.id)}>

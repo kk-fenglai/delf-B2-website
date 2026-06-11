@@ -6,6 +6,7 @@ import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
 import ScorePredictionCard from '../components/ScorePredictionCard';
 import PageLoader from '../components/PageLoader';
+import { localizeExamTitle } from '../utils/examTitle';
 
 const SkillRadarChart = lazy(() => import('../components/SkillRadarChart'));
 
@@ -114,7 +115,7 @@ export default function Dashboard() {
                     ]}
                   >
                     <List.Item.Meta
-                      title={s.title}
+                      title={localizeExamTitle(s.title, t)}
                       description={new Date(s.completedAt).toLocaleDateString()}
                     />
                   </List.Item>

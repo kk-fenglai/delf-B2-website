@@ -241,7 +241,23 @@ router.post('/', requireAuth, async (req, res, next) => {
     const plan = req.userPlan || 'FREE';
     const caps = PLAN_CAPS[plan] || PLAN_CAPS.FREE;
 
-    if (caps.freeMonthlySessions) {
+    // A full mock is taken as TWO EXAM sessions: the written part (CO+CE+PE)
+    // and then the speaking continuation (PO). They must count as ONE mock.
+    // If an EXAM session for this set was started recently, treat this create
+    // as the speaking continuation of the same attempt — skip the quota gate.
+    const isMockContinuation =
+      data.mode === 'EXAM' &&
+      (await prisma.examSession.findFirst({
+        where: {
+          userId: req.userId,
+          examSetId: data.examSetId,
+          mode: 'EXAM',
+          startedAt: { gte: new Date(Date.now() - 3 * 60 * 60 * 1000) },
+        },
+        select: { id: true },
+      })) !== null;
+
+    if (caps.freeMonthlySessions && !isMockContinuation) {
       // Bucket: EXAM mode is always MOCK; PRACTICE mode buckets by skill.
       // PRACTICE without a skill (rare — multi-skill practice) isn't counted.
       const bucket = data.mode === 'EXAM' ? 'MOCK' : data.skill;
