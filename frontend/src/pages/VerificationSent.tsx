@@ -7,7 +7,7 @@ import { api } from '../api/client';
 const { Paragraph } = Typography;
 
 export default function VerificationSent() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [params] = useSearchParams();
   const email = params.get('email') || '';
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ export default function VerificationSent() {
     }
     setLoading(true);
     try {
-      await api.post('/auth/resend-verification', { email });
+      await api.post('/auth/resend-verification', { email, locale: i18n.language });
       message.success(t('auth.sent.resent'));
     } catch (e: any) {
       message.error(e.response?.data?.error || t('auth.sent.resendFail'));

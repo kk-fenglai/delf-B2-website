@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { User } from '../types';
 import { api, ACCESS_KEY, REFRESH_KEY } from '../api/client';
+import i18n from '../i18n';
 
 interface RegisterResult {
   email: string;
@@ -38,7 +39,7 @@ export const useAuthStore = create<AuthState>()(
       register: async (email, password, name) => {
         set({ loading: true });
         try {
-          const { data } = await api.post('/auth/register', { email, password, name });
+          const { data } = await api.post('/auth/register', { email, password, name, locale: i18n.language });
           // Email verification is required — no tokens issued yet.
           return { email: data.user?.email || email, emailVerificationRequired: !!data.emailVerificationRequired };
         } finally {

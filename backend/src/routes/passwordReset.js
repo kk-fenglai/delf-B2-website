@@ -35,7 +35,7 @@ router.post('/forgot-password', async (req, res, next) => {
       });
       const base = process.env.FRONTEND_URL || 'http://localhost:5173';
       const resetUrl = `${base}/reset-password?token=${rawToken}`;
-      const mail = renderPasswordResetEmail({ name: user.name, resetUrl, expiresInMinutes: 30 });
+      const mail = renderPasswordResetEmail({ name: user.name, resetUrl, expiresInMinutes: 30, locale: req.body?.locale });
       try { await sendMail({ to: user.email, ...mail }); } catch (e) { console.error('mail fail:', e.message); }
     }
     res.json({ ok: true, message: '若邮箱存在于我们系统中，重置链接已发出，请查收邮箱。' });

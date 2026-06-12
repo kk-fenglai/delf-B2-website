@@ -7,14 +7,14 @@ import { api } from '../api/client';
 const { Title, Paragraph } = Typography;
 
 export default function ForgotPassword() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
   const onSubmit = async (values: { email: string }) => {
     setLoading(true);
     try {
-      await api.post('/auth/forgot-password', { email: values.email });
+      await api.post('/auth/forgot-password', { email: values.email, locale: i18n.language });
       setSent(true);
     } catch (e: any) {
       message.error(e.response?.data?.error || t('auth.forgot.fail'));

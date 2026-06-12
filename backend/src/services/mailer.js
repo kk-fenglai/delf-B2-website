@@ -47,21 +47,69 @@ async function sendMail({ to, subject, html, text }) {
 
 // ---------- Templates ----------
 
-function renderPasswordResetEmail({ name, resetUrl, expiresInMinutes }) {
-  const safeName = name || 'there';
-  const subject = '[DELFluent] Réinitialisation de votre mot de passe / 密码重置';
-  const text = `Bonjour ${safeName},\n\nCliquez sur le lien pour réinitialiser votre mot de passe (valable ${expiresInMinutes} minutes):\n${resetUrl}\n\nSi vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.\n\n— DELFluent`;
-  const html = `
+// Customer-facing emails are rendered in the language the user picked in the UI
+// (passed through from the frontend i18n). Falls back to zh — same as the
+// frontend's fallbackLng — for missing/unknown values.
+function normalizeLocale(locale) {
+  const l = String(locale || '').toLowerCase().slice(0, 2);
+  return l === 'en' || l === 'fr' ? l : 'zh';
+}
+
+function emailShell({ heading, bodyHtml }) {
+  return `
     <div style="font-family:system-ui,sans-serif;max-width:540px;margin:0 auto;padding:24px;color:#1f2937">
-      <h2 style="color:#1e40af">DELFluent · 密码重置</h2>
-      <p>Bonjour <b>${safeName}</b>,</p>
-      <p>我们收到了重置您账户密码的请求。点击下方按钮完成重置（链接 <b>${expiresInMinutes} 分钟</b>内有效）：</p>
-      <p style="margin:28px 0"><a href="${resetUrl}" style="background:#1e40af;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block">Réinitialiser / 重置密码</a></p>
-      <p style="font-size:12px;color:#6b7280;word-break:break-all">若按钮无法点击，复制此链接到浏览器打开：<br>${resetUrl}</p>
-      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0">
-      <p style="font-size:12px;color:#9ca3af">若非本人操作，请忽略此邮件，您的账户仍然安全。<br>— DELFluent Team</p>
+      <h2 style="color:#1e40af">${heading}</h2>
+      ${bodyHtml}
     </div>`;
-  return { subject, text, html };
+}
+
+function renderPasswordResetEmail({ name, resetUrl, expiresInMinutes, locale }) {
+  const lng = normalizeLocale(locale);
+  const greetName = name ? `<b>${name}</b>` : '';
+  const t = {
+    zh: {
+      subject: '[DELFluent] 密码重置',
+      heading: 'DELFluent · 密码重置',
+      greet: name ? `您好 ${greetName}，` : '您好，',
+      intro: `我们收到了重置您账户密码的请求。点击下方按钮完成重置（链接 <b>${expiresInMinutes} 分钟</b>内有效）：`,
+      btn: '重置密码',
+      fallback: '若按钮无法点击，请复制此链接到浏览器打开：',
+      footer: '若非本人操作，请忽略此邮件，您的账户仍然安全。',
+      text: `您好 ${name || ''}，\n\n点击以下链接重置您的密码（${expiresInMinutes} 分钟内有效）：\n${resetUrl}\n\n若非本人操作，请忽略此邮件。\n\n— DELFluent`,
+    },
+    en: {
+      subject: '[DELFluent] Reset your password',
+      heading: 'DELFluent · Password reset',
+      greet: name ? `Hi ${greetName},` : 'Hi,',
+      intro: `We received a request to reset your password. Click the button below to set a new one (link valid for <b>${expiresInMinutes} minutes</b>):`,
+      btn: 'Reset password',
+      fallback: "If the button doesn't work, copy this link into your browser:",
+      footer: "If you didn't request this, you can safely ignore this email.",
+      text: `Hi ${name || ''},\n\nClick the link to reset your password (valid for ${expiresInMinutes} minutes):\n${resetUrl}\n\nIf you didn't request this, ignore this email.\n\n— DELFluent`,
+    },
+    fr: {
+      subject: '[DELFluent] Réinitialisation de votre mot de passe',
+      heading: 'DELFluent · Réinitialisation du mot de passe',
+      greet: name ? `Bonjour ${greetName},` : 'Bonjour,',
+      intro: `Nous avons reçu une demande de réinitialisation de votre mot de passe. Cliquez sur le bouton ci-dessous (lien valable <b>${expiresInMinutes} minutes</b>) :`,
+      btn: 'Réinitialiser le mot de passe',
+      fallback: "Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :",
+      footer: "Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.",
+      text: `Bonjour ${name || ''},\n\nCliquez sur le lien pour réinitialiser votre mot de passe (valable ${expiresInMinutes} minutes) :\n${resetUrl}\n\nSi vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.\n\n— DELFluent`,
+    },
+  }[lng];
+
+  const html = emailShell({
+    heading: t.heading,
+    bodyHtml: `
+      <p>${t.greet}</p>
+      <p>${t.intro}</p>
+      <p style="margin:28px 0"><a href="${resetUrl}" style="background:#1e40af;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block">${t.btn}</a></p>
+      <p style="font-size:12px;color:#6b7280;word-break:break-all">${t.fallback}<br>${resetUrl}</p>
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0">
+      <p style="font-size:12px;color:#9ca3af">${t.footer}<br>— DELFluent Team</p>`,
+  });
+  return { subject: t.subject, text: t.text, html };
 }
 
 function renderAdmin2FAEmail({ code, ip, ttlMinutes }) {
@@ -78,21 +126,53 @@ function renderAdmin2FAEmail({ code, ip, ttlMinutes }) {
   return { subject, text, html };
 }
 
-function renderVerifyEmail({ name, verifyUrl, expiresInHours }) {
-  const safeName = name || 'there';
-  const subject = '[DELFluent] Vérifiez votre adresse e-mail / 请验证您的邮箱';
-  const text = `Bonjour ${safeName},\n\nMerci de votre inscription à DELFluent. Veuillez cliquer sur le lien pour activer votre compte (valable ${expiresInHours}h):\n${verifyUrl}\n\nSi vous n'êtes pas à l'origine de cette inscription, ignorez cet e-mail.\n\n— DELFluent`;
-  const html = `
-    <div style="font-family:system-ui,sans-serif;max-width:540px;margin:0 auto;padding:24px;color:#1f2937">
-      <h2 style="color:#1e40af">DELFluent · 激活您的账户</h2>
-      <p>Bonjour <b>${safeName}</b>，</p>
-      <p>欢迎使用 DELFluent！请点击下方按钮验证您的邮箱并激活账户（链接 <b>${expiresInHours} 小时</b>内有效）：</p>
-      <p style="margin:28px 0"><a href="${verifyUrl}" style="background:#1e40af;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block">Activer / 激活账户</a></p>
-      <p style="font-size:12px;color:#6b7280;word-break:break-all">若按钮无法点击，复制此链接到浏览器打开：<br>${verifyUrl}</p>
+function renderVerifyEmail({ name, verifyUrl, expiresInHours, locale }) {
+  const lng = normalizeLocale(locale);
+  const greetName = name ? `<b>${name}</b>` : '';
+  const t = {
+    zh: {
+      subject: '[DELFluent] 请验证您的邮箱',
+      heading: 'DELFluent · 激活您的账户',
+      greet: name ? `您好 ${greetName}，` : '您好，',
+      intro: `欢迎使用 DELFluent！请点击下方按钮验证您的邮箱并激活账户（链接 <b>${expiresInHours} 小时</b>内有效）：`,
+      btn: '激活账户',
+      fallback: '若按钮无法点击，请复制此链接到浏览器打开：',
+      footer: '若非本人操作，请忽略此邮件。',
+      text: `您好 ${name || ''}，\n\n欢迎注册 DELFluent。请点击以下链接激活您的账户（${expiresInHours} 小时内有效）：\n${verifyUrl}\n\n若非本人操作，请忽略此邮件。\n\n— DELFluent`,
+    },
+    en: {
+      subject: '[DELFluent] Verify your email address',
+      heading: 'DELFluent · Activate your account',
+      greet: name ? `Hi ${greetName},` : 'Hi,',
+      intro: `Welcome to DELFluent! Click the button below to verify your email and activate your account (link valid for <b>${expiresInHours} hours</b>):`,
+      btn: 'Activate account',
+      fallback: "If the button doesn't work, copy this link into your browser:",
+      footer: "If you didn't sign up, you can safely ignore this email.",
+      text: `Hi ${name || ''},\n\nThanks for signing up for DELFluent. Click the link to activate your account (valid for ${expiresInHours}h):\n${verifyUrl}\n\nIf you didn't sign up, ignore this email.\n\n— DELFluent`,
+    },
+    fr: {
+      subject: '[DELFluent] Vérifiez votre adresse e-mail',
+      heading: 'DELFluent · Activez votre compte',
+      greet: name ? `Bonjour ${greetName},` : 'Bonjour,',
+      intro: `Bienvenue sur DELFluent ! Cliquez sur le bouton ci-dessous pour vérifier votre e-mail et activer votre compte (lien valable <b>${expiresInHours} heures</b>) :`,
+      btn: 'Activer le compte',
+      fallback: "Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :",
+      footer: "Si vous n'êtes pas à l'origine de cette inscription, ignorez cet e-mail.",
+      text: `Bonjour ${name || ''},\n\nMerci de votre inscription à DELFluent. Cliquez sur le lien pour activer votre compte (valable ${expiresInHours}h) :\n${verifyUrl}\n\nSi vous n'êtes pas à l'origine de cette inscription, ignorez cet e-mail.\n\n— DELFluent`,
+    },
+  }[lng];
+
+  const html = emailShell({
+    heading: t.heading,
+    bodyHtml: `
+      <p>${t.greet}</p>
+      <p>${t.intro}</p>
+      <p style="margin:28px 0"><a href="${verifyUrl}" style="background:#1e40af;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block">${t.btn}</a></p>
+      <p style="font-size:12px;color:#6b7280;word-break:break-all">${t.fallback}<br>${verifyUrl}</p>
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0">
-      <p style="font-size:12px;color:#9ca3af">若非本人操作，请忽略此邮件。<br>— DELFluent Team</p>
-    </div>`;
-  return { subject, text, html };
+      <p style="font-size:12px;color:#9ca3af">${t.footer}<br>— DELFluent Team</p>`,
+  });
+  return { subject: t.subject, text: t.text, html };
 }
 
 function renderAdminPasswordChangedEmail({ name, byAdmin }) {

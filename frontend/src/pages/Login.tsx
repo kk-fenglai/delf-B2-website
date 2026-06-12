@@ -7,7 +7,7 @@ import { api } from '../api/client';
 const { Title } = Typography;
 
 export default function Login() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const { login, loading } = useAuthStore();
@@ -34,7 +34,7 @@ export default function Login() {
           cancelText: t('auth.common.cancel'),
           onOk: async () => {
             try {
-              await api.post('/auth/resend-verification', { email });
+              await api.post('/auth/resend-verification', { email, locale: i18n.language });
               message.success(t('auth.sent.resent'));
             } catch (err: any) {
               message.error(err.response?.data?.error || t('auth.sent.resendFail'));

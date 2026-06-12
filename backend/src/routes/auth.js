@@ -54,7 +54,7 @@ const loginSchema = z.object({
   password: z.string().min(1),
 });
 
-async function sendVerificationEmail(user, req) {
+async function sendVerificationEmail(user, req, locale) {
   const rawToken = crypto.randomBytes(32).toString('hex');
   await prisma.emailVerificationToken.create({
     data: {
@@ -65,7 +65,7 @@ async function sendVerificationEmail(user, req) {
   });
   const base = process.env.FRONTEND_URL || 'http://localhost:5173';
   const verifyUrl = `${base}/verify-email?token=${rawToken}`;
-  const mail = renderVerifyEmail({ name: user.name, verifyUrl, expiresInHours: 24 });
+  const mail = renderVerifyEmail({ name: user.name, verifyUrl, expiresInHours: 24, locale });
   try {
     await sendMail({ to: user.email, ...mail });
   } catch (e) {
@@ -91,7 +91,7 @@ router.post('/register', async (req, res, next) => {
       select: { id: true, email: true, name: true, plan: true },
     });
 
-    await sendVerificationEmail(user, req);
+    await sendVerificationEmail(user, req, req.body?.locale);
 
     // No tokens issued until email is verified. Tell client where to go next.
     res.status(201).json({
@@ -242,7 +242,7 @@ router.post('/resend-verification', async (req, res, next) => {
       if (last && Date.now() - last.createdAt.getTime() < 5 * 60 * 1000) {
         return res.status(429).json({ error: '请求过于频繁，请 5 分钟后再试' });
       }
-      await sendVerificationEmail(user, req);
+      await sendVerificationEmail(user, req, req.body?.locale);
     }
     res.json({ ok: true, message: '若账户存在且未激活，验证邮件已重新发送。' });
   } catch (e) { next(e); }
