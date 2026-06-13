@@ -1,9 +1,10 @@
-import { validatePassword } from '../utils/passwordPolicy';
+import { useTranslation } from 'react-i18next';
+import { validatePassword, formatPasswordReasons, PASSWORD_MIN_LENGTH } from '../utils/passwordPolicy';
 
 const COLORS = ['#e5e7eb', '#ef4444', '#f59e0b', '#10b981', '#059669', '#047857'];
-const LABELS = ['', '很弱', '较弱', '一般', '较强', '很强'];
 
 export default function PasswordStrengthBar({ password }: { password: string }) {
+  const { t } = useTranslation();
   const { strength, reasons } = validatePassword(password);
   const filled = password ? strength + 1 : 0;
   return (
@@ -22,7 +23,11 @@ export default function PasswordStrengthBar({ password }: { password: string }) 
         ))}
       </div>
       <div style={{ fontSize: 12, color: reasons.length ? '#ef4444' : '#059669', marginTop: 4, minHeight: 18 }}>
-        {password ? (reasons.length ? reasons.join('；') : `✓ 强度：${LABELS[filled]}`) : '至少 10 位，建议混合大小写、数字和符号'}
+        {password
+          ? (reasons.length
+              ? formatPasswordReasons(reasons, t)
+              : `✓ ${t('auth.passwordPolicy.strengthPrefix')}${t(`auth.passwordPolicy.strength.${filled}`)}`)
+          : t('auth.passwordPolicy.hint', { min: PASSWORD_MIN_LENGTH })}
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/auth';
 import PasswordStrengthBar from '../components/PasswordStrengthBar';
-import { validatePassword, PASSWORD_MIN_LENGTH } from '../utils/passwordPolicy';
+import { validatePassword, formatPasswordReasons, PASSWORD_MIN_LENGTH } from '../utils/passwordPolicy';
 
 const { Title } = Typography;
 
@@ -17,7 +17,7 @@ export default function Register() {
   const onSubmit = async (values: { email: string; password: string; confirm: string; name?: string }) => {
     const v = validatePassword(values.password);
     if (!v.ok) {
-      message.error(v.reasons.join('；'));
+      message.error(formatPasswordReasons(v.reasons, t));
       return;
     }
     if (values.password !== values.confirm) {

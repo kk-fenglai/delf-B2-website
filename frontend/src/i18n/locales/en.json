@@ -54,6 +54,21 @@
     "nickname": "Nickname",
     "nicknameOptional": "Optional",
     "passwordHint": "At least 10 characters, mix of upper/lower/digit/symbol",
+    "passwordPolicy": {
+      "minLength": "At least {{min}} characters",
+      "categories": "Must include at least 3 of: lowercase / uppercase / digit / symbol",
+      "common": "This password is too common, please choose another",
+      "separator": "; ",
+      "strengthPrefix": "Strength: ",
+      "hint": "At least {{min}} characters; mix upper/lowercase, digits and symbols",
+      "strength": {
+        "1": "Very weak",
+        "2": "Weak",
+        "3": "Fair",
+        "4": "Strong",
+        "5": "Very strong"
+      }
+    },
     "submitLogin": "Sign in",
     "submitRegister": "Create account",
     "toRegister": "No account? Sign up",
@@ -655,8 +670,11 @@
       "maxLengthHint": "Max length: {{sec}}s. Recording auto-stops at the limit.",
       "permissionDenied": "Microphone access denied. Enable it in your browser settings.",
       "mimeUnsupported": "This browser does not support a compatible audio format.",
+      "noDevice": "No microphone detected. Check your device or connect a headset, then retry.",
       "unsupportedTitle": "Recording not supported",
-      "unsupportedDesc": "Your browser does not support MediaRecorder. Use Chrome, Firefox, or Safari ≥ 14.1."
+      "unsupportedDesc": "Your browser does not support MediaRecorder. Use Chrome, Firefox, or Safari ≥ 14.1.",
+      "insecureTitle": "Microphone unavailable (HTTPS required)",
+      "insecureDesc": "Browsers only allow microphone access on secure (HTTPS) pages. Open the site via its https:// address; for local development use localhost on your computer. The mic is blocked when testing on a phone over a LAN IP address."
     },
     "rubric": {
       "presentation": "Presenting the viewpoint",

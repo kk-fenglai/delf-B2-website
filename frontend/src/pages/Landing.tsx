@@ -65,11 +65,11 @@ export default function Landing() {
 
       <Card className="mb-12">
         <Title level={3}>{t('landing.examStructure')}</Title>
-        <Row gutter={16}>
-          <Col span={6}><strong>{t('skill.CO')}</strong><br/>~30 {t('landing.minutes')} · 25 {t('landing.points')}</Col>
-          <Col span={6}><strong>{t('skill.CE')}</strong><br/>~60 {t('landing.minutes')} · 25 {t('landing.points')}</Col>
-          <Col span={6}><strong>{t('skill.PE')}</strong><br/>~60 {t('landing.minutes')} · 25 {t('landing.points')}</Col>
-          <Col span={6}><strong>{t('skill.PO')}</strong><br/>~20 {t('landing.minutes')} · 25 {t('landing.points')}</Col>
+        <Row gutter={[16, 16]}>
+          <Col xs={12} md={6}><strong>{t('skill.CO')}</strong><br/>~30 {t('landing.minutes')} · 25 {t('landing.points')}</Col>
+          <Col xs={12} md={6}><strong>{t('skill.CE')}</strong><br/>~60 {t('landing.minutes')} · 25 {t('landing.points')}</Col>
+          <Col xs={12} md={6}><strong>{t('skill.PE')}</strong><br/>~60 {t('landing.minutes')} · 25 {t('landing.points')}</Col>
+          <Col xs={12} md={6}><strong>{t('skill.PO')}</strong><br/>~20 {t('landing.minutes')} · 25 {t('landing.points')}</Col>
         </Row>
         <Paragraph className="mt-4 text-gray-500">{t('landing.passRule')}</Paragraph>
       </Card>

@@ -77,7 +77,9 @@ export default function AudioRecorder({
   const { t } = useTranslation();
   const [phase, setPhase] = useState<Phase>('idle');
   const [error, setError] = useState<string | null>(null);
-  const [unsupported, setUnsupported] = useState(false);
+  // null = OK; 'insecure' = page not served over HTTPS (mic blocked by browser);
+  // 'browser' = MediaRecorder/getUserMedia missing (browser too old).
+  const [blocker, setBlocker] = useState<null | 'insecure' | 'browser'>(null);
   const [elapsedSec, setElapsedSec] = useState(0);
   const [level, setLevel] = useState(0); // 0..1, instantaneous RMS
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
@@ -97,9 +99,16 @@ export default function AudioRecorder({
     // Feature detect once on mount — show a clear message instead of silently
     // appearing broken on iOS < 14.1 or older Edge.
     if (typeof window === 'undefined') return;
+    // Browsers expose `navigator.mediaDevices` ONLY in a secure context
+    // (HTTPS or localhost). Testing on a phone over http://<LAN-ip>:port hits
+    // this — the mic API is simply absent, which otherwise looks like a bug.
+    if (window.isSecureContext === false) {
+      setBlocker('insecure');
+      return;
+    }
     const hasMR = typeof window.MediaRecorder !== 'undefined';
     const hasGUM = !!navigator.mediaDevices?.getUserMedia;
-    if (!hasMR || !hasGUM) setUnsupported(true);
+    if (!hasMR || !hasGUM) setBlocker('browser');
   }, []);
 
   useEffect(() => {
@@ -164,7 +173,7 @@ export default function AudioRecorder({
 
   async function start() {
     setError(null);
-    if (unsupported) return;
+    if (blocker) return;
     let stream: MediaStream;
     try {
       stream = await navigator.mediaDevices.getUserMedia({
@@ -178,7 +187,14 @@ export default function AudioRecorder({
         },
       });
     } catch (err) {
-      setError(t('oral.recorder.permissionDenied'));
+      // Surface the real cause so the student knows what to fix.
+      const name = (err as DOMException)?.name;
+      if (name === 'NotFoundError' || name === 'DevicesNotFoundError') {
+        setError(t('oral.recorder.noDevice'));
+      } else {
+        // NotAllowedError / SecurityError / PermissionDeniedError, etc.
+        setError(t('oral.recorder.permissionDenied'));
+      }
       return;
     }
     streamRef.current = stream;
@@ -254,13 +270,13 @@ export default function AudioRecorder({
     setPhase('idle');
   }
 
-  if (unsupported) {
+  if (blocker) {
     return (
       <Alert
         type="error"
         showIcon
-        message={t('oral.recorder.unsupportedTitle')}
-        description={t('oral.recorder.unsupportedDesc')}
+        message={t(blocker === 'insecure' ? 'oral.recorder.insecureTitle' : 'oral.recorder.unsupportedTitle')}
+        description={t(blocker === 'insecure' ? 'oral.recorder.insecureDesc' : 'oral.recorder.unsupportedDesc')}
       />
     );
   }

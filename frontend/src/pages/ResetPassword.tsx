@@ -4,7 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import PasswordStrengthBar from '../components/PasswordStrengthBar';
-import { validatePassword, PASSWORD_MIN_LENGTH } from '../utils/passwordPolicy';
+import { validatePassword, formatPasswordReasons, PASSWORD_MIN_LENGTH } from '../utils/passwordPolicy';
 
 const { Title, Paragraph } = Typography;
 
@@ -32,7 +32,7 @@ export default function ResetPassword() {
   const onSubmit = async (values: { password: string; confirm: string }) => {
     const v = validatePassword(values.password);
     if (!v.ok) {
-      message.error(v.reasons.join('；'));
+      message.error(formatPasswordReasons(v.reasons, t));
       return;
     }
     if (values.password !== values.confirm) {

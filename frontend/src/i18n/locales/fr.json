@@ -54,6 +54,21 @@
     "nickname": "Pseudo",
     "nicknameOptional": "Facultatif",
     "passwordHint": "Au moins 10 caractères, mélange de majuscules/minuscules/chiffres/symboles",
+    "passwordPolicy": {
+      "minLength": "Au moins {{min}} caractères",
+      "categories": "Doit contenir au moins 3 catégories : minuscule / majuscule / chiffre / symbole",
+      "common": "Ce mot de passe est trop courant, veuillez en choisir un autre",
+      "separator": " ; ",
+      "strengthPrefix": "Force : ",
+      "hint": "Au moins {{min}} caractères ; mélangez majuscules/minuscules, chiffres et symboles",
+      "strength": {
+        "1": "Très faible",
+        "2": "Faible",
+        "3": "Moyen",
+        "4": "Fort",
+        "5": "Très fort"
+      }
+    },
     "submitLogin": "Se connecter",
     "submitRegister": "Créer un compte",
     "toRegister": "Pas de compte ? Inscrivez-vous",
@@ -653,8 +668,11 @@
       "maxLengthHint": "Durée maximale : {{sec}} s. L'enregistrement s'arrête automatiquement.",
       "permissionDenied": "Microphone non autorisé. Activez l'accès dans les paramètres du navigateur.",
       "mimeUnsupported": "Format audio non pris en charge sur ce navigateur.",
+      "noDevice": "Aucun microphone détecté. Vérifiez votre appareil ou branchez un casque, puis réessayez.",
       "unsupportedTitle": "Enregistrement non pris en charge",
-      "unsupportedDesc": "Votre navigateur ne prend pas en charge MediaRecorder. Utilisez Chrome, Firefox ou Safari ≥ 14.1."
+      "unsupportedDesc": "Votre navigateur ne prend pas en charge MediaRecorder. Utilisez Chrome, Firefox ou Safari ≥ 14.1.",
+      "insecureTitle": "Microphone indisponible (HTTPS requis)",
+      "insecureDesc": "Les navigateurs n'autorisent le microphone que sur les pages sécurisées (HTTPS). Ouvrez le site via son adresse https:// ; pour le développement local, utilisez localhost sur votre ordinateur. Le micro est bloqué lors des tests sur téléphone via une adresse IP du réseau local."
     },
     "rubric": {
       "presentation": "Présentation du point de vue",

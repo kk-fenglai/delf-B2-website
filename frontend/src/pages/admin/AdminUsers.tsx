@@ -9,7 +9,7 @@ import { MoreOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { adminApi } from '../../api/adminClient';
 import { useAdminAuth } from '../../stores/adminAuth';
 import PasswordStrengthBar from '../../components/PasswordStrengthBar';
-import { validatePassword, PASSWORD_MIN_LENGTH } from '../../utils/passwordPolicy';
+import { validatePassword, formatPasswordReasons, PASSWORD_MIN_LENGTH } from '../../utils/passwordPolicy';
 
 const { Title } = Typography;
 
@@ -137,7 +137,7 @@ export default function AdminUsers() {
           if (mode === 'direct') {
             if (!newPwd) { message.error('请输入新密码'); return Promise.reject(); }
             const v = validatePassword(newPwd);
-            if (!v.ok) { message.error(v.reasons.join('；')); return Promise.reject(); }
+            if (!v.ok) { message.error(formatPasswordReasons(v.reasons)); return Promise.reject(); }
             try {
               const pwd = await reconfirmPassword('请输入您的管理员密码');
               await adminApi.post(`/users/${u.id}/reset-password`,
@@ -320,7 +320,7 @@ function CreateUserModal({ open, onClose }: { open: boolean; onClose: () => void
     try {
       const values = await form.validateFields();
       const v = validatePassword(values.password);
-      if (!v.ok) { message.error(v.reasons.join('；')); return; }
+      if (!v.ok) { message.error(formatPasswordReasons(v.reasons)); return; }
       setSubmitting(true);
       await adminApi.post('/users', values);
       message.success('用户已创建');

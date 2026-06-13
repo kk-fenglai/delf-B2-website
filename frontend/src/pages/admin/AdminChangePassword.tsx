@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { adminApi } from '../../api/adminClient';
 import { useAdminAuth } from '../../stores/adminAuth';
 import PasswordStrengthBar from '../../components/PasswordStrengthBar';
-import { validatePassword, PASSWORD_MIN_LENGTH } from '../../utils/passwordPolicy';
+import { validatePassword, formatPasswordReasons, PASSWORD_MIN_LENGTH } from '../../utils/passwordPolicy';
 
 const { Title, Paragraph } = Typography;
 
@@ -17,7 +17,7 @@ export default function AdminChangePassword() {
     const values = await form.validateFields();
     const v = validatePassword(values.newPassword);
     if (!v.ok) {
-      message.error(v.reasons.join('；'));
+      message.error(formatPasswordReasons(v.reasons));
       return;
     }
     if (values.newPassword !== values.confirmPassword) {

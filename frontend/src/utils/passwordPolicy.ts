@@ -1,4 +1,6 @@
 // Frontend mirror of backend/src/utils/passwordPolicy.js. Keep rules in sync.
+import i18n from '../i18n';
+
 const MIN_LENGTH = 10;
 
 const COMMON_WEAK = new Set([
@@ -25,19 +27,22 @@ function categoriesMatched(pwd: string): number {
   return n;
 }
 
+// Stable reason codes — translate in the UI via i18n key `auth.passwordPolicy.<code>`.
+export type PasswordReason = 'minLength' | 'categories' | 'common';
+
 export interface PasswordValidation {
   ok: boolean;
-  reasons: string[];
+  reasons: PasswordReason[];
   strength: 0 | 1 | 2 | 3 | 4;
 }
 
 export function validatePassword(password: string): PasswordValidation {
   const p = String(password || '');
-  const reasons: string[] = [];
-  if (p.length < MIN_LENGTH) reasons.push(`至少 ${MIN_LENGTH} 位`);
+  const reasons: PasswordReason[] = [];
+  if (p.length < MIN_LENGTH) reasons.push('minLength');
   const cats = categoriesMatched(p);
-  if (cats < 3) reasons.push('须包含小写/大写/数字/符号中至少 3 类');
-  if (COMMON_WEAK.has(p.toLowerCase())) reasons.push('密码过于常见，请更换');
+  if (cats < 3) reasons.push('categories');
+  if (COMMON_WEAK.has(p.toLowerCase())) reasons.push('common');
 
   let strength: 0 | 1 | 2 | 3 | 4 = 0;
   if (p.length >= 8) strength = 1;
@@ -50,3 +55,17 @@ export function validatePassword(password: string): PasswordValidation {
 }
 
 export const PASSWORD_MIN_LENGTH = MIN_LENGTH;
+
+type TFn = (key: string, opts?: Record<string, unknown>) => string;
+
+/**
+ * Translate validation reason codes into a single localized message.
+ * Pass the component's `t` (from useTranslation); when omitted, falls back to
+ * the global i18n instance so non-translated call sites still follow UI language.
+ */
+export function formatPasswordReasons(reasons: PasswordReason[], t?: TFn): string {
+  const translate: TFn = t ?? ((key, opts) => i18n.t(key, opts) as string);
+  return reasons
+    .map((r) => translate(`auth.passwordPolicy.${r}`, { min: MIN_LENGTH }))
+    .join(translate('auth.passwordPolicy.separator'));
+}
