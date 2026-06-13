@@ -135,10 +135,15 @@ function normalizeLocale(locale) {
  */
 function buildScoreReportPdf({ res, built, user, essays, scaleTo25, lang }) {
   const L = LABELS[normalizeLocale(lang)];
+  if (!FONT_AVAILABLE) {
+    const err = new Error('PDF font missing: backend/assets/fonts/NotoSansSC-Regular.otf not deployed');
+    err.status = 503;
+    throw err;
+  }
   const doc = new PDFDocument({ margin: 50, bufferPages: true });
   doc.pipe(res);
-  if (FONT_AVAILABLE) doc.registerFont(FONT, FONT_PATH);
-  const font = FONT_AVAILABLE ? FONT : 'Helvetica';
+  doc.registerFont(FONT, FONT_PATH);
+  const font = FONT;
   doc.font(font);
 
   const M = doc.page.margins.left;

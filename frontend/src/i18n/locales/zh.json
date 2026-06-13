@@ -331,6 +331,8 @@
     },
     "backToPractice": "返回题库",
     "downloadPdf": "下载 PDF 成绩单",
+    "downloadPdfMobileHint": "PDF 已在新标签页打开，可用浏览器分享或保存到文件。",
+    "downloadPdfFailed": "PDF 下载失败，请稍后重试。",
     "toDashboard": "查看学习中心",
     "noResult": "未找到结果。请返回题库重新练习。",
     "delfVerdictTitle": "DELF B2 官方判分",

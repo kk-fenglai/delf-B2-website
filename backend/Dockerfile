@@ -26,6 +26,7 @@ COPY --from=deps /app/prisma ./prisma
 COPY package.json package-lock.json ./
 COPY src ./src
 COPY scripts ./scripts
+COPY assets ./assets
 COPY eng.traineddata ./
 
 # Writable dirs for oral recordings + admin audio uploads (process runs as USER node).

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
-  Card, Typography, Tag, Progress, Button, Alert, Row, Col, Statistic,
+  Card, Typography, Tag, Progress, Button, Alert, Row, Col, Statistic, message,
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
@@ -46,19 +46,37 @@ export default function ReviewResult() {
 
   const downloadPdf = async () => {
     if (!sessionId) return;
-    const r = await api.get(`/sessions/${sessionId}/report.pdf`, {
-      params: { lang: i18n.language?.split('-')[0] || 'zh' },
-      responseType: 'blob',
-    });
-    const blob = new Blob([r.data], { type: 'application/pdf' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `DELFluent-${sessionId}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
+    try {
+      const r = await api.get(`/sessions/${sessionId}/report.pdf`, {
+        params: { lang: i18n.language?.split('-')[0] || 'zh' },
+        responseType: 'arraybuffer',
+      });
+      const blob = new Blob([r.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const filename = `DELFluent-${sessionId}.pdf`;
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        // iOS/Android often ignore programmatic download; open the PDF viewer instead.
+        const opened = window.open(url, '_blank');
+        if (!opened) {
+          window.location.href = url;
+        }
+        message.info(t('review.downloadPdfMobileHint'));
+        setTimeout(() => window.URL.revokeObjectURL(url), 120_000);
+        return;
+      }
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch {
+      message.error(t('review.downloadPdfFailed'));
+    }
   };
 
   if (!data) return (

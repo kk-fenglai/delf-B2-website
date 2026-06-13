@@ -331,6 +331,8 @@
     },
     "backToPractice": "Back to practice",
     "downloadPdf": "Download PDF",
+    "downloadPdfMobileHint": "PDF opened in a new tab — use Share or Save to Files.",
+    "downloadPdfFailed": "PDF download failed. Please try again.",
     "toDashboard": "Go to dashboard",
     "noResult": "No results found. Return to practice and try again.",
     "delfVerdictTitle": "DELF B2 official verdict",

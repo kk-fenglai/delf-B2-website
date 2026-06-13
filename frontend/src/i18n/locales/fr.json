@@ -331,6 +331,8 @@
     },
     "backToPractice": "Retour à l'entraînement",
     "downloadPdf": "Télécharger le PDF",
+    "downloadPdfMobileHint": "PDF ouvert dans un nouvel onglet — utilisez Partager ou Enregistrer.",
+    "downloadPdfFailed": "Échec du téléchargement du PDF. Réessayez.",
     "toDashboard": "Tableau de bord",
     "noResult": "Aucun résultat trouvé. Retournez à l'entraînement pour réessayer.",
     "delfVerdictTitle": "Verdict officiel DELF B2",
