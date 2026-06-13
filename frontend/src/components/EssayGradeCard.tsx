@@ -12,6 +12,7 @@ import type {
   RubricDimension,
   ClaudeModelKey,
 } from '../types';
+import { aiModelDisplayName } from '../utils/aiModelDisplay';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -24,18 +25,6 @@ type Props = {
   initialStatus?: string;
   questionPrompt?: string;
 };
-
-function localeTag(model: ClaudeModelKey | string | null) {
-  if (!model) return '';
-  if (model === 'deepseek-chat') return 'DeepSeek V4 Flash';
-  if (model === 'qwen-turbo') return 'Qwen Turbo';
-  if (model === 'qwen-plus') return 'Qwen Plus';
-  // Legacy rows graded with Claude before the DeepSeek/Qwen switch.
-  if (model.startsWith('haiku')) return 'Haiku 4.5 (legacy)';
-  if (model.startsWith('sonnet')) return 'Sonnet 4.6 (legacy)';
-  if (model.startsWith('opus')) return 'Opus 4.7 (legacy)';
-  return model;
-}
 
 export default function EssayGradeCard({ essayId, initialStatus, questionPrompt }: Props) {
   const { t, i18n } = useTranslation();
@@ -178,7 +167,7 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
         <div>
           <Text strong>
             {status === 'grading'
-              ? t('essay.grade.grading', { model: localeTag(essay.model) })
+              ? t('ai.model.calling')
               : t('essay.grade.queued')}
           </Text>
           <Text type="secondary" className="text-xs block">
@@ -380,7 +369,7 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
           {t('essay.grade.title')}
         </Title>
         <Space wrap>
-          <Tag color="blue">{localeTag(essay.model)}</Tag>
+          <Tag color="blue">{aiModelDisplayName(t, essay.model)}</Tag>
           <Tag>{t('essay.grade.wordCount', { count: essay.wordCount })}</Tag>
         </Space>
       </div>

@@ -4,6 +4,15 @@
     "tagline": "Plateforme d'entraînement DELF B2",
     "footer": "DELFluent © {{year}} · Plateforme d'entraînement DELF B2 · Toutes les questions sont des simulations originales"
   },
+  "ai": {
+    "model": {
+      "displayName": "Dernier modèle IA",
+      "calling": "Appel du dernier modèle IA…",
+      "fast": "Modèle IA (rapide)",
+      "balanced": "Modèle IA (équilibré)",
+      "precise": "Modèle IA (précis)"
+    }
+  },
   "nav": {
     "home": "Accueil",
     "practice": "Entraînement",
@@ -723,7 +732,7 @@
     "grade": {
       "title": "Notation IA — Production Orale",
       "queued": "En file d'attente…",
-      "transcribing": "Transcription en cours… ({{model}})",
+      "transcribing": "Transcription en cours…",
       "grading": "Notation par {{model}}…",
       "pollingHint": "Cela prend généralement 30 à 60 s.",
       "slowWarning": "L'évaluation prend plus de temps que d'habitude. Vous pouvez attendre ou actualiser plus tard.",

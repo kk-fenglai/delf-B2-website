@@ -3,15 +3,16 @@ import { LockOutlined, ThunderboltOutlined, DeploymentUnitOutlined, AimOutlined 
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { ClaudeModelKey, ModelTier, EssayModelOption } from '../types';
+import { aiModelDisplayName } from '../utils/aiModelDisplay';
 
 const { Text } = Typography;
 
 // Canonical ordering. Any model not in `allowedModels` is shown disabled so
 // the user can still see the upgrade path.
-const ALL_MODELS: Array<{ key: ClaudeModelKey; label: string; tier: ModelTier }> = [
-  { key: 'qwen-turbo',    label: 'Qwen Turbo',   tier: 'fast' },
-  { key: 'deepseek-chat', label: 'DeepSeek V4 Flash', tier: 'balanced' },
-  { key: 'qwen-plus',     label: 'Qwen Plus',    tier: 'precise' },
+const ALL_MODELS: Array<{ key: ClaudeModelKey; tier: ModelTier }> = [
+  { key: 'qwen-turbo',    tier: 'fast' },
+  { key: 'deepseek-chat', tier: 'balanced' },
+  { key: 'qwen-plus',     tier: 'precise' },
 ];
 
 const TIER_ICON: Record<ModelTier, React.ReactNode> = {
@@ -25,13 +26,12 @@ type Props = {
   value: ClaudeModelKey | null;
   onChange: (m: ClaudeModelKey) => void;
   defaultModel?: ClaudeModelKey | null;
-  models?: EssayModelOption[]; // optional server-provided labels (wins over ALL_MODELS)
+  models?: EssayModelOption[]; // optional server-provided labels (ignored for display — vendor-neutral)
 };
 
-export default function AIModelPicker({ allowedModels, value, onChange, defaultModel, models }: Props) {
+export default function AIModelPicker({ allowedModels, value, onChange, defaultModel }: Props) {
   const { t } = useTranslation();
-  const labelFor = (k: ClaudeModelKey) =>
-    models?.find((m) => m.key === k)?.label || ALL_MODELS.find((m) => m.key === k)?.label || k;
+  const labelFor = (k: ClaudeModelKey) => aiModelDisplayName(t, k);
 
   return (
     <div className="mt-3">

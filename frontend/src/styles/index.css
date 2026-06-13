@@ -62,3 +62,44 @@ body {
   font-size: 1.0625rem;
   line-height: 1.8;
 }
+
+.passage p {
+  margin-bottom: 0.75em;
+}
+
+/* Exam reading panel — sticky side-by-side on desktop, tall scroll area on phone */
+.passage-panel {
+  background: var(--bgElevated);
+  border-left: 4px solid var(--primary);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  .passage-panel {
+    flex: 0 0 52%;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 140px);
+  }
+
+  .passage-panel--mock {
+    max-height: calc(100vh - 160px);
+  }
+}
+
+@media (max-width: 767px) {
+  .passage {
+    font-size: 1.2rem;
+    line-height: 1.75;
+  }
+
+  .passage p {
+    margin-bottom: 0.65em;
+  }
+
+  .passage-panel {
+    flex: 0 0 auto;
+    max-height: 68vh;
+  }
+}

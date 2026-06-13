@@ -4,6 +4,15 @@
     "tagline": "DELF B2 真题训练平台",
     "footer": "DELFluent © {{year}} · DELF B2 真题训练平台 · 本站题目均为原创仿真题"
   },
+  "ai": {
+    "model": {
+      "displayName": "最新 AI 大模型",
+      "calling": "正在调用最新的 AI 大模型…",
+      "fast": "AI 大模型（快速）",
+      "balanced": "AI 大模型（均衡）",
+      "precise": "AI 大模型（精准）"
+    }
+  },
   "nav": {
     "home": "首页",
     "practice": "题库练习",
@@ -725,7 +734,7 @@
     "grade": {
       "title": "AI 评分 · 口语",
       "queued": "排队等待评分…",
-      "transcribing": "正在转写录音…（{{model}}）",
+      "transcribing": "正在转写录音…",
       "grading": "正在使用 {{model}} 评分…",
       "pollingHint": "整个流程通常 30-60 秒。",
       "slowWarning": "评分耗时比预期久，可继续等待或稍后刷新。",

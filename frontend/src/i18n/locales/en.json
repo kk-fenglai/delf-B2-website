@@ -4,6 +4,15 @@
     "tagline": "DELF B2 Practice Platform",
     "footer": "DELFluent © {{year}} · DELF B2 Practice Platform · All questions are original simulations"
   },
+  "ai": {
+    "model": {
+      "displayName": "Latest AI model",
+      "calling": "Calling the latest AI model…",
+      "fast": "AI model (fast)",
+      "balanced": "AI model (balanced)",
+      "precise": "AI model (precise)"
+    }
+  },
   "nav": {
     "home": "Home",
     "practice": "Practice",
@@ -725,7 +734,7 @@
     "grade": {
       "title": "AI score · Production Orale",
       "queued": "Queued for grading…",
-      "transcribing": "Transcribing audio… ({{model}})",
+      "transcribing": "Transcribing audio…",
       "grading": "Grading with {{model}}…",
       "pollingHint": "This typically takes 30-60 seconds.",
       "slowWarning": "Grading is taking longer than usual. You can wait or check back later.",

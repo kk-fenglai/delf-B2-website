@@ -60,7 +60,7 @@ function renderPassage(text: string) {
     .map((para) => para.replace(/\n/g, ' ').trim())
     .filter(Boolean)
     .map((para, i) => (
-      <p key={i} style={{ marginBottom: '0.75em', lineHeight: 1.8 }}>{para}</p>
+      <p key={i}>{para}</p>
     ));
 }
 
@@ -781,18 +781,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           <Card key={gi} bordered={false} className="mb-6 app-surface">
             <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 16 : 28, alignItems: isMobile ? 'stretch' : 'flex-start' }}>
               {g.passage && (
-                <div
-                  className="passage p-4 rounded"
-                  style={{
-                    flex: isMobile ? '0 0 auto' : '0 0 52%',
-                    background: 'var(--bgElevated)',
-                    borderLeft: '4px solid var(--primary)',
-                    position: isMobile ? 'static' : 'sticky',
-                    top: 80,
-                    maxHeight: isMobile ? '45vh' : 'calc(100vh - 140px)',
-                    overflowY: 'auto',
-                  }}
-                >
+                <div className="passage passage-panel p-4 rounded">
                   {renderPassage(g.passage)}
                 </div>
               )}
@@ -883,18 +872,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           <Card bordered={false} className="mb-4 app-surface">
             <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 16 : 28, alignItems: isMobile ? 'stretch' : 'flex-start' }}>
               {page.group.passage && (
-                <div
-                  className="passage p-4 rounded"
-                  style={{
-                    flex: isMobile ? '0 0 auto' : '0 0 52%',
-                    background: 'var(--bgElevated)',
-                    borderLeft: '4px solid var(--primary)',
-                    position: isMobile ? 'static' : 'sticky',
-                    top: 80,
-                    maxHeight: isMobile ? '45vh' : 'calc(100vh - 160px)',
-                    overflowY: 'auto',
-                  }}
-                >
+                <div className="passage passage-panel passage-panel--mock p-4 rounded">
                   {renderPassage(page.group.passage)}
                 </div>
               )}
@@ -915,10 +893,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           peQs.map((pe) => (
             <Card key={pe.id} bordered={false} className="mb-4 app-surface">
               {pe.passage && (
-                <div
-                  className="passage p-4 rounded mb-4"
-                  style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
-                >
+                <div className="passage passage-panel p-4 rounded mb-4">
                   {renderPassage(pe.passage)}
                 </div>
               )}
@@ -1094,10 +1069,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
 
           <Card bordered={false} className="mb-4 app-surface">
             {q.passage && (
-              <div
-                className="passage p-4 rounded mb-4"
-                style={{ background: 'var(--bgElevated)', borderLeft: '4px solid var(--primary)' }}
-              >
+              <div className="passage passage-panel p-4 rounded mb-4">
                 {renderPassage(q.passage)}
               </div>
             )}

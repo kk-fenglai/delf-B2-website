@@ -12,6 +12,7 @@ import type {
   OralRubricDimension,
   ClaudeModelKey,
 } from '../types';
+import { aiModelDisplayName } from '../utils/aiModelDisplay';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -24,14 +25,6 @@ type Props = {
   initialStatus?: string;
   questionPrompt?: string;
 };
-
-function modelLabel(model: ClaudeModelKey | string | null) {
-  if (!model) return '';
-  if (model === 'deepseek-chat') return 'DeepSeek V4 Flash';
-  if (model === 'qwen-turbo') return 'Qwen Turbo';
-  if (model === 'qwen-plus') return 'Qwen Plus';
-  return model;
-}
 
 // Status → progress percentage (cosmetic). Roughly mirrors the actual time
 // split: STT is the slow phase, LLM is faster.
@@ -139,7 +132,7 @@ export default function OralGradeCard({ oralId, initialStatus, questionPrompt }:
     const phaseKey = status === 'transcribing'
       ? 'oral.grade.transcribing'
       : status === 'grading'
-        ? 'oral.grade.grading'
+        ? 'ai.model.calling'
         : 'oral.grade.queued';
     return (
       <Card className="mb-3">
@@ -147,7 +140,7 @@ export default function OralGradeCard({ oralId, initialStatus, questionPrompt }:
           <Progress type="circle" percent={statusPercent(status)} size={48} />
           <div>
             <Title level={5} style={{ marginBottom: 0 }}>
-              {t(phaseKey, { model: modelLabel(oral.model) })}
+              {t(phaseKey)}
             </Title>
             <Text type="secondary" className="text-xs">
               {t('oral.grade.pollingHint')}
@@ -256,7 +249,7 @@ export default function OralGradeCard({ oralId, initialStatus, questionPrompt }:
           {t('oral.grade.title')}
         </Title>
         <Space wrap>
-          <Tag color="blue">{modelLabel(oral.model)}</Tag>
+          <Tag color="blue">{aiModelDisplayName(t, oral.model)}</Tag>
           {oral.recordingIds?.length > 0 && (
             <Tag icon={<SoundOutlined />}>{oral.recordingIds.length} {t('oral.grade.segments')}</Tag>
           )}
