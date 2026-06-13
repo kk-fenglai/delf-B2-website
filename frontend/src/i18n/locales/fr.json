@@ -34,10 +34,22 @@
     "ctaStart": "Commencer gratuitement",
     "ctaPricing": "Voir les tarifs",
     "features": {
-      "co": { "title": "Compréhension orale", "desc": "Pistes audio complètes reproduisant les conditions réelles" },
-      "ce": { "title": "Compréhension écrite", "desc": "Textes argumentatifs avec localisation des réponses" },
-      "pe": { "title": "Production écrite", "desc": "Rédaction de 250 mots avec correction IA (plan IA)" },
-      "po": { "title": "Production orale", "desc": "Enregistrement avec examinateur IA (plan IA)" }
+      "co": {
+        "title": "Compréhension orale",
+        "desc": "Pistes audio complètes reproduisant les conditions réelles"
+      },
+      "ce": {
+        "title": "Compréhension écrite",
+        "desc": "Textes argumentatifs avec localisation des réponses"
+      },
+      "pe": {
+        "title": "Production écrite",
+        "desc": "Rédaction de 250 mots avec correction IA (plan IA)"
+      },
+      "po": {
+        "title": "Production orale",
+        "desc": "Enregistrement avec examinateur IA (plan IA)"
+      }
     },
     "examStructure": "Structure de l'examen DELF B2",
     "minutes": "min",
@@ -90,7 +102,9 @@
     "loginFail": "Échec de la connexion",
     "registerSuccess": "Bienvenue sur DELFluent !",
     "registerFail": "Échec de l'inscription",
-    "common": { "cancel": "Annuler" },
+    "common": {
+      "cancel": "Annuler"
+    },
     "forgot": {
       "title": "Réinitialiser le mot de passe",
       "subtitle": "Saisissez votre e-mail et nous enverrons un lien de réinitialisation",
@@ -412,6 +426,13 @@
       "haiku": "Qwen Turbo (rapide)",
       "sonnet": "DeepSeek V4 Flash (équilibré)",
       "opus": "Qwen Plus (précis)"
+    },
+    "upgrade": {
+      "title": "Mise à niveau · ne payez que la différence",
+      "desc": "Votre formule actuelle est encore active. Passez à une formule supérieure en ne payant que la différence au prorata — votre date d'expiration reste inchangée.",
+      "remaining": "{{days}} jours restants",
+      "cta": "Passer à {{plan}}",
+      "belowMin": "La différence est inférieure au montant minimum — inutile de payer ; veuillez renouveler par vous-même après l'expiration de votre formule actuelle."
     },
     "checkout": {
       "loginFirst": "Veuillez vous connecter avant l'achat",

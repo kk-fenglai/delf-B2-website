@@ -302,6 +302,122 @@ async function refundOrder({ orderId, amountCents, reason, operatorAdminId }) {
   };
 }
 
+// --- Prorated upgrade ("pay the difference") -----------------------------
+// Upgrade an active paid subscriber to a higher plan for the REMAINDER of
+// their current period: the end date stays, only the plan tier changes, and
+// they pay (targetMonthly − currentMonthly) prorated over the remaining days.
+const DAY_MS = 24 * 3600 * 1000;
+
+// Stripe rejects charges below a per-currency minimum. When the prorated
+// difference is below this, we don't try to charge — the UI tells the user to
+// renew on their own after the current period ends.
+const STRIPE_MIN_CHARGE_CENTS = { EUR: 50, USD: 50, GBP: 30, CNY: 400, JPY: 50, HKD: 400, AUD: 50, CAD: 50 };
+function minChargeCents(currency) {
+  return STRIPE_MIN_CHARGE_CENTS[String(currency || '').toUpperCase()] || 50;
+}
+
+// Monthly rate for a plan in a currency. Prefers an explicit 1-month price;
+// if the catalog only has longer terms (e.g. yearly), derive the cheapest
+// per-month equivalent so proration still works without a dedicated 1M row.
+async function monthlyRateCents(plan, currency) {
+  const prices = await prisma.price.findMany({
+    where: { currency, active: true, product: { plan, active: true } },
+    select: { months: true, amountCents: true },
+  });
+  if (!prices.length) return null;
+  const oneMonth = prices.find((p) => p.months === 1);
+  if (oneMonth) return oneMonth.amountCents;
+  const perMonth = prices
+    .filter((p) => p.months > 0)
+    .map((p) => p.amountCents / p.months);
+  return perMonth.length ? Math.round(Math.min(...perMonth)) : null;
+}
+
+// Returns { eligible, reason?, fromPlan, toPlan, currency, remainingDays?, amountCents? }.
+// `reason` (when not eligible): NO_ACTIVE_SUBSCRIPTION | NOT_AN_UPGRADE |
+// PRICE_NOT_CONFIGURED | NO_PRICE_DIFFERENCE | NOTHING_TO_PAY.
+async function computeUpgradeQuote({ userId, toPlan, currency }) {
+  assertPlan(toPlan);
+  const cur = String(currency || 'CNY').toUpperCase();
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { plan: true, subscriptionEnd: true },
+  });
+  if (!user) { const e = new Error('User not found'); e.status = 404; throw e; }
+
+  const now = new Date();
+  const fromPlan = user.plan;
+  const base = { fromPlan, toPlan, currency: cur };
+  const active = user.subscriptionEnd && user.subscriptionEnd > now;
+  if (!active) return { ...base, eligible: false, reason: 'NO_ACTIVE_SUBSCRIPTION' };
+  if (PLAN_RANK[toPlan] <= PLAN_RANK[fromPlan]) return { ...base, eligible: false, reason: 'NOT_AN_UPGRADE' };
+
+  const fromMonthly = await monthlyRateCents(fromPlan, cur);
+  const toMonthly = await monthlyRateCents(toPlan, cur);
+  if (fromMonthly == null || toMonthly == null) return { ...base, eligible: false, reason: 'PRICE_NOT_CONFIGURED' };
+
+  const diffPerMonth = toMonthly - fromMonthly;
+  if (diffPerMonth <= 0) return { ...base, eligible: false, reason: 'NO_PRICE_DIFFERENCE' };
+
+  const remainingDays = Math.max(0, Math.ceil((user.subscriptionEnd.getTime() - now.getTime()) / DAY_MS));
+  const amountCents = Math.round((diffPerMonth * remainingDays) / 30);
+  if (amountCents <= 0) return { ...base, eligible: false, reason: 'NOTHING_TO_PAY', remainingDays };
+
+  // Difference too small for Stripe to charge — user should renew after expiry.
+  const minCents = minChargeCents(cur);
+  if (amountCents < minCents) {
+    return { ...base, eligible: false, reason: 'BELOW_MIN_CHARGE', remainingDays, amountCents, minChargeCents: minCents };
+  }
+
+  return {
+    ...base,
+    eligible: true,
+    remainingDays,
+    fromMonthlyCents: fromMonthly,
+    toMonthlyCents: toMonthly,
+    diffPerMonthCents: diffPerMonth,
+    amountCents,
+    subscriptionEnd: user.subscriptionEnd,
+  };
+}
+
+// Apply a prorated upgrade after payment: bump the plan tier, KEEP the existing
+// subscriptionEnd (never extend). Writes a Subscription audit row.
+async function applyUpgradeToUser({ userId, toPlan, sourceOrderId = null, provider = null }) {
+  assertPlan(toPlan);
+  const now = new Date();
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { plan: true, subscriptionEnd: true },
+  });
+  if (!user) { const e = new Error('User not found'); e.status = 404; throw e; }
+
+  // Only ever move up; guard against a stale/duplicate webhook downgrading.
+  const nextPlan = PLAN_RANK[toPlan] > PLAN_RANK[user.plan] ? toPlan : user.plan;
+  const end = user.subscriptionEnd && user.subscriptionEnd > now ? user.subscriptionEnd : now;
+
+  const updated = await prisma.user.update({
+    where: { id: userId },
+    data: { plan: nextPlan }, // subscriptionEnd intentionally unchanged
+    select: { id: true, plan: true, subscriptionEnd: true },
+  });
+
+  await prisma.subscription.create({
+    data: {
+      userId,
+      plan: nextPlan,
+      status: 'ACTIVE',
+      startedAt: now,
+      currentPeriodEnd: end,
+      autoRenew: false,
+      provider,
+      sourceOrderId: sourceOrderId || null,
+    },
+  });
+
+  return updated;
+}
+
 module.exports = {
   VALID_PLANS,
   PLAN_RANK,
@@ -311,4 +427,6 @@ module.exports = {
   resolvePriceOrThrow,
   resolveStripeAnchorPrice,
   refundOrder,
+  computeUpgradeQuote,
+  applyUpgradeToUser,
 };

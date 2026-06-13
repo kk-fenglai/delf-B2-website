@@ -6,7 +6,13 @@ const prisma = require('../../prisma');
 const { requireAuth } = require('../../middleware/auth');
 const env = require('../../config/env');
 const stripePay = require('../../services/payments/stripe');
-const { resolvePriceOrThrow, resolveStripeAnchorPrice, applyPurchaseToUser } = require('../../services/billing');
+const {
+  resolvePriceOrThrow,
+  resolveStripeAnchorPrice,
+  applyPurchaseToUser,
+  computeUpgradeQuote,
+  applyUpgradeToUser,
+} = require('../../services/billing');
 const { writeAdminLog } = require('../../middleware/admin');
 const { logger } = require('../../utils/logger');
 
@@ -271,6 +277,127 @@ router.post('/checkout', requireAuth, async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// Charge currency for a prorated upgrade. With Adaptive Pricing the actual
+// settlement is the EUR anchor, so quote + charge must use that; otherwise the
+// caller's requested currency (default CNY, matching the catalog default).
+function upgradeCurrency(requested) {
+  if (env.STRIPE?.ADAPTIVE_PRICING) return String(env.STRIPE.ANCHOR_CURRENCY || 'EUR').toUpperCase();
+  return String(requested || 'CNY').toUpperCase();
+}
+
+// GET /api/pay/stripe/upgrade/quote?plan=AI&currency=CNY — prorated upgrade quote.
+router.get('/upgrade/quote', requireAuth, async (req, res, next) => {
+  try {
+    if (!stripePay.isEnabled()) {
+      return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
+    }
+    const toPlan = String(req.query.plan || '').toUpperCase();
+    if (!toPlan) return res.status(400).json({ error: 'plan required', code: 'INVALID_REQUEST' });
+    const quote = await computeUpgradeQuote({
+      userId: req.userId,
+      toPlan,
+      currency: upgradeCurrency(req.query.currency),
+    });
+    res.json(quote);
+  } catch (e) { next(e); }
+});
+
+const upgradeSchema = z.object({
+  plan: z.string().min(1),
+  currency: z.string().optional(),
+});
+
+// POST /api/pay/stripe/upgrade-checkout — start a Stripe Checkout for the
+// prorated difference. Settles via the normal webhook (product='stripe_upgrade'
+// → applyUpgradeToUser keeps the end date, only bumps the plan).
+router.post('/upgrade-checkout', requireAuth, async (req, res, next) => {
+  try {
+    if (!stripePay.isEnabled()) {
+      return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
+    }
+    const { plan, currency } = upgradeSchema.parse(req.body);
+    const toPlan = plan.toUpperCase();
+    const cur = upgradeCurrency(currency);
+
+    const quote = await computeUpgradeQuote({ userId: req.userId, toPlan, currency: cur });
+    if (!quote.eligible) {
+      return res.status(400).json({ error: 'Upgrade not available', code: quote.reason });
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: req.userId }, select: { email: true } });
+    const providerOrderNo = randomProviderOrderNo('cs_up');
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+
+    const order = await prisma.paymentOrder.create({
+      data: {
+        userId: req.userId,
+        provider: 'stripe',
+        product: 'stripe_upgrade',
+        plan: toPlan,
+        months: 0, // an upgrade does not extend the period
+        priceId: null,
+        currency: cur,
+        amountCents: quote.amountCents,
+        status: 'PENDING',
+        providerOrderNo,
+        expiresAt,
+      },
+    });
+
+    // Synthetic price-like object: createCheckoutSession only needs amount,
+    // currency, months, product.{plan,name} for a one-time (price_data) charge.
+    const syntheticPrice = {
+      id: order.id,
+      code: `UPGRADE_${quote.fromPlan}_${toPlan}`,
+      currency: cur,
+      amountCents: quote.amountCents,
+      months: 0,
+      stripePriceId: null,
+      product: { plan: toPlan, name: `Upgrade ${quote.fromPlan}→${toPlan}` },
+    };
+
+    let session;
+    try {
+      session = await stripePay.createCheckoutSession({
+        orderId: order.id,
+        userId: req.userId,
+        price: syntheticPrice,
+        successUrl: successUrlForOrder(order.id),
+        cancelUrl: cancelUrlForOrder(order.id),
+        returnUrl: returnUrlForOrder(order.id),
+        subscribe: false,
+        customerEmail: user?.email || undefined,
+      });
+    } catch (err) {
+      await prisma.paymentOrder.update({ where: { id: order.id }, data: { status: 'FAILED' } }).catch(() => {});
+      logger.error({ err: err?.message, orderId: order.id }, '[stripe.upgrade] checkout session create failed');
+      return res.status(502).json({ error: 'Stripe checkout unavailable, please retry later', code: 'STRIPE_CHECKOUT_CREATE_FAILED' });
+    }
+
+    if (session.embedded) {
+      if (!session.clientSecret) {
+        await prisma.paymentOrder.update({ where: { id: order.id }, data: { status: 'FAILED', externalTradeNo: 'NO_CLIENT_SECRET' } }).catch(() => {});
+        return res.status(502).json({ error: 'Stripe returned no client secret', code: 'STRIPE_CHECKOUT_NO_SECRET' });
+      }
+      await prisma.paymentOrder.update({ where: { id: order.id }, data: { providerOrderNo: session.sessionId, redirectUrl: null } });
+      return res.status(201).json({
+        orderId: order.id, provider: 'stripe', mode: session.mode,
+        checkoutMode: 'embedded', sessionId: session.sessionId, clientSecret: session.clientSecret, quote,
+      });
+    }
+
+    if (!session.url) {
+      await prisma.paymentOrder.update({ where: { id: order.id }, data: { status: 'FAILED', externalTradeNo: 'NO_CHECKOUT_URL' } }).catch(() => {});
+      return res.status(502).json({ error: 'Stripe returned no checkout URL', code: 'STRIPE_CHECKOUT_NO_URL' });
+    }
+    await prisma.paymentOrder.update({ where: { id: order.id }, data: { providerOrderNo: session.sessionId, redirectUrl: session.url } });
+    return res.status(201).json({
+      orderId: order.id, provider: 'stripe', mode: session.mode,
+      checkoutMode: 'hosted', redirectUrl: session.url, quote,
+    });
+  } catch (e) { next(e); }
+});
+
 // POST /api/pay/stripe/portal — Customer Portal redirect for the logged-in user.
 // Looks up the most recent ACTIVE Stripe contract; returns 404 if user has none.
 router.post('/portal', requireAuth, async (req, res, next) => {
@@ -430,14 +557,24 @@ async function settleOrder({
   });
   if (claim.count === 0) return { claimed: false, reason: 'race_lost' };
 
-  await applyPurchaseToUser({
-    userId: order.userId,
-    plan: order.plan,
-    months: order.months,
-    sourceOrderId: order.id,
-    provider: order.provider,
-    contractId: order.contractId,
-  });
+  if (order.product === 'stripe_upgrade') {
+    // Prorated upgrade: keep the end date, only bump the plan tier.
+    await applyUpgradeToUser({
+      userId: order.userId,
+      toPlan: order.plan,
+      sourceOrderId: order.id,
+      provider: 'stripe',
+    });
+  } else {
+    await applyPurchaseToUser({
+      userId: order.userId,
+      plan: order.plan,
+      months: order.months,
+      sourceOrderId: order.id,
+      provider: order.provider,
+      contractId: order.contractId,
+    });
+  }
 
   await writeAdminLog({
     adminId: order.userId,
@@ -446,6 +583,7 @@ async function settleOrder({
     targetId: order.id,
     payload: {
       provider: 'stripe',
+      upgrade: order.product === 'stripe_upgrade',
       amountCents: order.amountCents,
       sessionId,
       externalTradeNo,

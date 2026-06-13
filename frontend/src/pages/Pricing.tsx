@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
+import UpgradeDifferenceCard from '../components/UpgradeDifferenceCard';
 import type { CatalogProduct, CatalogPrice, Plan, TrialPublicConfig, TrialStatus } from '../types';
 
 const { Title, Paragraph } = Typography;
@@ -297,6 +298,8 @@ export default function Pricing() {
           )}
         </div>
       )}
+
+      <UpgradeDifferenceCard />
 
       <div className="flex justify-center mb-10 gap-3 flex-wrap">
         <Segmented

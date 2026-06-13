@@ -34,10 +34,22 @@
     "ctaStart": "Start free practice",
     "ctaPricing": "View pricing",
     "features": {
-      "co": { "title": "Listening", "desc": "Full audio tracks simulating real exam conditions" },
-      "ce": { "title": "Reading", "desc": "Argumentative long-form texts with answer locations" },
-      "pe": { "title": "Writing", "desc": "250-word essays with AI correction (AI plan)" },
-      "po": { "title": "Speaking", "desc": "Recording practice with AI examiner (AI plan)" }
+      "co": {
+        "title": "Listening",
+        "desc": "Full audio tracks simulating real exam conditions"
+      },
+      "ce": {
+        "title": "Reading",
+        "desc": "Argumentative long-form texts with answer locations"
+      },
+      "pe": {
+        "title": "Writing",
+        "desc": "250-word essays with AI correction (AI plan)"
+      },
+      "po": {
+        "title": "Speaking",
+        "desc": "Recording practice with AI examiner (AI plan)"
+      }
     },
     "examStructure": "DELF B2 Exam Structure",
     "minutes": "min",
@@ -90,7 +102,9 @@
     "loginFail": "Sign in failed",
     "registerSuccess": "Welcome to DELFluent!",
     "registerFail": "Sign up failed",
-    "common": { "cancel": "Cancel" },
+    "common": {
+      "cancel": "Cancel"
+    },
     "forgot": {
       "title": "Reset password",
       "subtitle": "Enter your account email and we'll send a reset link",
@@ -412,6 +426,13 @@
       "haiku": "Qwen Turbo (fast)",
       "sonnet": "DeepSeek V4 Flash (balanced)",
       "opus": "Qwen Plus (precise)"
+    },
+    "upgrade": {
+      "title": "Upgrade · pay only the difference",
+      "desc": "Your current plan is still active. Upgrade to a higher plan by paying just the prorated difference — your end date stays the same.",
+      "remaining": "{{days}} days left",
+      "cta": "Upgrade to {{plan}}",
+      "belowMin": "The difference is below the minimum charge — no top-up needed; please renew on your own after your current plan expires."
     },
     "checkout": {
       "loginFirst": "Please log in before purchasing",
