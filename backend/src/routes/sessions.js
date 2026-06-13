@@ -5,13 +5,15 @@ const { requireAuth } = require('../middleware/auth');
 const { gradeAnswer } = require('../services/grader');
 const { enqueue: enqueueEssay } = require('../services/essayQueue');
 const { enqueue: enqueueOral } = require('../services/oralQueue');
-const PDFDocument = require('pdfkit');
+const { buildScoreReportPdf } = require('../services/reportPdf');
 const {
   MODEL_KEYS,
   PLAN_CAPS,
   defaultModelForPlan,
   modelAllowedForPlan,
+  planAtLeast,
 } = require('../constants/planMatrix');
+const { getOrCreateExplanation } = require('../services/questionExplainer');
 const { MIN_WORDS, MAX_WORDS } = require('../constants/delfRubric');
 const { signAudioUrl } = require('../utils/audioToken');
 
@@ -628,58 +630,58 @@ router.get('/:id/report.pdf', requireAuth, async (req, res, next) => {
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}.pdf"`);
 
-    const doc = new PDFDocument({ margin: 50 });
-    doc.pipe(res);
-
-    doc.fontSize(20).text('DELFluent · Score Report', { align: 'center' });
-    doc.moveDown(0.5);
-    doc.fontSize(12).text(`Exam: ${built.exam.title} (${built.exam.year})`);
-    doc.text(`Candidate: ${(user?.name || user?.email || '').trim()}`);
-    doc.text(`Session ID: ${built.result.sessionId}`);
-    doc.text(`Completed: ${built.session.completedAt ? new Date(built.session.completedAt).toLocaleString() : '—'}`);
-    doc.moveDown(1);
-
-    doc.fontSize(14).text('Score', { underline: true });
-    doc.moveDown(0.5);
-    doc.fontSize(12).text(`Raw total: ${built.result.totalScore} / ${built.result.maxScore}`);
-
-    const per = built.result.perSkill || {};
-    const order = ['CO', 'CE', 'PE', 'PO'];
-    const perScaled = order
-      .map((k) => ({ skill: k, ...per[k] }))
-      .filter((r) => r && r.maxScore > 0);
-    if (perScaled.length) {
-      doc.moveDown(0.5);
-      doc.text('Per section (scaled to /25):');
-      perScaled.forEach((r) => {
-        const scaled = scaleTo25(r.score, r.maxScore);
-        const pending = r.pendingAI ? ' (pending AI)' : '';
-        doc.text(`- ${r.skill}: ${scaled} / 25  (raw ${r.score}/${r.maxScore})${pending}`);
-      });
-      const totalScaled = perScaled.reduce((s, r) => s + scaleTo25(r.score, r.maxScore), 0);
-      doc.text(`DELF equivalent: ${totalScaled.toFixed(1)} / 100`);
-    }
-
     const essays = await prisma.essay.findMany({
       where: { sessionId: built.session.id, userId: req.userId },
-      select: { questionId: true, status: true, aiScore: true, aiFeedback: true },
+      select: { questionId: true, status: true, aiScore: true, aiFeedback: true, locale: true },
     });
-    const essayDone = essays.filter((e) => e.status === 'done');
-    if (essayDone.length) {
-      doc.addPage();
-      doc.fontSize(14).text('Writing feedback (AI)', { underline: true });
-      doc.moveDown(0.5);
-      for (const e of essayDone) {
-        const q = built.exam.questions.find((qq) => qq.id === e.questionId);
-        doc.fontSize(12).text(`Question: ${q?.prompt || e.questionId}`);
-        doc.text(`AI score: ${e.aiScore ?? '—'} / 25`);
-        if (e.aiFeedback) doc.text(String(e.aiFeedback).slice(0, 1800));
-        doc.moveDown(1);
-      }
+
+    // Report label language: explicit ?lang= from the UI, else the language the
+    // candidate's feedback was written in, else zh (frontend fallback).
+    const lang = req.query.lang || essays.find((e) => e.locale)?.locale || 'zh';
+
+    buildScoreReportPdf({ res, built, user, essays, scaleTo25, lang });
+  } catch (e) { next(e); }
+});
+
+// GET /api/sessions/:id/questions/:questionId/explanation
+// AI-generated explanation for a CO/CE objective question. AI-plan only;
+// non-AI users get 403 { upsell: true } so the UI can show an upgrade prompt.
+router.get('/:id/questions/:questionId/explanation', requireAuth, async (req, res, next) => {
+  try {
+    if (!planAtLeast(req.userPlan, 'AI')) {
+      return res.status(403).json({ error: 'upgrade_required', upsell: true });
+    }
+    // Ownership + membership: the question must belong to this user's session's exam.
+    const session = await prisma.examSession.findFirst({
+      where: { id: req.params.id, userId: req.userId },
+      select: { examSetId: true },
+    });
+    if (!session) return res.status(404).json({ error: 'Session not found' });
+
+    const question = await prisma.question.findFirst({
+      where: { id: req.params.questionId, examSetId: session.examSetId },
+      select: {
+        id: true, skill: true, type: true, prompt: true, passage: true,
+        explanation: true, aiExplanation: true,
+        options: { select: { label: true, text: true, isCorrect: true }, orderBy: { order: 'asc' } },
+        readingPassage: { select: { content: true } },
+      },
+    });
+    if (!question) return res.status(404).json({ error: 'Question not found' });
+    if (!['CO', 'CE'].includes(question.skill) || question.type === 'ESSAY' || question.type === 'SPEAKING') {
+      return res.status(400).json({ error: 'Explanation not available for this question type' });
     }
 
-    doc.end();
-  } catch (e) { next(e); }
+    const explanation = await getOrCreateExplanation(
+      question,
+      req.query.lang || 'zh',
+      (id, text) => prisma.question.update({ where: { id }, data: { aiExplanation: text } }),
+    );
+    res.json({ explanation });
+  } catch (e) {
+    if (e.code === 'AI_NOT_CONFIGURED') return res.status(503).json({ error: 'AI not configured' });
+    next(e);
+  }
 });
 
 module.exports = router;

@@ -390,6 +390,10 @@ model Question {
   audioDocumentId String?
   audioDocument AudioDocument? @relation(fields: [audioDocumentId], references: [id], onDelete: SetNull)
   explanation   String?
+  // AI-generated detailed explanation for CO/CE objective questions, gated to
+  // AI-plan users. Cached per language as JSON { zh?, en?, fr? } and shared
+  // across all users (question content is identical for everyone).
+  aiExplanation String?
   points        Int          @default(1)
 
   modelEssay    String?

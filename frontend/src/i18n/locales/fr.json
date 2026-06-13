@@ -290,6 +290,14 @@
     "correctAnswer": "Bonne réponse : ",
     "notAnswered": "(non répondu)",
     "explanation": "Explication",
+    "aiExplain": {
+      "title": "Explication IA",
+      "show": "Voir l'explication IA",
+      "error": "Échec de la génération de l'explication IA. Réessayez plus tard.",
+      "upsellTitle": "Les explications IA sont réservées à la formule IA",
+      "upsellDesc": "Passez à la formule IA pour voir une explication IA détaillée de chaque question de compréhension orale et écrite.",
+      "upgrade": "Passer à la formule IA"
+    },
     "backToPractice": "Retour à l'entraînement",
     "downloadPdf": "Télécharger le PDF",
     "toDashboard": "Tableau de bord",

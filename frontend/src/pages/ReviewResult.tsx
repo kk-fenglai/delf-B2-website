@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import EssayGradeCard from '../components/EssayGradeCard';
 import OralGradeCard from '../components/OralGradeCard';
+import AiExplanation from '../components/AiExplanation';
 import { localizeExamTitle } from '../utils/examTitle';
 import type { SubmitResult, ExamSetDetail, Skill } from '../types';
 
@@ -15,7 +16,7 @@ const { Title, Paragraph } = Typography;
 const SKILL_ORDER: Skill[] = ['CO', 'CE', 'PE', 'PO'];
 
 export default function ReviewResult() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { sessionId } = useParams();
   const [data, setData] = useState<{
     result: SubmitResult;
@@ -45,7 +46,10 @@ export default function ReviewResult() {
 
   const downloadPdf = async () => {
     if (!sessionId) return;
-    const r = await api.get(`/sessions/${sessionId}/report.pdf`, { responseType: 'blob' });
+    const r = await api.get(`/sessions/${sessionId}/report.pdf`, {
+      params: { lang: i18n.language?.split('-')[0] || 'zh' },
+      responseType: 'blob',
+    });
     const blob = new Blob([r.data], { type: 'application/pdf' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -241,6 +245,9 @@ export default function ReviewResult() {
             )}
             {d.explanation && (
               <Alert type="info" message={t('review.explanation')} description={d.explanation} className="mt-2" />
+            )}
+            {(q.skill === 'CO' || q.skill === 'CE') && q.type !== 'ESSAY' && q.type !== 'SPEAKING' && sessionId && (
+              <AiExplanation sessionId={sessionId} questionId={d.questionId} />
             )}
           </Card>
         );

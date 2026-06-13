@@ -292,6 +292,14 @@
     "correctAnswer": "正确答案：",
     "notAnswered": "（未作答）",
     "explanation": "题目解析",
+    "aiExplain": {
+      "title": "AI 解析",
+      "show": "查看 AI 解析",
+      "error": "AI 解析生成失败，请稍后再试。",
+      "upsellTitle": "AI 解析为 AI 版专属",
+      "upsellDesc": "升级到 AI 版即可查看每道听力、阅读题的 AI 详细解答。",
+      "upgrade": "升级到 AI 版"
+    },
     "backToPractice": "返回题库",
     "downloadPdf": "下载 PDF 成绩单",
     "toDashboard": "查看学习中心",

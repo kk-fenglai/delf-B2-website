@@ -290,6 +290,14 @@
     "correctAnswer": "Correct answer: ",
     "notAnswered": "(not answered)",
     "explanation": "Explanation",
+    "aiExplain": {
+      "title": "AI explanation",
+      "show": "Show AI explanation",
+      "error": "Failed to generate the AI explanation. Please try again later.",
+      "upsellTitle": "AI explanations are an AI-plan feature",
+      "upsellDesc": "Upgrade to the AI plan to see a detailed AI explanation for every listening and reading question.",
+      "upgrade": "Upgrade to AI plan"
+    },
     "backToPractice": "Back to practice",
     "downloadPdf": "Download PDF",
     "toDashboard": "Go to dashboard",
