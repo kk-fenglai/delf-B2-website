@@ -42,18 +42,18 @@ export default function AdminLoginHistory() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+      <div className="admin-page-header">
         <Title level={3}>登录历史</Title>
         <Button icon={<ReloadOutlined />} onClick={load}>刷新</Button>
       </div>
 
-      <Space style={{ marginBottom: 16 }} wrap>
+      <Space className="admin-toolbar" wrap>
         <Input
           placeholder="用户 ID 过滤（可选）"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
           allowClear
-          style={{ width: 280 }}
+          className="w-full sm:w-[280px]"
         />
         <Button type="primary" onClick={() => { setPage(1); load(); }}>查询</Button>
       </Space>

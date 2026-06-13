@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { adminApi } from '../../../api/adminClient';
 import {
   CopyButton, currencySymbol, formatDate, formatMoney, Money, ORDER_STATUS_COLOR,
-  PROVIDER_LABEL, stripeDashboardUrl, useAdminPasswordSession,
+  PROVIDER_LABEL, stripeDashboardUrl, useAdminDrawerWidth, useAdminPasswordSession,
   type PaymentOrderRow,
 } from './_shared';
 
@@ -19,6 +19,7 @@ interface Props {
 
 export default function RefundDrawer({ open, order, onClose, onRefunded }: Props) {
   const { t } = useTranslation();
+  const drawerWidth = useAdminDrawerWidth(560);
   const pwSession = useAdminPasswordSession();
 
   const [amountYuan, setAmountYuan] = useState<number>(0);
@@ -86,7 +87,7 @@ export default function RefundDrawer({ open, order, onClose, onRefunded }: Props
       title={t('adminPayments.refund.title')}
       open={open}
       onClose={onClose}
-      width={560}
+      width={drawerWidth}
       destroyOnClose
       footer={
         <Space style={{ float: 'right' }}>

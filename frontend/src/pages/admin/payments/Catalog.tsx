@@ -149,17 +149,8 @@ export default function Catalog() {
 
   return (
     <Spin spinning={loading && products.length === 0}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 16,
-          gap: 12,
-          flexWrap: 'wrap',
-        }}
-      >
-        <Space>
+      <div className="admin-page-header">
+        <Space wrap>
           <Button
             type="primary"
             icon={<PlusOutlined />}

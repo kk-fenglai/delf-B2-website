@@ -5,7 +5,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { adminApi } from '../../../api/adminClient';
 import {
-  SUPPORTED_CURRENCIES, currencySymbol, type PriceRow,
+  SUPPORTED_CURRENCIES, currencySymbol, useAdminDrawerWidth, type PriceRow,
 } from './_shared';
 import type { BillingConfig } from './Catalog';
 
@@ -46,6 +46,7 @@ export default function PriceFormDrawer({
   open, productId, editing, billing, onClose, onSaved,
 }: Props) {
   const { t } = useTranslation();
+  const drawerWidth = useAdminDrawerWidth(460);
   const [form, setForm] = useState<FormState>(EMPTY);
   const [busy, setBusy] = useState(false);
 
@@ -171,7 +172,7 @@ export default function PriceFormDrawer({
       }
       open={open}
       onClose={onClose}
-      width={460}
+      width={drawerWidth}
       destroyOnClose
       footer={
         <Space style={{ float: 'right' }}>

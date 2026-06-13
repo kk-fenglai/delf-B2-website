@@ -231,9 +231,9 @@ export default function AdminExams() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+      <div className="admin-page-header">
         <Title level={3} className="!mb-0">套题管理</Title>
-        <Space>
+        <Space wrap>
           <Select
             value={status}
             onChange={(v) => setStatus(v)}

@@ -254,9 +254,9 @@ export default function AdminUsers() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+      <div className="admin-page-header">
         <Title level={3}>用户管理</Title>
-        <Space>
+        <Space wrap>
           <Button icon={<ReloadOutlined />} onClick={load}>刷新</Button>
           {isSuper && (
             <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateOpen(true)}>
@@ -266,21 +266,21 @@ export default function AdminUsers() {
         </Space>
       </div>
 
-      <Space style={{ marginBottom: 16 }} wrap>
+      <Space className="admin-toolbar" wrap>
         <Input.Search
           placeholder="搜索邮箱 / 昵称"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           onSearch={() => { setPage(1); load(); }}
           allowClear
-          style={{ width: 260 }}
+          className="!w-full sm:!w-[260px]"
         />
         <Select
-          placeholder="套餐" value={plan} onChange={setPlan} allowClear style={{ width: 140 }}
+          placeholder="套餐" value={plan} onChange={setPlan} allowClear className="w-full sm:w-[140px]"
           options={['FREE', 'STANDARD', 'AI', 'AI_UNLIMITED'].map((p) => ({ value: p, label: p }))}
         />
         <Select
-          placeholder="状态" value={status} onChange={setStatus} style={{ width: 140 }}
+          placeholder="状态" value={status} onChange={setStatus} className="w-full sm:w-[140px]"
           options={[
             { value: 'ACTIVE', label: '活跃' },
             { value: 'SUSPENDED', label: '已停用' },
@@ -289,7 +289,7 @@ export default function AdminUsers() {
           ]}
         />
         <Select
-          placeholder="角色" value={role} onChange={setRole} allowClear style={{ width: 160 }}
+          placeholder="角色" value={role} onChange={setRole} allowClear className="w-full sm:w-[160px]"
           options={[
             { value: 'USER', label: 'USER' },
             { value: 'ADMIN', label: 'ADMIN' },

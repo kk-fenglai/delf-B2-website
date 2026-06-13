@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Card, Typography, Form, Input, InputNumber, Switch, Button, Space, Tag, message,
-  Table, Modal, Select, Popconfirm, Upload, Divider, Alert,
+  Table, Modal, Select, Popconfirm, Upload, Divider, Alert, Grid,
 } from 'antd';
 import type { UploadProps } from 'antd';
 import {
@@ -12,6 +12,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { adminApi, ADMIN_TOKEN_KEY } from '../../api/adminClient';
 
 const { Title } = Typography;
+const { useBreakpoint } = Grid;
 
 const SKILLS = [
   { value: 'CO', label: 'CO · 听力' },
@@ -71,6 +72,8 @@ interface ExamSet {
 export default function AdminExamEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const screens = useBreakpoint();
+  const editorModalWidth = screens.md ? 760 : '100%';
   const [exam, setExam] = useState<ExamSet | null>(null);
   const [loading, setLoading] = useState(true);
   const [metaForm] = Form.useForm();
@@ -341,7 +344,8 @@ export default function AdminExamEdit() {
         onOk={saveQ}
         okText="保存"
         cancelText="取消"
-        width={760}
+        width={editorModalWidth}
+        style={screens.md ? undefined : { top: 20, paddingBottom: 0 }}
         destroyOnClose
       >
         <Form form={qForm} layout="vertical">

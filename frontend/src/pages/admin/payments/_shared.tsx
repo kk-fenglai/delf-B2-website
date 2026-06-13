@@ -7,7 +7,7 @@
 // individual files stay focused on layout.
 
 import { useEffect, useState } from 'react';
-import { Button, message, Tooltip } from 'antd';
+import { Button, Grid, message, Tooltip } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 
 // --------------------------------------------------------------------
@@ -293,3 +293,11 @@ export const PROVIDER_LABEL: Record<Provider, string> = {
   alipay: 'Alipay',
   stripe: 'Stripe',
 };
+
+const { useBreakpoint } = Grid;
+
+/** Full-width drawer on phone; fixed width on desktop. */
+export function useAdminDrawerWidth(desktop = 480): number | string {
+  const screens = useBreakpoint();
+  return screens.md ? desktop : '100%';
+}

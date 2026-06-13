@@ -60,18 +60,18 @@ export default function AdminLogs() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+      <div className="admin-page-header">
         <Title level={3}>操作审计</Title>
         <Button icon={<ReloadOutlined />} onClick={load}>刷新</Button>
       </div>
 
-      <Space style={{ marginBottom: 16 }} wrap>
-        <Input placeholder="管理员 ID" value={adminId} onChange={(e) => setAdminId(e.target.value)} style={{ width: 200 }} allowClear />
+      <Space className="admin-toolbar" wrap>
+        <Input placeholder="管理员 ID" value={adminId} onChange={(e) => setAdminId(e.target.value)} className="w-full sm:w-[200px]" allowClear />
         <Select
-          placeholder="操作类型" value={action} onChange={setAction} allowClear style={{ width: 220 }}
+          placeholder="操作类型" value={action} onChange={setAction} allowClear className="w-full sm:w-[220px]"
           options={ACTIONS.map((a) => ({ value: a, label: a }))}
         />
-        <Input placeholder="目标 ID（用户 ID 等）" value={targetId} onChange={(e) => setTargetId(e.target.value)} style={{ width: 220 }} allowClear />
+        <Input placeholder="目标 ID（用户 ID 等）" value={targetId} onChange={(e) => setTargetId(e.target.value)} className="w-full sm:w-[220px]" allowClear />
         <Button type="primary" onClick={() => { setPage(1); load(); }}>查询</Button>
       </Space>
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Drawer, Form, Input, Select, Switch, Button, Space, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { adminApi } from '../../../api/adminClient';
-import type { ProductRow } from './_shared';
+import { useAdminDrawerWidth, type ProductRow } from './_shared';
 
 interface Props {
   open: boolean;
@@ -24,6 +24,7 @@ const EMPTY: FormState = { code: '', name: '', plan: 'STANDARD', active: true };
 
 export default function ProductFormDrawer({ open, editing, onClose, onSaved }: Props) {
   const { t } = useTranslation();
+  const drawerWidth = useAdminDrawerWidth(420);
   const [form, setForm] = useState<FormState>(EMPTY);
   const [busy, setBusy] = useState(false);
 
@@ -72,7 +73,7 @@ export default function ProductFormDrawer({ open, editing, onClose, onSaved }: P
       title={editing ? t('adminPayments.common.edit') : t('adminPayments.catalog.newProduct')}
       open={open}
       onClose={onClose}
-      width={420}
+      width={drawerWidth}
       destroyOnClose
       footer={
         <Space style={{ float: 'right' }}>

@@ -103,3 +103,70 @@ body {
     max-height: 68vh;
   }
 }
+
+/* Admin console — mobile-friendly tables and toolbars */
+.admin-content .ant-table {
+  min-width: 640px;
+}
+
+.admin-content .ant-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.admin-page-header .ant-typography {
+  margin-bottom: 0 !important;
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.admin-toolbar .ant-input-search,
+.admin-toolbar .ant-select {
+  width: 100%;
+  max-width: 260px;
+}
+
+@media (max-width: 767px) {
+  .admin-content .ant-tabs-nav {
+    margin-bottom: 12px;
+  }
+
+  .admin-content .ant-tabs-tab {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .admin-content .ant-card-head-wrapper {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .admin-content .ant-descriptions-item-label,
+  .admin-content .ant-descriptions-item-content {
+    padding: 8px 12px !important;
+  }
+
+  .admin-content .ant-modal {
+    max-width: calc(100vw - 16px) !important;
+    margin: 8px auto !important;
+  }
+
+  .admin-content .ant-pagination {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+}

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Tabs, Typography } from 'antd';
+import { Tabs, Typography, Grid } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import Overview from './payments/Overview';
@@ -9,6 +9,7 @@ import Contracts from './payments/Contracts';
 import PricingReview from './payments/PricingReview';
 
 const { Title } = Typography;
+const { useBreakpoint } = Grid;
 
 const VALID_TABS = ['overview', 'catalog', 'pricingReview', 'orders', 'contracts'] as const;
 type TabKey = (typeof VALID_TABS)[number];
@@ -20,6 +21,8 @@ function isValidTab(v: string | null): v is TabKey {
 export default function AdminPayments() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
 
   const rawTab = searchParams.get('tab');
   const activeTab: TabKey = isValidTab(rawTab) ? rawTab : 'overview';
@@ -38,7 +41,7 @@ export default function AdminPayments() {
 
   return (
     <div>
-      <Title level={3} style={{ marginBottom: 16 }}>
+      <Title level={isMobile ? 4 : 3} style={{ marginBottom: 16 }}>
         {t('adminPayments.title')}
       </Title>
 
@@ -46,6 +49,8 @@ export default function AdminPayments() {
         activeKey={activeTab}
         onChange={setTab}
         destroyInactiveTabPane
+        size={isMobile ? 'small' : 'middle'}
+        tabBarGutter={isMobile ? 4 : 8}
         items={[
           {
             key: 'overview',

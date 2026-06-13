@@ -46,9 +46,9 @@ export default function AdminLogin() {
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg,#1e293b 0%,#7f1d1d 100%)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24,
+      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
     }}>
-      <Card style={{ width: 420, boxShadow: '0 10px 40px rgba(0,0,0,0.3)' }}>
+      <Card className="w-full max-w-[420px]" style={{ boxShadow: '0 10px 40px rgba(0,0,0,0.3)' }}>
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <SafetyOutlined style={{ fontSize: 48, color: '#dc2626' }} />
           <Title level={3} style={{ marginTop: 12, marginBottom: 4 }}>管理员登录</Title>
