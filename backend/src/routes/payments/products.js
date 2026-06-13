@@ -3,6 +3,7 @@ const prisma = require('../../prisma');
 const env = require('../../config/env');
 const stripePay = require('../../services/payments/stripe');
 const { trialConfig } = require('../../services/trial');
+const { getBillingPolicy } = require('../../services/billingPolicy');
 
 const router = express.Router();
 
@@ -58,8 +59,8 @@ router.get('/products', async (_req, res, next) => {
       orderBy: { createdAt: 'asc' },
     });
 
-    const cfg = trialConfig();
-    res.setHeader('Cache-Control', 'public, max-age=120, stale-while-revalidate=300');
+    const [cfg, policy] = await Promise.all([trialConfig(), getBillingPolicy()]);
+    res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=120');
     res.json({
       adaptivePricing: Boolean(env.STRIPE?.ADAPTIVE_PRICING),
       anchorCurrency: env.STRIPE?.ANCHOR_CURRENCY || 'EUR',
@@ -69,6 +70,8 @@ router.get('/products', async (_req, res, next) => {
         days: cfg.days,
         plan: cfg.plan,
       },
+      paymentsEnabled: policy.paymentsEnabled,
+      paymentsDisabledMessage: policy.paymentsDisabledMessage,
       products: products.map((p) => ({
         id: p.id,
         code: p.code,

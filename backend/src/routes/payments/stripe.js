@@ -15,6 +15,7 @@ const {
 } = require('../../services/billing');
 const { writeAdminLog } = require('../../middleware/admin');
 const { logger } = require('../../utils/logger');
+const { assertPaymentsEnabled, paymentsDisabledResponse } = require('../../services/billingPolicy');
 
 const router = express.Router();
 
@@ -117,6 +118,7 @@ function randomProviderOrderNo(prefix = 'cs') {
 // otherwise creates a one-time payment session (existing behavior).
 router.post('/checkout', requireAuth, async (req, res, next) => {
   try {
+    await assertPaymentsEnabled();
     if (!stripePay.isEnabled()) {
       return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
     }
@@ -274,7 +276,10 @@ router.post('/checkout', requireAuth, async (req, res, next) => {
       checkoutMode: 'hosted',
       redirectUrl: session.url,
     });
-  } catch (e) { next(e); }
+  } catch (e) {
+    if (e.code === 'PAYMENTS_DISABLED') return paymentsDisabledResponse(e, res);
+    next(e);
+  }
 });
 
 // Charge currency for a prorated upgrade. With Adaptive Pricing the actual
@@ -312,6 +317,7 @@ const upgradeSchema = z.object({
 // → applyUpgradeToUser keeps the end date, only bumps the plan).
 router.post('/upgrade-checkout', requireAuth, async (req, res, next) => {
   try {
+    await assertPaymentsEnabled();
     if (!stripePay.isEnabled()) {
       return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
     }
@@ -395,7 +401,10 @@ router.post('/upgrade-checkout', requireAuth, async (req, res, next) => {
       orderId: order.id, provider: 'stripe', mode: session.mode,
       checkoutMode: 'hosted', redirectUrl: session.url, quote,
     });
-  } catch (e) { next(e); }
+  } catch (e) {
+    if (e.code === 'PAYMENTS_DISABLED') return paymentsDisabledResponse(e, res);
+    next(e);
+  }
 });
 
 // POST /api/pay/stripe/portal — Customer Portal redirect for the logged-in user.

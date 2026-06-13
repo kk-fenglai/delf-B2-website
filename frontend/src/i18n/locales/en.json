@@ -467,6 +467,12 @@
       "startFailed": "Could not start trial — please try again",
       "verifyEmailFirst": "Please verify your email before starting a trial"
     },
+    "paymentsDisabled": {
+      "banner": "Beta period — paid subscriptions temporarily closed",
+      "title": "No subscription needed",
+      "ok": "Got it",
+      "default": "We are in a beta testing period — no paid subscription is required. Please use the free trial."
+    },
     "paymentNote": "💳 Secured by Stripe (cards · WeChat Pay · Alipay)",
     "adaptivePricingNote": "Prices shown in {{currency}}. Stripe converts to your local currency at checkout.",
     "embeddedPricingNote": "Prices shown in {{currency}}. At checkout you can choose your payment currency (USD, EUR, CNY, etc.) with live Stripe conversion.",
@@ -913,6 +919,21 @@
       "search": "Search",
       "remaining": "Remaining refundable",
       "openInStripe": "Open in Stripe"
+    },
+    "billingPolicy": {
+      "title": "Subscription & trial policy",
+      "hint": "Configure free trial length and whether checkout is open. When payments are off, users see a message instead of Stripe checkout.",
+      "testPhaseBtn": "Apply beta preset",
+      "testPhaseApplied": "Beta preset applied: 30-day trial, payments off",
+      "usingEnvDefaults": "Using server env defaults until you save — then settings apply immediately from the database.",
+      "trialEnabled": "Free trial enabled",
+      "trialDays": "Trial duration",
+      "daysUnit": "days",
+      "trialPlan": "Trial plan",
+      "paymentsEnabled": "Allow paid subscriptions",
+      "msgZh": "Message when payments off (Chinese)",
+      "msgEn": "Message when payments off (English)",
+      "msgFr": "Message when payments off (French)"
     },
     "overview": {
       "todayRevenue": "Today's revenue",

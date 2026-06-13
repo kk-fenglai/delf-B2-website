@@ -320,6 +320,13 @@ model TwoFactorToken {
   @@index([userId, purpose, expiresAt])
 }
 
+// Runtime billing / trial policy (admin-editable; falls back to env when unset).
+model AppSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
 // ---------------- Existing models (unchanged) ----------------
 
 model ExamSet {

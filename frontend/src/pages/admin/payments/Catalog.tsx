@@ -13,6 +13,7 @@ import {
 } from './_shared';
 import ProductFormDrawer from './ProductFormDrawer';
 import PriceFormDrawer from './PriceFormDrawer';
+import BillingPolicyCard from './BillingPolicyCard';
 
 export interface BillingConfig {
   adaptivePricing: boolean;
@@ -179,6 +180,8 @@ export default function Catalog() {
           <Switch checked={showDisabled} onChange={setShowDisabled} />
         </Space>
       </div>
+
+      <BillingPolicyCard />
 
       {billing?.adaptivePricing && billing.checkoutMode === 'embedded' && (
         <Alert

@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
 import UpgradeDifferenceCard from '../components/UpgradeDifferenceCard';
-import type { CatalogProduct, CatalogPrice, Plan, TrialPublicConfig, TrialStatus } from '../types';
+import type { CatalogProduct, CatalogPrice, Plan, TrialPublicConfig, TrialStatus, PaymentsPublicConfig } from '../types';
 
 const { Title, Paragraph } = Typography;
 
@@ -49,6 +49,7 @@ export default function Pricing() {
 
   const [products, setProducts] = useState<CatalogProduct[] | null>(null);
   const [trialPublic, setTrialPublic] = useState<TrialPublicConfig | null>(null);
+  const [paymentsPublic, setPaymentsPublic] = useState<PaymentsPublicConfig | null>(null);
   const [trialStatus, setTrialStatus] = useState<TrialStatus | null>(null);
   const [adaptivePricing, setAdaptivePricing] = useState(false);
   const [embeddedCheckout, setEmbeddedCheckout] = useState(false);
@@ -82,6 +83,10 @@ export default function Pricing() {
         if (!cancelled) {
           setProducts(data.products || []);
           if (data.trial) setTrialPublic(data.trial);
+          setPaymentsPublic({
+            paymentsEnabled: data.paymentsEnabled !== false,
+            paymentsDisabledMessage: data.paymentsDisabledMessage,
+          });
           if (data.adaptivePricing) {
             setAdaptivePricing(true);
             const anchor = data.anchorCurrency;
@@ -178,7 +183,23 @@ export default function Pricing() {
     return matches[0];
   }
 
+  const paymentsEnabled = paymentsPublic?.paymentsEnabled !== false;
+
+  function paymentsDisabledText(): string {
+    const lang = (i18n.language || 'zh').split('-')[0] as 'zh' | 'en' | 'fr';
+    const msg = paymentsPublic?.paymentsDisabledMessage;
+    return msg?.[lang] || msg?.zh || t('pricing.paymentsDisabled.default');
+  }
+
   function openCheckout(product: CatalogProduct) {
+    if (!paymentsEnabled) {
+      Modal.info({
+        title: t('pricing.paymentsDisabled.title'),
+        content: paymentsDisabledText(),
+        okText: t('pricing.paymentsDisabled.ok'),
+      });
+      return;
+    }
     if (!isLoggedIn) {
       message.info(t('pricing.checkout.loginFirst'));
       return;
@@ -201,6 +222,14 @@ export default function Pricing() {
 
   async function doCreateOrder() {
     if (!selectedPrice) return;
+    if (!paymentsEnabled) {
+      Modal.info({
+        title: t('pricing.paymentsDisabled.title'),
+        content: paymentsDisabledText(),
+        okText: t('pricing.paymentsDisabled.ok'),
+      });
+      return;
+    }
     setLoading(true);
     try {
       const subscribe = enableAutoRenew && !!selectedPrice.supportsAutoRenew && selectedPrice.months === 1;
@@ -225,8 +254,14 @@ export default function Pricing() {
       }
       message.error(t('pricing.checkout.createFailed'));
     } catch (e: unknown) {
-      const msg = (e as { response?: { data?: { error?: string } } })?.response?.data?.error;
-      message.error(msg || t('pricing.checkout.createFailed'));
+      const err = e as { response?: { data?: { error?: string; code?: string; messages?: Record<string, string> } } };
+      if (err.response?.data?.code === 'PAYMENTS_DISABLED') {
+        const lang = (i18n.language || 'zh').split('-')[0] as 'zh' | 'en' | 'fr';
+        const msgs = err.response.data.messages;
+        message.info(msgs?.[lang] || err.response.data.error || paymentsDisabledText());
+      } else {
+        message.error(err.response?.data?.error || t('pricing.checkout.createFailed'));
+      }
     } finally {
       setLoading(false);
     }
@@ -255,6 +290,16 @@ export default function Pricing() {
           {t('pricing.subtitle')}
         </Paragraph>
       </div>
+
+      {!paymentsEnabled && (
+        <Alert
+          type="warning"
+          showIcon
+          className="mb-8 max-w-3xl mx-auto"
+          message={t('pricing.paymentsDisabled.banner')}
+          description={paymentsDisabledText()}
+        />
+      )}
 
       {showTrialFeature && (
         <div className="mb-8 max-w-3xl mx-auto">

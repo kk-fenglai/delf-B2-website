@@ -28,6 +28,11 @@ const alipay = require('../services/payments/alipay');
 const stripePay = require('../services/payments/stripe');
 const env = require('../config/env');
 const { trialConfig } = require('../services/trial');
+const {
+  getBillingPolicy,
+  saveBillingPolicy,
+  TEST_PHASE_PRESET,
+} = require('../services/billingPolicy');
 const { logger } = require('../utils/logger');
 
 const router = express.Router();
@@ -78,15 +83,70 @@ function priceSlotErrorResponse(err, res) {
   return null;
 }
 
-// GET /api/admin/trial-config — public trial settings for admin UI banners.
-router.get('/trial-config', (_req, res) => {
-  const cfg = trialConfig();
-  res.json({
-    enabled: cfg.enabled,
-    days: cfg.days,
-    plan: cfg.plan,
-    autoGrantOnVerify: cfg.enabled,
-  });
+// GET /api/admin/trial-config — trial settings for admin UI banners.
+router.get('/trial-config', async (_req, res, next) => {
+  try {
+    const cfg = await trialConfig();
+    res.json({
+      enabled: cfg.enabled,
+      days: cfg.days,
+      plan: cfg.plan,
+      autoGrantOnVerify: cfg.enabled,
+    });
+  } catch (e) { next(e); }
+});
+
+const billingPolicySchema = z.object({
+  trialEnabled: z.boolean().optional(),
+  trialDays: z.number().int().min(1).max(365).optional(),
+  trialPlan: z.enum(['STANDARD', 'AI', 'AI_UNLIMITED']).optional(),
+  paymentsEnabled: z.boolean().optional(),
+  paymentsDisabledMessage: z.object({
+    zh: z.string().max(500).optional(),
+    en: z.string().max(500).optional(),
+    fr: z.string().max(500).optional(),
+  }).optional(),
+});
+
+// GET /api/admin/billing-policy
+router.get('/billing-policy', async (_req, res, next) => {
+  try {
+    const policy = await getBillingPolicy();
+    res.json({ policy });
+  } catch (e) { next(e); }
+});
+
+// PATCH /api/admin/billing-policy
+router.patch('/billing-policy', async (req, res, next) => {
+  try {
+    const data = billingPolicySchema.parse(req.body);
+    const saved = await saveBillingPolicy(data, { adminId: req.adminId });
+    await writeAdminLog({
+      adminId: req.adminId,
+      action: 'BILLING_POLICY_UPDATED',
+      targetType: 'APP_SETTING',
+      targetId: 'billing_policy',
+      payload: data,
+      ip: clientIp(req),
+    });
+    res.json({ policy: await getBillingPolicy() });
+  } catch (e) { next(e); }
+});
+
+// POST /api/admin/billing-policy/test-phase — one-click beta preset
+router.post('/billing-policy/test-phase', async (req, res, next) => {
+  try {
+    await saveBillingPolicy(TEST_PHASE_PRESET, { adminId: req.adminId });
+    await writeAdminLog({
+      adminId: req.adminId,
+      action: 'BILLING_POLICY_TEST_PHASE',
+      targetType: 'APP_SETTING',
+      targetId: 'billing_policy',
+      payload: TEST_PHASE_PRESET,
+      ip: clientIp(req),
+    });
+    res.json({ policy: await getBillingPolicy() });
+  } catch (e) { next(e); }
 });
 
 // --------------------------------------------------------------------

@@ -17,6 +17,11 @@ export interface TrialPublicConfig {
   days: number;
   plan: Plan;
 }
+
+export interface PaymentsPublicConfig {
+  paymentsEnabled: boolean;
+  paymentsDisabledMessage?: { zh?: string; en?: string; fr?: string };
+}
 export type Skill = 'CO' | 'CE' | 'PE' | 'PO';
 export type QuestionType = 'SINGLE' | 'MULTIPLE' | 'TRUE_FALSE' | 'TRUE_FALSE_JUSTIFY' | 'FILL' | 'ESSAY' | 'SPEAKING';
 

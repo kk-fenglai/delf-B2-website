@@ -467,6 +467,12 @@
       "startFailed": "开通试用失败，请稍后重试",
       "verifyEmailFirst": "请先验证邮箱后再开通试用"
     },
+    "paymentsDisabled": {
+      "banner": "测试阶段 · 暂不开放在线订阅",
+      "title": "暂无需订阅",
+      "ok": "知道了",
+      "default": "平台目前处于测试阶段，无需订阅即可免费使用。请使用免费试用。"
+    },
     "paymentNote": "💳 支持 Stripe 安全支付（信用卡 / 微信支付 / 支付宝）",
     "adaptivePricingNote": "页面价格为 {{currency}} 参考价，结账时 Stripe 将按您所在地区自动换算为本地货币。",
     "embeddedPricingNote": "页面价格为 {{currency}} 参考价。结账页可选择支付货币（USD / EUR / CNY 等），由 Stripe 实时换算。",
@@ -913,6 +919,21 @@
       "search": "搜索",
       "remaining": "剩余可退",
       "openInStripe": "在 Stripe 中打开"
+    },
+    "billingPolicy": {
+      "title": "订阅与试用策略",
+      "hint": "在此配置免费试用天数与是否开放付费。关闭付费后，用户点击订阅将看到提示，且无法创建 Stripe 订单。",
+      "testPhaseBtn": "一键应用测试方案",
+      "testPhaseApplied": "已应用测试方案：30 天免费试用，关闭付费",
+      "usingEnvDefaults": "当前使用服务器环境变量默认值，保存后将写入数据库并立即生效。",
+      "trialEnabled": "开启免费试用",
+      "trialDays": "试用天数",
+      "daysUnit": "天",
+      "trialPlan": "试用套餐",
+      "paymentsEnabled": "开放在线付费订阅",
+      "msgZh": "关闭付费时的提示（中文）",
+      "msgEn": "关闭付费时的提示（英文）",
+      "msgFr": "关闭付费时的提示（法文）"
     },
     "overview": {
       "todayRevenue": "今日成交",

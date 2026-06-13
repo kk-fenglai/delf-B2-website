@@ -2,12 +2,14 @@ const prisma = require('../prisma');
 const env = require('../config/env');
 const { writeAdminLog } = require('../middleware/admin');
 const { PLAN_ORDER } = require('../constants/planMatrix');
+const { getBillingPolicy } = require('./billingPolicy');
 
-function trialConfig() {
+async function trialConfig() {
+  const p = await getBillingPolicy();
   return {
-    enabled: Boolean(env.TRIAL?.ENABLED),
-    days: env.TRIAL?.DAYS || 3,
-    plan: env.TRIAL?.PLAN || 'AI_UNLIMITED',
+    enabled: p.trialEnabled,
+    days: p.trialDays,
+    plan: p.trialPlan,
   };
 }
 
@@ -30,8 +32,7 @@ function daysLeftUntil(endDate) {
   return Math.ceil(ms / (24 * 60 * 60 * 1000));
 }
 
-function buildTrialStatus(user, { hasPayContract = false } = {}) {
-  const cfg = trialConfig();
+function buildTrialStatus(user, cfg, { hasPayContract = false } = {}) {
   const used = Boolean(user?.trialUsedAt);
   const endsAt = user?.subscriptionEnd || null;
   const activeTrial = used
@@ -59,9 +60,9 @@ function buildTrialStatus(user, { hasPayContract = false } = {}) {
 }
 
 async function getTrialStatusForUser(userId) {
-  const cfg = trialConfig();
+  const cfg = await trialConfig();
   if (!cfg.enabled) {
-    return buildTrialStatus(null);
+    return buildTrialStatus(null, cfg);
   }
 
   const user = await prisma.user.findUnique({
@@ -85,11 +86,11 @@ async function getTrialStatusForUser(userId) {
     select: { id: true },
   });
 
-  return buildTrialStatus(user, { hasPayContract: Boolean(payContract) });
+  return buildTrialStatus(user, cfg, { hasPayContract: Boolean(payContract) });
 }
 
 async function startTrial(userId, { source = 'manual' } = {}) {
-  const cfg = trialConfig();
+  const cfg = await trialConfig();
   if (!cfg.enabled) {
     const e = new Error('Free trial is not enabled');
     e.code = 'TRIAL_DISABLED';
@@ -187,7 +188,7 @@ async function startTrial(userId, { source = 'manual' } = {}) {
 
   return {
     started: true,
-    trial: buildTrialStatus(updated),
+    trial: buildTrialStatus(updated, cfg),
   };
 }
 

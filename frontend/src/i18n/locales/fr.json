@@ -467,6 +467,12 @@
       "startFailed": "Impossible d'activer l'essai — réessayez plus tard",
       "verifyEmailFirst": "Veuillez vérifier votre e-mail avant de démarrer l'essai"
     },
+    "paymentsDisabled": {
+      "banner": "Phase test — abonnements payants temporairement fermés",
+      "title": "Aucun abonnement requis",
+      "ok": "Compris",
+      "default": "La plateforme est en phase de test — aucun abonnement payant n'est requis. Utilisez l'essai gratuit."
+    },
     "paymentNote": "💳 Paiement sécurisé par Stripe (cartes · WeChat Pay · Alipay)",
     "adaptivePricingNote": "Prix affichés en {{currency}}. Stripe convertit automatiquement dans votre devise locale au paiement.",
     "embeddedPricingNote": "Prix affichés en {{currency}}. Au paiement, choisissez votre devise (USD, EUR, CNY, etc.) avec conversion Stripe en direct.",
@@ -911,6 +917,21 @@
       "search": "Rechercher",
       "remaining": "Remboursable restant",
       "openInStripe": "Ouvrir dans Stripe"
+    },
+    "billingPolicy": {
+      "title": "Politique d'abonnement et d'essai",
+      "hint": "Configurez la durée de l'essai gratuit et l'ouverture du paiement. Si le paiement est fermé, les utilisateurs voient un message au lieu du checkout Stripe.",
+      "testPhaseBtn": "Appliquer le preset test",
+      "testPhaseApplied": "Preset test appliqué : essai 30 jours, paiement fermé",
+      "usingEnvDefaults": "Valeurs par défaut du serveur — enregistrez pour les appliquer depuis la base de données.",
+      "trialEnabled": "Essai gratuit activé",
+      "trialDays": "Durée de l'essai",
+      "daysUnit": "jours",
+      "trialPlan": "Formule d'essai",
+      "paymentsEnabled": "Autoriser les abonnements payants",
+      "msgZh": "Message si paiement fermé (chinois)",
+      "msgEn": "Message si paiement fermé (anglais)",
+      "msgFr": "Message si paiement fermé (français)"
     },
     "overview": {
       "todayRevenue": "Revenu du jour",
