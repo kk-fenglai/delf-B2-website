@@ -187,6 +187,10 @@
     "totalQuestions": "{{count}} questions total",
     "questionsCount": "{{count}} Q",
     "empty": "No sets available",
+    "myExamsSection": "My Question Bank",
+    "myExamsEmpty": "No published custom sets yet",
+    "createMyExam": "Create a set",
+    "manageMyExams": "Manage my sets",
     "year": "Year",
     "hub": {
       "title": "Choose practice mode",

@@ -187,6 +187,10 @@
     "totalQuestions": "{{count}} questions au total",
     "questionsCount": "{{count}} Q",
     "empty": "Aucun sujet disponible",
+    "myExamsSection": "Ma banque de questions",
+    "myExamsEmpty": "Aucune série personnalisée publiée",
+    "createMyExam": "Créer une série",
+    "manageMyExams": "Gérer mes séries",
     "year": "Année",
     "hub": {
       "title": "Choisir un mode d'entraînement",

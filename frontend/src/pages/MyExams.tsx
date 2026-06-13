@@ -35,15 +35,12 @@ export default function MyExams() {
   const load = async () => {
     setLoading(true);
     setLoadError(null);
-    const [listRes, limRes] = await Promise.allSettled([
-      api.get('/user/exam-sets'),
-      api.get('/user/exam-sets/limits'),
-    ]);
-
-    if (listRes.status === 'fulfilled') {
-      setSets(listRes.value.data.sets || []);
-    } else {
-      const err = listRes.reason as { response?: { status?: number; data?: { error?: string } } };
+    try {
+      const { data } = await api.get('/user/exam-sets/overview');
+      setSets(data.sets || []);
+      setLimits(data.limits || null);
+    } catch (e: unknown) {
+      const err = e as { response?: { status?: number } };
       const status = err.response?.status;
       if (status === 401) {
         setLoadError(t('myExams.errorLogin'));
@@ -53,13 +50,9 @@ export default function MyExams() {
         setLoadError(t('myExams.errorServer'));
       }
       message.error(t('myExams.loadFailed'));
+    } finally {
+      setLoading(false);
     }
-
-    if (limRes.status === 'fulfilled') {
-      setLimits(limRes.value.data.limits || null);
-    }
-
-    setLoading(false);
   };
 
   useEffect(() => { load(); }, []);

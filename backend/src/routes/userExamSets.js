@@ -65,15 +65,62 @@ async function countUserSets(userId, primarySkill) {
   });
 }
 
-function limitsPayload(plan, userId) {
-  return Promise.all(
-    USER_SKILLS.map(async (skill) => {
-      const used = await countUserSets(userId, skill);
+async function limitsPayload(plan, userId) {
+  const grouped = await prisma.examSet.groupBy({
+    by: ['primarySkill'],
+    where: { ownerUserId: userId, source: 'USER' },
+    _count: { id: true },
+  });
+  const usedBySkill = Object.fromEntries(grouped.map((g) => [g.primarySkill, g._count.id]));
+  return Object.fromEntries(
+    USER_SKILLS.map((skill) => {
+      const used = usedBySkill[skill] ?? 0;
       const cap = userExamSetLimit(plan, skill);
       return [skill, { used, cap, canCreate: cap > 0 && used < cap }];
     }),
-  ).then((entries) => Object.fromEntries(entries));
+  );
 }
+
+function mapUserSetBrief(s) {
+  return {
+    id: s.id,
+    title: s.title,
+    description: s.description,
+    primarySkill: s.primarySkill,
+    isPublished: s.isPublished,
+    questionCount: s._count?.questions ?? 0,
+    createdAt: s.createdAt,
+  };
+}
+
+const userSetListSelect = {
+  id: true,
+  title: true,
+  description: true,
+  primarySkill: true,
+  isPublished: true,
+  createdAt: true,
+  _count: { select: { questions: true } },
+};
+
+// GET /api/user/exam-sets/overview — list + limits in one round trip
+router.get('/overview', async (req, res, next) => {
+  try {
+    const plan = req.userPlan || 'FREE';
+    const [sets, limits] = await Promise.all([
+      prisma.examSet.findMany({
+        where: { ownerUserId: req.userId, source: 'USER' },
+        orderBy: { createdAt: 'desc' },
+        select: userSetListSelect,
+      }),
+      limitsPayload(plan, req.userId),
+    ]);
+    res.json({
+      sets: sets.map(mapUserSetBrief),
+      limits,
+    });
+  } catch (e) { next(e); }
+});
 
 function ceHasPassage(set, sharedPassage) {
   if ((sharedPassage || '').trim()) return true;
@@ -104,30 +151,22 @@ router.get('/limits', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// GET /api/user/exam-sets?skill=CE
+// GET /api/user/exam-sets?skill=CE&published=true
 router.get('/', async (req, res, next) => {
   try {
     const skill = USER_SKILLS.includes(req.query.skill) ? req.query.skill : undefined;
+    const publishedOnly = req.query.published === 'true';
     const sets = await prisma.examSet.findMany({
       where: {
         ownerUserId: req.userId,
         source: 'USER',
         ...(skill ? { primarySkill: skill } : {}),
+        ...(publishedOnly ? { isPublished: true } : {}),
       },
       orderBy: { createdAt: 'desc' },
-      include: { questions: { select: { id: true, skill: true } } },
+      select: userSetListSelect,
     });
-    res.json({
-      sets: sets.map((s) => ({
-        id: s.id,
-        title: s.title,
-        description: s.description,
-        primarySkill: s.primarySkill,
-        isPublished: s.isPublished,
-        questionCount: s.questions.length,
-        createdAt: s.createdAt,
-      })),
-    });
+    res.json({ sets: sets.map(mapUserSetBrief) });
   } catch (e) { next(e); }
 });
 
