@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Card, Typography, Radio, Checkbox, Input, Button, message, Steps, Tag, Spin, Result,
-  Progress, Alert, Modal, Space, Upload,
+  Progress, Alert, Modal, Space, Upload, Grid,
 } from 'antd';
 import {
   ClockCircleOutlined, ExclamationCircleFilled, LockOutlined, BookOutlined,
@@ -79,6 +79,10 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const { t, i18n } = useTranslation();
   const { examId } = useParams();
   const navigate = useNavigate();
+  // Below the `md` breakpoint the passage/questions split-view is unusable on a
+  // phone, so we stack it vertically (passage on top, scrollable; questions below).
+  const screens = Grid.useBreakpoint();
+  const isMobile = !screens.md;
   // Plan-gate the OCR upload affordance — only AI_UNLIMITED users can hit
   // the /essays/ocr endpoint, so hiding the button for everyone else keeps
   // the UI honest (clicking it would just 403).
@@ -775,17 +779,17 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
 
         {readingGroups.map((g, gi) => (
           <Card key={gi} bordered={false} className="mb-6 app-surface">
-            <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start' }}>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 16 : 28, alignItems: isMobile ? 'stretch' : 'flex-start' }}>
               {g.passage && (
                 <div
                   className="passage p-4 rounded"
                   style={{
-                    flex: '0 0 52%',
+                    flex: isMobile ? '0 0 auto' : '0 0 52%',
                     background: 'var(--bgElevated)',
                     borderLeft: '4px solid var(--primary)',
-                    position: 'sticky',
+                    position: isMobile ? 'static' : 'sticky',
                     top: 80,
-                    maxHeight: 'calc(100vh - 140px)',
+                    maxHeight: isMobile ? '45vh' : 'calc(100vh - 140px)',
                     overflowY: 'auto',
                   }}
                 >
@@ -877,17 +881,17 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
 
         {page.kind === 'reading' ? (
           <Card bordered={false} className="mb-4 app-surface">
-            <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start' }}>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 16 : 28, alignItems: isMobile ? 'stretch' : 'flex-start' }}>
               {page.group.passage && (
                 <div
                   className="passage p-4 rounded"
                   style={{
-                    flex: '0 0 52%',
+                    flex: isMobile ? '0 0 auto' : '0 0 52%',
                     background: 'var(--bgElevated)',
                     borderLeft: '4px solid var(--primary)',
-                    position: 'sticky',
+                    position: isMobile ? 'static' : 'sticky',
                     top: 80,
-                    maxHeight: 'calc(100vh - 160px)',
+                    maxHeight: isMobile ? '45vh' : 'calc(100vh - 160px)',
                     overflowY: 'auto',
                   }}
                 >
