@@ -146,7 +146,7 @@ function validateQuestionShape(q) {
 router.get('/', async (req, res, next) => {
   try {
     const status = req.query.status; // 'published' | 'draft' | undefined
-    const where = {};
+    const where = { source: 'PLATFORM' };
     if (status === 'published') where.isPublished = true;
     else if (status === 'draft') where.isPublished = false;
 

@@ -77,6 +77,19 @@ const CACHED_INPUT_MULTIPLIER = 0.3;
 // to the frontend. 99999 is well past any realistic monthly usage.
 const UNLIMITED = 99999;
 
+// User-owned exam set caps ("我的题库") per plan, by primarySkill.
+const USER_EXAM_SET_LIMITS = {
+  FREE:         { CE: 2, PE: 2, CO: 2, PO: 2, MOCK: 0 },
+  STANDARD:     { CE: 10, PE: 10, CO: 10, PO: 10, MOCK: 0 },
+  AI:           { CE: 20, PE: 20, CO: 20, PO: 10, MOCK: 5 },
+  AI_UNLIMITED: { CE: 50, PE: 50, CO: 50, PO: 30, MOCK: 20 },
+};
+
+function userExamSetLimit(plan, skill) {
+  const caps = USER_EXAM_SET_LIMITS[plan] || USER_EXAM_SET_LIMITS.FREE;
+  return caps[skill] ?? 0;
+}
+
 // FREE-tier monthly session caps, bucketed.
 //   CE   — reading practice (mode=PRACTICE, skill='CE')
 //   CO   — listening practice (mode=PRACTICE, skill='CO')
@@ -141,6 +154,8 @@ module.exports = {
   CACHED_INPUT_MULTIPLIER,
   PLAN_ORDER,
   PLAN_CAPS,
+  USER_EXAM_SET_LIMITS,
+  userExamSetLimit,
   planRank,
   planAtLeast,
   defaultModelForPlan,

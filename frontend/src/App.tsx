@@ -16,6 +16,8 @@ const SkillPractice = lazy(() => import('./pages/SkillPractice'));
 const SpeakingExam = lazy(() => import('./pages/SpeakingExam'));
 const ExamRunner = lazy(() => import('./pages/ExamRunner'));
 const ReviewResult = lazy(() => import('./pages/ReviewResult'));
+const MyExams = lazy(() => import('./pages/MyExams'));
+const MyExamEdit = lazy(() => import('./pages/MyExamEdit'));
 const MistakeNotebook = lazy(() => import('./pages/MistakeNotebook'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const Orders = lazy(() => import('./pages/Orders'));
@@ -105,6 +107,9 @@ export default function App() {
           <Route path="/practice/mock/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
           {/* Legacy: /practice/:examId preserved for old session links (full mock) */}
           <Route path="/practice/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
+
+          <Route path="/my-exams" element={<RequireAuth><MyExams /></RequireAuth>} />
+          <Route path="/my-exams/:id/edit" element={<RequireAuth><MyExamEdit /></RequireAuth>} />
 
           <Route path="/review/:sessionId" element={<RequireAuth><ReviewResult /></RequireAuth>} />
           <Route path="/mistakes" element={<RequireAuth><MistakeNotebook /></RequireAuth>} />

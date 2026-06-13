@@ -59,7 +59,7 @@ router.get('/', optionalAuth, async (req, res, next) => {
     const MOCK_SKILLS = ['CO', 'CE', 'PE', 'PO'];
 
     const sets = await prisma.examSet.findMany({
-      where: { isPublished: true },
+      where: { isPublished: true, source: 'PLATFORM' },
       orderBy: [{ year: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
       select: { id: true, title: true, description: true, isFreePreview: true },
     });
@@ -141,13 +141,23 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
     });
     if (!set) return res.status(404).json({ error: 'Exam set not found' });
 
-    // Access control: free users can only access free preview sets
-    const isPaid = req.userPlan && req.userPlan !== 'FREE';
-    if (!set.isFreePreview && !isPaid) {
-      return res.status(403).json({
-        error: '该套题需要订阅标准版或AI版后解锁',
-        requiresUpgrade: true,
-      });
+    // User-owned sets: owner only, no subscription gate.
+    if (set.source === 'USER') {
+      if (!req.userId || set.ownerUserId !== req.userId) {
+        return res.status(404).json({ error: 'Exam set not found' });
+      }
+      if (!set.isPublished) {
+        return res.status(403).json({ error: 'This custom set is still a draft', code: 'EXAM_SET_DRAFT' });
+      }
+    } else {
+      // Access control: free users can only access free preview sets
+      const isPaid = req.userPlan && req.userPlan !== 'FREE';
+      if (!set.isFreePreview && !isPaid) {
+        return res.status(403).json({
+          error: '该套题需要订阅标准版或AI版后解锁',
+          requiresUpgrade: true,
+        });
+      }
     }
 
     // Strip answer fields from options/explanation on delivery. CO transcripts
@@ -166,6 +176,8 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
       id: set.id,
       title: sanitizeExamTitle(set.title),
       description: sanitizeExamDescription(set.description),
+      source: set.source,
+      isUserOwned: set.source === 'USER',
       questions: safeQuestions,
       audioDocuments,
     });

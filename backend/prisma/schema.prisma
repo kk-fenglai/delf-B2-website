@@ -54,6 +54,7 @@ model User {
   paymentOrders         PaymentOrder[]
   subscriptions         Subscription[]
   payContracts          PayContract[]
+  ownedExamSets         ExamSet[]             @relation("UserOwnedExamSets")
 
   @@index([role, status])
   @@index([plan, subscriptionEnd])
@@ -328,11 +329,20 @@ model ExamSet {
   description  String?
   isPublished  Boolean    @default(true)
   isFreePreview Boolean   @default(false)
+  // USER-owned sets: ownerUserId set, source=USER, primarySkill=CE|PE.
+  // Platform catalog: ownerUserId null, source=PLATFORM.
+  ownerUserId  String?
+  owner        User?      @relation("UserOwnedExamSets", fields: [ownerUserId], references: [id], onDelete: Cascade)
+  source       String     @default("PLATFORM") // PLATFORM | USER
+  primarySkill String?    // CE | PE — single-skill user sets; null for platform/mocks
   createdAt    DateTime   @default(now())
 
   questions       Question[]
   sessions        ExamSession[]
   audioDocuments  AudioDocument[]
+
+  @@index([ownerUserId, source])
+  @@index([source, isPublished])
 }
 
 // One DELF B2 listening "document". Each Compréhension de l'Oral section has

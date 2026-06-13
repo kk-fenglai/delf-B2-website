@@ -59,6 +59,22 @@ export default function PracticeHub() {
       <Title level={2}>{t('practice.hub.title')}</Title>
       <Paragraph className="text-gray-500">{t('practice.hub.subtitle')}</Paragraph>
 
+      <Row gutter={[16, 16]} className="mb-6">
+        <Col xs={24}>
+          <Link to="/my-exams" className="block">
+            <Card hoverable bordered={false} className="app-surface">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">📚</span>
+                <div>
+                  <Title level={4} style={{ marginBottom: 0 }}>{t('nav.myExams')}</Title>
+                  <Paragraph type="secondary" className="!mb-0">{t('myExams.subtitle')}</Paragraph>
+                </div>
+              </div>
+            </Card>
+          </Link>
+        </Col>
+      </Row>
+
       <Row gutter={[16, 16]} className="mb-8">
         {entries.map((e) => (
           <Col xs={24} sm={12} md={6} key={e.to}>

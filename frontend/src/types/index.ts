@@ -398,7 +398,7 @@ export interface MistakeItem {
   options: Array<{ id: string; label: string; text: string; isCorrect: boolean }>;
   correctAnswer: string[];
   userAnswer: string | string[];
-  examSet: { id: string; title: string; year?: number | null };
+  examSet: { id: string; title: string; year?: number | null; isUserOwned?: boolean };
   attemptedAt: string;
 }
 
@@ -464,4 +464,60 @@ export interface CreatedOrderResponse {
   redirectUrl?: string | null;
   expiresAt?: string;
   mock?: boolean;
+}
+
+// --- User-owned exam sets (我的题库) -------------------------------------
+
+export interface UserExamSetBrief {
+  id: string;
+  title: string;
+  description?: string | null;
+  primarySkill: 'CE' | 'PE' | 'CO' | 'PO';
+  isPublished: boolean;
+  questionCount: number;
+  createdAt: string;
+}
+
+export interface UserExamSetLimits {
+  CE: { used: number; cap: number; canCreate: boolean };
+  PE: { used: number; cap: number; canCreate: boolean };
+  CO: { used: number; cap: number; canCreate: boolean };
+  PO: { used: number; cap: number; canCreate: boolean };
+}
+
+export interface UserExamQuestionInput {
+  id?: string;
+  skill: 'CE' | 'PE' | 'CO' | 'PO';
+  type: string;
+  order: number;
+  prompt: string;
+  passage?: string | null;
+  explanation?: string | null;
+  modelEssay?: string | null;
+  points: number;
+  audioDocumentId?: string | null;
+  options: Array<{ label: string; text: string; isCorrect: boolean; order?: number }>;
+  followUps?: Array<{ order: number; text: string; expectedAngle?: string | null }>;
+}
+
+export interface UserAudioDocument {
+  id: string;
+  order: number;
+  title?: string | null;
+  audioUrl?: string | null;
+  maxPlays: number;
+}
+
+export interface UserExamSetDetail {
+  id: string;
+  title: string;
+  description?: string | null;
+  primarySkill: 'CE' | 'PE' | 'CO' | 'PO';
+  isPublished: boolean;
+  audioDocuments?: UserAudioDocument[];
+  questions: Array<UserExamQuestionInput & {
+    id: string;
+    options?: Array<{ id: string; label: string; text: string; isCorrect: boolean; order: number }>;
+    followUps?: Array<{ id: string; order: number; text: string; expectedAngle?: string | null }>;
+  }>;
 }

@@ -127,6 +127,9 @@ function MistakeCard({
         <div className="flex items-center gap-2 flex-wrap">
           <Tag color="red">{t(`skill.${item.skill}`)}</Tag>
           <Tag>{item.type}</Tag>
+          {item.examSet.isUserOwned && (
+            <Tag color="cyan">{t('mistakes.userOwnedTag')}</Tag>
+          )}
           <Text type="secondary" className="text-xs">
             {item.examSet.title}
           </Text>

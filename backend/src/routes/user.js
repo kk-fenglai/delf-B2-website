@@ -125,7 +125,7 @@ router.get('/progress', requireAuth, async (req, res, next) => {
         where: { userId, completedAt: { not: null } },
         orderBy: { completedAt: 'desc' },
         take: 20,
-        include: { examSet: { select: { title: true } } },
+        include: { examSet: { select: { title: true, source: true } } },
       }),
       prisma.userAttempt.count({ where: { userId } }),
       prisma.$queryRaw`
@@ -150,6 +150,7 @@ router.get('/progress', requireAuth, async (req, res, next) => {
       recentSessions: sessions.map((s) => ({
         id: s.id,
         title: sanitizeExamTitle(s.examSet.title),
+        isUserOwned: s.examSet.source === 'USER',
         totalScore: s.totalScore,
         maxScore: s.maxScore,
         completedAt: s.completedAt,
@@ -237,7 +238,7 @@ async function collectLatestWrong(userId, skill) {
       question: {
         include: {
           options: true,
-          examSet: { select: { id: true, title: true } },
+          examSet: { select: { id: true, title: true, source: true } },
         },
       },
     },
@@ -300,6 +301,7 @@ router.get('/mistakes', requireAuth, async (req, res, next) => {
         examSet: {
           id: a.question.examSet.id,
           title: sanitizeExamTitle(a.question.examSet.title),
+          isUserOwned: a.question.examSet.source === 'USER',
         },
         attemptedAt: a.createdAt,
       };

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
-import { Card, Col, Row, Statistic, Typography, Empty, List, Button, Skeleton } from 'antd';
+import { Card, Col, Row, Statistic, Typography, Empty, List, Button, Skeleton, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
@@ -115,7 +115,14 @@ export default function Dashboard() {
                     ]}
                   >
                     <List.Item.Meta
-                      title={localizeExamTitle(s.title, t)}
+                      title={(
+                        <span>
+                          {localizeExamTitle(s.title, t)}
+                          {s.isUserOwned && (
+                            <Tag color="cyan" className="ml-2">{t('dashboard.userOwnedTag')}</Tag>
+                          )}
+                        </span>
+                      )}
                       description={new Date(s.completedAt).toLocaleDateString()}
                     />
                   </List.Item>

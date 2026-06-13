@@ -45,6 +45,24 @@ export default function Landing() {
         ))}
       </Row>
 
+      <Row gutter={[16, 16]} className="mb-6">
+        <Col xs={24}>
+          <Link to="/my-exams" className="block">
+            <Card hoverable className="app-surface" style={{ borderColor: '#1677ff' }}>
+              <div className="flex items-center gap-4 flex-wrap">
+                <div className="text-5xl">📚</div>
+                <div className="flex-1 min-w-[200px]">
+                  <Title level={3} style={{ marginBottom: 4 }}>
+                    {t('landing.myExamsTitle')}
+                  </Title>
+                  <Paragraph className="text-gray-500 mb-0">{t('landing.myExamsDesc')}</Paragraph>
+                </div>
+              </div>
+            </Card>
+          </Link>
+        </Col>
+      </Row>
+
       <Row gutter={[16, 16]} className="mb-12">
         <Col xs={24}>
           <Link to="/practice/mock">

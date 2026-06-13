@@ -240,6 +240,22 @@ router.post('/', requireAuth, async (req, res, next) => {
     });
     const data = schema.parse(req.body);
 
+    const examSet = await prisma.examSet.findUnique({
+      where: { id: data.examSetId },
+      select: { id: true, source: true, ownerUserId: true, isPublished: true, primarySkill: true },
+    });
+    if (!examSet) return res.status(404).json({ error: 'Exam set not found' });
+
+    const isUserOwned = examSet.source === 'USER';
+    if (isUserOwned) {
+      if (examSet.ownerUserId !== req.userId) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+      if (!examSet.isPublished) {
+        return res.status(400).json({ error: 'Custom set is not published yet', code: 'EXAM_SET_DRAFT' });
+      }
+    }
+
     const plan = req.userPlan || 'FREE';
     const caps = PLAN_CAPS[plan] || PLAN_CAPS.FREE;
 
@@ -259,7 +275,7 @@ router.post('/', requireAuth, async (req, res, next) => {
         select: { id: true },
       })) !== null;
 
-    if (caps.freeMonthlySessions && !isMockContinuation) {
+    if (caps.freeMonthlySessions && !isMockContinuation && !isUserOwned) {
       // Bucket: EXAM mode is always MOCK; PRACTICE mode buckets by skill.
       // PRACTICE without a skill (rare — multi-skill practice) isn't counted.
       const bucket = data.mode === 'EXAM' ? 'MOCK' : data.skill;
