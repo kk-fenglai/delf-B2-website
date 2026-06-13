@@ -1,10 +1,11 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { apiBaseUrl } from './baseUrl';
 
 export const ADMIN_TOKEN_KEY = 'delfluent-admin-access';
 export const ADMIN_REFRESH_KEY = 'delfluent-admin-refresh';
 
 export const adminApi = axios.create({
-  baseURL: '/api/admin',
+  baseURL: `${apiBaseUrl()}/admin`,
   timeout: 15000,
 });
 
@@ -20,7 +21,7 @@ async function doRefresh(): Promise<string | null> {
   const refresh = localStorage.getItem(ADMIN_REFRESH_KEY);
   if (!refresh) return null;
   try {
-    const { data } = await axios.post('/api/admin/auth/refresh', { refreshToken: refresh });
+    const { data } = await axios.post(`${apiBaseUrl()}/admin/auth/refresh`, { refreshToken: refresh });
     if (data?.accessToken) localStorage.setItem(ADMIN_TOKEN_KEY, data.accessToken);
     if (data?.refreshToken) localStorage.setItem(ADMIN_REFRESH_KEY, data.refreshToken);
     return data?.accessToken || null;

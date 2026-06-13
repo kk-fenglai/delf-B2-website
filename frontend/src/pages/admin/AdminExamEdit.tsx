@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import { adminApi, ADMIN_TOKEN_KEY } from '../../api/adminClient';
+import { apiBaseUrl } from '../../api/baseUrl';
 
 const { Title } = Typography;
 const { useBreakpoint } = Grid;
@@ -211,7 +212,7 @@ export default function AdminExamEdit() {
   // Audio upload uses AntD Upload w/ custom bearer header.
   const makeAudioUpload = (qid: string): UploadProps => ({
     name: 'audio',
-    action: `/api/admin/exams/questions/${qid}/audio`,
+    action: `${apiBaseUrl()}/admin/exams/questions/${qid}/audio`,
     headers: { Authorization: `Bearer ${localStorage.getItem(ADMIN_TOKEN_KEY) || ''}` },
     accept: 'audio/*',
     showUploadList: false,

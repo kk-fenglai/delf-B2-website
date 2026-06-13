@@ -15,7 +15,7 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ReactECharts from 'echarts-for-react';
+import LazyECharts from '../components/LazyECharts';
 import { api } from '../api/client';
 import type { Prediction, PredictionVerdict, PredictionRecommendation, Skill } from '../types';
 
@@ -227,7 +227,7 @@ export default function DashboardPrediction() {
 
         <Col xs={24} md={12}>
           <Card title={t('prediction.page.radarTitle')}>
-            <ReactECharts option={radarOption} style={{ height: 300 }} />
+            <LazyECharts option={radarOption} style={{ height: 300 }} />
             <Text type="secondary" className="text-xs">
               {t('prediction.page.radarNote')}
             </Text>

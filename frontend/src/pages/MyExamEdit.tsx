@@ -7,6 +7,7 @@ import { PlusOutlined, SaveOutlined, CheckOutlined, ArrowLeftOutlined, SoundOutl
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api, ACCESS_KEY } from '../api/client';
+import { apiBaseUrl } from '../api/baseUrl';
 import type { UserExamSetDetail, UserExamQuestionInput, UserAudioDocument } from '../types';
 
 const { Title, Paragraph, Text } = Typography;
@@ -304,7 +305,7 @@ export default function MyExamEdit() {
 
   const makeAudioUpload = (docId: string): UploadProps => ({
     name: 'audio',
-    action: `/api/user/exam-sets/${id}/audio-documents/${docId}/audio`,
+    action: `${apiBaseUrl()}/user/exam-sets/${id}/audio-documents/${docId}/audio`,
     headers: { Authorization: `Bearer ${localStorage.getItem(ACCESS_KEY) || ''}` },
     accept: 'audio/*',
     showUploadList: false,

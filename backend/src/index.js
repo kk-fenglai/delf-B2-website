@@ -50,8 +50,8 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-        fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        fontSrc: ["'self'", 'data:'],
         imgSrc: ["'self'", 'data:', 'https:'],
         connectSrc: ["'self'", env.FRONTEND_URL],
         mediaSrc: ["'self'", 'https:', 'blob:'],

@@ -1,10 +1,11 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { apiBaseUrl } from './baseUrl';
 
 export const ACCESS_KEY = 'accessToken';
 export const REFRESH_KEY = 'refreshToken';
 
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: apiBaseUrl(),
   timeout: 15000,
 });
 
@@ -22,7 +23,7 @@ async function doRefresh(): Promise<string | null> {
   const refresh = localStorage.getItem(REFRESH_KEY);
   if (!refresh) return null;
   try {
-    const { data } = await axios.post('/api/auth/refresh', { refreshToken: refresh });
+    const { data } = await axios.post(`${apiBaseUrl()}/auth/refresh`, { refreshToken: refresh });
     if (data?.accessToken) localStorage.setItem(ACCESS_KEY, data.accessToken);
     if (data?.refreshToken) localStorage.setItem(REFRESH_KEY, data.refreshToken);
     return data?.accessToken || null;

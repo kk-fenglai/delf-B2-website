@@ -3,7 +3,7 @@ import {
   Row, Col, Card, Statistic, Spin, Empty, Alert, List, Tag, Space, Typography, Button,
 } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
-import ReactECharts from 'echarts-for-react';
+import LazyECharts from '../../../components/LazyECharts';
 import { useTranslation } from 'react-i18next';
 import { adminApi } from '../../../api/adminClient';
 import {
@@ -215,7 +215,7 @@ export default function Overview({ onJumpContracts }: Props) {
           <Col xs={24} lg={16}>
             <Card title={t('adminPayments.overview.trendTitle')} bodyStyle={{ padding: 8 }}>
               {lineOption && data!.sevenDaysSeries.length > 0 ? (
-                <ReactECharts option={lineOption} style={{ height: 300 }} />
+                <LazyECharts option={lineOption} style={{ height: 300 }} />
               ) : (
                 <Empty
                   description={t('adminPayments.overview.noData')}
@@ -227,7 +227,7 @@ export default function Overview({ onJumpContracts }: Props) {
           <Col xs={24} lg={8}>
             <Card title={t('adminPayments.overview.providerTitle')} bodyStyle={{ padding: 8 }}>
               {pieOption && data!.providerBreakdown.length > 0 ? (
-                <ReactECharts option={pieOption} style={{ height: 300 }} />
+                <LazyECharts option={pieOption} style={{ height: 300 }} />
               ) : (
                 <Empty
                   description={t('adminPayments.overview.noData')}

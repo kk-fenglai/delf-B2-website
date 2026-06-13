@@ -8,8 +8,17 @@ import enUS from 'antd/locale/en_US';
 import frFR from 'antd/locale/fr_FR';
 import { useTranslation } from 'react-i18next';
 import App from './App';
+import { apiOrigin } from './api/baseUrl';
 import './i18n';
 import './styles/index.css';
+
+const apiOriginUrl = apiOrigin();
+if (apiOriginUrl) {
+  const link = document.createElement('link');
+  link.rel = 'preconnect';
+  link.href = apiOriginUrl;
+  document.head.appendChild(link);
+}
 
 const antdLocaleMap = { zh: zhCN, en: enUS, fr: frFR };
 
@@ -40,7 +49,7 @@ function AppWithLocale() {
           colorTextBase: '#0b1220',
           colorTextSecondary: 'rgba(11, 18, 32, 0.62)',
           borderRadius: 12,
-          fontFamily: 'Inter, "Noto Sans SC", system-ui, sans-serif',
+          fontFamily: '"PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif',
         },
         components: {
           // Make selection controls clearly visible: a deeper unchecked border

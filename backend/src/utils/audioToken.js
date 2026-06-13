@@ -10,6 +10,7 @@
 // token short enough to live in an <audio src> query string.
 
 const crypto = require('crypto');
+const { rewriteAudioCdnUrl } = require('./audioCdn');
 
 const DEFAULT_TTL_SEC = 60 * 60; // 1h — covers a full mock exam session
 
@@ -65,11 +66,12 @@ const FEI_PREFIX = '/api/audio/fei/';
 
 function signAudioUrl(audioUrl, ttlSec) {
   if (!audioUrl || typeof audioUrl !== 'string') return audioUrl || null;
-  if (!audioUrl.startsWith(FEI_PREFIX)) return audioUrl;
+  const url = rewriteAudioCdnUrl(audioUrl);
+  if (!url.startsWith(FEI_PREFIX)) return url;
   // Strip any existing query so we don't double-append `?t=`.
-  const pathOnly = audioUrl.split('?')[0];
+  const pathOnly = url.split('?')[0];
   const filename = pathOnly.slice(FEI_PREFIX.length);
-  if (!filename) return audioUrl;
+  if (!filename) return url;
   return `${pathOnly}?t=${sign(filename, ttlSec)}`;
 }
 

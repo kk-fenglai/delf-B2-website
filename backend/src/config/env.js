@@ -182,6 +182,9 @@ module.exports = {
   PORT: Number(process.env.PORT || 4000),
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_PROD ? 'info' : 'debug'),
   FRONTEND_URL: process.env.FRONTEND_URL,
+  /** Optional custom CDN origin for listening audio (replaces R2 public URL). */
+  AUDIO_CDN_ORIGIN: (process.env.AUDIO_CDN_ORIGIN || '').replace(/\/$/, ''),
+  AUDIO_CDN_REPLACE_FROM: (process.env.AUDIO_CDN_REPLACE_FROM || '').replace(/\/$/, ''),
   DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY || '',
   DEEPSEEK_BASE_URL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
   DASHSCOPE_API_KEY: process.env.DASHSCOPE_API_KEY || '',
