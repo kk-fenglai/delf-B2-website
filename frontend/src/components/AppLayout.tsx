@@ -29,6 +29,7 @@ export default function AppLayout() {
   const displayPlan = user?.effectivePlan || user?.plan;
   const trialActive = Boolean(user?.trial?.active);
   const trialDaysLeft = user?.trial?.daysLeft ?? 0;
+  const trialPlanLabel = user?.trial?.plan ? t(`plan.${user.trial.plan}`) : '';
 
   const closeDrawer = () => setDrawerOpen(false);
   const go = (path: string) => { navigate(path); closeDrawer(); };
@@ -155,7 +156,7 @@ export default function AppLayout() {
             type="info"
             showIcon
             banner
-            message={t('pricing.trial.topBar', { days: trialDaysLeft })}
+            message={t('pricing.trial.topBar', { days: trialDaysLeft, plan: trialPlanLabel })}
             action={(
               <Button size="small" type="primary" ghost onClick={() => navigate('/pricing')}>
                 {t('pricing.trial.subscribeNow')}

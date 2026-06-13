@@ -70,8 +70,14 @@ export default function Pricing() {
   const [trialLoading, setTrialLoading] = useState(false);
 
   const isLoggedIn = !!user;
-  const trialDays = trialPublic?.days ?? trialStatus?.days ?? 3;
-  const showTrialFeature = Boolean(trialPublic?.enabled ?? trialStatus?.enabled);
+  const trialDays = trialPublic?.days ?? trialStatus?.days;
+  const trialPlanCode = trialPublic?.plan ?? trialStatus?.plan;
+  const trialPlanLabel = trialPlanCode ? t(`plan.${trialPlanCode}`) : '';
+  const trialCopy = { days: trialDays ?? 0, plan: trialPlanLabel };
+  const trialConfigReady = trialPublic != null || trialStatus != null;
+  const showTrialFeature = trialConfigReady
+    && Boolean(trialPublic?.enabled ?? trialStatus?.enabled)
+    && trialDays != null;
   const trialEligible = Boolean(trialStatus?.eligible);
   const trialActive = Boolean(trialStatus?.active);
 
@@ -135,7 +141,10 @@ export default function Pricing() {
       const { data } = await api.post('/user/trial/start');
       if (data?.trial) setTrialStatus(data.trial);
       await fetchMe();
-      message.success(t('pricing.trial.startSuccess', { days: trialDays }));
+      message.success(t('pricing.trial.startSuccess', {
+        days: data?.trial?.days ?? trialDays ?? 0,
+        plan: data?.trial?.plan ? t(`plan.${data.trial.plan}`) : trialPlanLabel,
+      }));
       navigate('/practice');
     } catch (e: unknown) {
       const err = e as { response?: { data?: { error?: string; code?: string } } };
@@ -307,7 +316,10 @@ export default function Pricing() {
             <Alert
               type="success"
               showIcon
-              message={t('pricing.trial.activeBanner', { days: trialStatus?.daysLeft ?? trialDays })}
+              message={t('pricing.trial.activeBanner', {
+                days: trialStatus?.daysLeft ?? trialDays ?? 0,
+                plan: trialPlanLabel,
+              })}
               action={(
                 <Space>
                   <Button size="small" onClick={() => navigate('/practice')}>
@@ -320,18 +332,18 @@ export default function Pricing() {
             <Alert
               type="info"
               showIcon
-              message={t('pricing.trial.promoBanner', { days: trialDays })}
+              message={t('pricing.trial.promoBanner', trialCopy)}
               description={
                 !isLoggedIn
-                  ? t('pricing.trial.registerHint', { days: trialDays })
+                  ? t('pricing.trial.registerHint', trialCopy)
                   : trialEligible
-                    ? t('pricing.trial.eligibleHint', { days: trialDays })
+                    ? t('pricing.trial.eligibleHint', trialCopy)
                     : t('pricing.trial.usedHint')
               }
               action={
                 trialEligible ? (
                   <Button type="primary" size="small" loading={trialLoading} onClick={startFreeTrial}>
-                    {t('pricing.trial.startButton', { days: trialDays })}
+                    {t('pricing.trial.startButton', trialCopy)}
                   </Button>
                 ) : !isLoggedIn ? (
                   <Link to="/register">
@@ -483,7 +495,7 @@ export default function Pricing() {
                         }}
                       >
                         {showTrialFeature
-                          ? t('pricing.trial.registerCta', { days: trialDays })
+                          ? t('pricing.trial.registerCta', trialCopy)
                           : t('pricing.plans.free.cta')}
                       </Button>
                     </Link>
@@ -515,7 +527,7 @@ export default function Pricing() {
                         loading={trialLoading}
                         onClick={startFreeTrial}
                       >
-                        {t('pricing.trial.startButton', { days: trialDays })}
+                        {t('pricing.trial.startButton', trialCopy)}
                       </Button>
                     )}
                   </Space>
@@ -589,10 +601,10 @@ export default function Pricing() {
 
           {trialEligible && !trialActive && (
             <div className="text-center text-sm" style={{ color: 'var(--textMuted)' }}>
-              {t('pricing.trial.modalHint', { days: trialDays })}
+              {t('pricing.trial.modalHint', trialCopy)}
               {' '}
               <Button type="link" size="small" loading={trialLoading} onClick={startFreeTrial} style={{ padding: 0 }}>
-                {t('pricing.trial.startButton', { days: trialDays })}
+                {t('pricing.trial.startButton', trialCopy)}
               </Button>
             </div>
           )}
