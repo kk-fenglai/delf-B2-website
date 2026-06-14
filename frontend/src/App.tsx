@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import AppLayout from './components/AppLayout';
 import PageLoader from './components/PageLoader';
 import { useAuthStore } from './stores/auth';
+import { useGeoStore } from './stores/geo';
 
 const AdminLayout = lazy(() => import('./components/AdminLayout'));
 const RequireAdmin = lazy(() => import('./components/RequireAdmin'));
@@ -50,9 +51,11 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 
 export default function App() {
   const fetchMe = useAuthStore((s) => s.fetchMe);
+  const fetchGeo = useGeoStore((s) => s.fetchGeo);
   useEffect(() => {
     if (localStorage.getItem('accessToken')) fetchMe();
-  }, [fetchMe]);
+    fetchGeo();
+  }, [fetchMe, fetchGeo]);
 
   return (
     <Suspense fallback={<PageLoader />}>

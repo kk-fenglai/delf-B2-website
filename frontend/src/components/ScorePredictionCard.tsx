@@ -61,11 +61,11 @@ export default function ScorePredictionCard() {
   const verdict = data.verdict;
   const color = verdictColor[verdict];
   const icon = verdictIcon[verdict];
-  const { passTotal, passPerSkill } = data.thresholds;
+  const { passTotal, passPerSkill, skillMax } = data.thresholds;
 
-  // For the gauge on the card, show the verified points (CO+CE) as a gauge
-  // against PASS_TOTAL_MIN. It communicates "how close to the pass line your
-  // auto-gradable score is" without overclaiming PE/PO.
+  // Headline gauge shows how close the auto-gradable score (CO+CE) is to the
+  // pass line, expressed as a percentage. We deliberately surface a
+  // pass-progress percentage rather than a predicted point score.
   const pctToPass = Math.min(100, Math.round((data.total.verifiedPoints / passTotal) * 100));
 
   return (
@@ -85,10 +85,10 @@ export default function ScorePredictionCard() {
           format={() => (
             <div className="text-center">
               <div className="text-2xl font-bold" style={{ color }}>
-                {data.total.verifiedPoints.toFixed(1)}
+                {pctToPass}%
               </div>
               <div className="text-xs text-gray-500">
-                {t('prediction.card.ofTotal', { total: passTotal })}
+                {t('prediction.card.passProgress')}
               </div>
             </div>
           )}
@@ -99,12 +99,6 @@ export default function ScorePredictionCard() {
             <Title level={4} style={{ marginBottom: 0, color }}>
               {icon} {t(`prediction.verdict.${verdict}`)}
             </Title>
-            <Text type="secondary">
-              {t('prediction.card.verifiedRange', {
-                lower: data.total.lowerBound.toFixed(1),
-                upper: data.total.upperBound.toFixed(1),
-              })}
-            </Text>
             <Text type="secondary" className="text-xs">
               {t('prediction.card.note', {
                 perSkill: passPerSkill,
@@ -125,7 +119,7 @@ export default function ScorePredictionCard() {
                   label = t('prediction.noData');
                 } else {
                   tagColor = ps.belowPassGate ? 'red' : 'blue';
-                  label = `${ps.predictedScore.toFixed(1)}/25`;
+                  label = `${Math.round((ps.predictedScore / skillMax) * 100)}%`;
                 }
                 return (
                   <Tag key={s} color={tagColor}>

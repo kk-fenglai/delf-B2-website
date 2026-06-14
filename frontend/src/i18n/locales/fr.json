@@ -16,8 +16,8 @@
   "nav": {
     "home": "Accueil",
     "practice": "Entraînement",
-    "myExams": "Ma banque de questions",
-    "mistakes": "Cahier d'erreurs",
+    "myExams": "Mes exercices",
+    "mistakes": "Carnet d'erreurs",
     "dashboard": "Tableau de bord",
     "pricing": "Tarifs",
     "orders": "Mes commandes",
@@ -67,7 +67,7 @@
     "passRule": "Réussite : total ≥ 50 et chaque épreuve ≥ 5",
     "mockTitle": "Examen blanc complet · 4 compétences",
     "mockDesc": "Reproduit l'examen réel : CO, CE, PE, PO en séquence",
-    "myExamsTitle": "Ma banque de questions",
+    "myExamsTitle": "Mes exercices",
     "myExamsDesc": "Créez et entraînez-vous avec vos séries CE, PE, CO et PO · 2 séries gratuites par compétence"
   },
   "auth": {
@@ -176,10 +176,10 @@
     "viewDetail": "Voir les détails",
     "score": "Score",
     "loading": "Chargement...",
-    "userOwnedTag": "Ma banque de questions"
+    "userOwnedTag": "Mes exercices"
   },
   "practice": {
-    "title": "Banque de sujets",
+    "title": "Sujets d'examen",
     "subtitle": "Choisissez un sujet pour commencer. Les utilisateurs gratuits peuvent essayer les sujets marqués « Aperçu gratuit ».",
     "all": "Tous",
     "freePreview": "Aperçu gratuit",
@@ -187,7 +187,7 @@
     "totalQuestions": "{{count}} questions au total",
     "questionsCount": "{{count}} Q",
     "empty": "Aucun sujet disponible",
-    "myExamsSection": "Ma banque de questions",
+    "myExamsSection": "Mes exercices",
     "myExamsEmpty": "Aucune série personnalisée publiée",
     "createMyExam": "Créer une série",
     "manageMyExams": "Gérer mes séries",
@@ -346,7 +346,7 @@
     "rawPoints": "Brut : {{score}} / {{max}} pts"
   },
   "mistakes": {
-    "title": "Cahier d'erreurs",
+    "title": "Carnet d'erreurs",
     "totalCount": "{{n}} à revoir",
     "infoTitle": "Fonctionnement",
     "infoDesc": "Les questions auxquelles vous avez mal répondu s'accumulent ici. Refaites-les : une fois la bonne réponse donnée, elles disparaissent automatiquement.",
@@ -361,16 +361,16 @@
     "retryPrompt": "Choisissez votre nouvelle réponse :",
     "retryFillPlaceholder": "Saisissez votre réponse",
     "retryEmpty": "Veuillez choisir ou saisir une réponse d'abord.",
-    "retryCorrect": "Correct ! Question retirée du cahier.",
-    "retryCorrectBanner": "✓ Correct — cette question va être retirée de votre cahier.",
+    "retryCorrect": "Correct ! Question retirée du carnet.",
+    "retryCorrectBanner": "✓ Correct — cette question va être retirée de votre carnet.",
     "retryWrong": "Pas tout à fait — relisez l'explication.",
     "retryWrongBanner": "Toujours faux. Bonne réponse : {{answer}}",
     "retryFail": "Échec de l'envoi — veuillez réessayer.",
     "empty": "Aucune erreur pour l'instant — continuez à vous entraîner, les mauvaises réponses apparaîtront ici.",
-    "userOwnedTag": "Ma banque de questions"
+    "userOwnedTag": "Mes exercices"
   },
   "myExams": {
-    "title": "Ma banque de questions",
+    "title": "Mes exercices",
     "subtitle": "Créez et entraînez-vous avec vos propres séries CE, PE, CO et PO. Gratuit : 2 séries par compétence.",
     "tabAll": "Tout",
     "create": "Nouvelle série",
@@ -387,7 +387,7 @@
     "questionCount": "{{n}} questions",
     "confirmDelete": "Supprimer cette série ?",
     "loadFailed": "Échec du chargement",
-    "errorLogin": "Connectez-vous pour accéder à votre banque de questions.",
+    "errorLogin": "Connectez-vous pour accéder à vos exercices.",
     "errorNotDeployed": "Fonctionnalité pas encore déployée — réessayez plus tard.",
     "errorServer": "Impossible de charger vos séries — vérifiez la connexion.",
     "created": "Créée — continuez à ajouter des questions",
@@ -397,7 +397,7 @@
     "limitReached": "Limite de séries {{skill}} atteinte",
     "skillLocked": "Votre formule ne permet pas ce type — passez à une formule supérieure",
     "empty": "Aucune série personnalisée",
-    "back": "Retour à ma banque",
+    "back": "Retour à mes exercices",
     "editTitle": "Modifier la série",
     "passageTitle": "Texte de lecture",
     "passageHint": "Collez le texte complet — partagé par toutes les questions.",
@@ -447,10 +447,70 @@
     "missingCoAudio": "Téléversez l'audio avant de publier",
     "missingPoFollowups": "Au moins 1 question de débat requise"
   },
+  "prediction": {
+    "pending": "En attente de la note IA",
+    "noData": "Données insuffisantes",
+    "card": {
+      "title": "Prédiction de réussite B2",
+      "emptyDesc": "Entraînez-vous sur quelques séries et nous prédirons vos chances de réussite.",
+      "emptyCta": "Commencer à s'entraîner",
+      "viewDetail": "Voir le détail",
+      "verifiedRange": "Fourchette estimée {{lower}}–{{upper}} / 100",
+      "note": "Réussite : ≥ {{perSkill}} par compétence et ≥ {{total}} au total.",
+      "ofTotal": "／{{total}}",
+      "passProgress": "Progression vers la réussite"
+    },
+    "verdict": {
+      "likely_pass": "Réussite probable",
+      "borderline": "Limite",
+      "at_risk_gate": "Risque sur une compétence",
+      "unlikely_pass": "Réussite peu probable",
+      "insufficient": "Données encore insuffisantes"
+    },
+    "confidence": {
+      "none": "Aucune donnée",
+      "low": "Confiance faible",
+      "medium": "Confiance moyenne",
+      "high": "Confiance élevée"
+    },
+    "page": {
+      "title": "Prédiction de réussite B2",
+      "subtitle": "D'après votre taux de réussite et les règles officielles du DELF B2.",
+      "verifiedScore": "Score vérifié (CO + CE)",
+      "rule": "Réussite : ≥ {{perSkill}} par compétence et ≥ {{total}} au total",
+      "minPePoNeeded": "PE + PO minimum requis",
+      "minPePoUnknown": "Indisponible",
+      "perSkillTitle": "Par compétence",
+      "questions": "questions",
+      "radarTitle": "Radar des compétences",
+      "radarLabel": "Prédit",
+      "radarNote": "Points prédits par compétence selon le taux de réussite pondéré.",
+      "whatIfTitle": "Scénarios hypothétiques",
+      "whatIfDesc": "Comment différents résultats PE / PO influenceraient votre réussite.",
+      "peScore": "PE",
+      "poScore": "PO",
+      "totalScore": "Total",
+      "passes": "Résultat",
+      "pass": "Réussi",
+      "fail": "Échoué",
+      "belowGate": "Sous le minimum par compétence de {{min}}",
+      "recsTitle": "Recommandations"
+    },
+    "recommendation": {
+      "gate_risk": "{{skill}} est sous le seuil de réussite — concentrez-vous ici pour éviter l'échec.",
+      "sample_low": "Seulement {{n}} questions faites en {{skill}} — faites-en {{needed}} de plus pour une estimation fiable.",
+      "near_line": "{{skill}} est proche du seuil — un peu plus d'entraînement pourrait le sécuriser.",
+      "ai_upsell": "Débloquez la notation IA pour PE / PO afin d'obtenir une prédiction complète."
+    }
+  },
   "pricing": {
     "title": "Choisissez votre formule",
     "subtitle": "WeChat Pay / Alipay · Annulable à tout moment · Remboursement sous 7 jours",
     "popular": "Le plus choisi",
+    "paidComingSoon": {
+      "title": "Actuellement en phase de test",
+      "desc": "Les offres payantes ouvriront plus tard — restez à l'écoute. Pour l'instant, toutes les fonctionnalités sont gratuites."
+    },
     "trial": {
       "promoBanner": "Nouveaux utilisateurs : essai gratuit {{days}} jours — {{plan}}",
       "activeBanner": "Essai en cours · {{plan}} · {{days}} jours restants",
@@ -675,7 +735,7 @@
     "upgradeAlert": "Les modèles personnalisés sont une fonction du forfait IA. Passez à IA pour enregistrer vos propres phrases et structures.",
     "new": "Nouveau",
     "systemTab": "Modèles officiels",
-    "phraseTab": "Banque de phrases",
+    "phraseTab": "Phrases utiles",
     "structureTab": "Structures",
     "empty": "Aucun modèle — cliquez sur « Nouveau » pour en créer un",
     "insert": "Insérer",

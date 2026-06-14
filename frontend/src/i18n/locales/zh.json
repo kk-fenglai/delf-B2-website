@@ -447,10 +447,70 @@
     "missingCoAudio": "请先上传听力音频再发布",
     "missingPoFollowups": "口语套题至少需要 1 条 follow-up 问题"
   },
+  "prediction": {
+    "pending": "等待 AI 评分",
+    "noData": "数据不足",
+    "card": {
+      "title": "B2 通过预测",
+      "emptyDesc": "先练习几套题，我们会预测你的通过情况。",
+      "emptyCta": "开始练习",
+      "viewDetail": "查看详情",
+      "verifiedRange": "预计区间 {{lower}}–{{upper}} / 100",
+      "note": "通过需：每项 ≥ {{perSkill}} 分，总分 ≥ {{total}} 分。",
+      "ofTotal": "／{{total}}",
+      "passProgress": "通过进度"
+    },
+    "verdict": {
+      "likely_pass": "很可能通过",
+      "borderline": "处于边缘",
+      "at_risk_gate": "单项可能不达标",
+      "unlikely_pass": "通过希望较小",
+      "insufficient": "数据尚不足"
+    },
+    "confidence": {
+      "none": "无数据",
+      "low": "置信度低",
+      "medium": "置信度中",
+      "high": "置信度高"
+    },
+    "page": {
+      "title": "B2 通过预测",
+      "subtitle": "依据你的练习正确率与 DELF B2 官方及格规则估算。",
+      "verifiedScore": "已确认得分（听力＋阅读）",
+      "rule": "通过：每项 ≥ {{perSkill}} 分，总分 ≥ {{total}} 分",
+      "minPePoNeeded": "写作＋口语最少还需",
+      "minPePoUnknown": "暂无法估算",
+      "perSkillTitle": "分项情况",
+      "questions": "题",
+      "radarTitle": "能力雷达",
+      "radarLabel": "预测",
+      "radarNote": "按加权正确率估算的各项预测得分。",
+      "whatIfTitle": "假设情景",
+      "whatIfDesc": "不同的写作／口语成绩对通过结果的影响。",
+      "peScore": "写作",
+      "poScore": "口语",
+      "totalScore": "总分",
+      "passes": "结果",
+      "pass": "通过",
+      "fail": "未通过",
+      "belowGate": "低于单项及格线 {{min}} 分",
+      "recsTitle": "提升建议"
+    },
+    "recommendation": {
+      "gate_risk": "{{skill}} 低于单项及格线，优先攻克以避免不通过。",
+      "sample_low": "{{skill}} 仅完成 {{n}} 题，再练 {{needed}} 题可获得更可靠的预测。",
+      "near_line": "{{skill}} 已接近及格线，稍加练习即可稳住。",
+      "ai_upsell": "解锁写作／口语的 AI 评分，获得完整预测。"
+    }
+  },
   "pricing": {
     "title": "选择适合你的订阅方案",
     "subtitle": "Stripe 安全支付 · 随时取消 · 7 天无理由退款",
     "popular": "最受欢迎",
+    "paidComingSoon": {
+      "title": "目前处于测试阶段",
+      "desc": "付费套餐后续开启，敬请期待。当前可免费使用全部功能。"
+    },
     "trial": {
       "promoBanner": "新用户免费试用 {{days}} 天 {{plan}}",
       "activeBanner": "试用进行中 · {{plan}} · 剩余 {{days}} 天",

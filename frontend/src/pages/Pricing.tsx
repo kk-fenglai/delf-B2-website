@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
+import { useGeoStore, isPaidPlansHidden } from '../stores/geo';
 import UpgradeDifferenceCard from '../components/UpgradeDifferenceCard';
 import type { CatalogProduct, CatalogPrice, Plan, TrialPublicConfig, TrialStatus, PaymentsPublicConfig } from '../types';
 
@@ -46,6 +47,12 @@ export default function Pricing() {
   const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
   const fetchMe = useAuthStore((s) => s.fetchMe);
+  // Mainland-China visitors keep access to this page but don't see the paid
+  // (EUR) tiers during the beta — only the Free card and a "coming soon"
+  // notice. Gate the cards on geoLoaded too so the paid tiers never flash.
+  const geoCountry = useGeoStore((s) => s.country);
+  const geoLoaded = useGeoStore((s) => s.loaded);
+  const hidePaid = isPaidPlansHidden(geoCountry);
 
   const [products, setProducts] = useState<CatalogProduct[] | null>(null);
   const [trialPublic, setTrialPublic] = useState<TrialPublicConfig | null>(null);
@@ -286,6 +293,9 @@ export default function Pricing() {
     return [free, ...paid];
   }, [products]);
 
+  // CN visitors only see the Free card; everyone else sees all tiers.
+  const visibleCards = hidePaid ? cards.filter((c) => c.key === FREE_CARD_KEY) : cards;
+
   function featuresFor(key: string): string[] {
     const raw = t(`pricing.plans.${key}.features`, { returnObjects: true });
     return Array.isArray(raw) ? (raw as string[]) : [];
@@ -357,35 +367,47 @@ export default function Pricing() {
         </div>
       )}
 
-      <UpgradeDifferenceCard />
-
-      <div className="flex justify-center mb-10 gap-3 flex-wrap">
-        <Segmented
-          value={cycle}
-          onChange={(v) => setCycle(v as BillingCycle)}
-          size="large"
-          options={[
-            { label: t('pricing.checkout.monthly'), value: 'monthly' },
-            { label: t('pricing.checkout.yearly'), value: 'yearly' },
-          ]}
+      {hidePaid && (
+        <Alert
+          type="info"
+          showIcon
+          className="max-w-3xl mx-auto mb-10"
+          message={t('pricing.paidComingSoon.title')}
+          description={t('pricing.paidComingSoon.desc')}
         />
-        {!catalogLoading && !adaptivePricing && (
-          <Segmented
-            value={currency}
-            onChange={(v) => {
-              setCurrency(v as Currency);
-              setUserSelectedCurrency(true);
-            }}
-            size="large"
-            options={SUPPORTED_CURRENCIES.map((cur) => ({
-              label: `${CURRENCY_SYMBOL[cur]} ${cur}`,
-              value: cur,
-            }))}
-          />
-        )}
-      </div>
+      )}
 
-      {adaptivePricing && (
+      {!hidePaid && <UpgradeDifferenceCard />}
+
+      {!hidePaid && (
+        <div className="flex justify-center mb-10 gap-3 flex-wrap">
+          <Segmented
+            value={cycle}
+            onChange={(v) => setCycle(v as BillingCycle)}
+            size="large"
+            options={[
+              { label: t('pricing.checkout.monthly'), value: 'monthly' },
+              { label: t('pricing.checkout.yearly'), value: 'yearly' },
+            ]}
+          />
+          {!catalogLoading && !adaptivePricing && (
+            <Segmented
+              value={currency}
+              onChange={(v) => {
+                setCurrency(v as Currency);
+                setUserSelectedCurrency(true);
+              }}
+              size="large"
+              options={SUPPORTED_CURRENCIES.map((cur) => ({
+                label: `${CURRENCY_SYMBOL[cur]} ${cur}`,
+                value: cur,
+              }))}
+            />
+          )}
+        </div>
+      )}
+
+      {!hidePaid && adaptivePricing && (
         <Paragraph className="text-center mb-8" style={{ color: 'var(--textMuted)' }}>
           {embeddedCheckout
             ? t('pricing.embeddedPricingNote', { currency: anchorCurrency })
@@ -393,7 +415,7 @@ export default function Pricing() {
         </Paragraph>
       )}
 
-      {catalogLoading ? (
+      {catalogLoading || !geoLoaded ? (
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {[0, 1, 2, 3].map((i) => (
             <div
@@ -409,8 +431,14 @@ export default function Pricing() {
           ))}
         </div>
       ) : (
-        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
-          {cards.map((c) => {
+        <div
+          className={
+            hidePaid
+              ? 'max-w-md mx-auto'
+              : 'grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch'
+          }
+        >
+          {visibleCards.map((c) => {
             const isFree = c.key === FREE_CARD_KEY;
             const highlight = c.key === 'ai';
             const price = c.product ? priceForCycle(c.product, cycle) : null;

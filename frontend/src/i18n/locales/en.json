@@ -447,10 +447,70 @@
     "missingCoAudio": "Upload listening audio before publishing",
     "missingPoFollowups": "Speaking sets need at least 1 follow-up question"
   },
+  "prediction": {
+    "pending": "Awaiting AI grade",
+    "noData": "Not enough data",
+    "card": {
+      "title": "B2 pass prediction",
+      "emptyDesc": "Practice a few sets and we'll predict your chance of passing.",
+      "emptyCta": "Start practicing",
+      "viewDetail": "View details",
+      "verifiedRange": "Estimated range {{lower}}–{{upper}} / 100",
+      "note": "Passing needs ≥ {{perSkill}} in each skill and ≥ {{total}} overall.",
+      "ofTotal": "of {{total}}",
+      "passProgress": "Pass progress"
+    },
+    "verdict": {
+      "likely_pass": "Likely to pass",
+      "borderline": "Borderline",
+      "at_risk_gate": "At risk on a skill gate",
+      "unlikely_pass": "Unlikely to pass",
+      "insufficient": "Not enough data yet"
+    },
+    "confidence": {
+      "none": "No data",
+      "low": "Low confidence",
+      "medium": "Medium confidence",
+      "high": "High confidence"
+    },
+    "page": {
+      "title": "B2 pass prediction",
+      "subtitle": "Based on your practice accuracy and the official DELF B2 passing rules.",
+      "verifiedScore": "Verified score (CO + CE)",
+      "rule": "Pass: ≥ {{perSkill}} per skill and ≥ {{total}} overall",
+      "minPePoNeeded": "Min. PE + PO needed",
+      "minPePoUnknown": "N/A",
+      "perSkillTitle": "By skill",
+      "questions": "questions",
+      "radarTitle": "Skill radar",
+      "radarLabel": "Predicted",
+      "radarNote": "Predicted points per skill based on weighted accuracy.",
+      "whatIfTitle": "What-if scenarios",
+      "whatIfDesc": "How different PE / PO results would affect your pass outcome.",
+      "peScore": "PE",
+      "poScore": "PO",
+      "totalScore": "Total",
+      "passes": "Result",
+      "pass": "Pass",
+      "fail": "Fail",
+      "belowGate": "Below the per-skill minimum of {{min}}",
+      "recsTitle": "Recommendations"
+    },
+    "recommendation": {
+      "gate_risk": "{{skill}} is below the passing gate — focus here to avoid a fail.",
+      "sample_low": "Only {{n}} questions done in {{skill}} — practice {{needed}} more for a reliable estimate.",
+      "near_line": "{{skill}} is close to the line — a bit more practice could secure it.",
+      "ai_upsell": "Unlock AI grading for PE / PO to get a full prediction."
+    }
+  },
   "pricing": {
     "title": "Choose your plan",
     "subtitle": "Secured by Stripe · Cancel anytime · 7-day refund",
     "popular": "Most popular",
+    "paidComingSoon": {
+      "title": "Currently in beta testing",
+      "desc": "Paid plans will open later — stay tuned. For now, all features are free to use."
+    },
     "trial": {
       "promoBanner": "New users: {{days}}-day free trial of {{plan}}",
       "activeBanner": "Trial active · {{plan}} · {{days}} days left",

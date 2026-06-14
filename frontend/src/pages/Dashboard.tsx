@@ -89,6 +89,10 @@ export default function Dashboard() {
         </Col>
       </Row>
 
+      <div className="mb-6">
+        <ScorePredictionCard />
+      </div>
+
       <Row gutter={16}>
         <Col xs={24} md={12}>
           <Card title={t('dashboard.radarTitle')} className="mb-4">
@@ -132,8 +136,6 @@ export default function Dashboard() {
           </Card>
         </Col>
       </Row>
-
-      <ScorePredictionCard />
     </div>
   );
 }
