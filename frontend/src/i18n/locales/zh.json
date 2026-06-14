@@ -458,7 +458,7 @@
       "eligibleHint": "点击即可立即开通，体验全部功能",
       "usedHint": "您已使用过免费试用，请订阅继续学习",
       "startButton": "免费试用 {{days}} 天 {{plan}}",
-      "registerCta": "注册享 {{days}} 天 {{plan}} 免费试用",
+      "registerCta": "免费试用 {{days}} 天",
       "goPractice": "开始练习",
       "subscribeNow": "立即订阅",
       "topBar": "{{plan}} 试用剩余 {{days}} 天",

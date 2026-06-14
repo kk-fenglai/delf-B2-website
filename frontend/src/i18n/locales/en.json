@@ -458,7 +458,7 @@
       "eligibleHint": "Start now and unlock all features",
       "usedHint": "You've already used your free trial — subscribe to continue",
       "startButton": "Start {{days}}-day {{plan}} trial",
-      "registerCta": "Sign up for {{days}} days of {{plan}} free",
+      "registerCta": "Start {{days}}-day free trial",
       "goPractice": "Start practicing",
       "subscribeNow": "Subscribe now",
       "topBar": "{{plan}} trial · {{days}} days left",

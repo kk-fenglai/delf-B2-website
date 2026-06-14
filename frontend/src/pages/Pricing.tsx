@@ -300,58 +300,59 @@ export default function Pricing() {
         </Paragraph>
       </div>
 
-      {!paymentsEnabled && (
-        <Alert
-          type="warning"
-          showIcon
-          className="mb-8 max-w-3xl mx-auto"
-          message={t('pricing.paymentsDisabled.banner')}
-          description={paymentsDisabledText()}
-        />
-      )}
+      {(!paymentsEnabled || showTrialFeature) && (
+        <div className="max-w-3xl mx-auto mb-8 space-y-4">
+          {!paymentsEnabled && (
+            <Alert
+              type="warning"
+              showIcon
+              message={t('pricing.paymentsDisabled.banner')}
+              description={paymentsDisabledText()}
+            />
+          )}
 
-      {showTrialFeature && (
-        <div className="mb-8 max-w-3xl mx-auto">
-          {trialActive ? (
-            <Alert
-              type="success"
-              showIcon
-              message={t('pricing.trial.activeBanner', {
-                days: trialStatus?.daysLeft ?? trialDays ?? 0,
-                plan: trialPlanLabel,
-              })}
-              action={(
-                <Space>
-                  <Button size="small" onClick={() => navigate('/practice')}>
-                    {t('pricing.trial.goPractice')}
-                  </Button>
-                </Space>
-              )}
-            />
-          ) : (
-            <Alert
-              type="info"
-              showIcon
-              message={t('pricing.trial.promoBanner', trialCopy)}
-              description={
-                !isLoggedIn
-                  ? t('pricing.trial.registerHint', trialCopy)
-                  : trialEligible
-                    ? t('pricing.trial.eligibleHint', trialCopy)
-                    : t('pricing.trial.usedHint')
-              }
-              action={
-                trialEligible ? (
-                  <Button type="primary" size="small" loading={trialLoading} onClick={startFreeTrial}>
-                    {t('pricing.trial.startButton', trialCopy)}
-                  </Button>
-                ) : !isLoggedIn ? (
-                  <Link to="/register">
-                    <Button type="primary" size="small">{t('nav.register')}</Button>
-                  </Link>
-                ) : undefined
-              }
-            />
+          {showTrialFeature && (
+            trialActive ? (
+              <Alert
+                type="success"
+                showIcon
+                message={t('pricing.trial.activeBanner', {
+                  days: trialStatus?.daysLeft ?? trialDays ?? 0,
+                  plan: trialPlanLabel,
+                })}
+                action={(
+                  <Space>
+                    <Button size="small" onClick={() => navigate('/practice')}>
+                      {t('pricing.trial.goPractice')}
+                    </Button>
+                  </Space>
+                )}
+              />
+            ) : (
+              <Alert
+                type="info"
+                showIcon
+                message={t('pricing.trial.promoBanner', trialCopy)}
+                description={
+                  !isLoggedIn
+                    ? t('pricing.trial.registerHint', trialCopy)
+                    : trialEligible
+                      ? t('pricing.trial.eligibleHint', trialCopy)
+                      : t('pricing.trial.usedHint')
+                }
+                action={
+                  trialEligible ? (
+                    <Button type="primary" size="small" loading={trialLoading} onClick={startFreeTrial}>
+                      {t('pricing.trial.startButton', trialCopy)}
+                    </Button>
+                  ) : !isLoggedIn ? (
+                    <Link to="/register">
+                      <Button type="primary" size="small">{t('nav.register')}</Button>
+                    </Link>
+                  ) : undefined
+                }
+              />
+            )
           )}
         </div>
       )}

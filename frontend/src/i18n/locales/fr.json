@@ -458,7 +458,7 @@
       "eligibleHint": "Cliquez pour débloquer toutes les fonctionnalités",
       "usedHint": "Vous avez déjà utilisé l'essai gratuit — abonnez-vous pour continuer",
       "startButton": "Essai gratuit {{days}} jours — {{plan}}",
-      "registerCta": "Inscription — {{days}} jours {{plan}} offerts",
+      "registerCta": "Essai gratuit {{days}} jours",
       "goPractice": "Commencer à pratiquer",
       "subscribeNow": "S'abonner",
       "topBar": "Essai {{plan}} · {{days}} jours restants",
