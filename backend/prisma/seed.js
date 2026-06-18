@@ -17,10 +17,13 @@ async function main() {
   console.log(`🌱 Seeding database (NODE_ENV=${process.env.NODE_ENV || 'development'})...`);
 
   // ---- Super Admin — always ensure exists ----
-  const adminInitialPwd = process.env.ADMIN_INITIAL_PASSWORD || 'DELFluent$Admin@2026!Prod';
+  // In production we refuse to fall back to a hardcoded password: a committed
+  // default would create the super-admin with publicly-known credentials.
   if (IS_PROD && !process.env.ADMIN_INITIAL_PASSWORD) {
-    console.warn('⚠️  ADMIN_INITIAL_PASSWORD not set — using default. Change it immediately after first login.');
+    console.error('❌ FATAL: ADMIN_INITIAL_PASSWORD is required in production (refusing to seed super-admin with a default password). Set it in .env and re-run.');
+    process.exit(1);
   }
+  const adminInitialPwd = process.env.ADMIN_INITIAL_PASSWORD || 'DELFluent$Admin@2026!Prod';
   const adminPwdHash = await bcrypt.hash(adminInitialPwd, 12);
   await prisma.user.upsert({
     where: { email: 'alzy1210@163.com' },

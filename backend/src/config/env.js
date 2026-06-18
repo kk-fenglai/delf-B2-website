@@ -95,6 +95,13 @@ const placeholderMatchers = [/^change_?me/i, /xxx+/i];
 // Production: require SMTP + admin initial password changed + not the default super-admin password
 if (IS_PROD) {
   ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'].forEach((k) => requireEnv(k));
+  // Super-admin bootstrap password: REQUIRED in prod so the seed never falls
+  // back to the committed default (a publicly-known credential). Block the
+  // .env.example placeholder too.
+  requireEnv('ADMIN_INITIAL_PASSWORD', { minLength: 12 });
+  if (/^CHANGE_?ME/i.test(process.env.ADMIN_INITIAL_PASSWORD || '')) {
+    errors.push('ADMIN_INITIAL_PASSWORD looks like the .env.example placeholder — set a real strong password');
+  }
   if (process.env.ALLOW_PROD_SEED === 'true') {
     warnings.push('ALLOW_PROD_SEED=true in production — seed script will run and may recreate demo accounts');
   }
