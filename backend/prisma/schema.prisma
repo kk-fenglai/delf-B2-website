@@ -342,6 +342,8 @@ model ExamSet {
   owner        User?      @relation("UserOwnedExamSets", fields: [ownerUserId], references: [id], onDelete: Cascade)
   source       String     @default("PLATFORM") // PLATFORM | USER
   primarySkill String?    // CE | PE — single-skill user sets; null for platform/mocks
+  // CO 听力分类覆盖：long | short | other。为空时前端按标题自动判定(documents courts / document long)。
+  coFormat     String?
   createdAt    DateTime   @default(now())
 
   questions       Question[]

@@ -168,6 +168,7 @@ router.get('/', async (req, res, next) => {
         description: s.description,
         isPublished: s.isPublished,
         isFreePreview: s.isFreePreview,
+        coFormat: s.coFormat,
         totalQuestions: s.questions.length,
         countsBySkill: counts,
         createdAt: s.createdAt,

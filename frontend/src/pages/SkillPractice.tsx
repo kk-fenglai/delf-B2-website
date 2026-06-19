@@ -20,6 +20,19 @@ const skillToSlug: Record<Skill, string> = {
   PO: 'speaking',
 };
 
+// DELF CO 有两种练习类型：documents courts(短听力)、document long(长听力)。
+// 按标题归类(maxPlays 因导入统一为 2 已不可靠)。无法判定的归入 other。
+function coGroupOf(title: string): 'long' | 'short' | 'other' {
+  const s = title.toLowerCase();
+  if (/documents?\s*courts?/.test(s) || /短听力/.test(title) || /\bcourts?\b/.test(s)) return 'short';
+  if (
+    /documents?\s*longs?/.test(s) ||
+    /长听力/.test(title) ||
+    /(entretien|d[eé]bat|table\s*ronde|interview|monologue|conf[eé]rence)/.test(s)
+  ) return 'long';
+  return 'other';
+}
+
 export default function SkillPractice({ skill, mockMode = false }: Props) {
   const { t } = useTranslation();
   const [sets, setSets] = useState<ExamSetBrief[]>([]);
@@ -150,6 +163,21 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
         <>
           {sets.length === 0 ? (
             <Empty description={t('practice.empty')} className="mb-8" />
+          ) : skill === 'CO' && !mockMode ? (
+            <div className="mb-8">
+              {(['long', 'short', 'other'] as const).map((g) => {
+                const items = sets.filter((s) => (s.coFormat ?? coGroupOf(s.title)) === g);
+                if (items.length === 0) return null;
+                return (
+                  <div key={g} className="mb-6">
+                    <Title level={4} className="!mb-3">
+                      {t(`practice.co${g.charAt(0).toUpperCase()}${g.slice(1)}`)}
+                    </Title>
+                    <Row gutter={[16, 16]}>{items.map(renderPlatformCard)}</Row>
+                  </div>
+                );
+              })}
+            </div>
           ) : (
             <Row gutter={[16, 16]} className="mb-8">
               {sets.map(renderPlatformCard)}

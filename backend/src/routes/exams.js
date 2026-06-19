@@ -61,7 +61,7 @@ router.get('/', optionalAuth, async (req, res, next) => {
     const sets = await prisma.examSet.findMany({
       where: { isPublished: true, source: 'PLATFORM' },
       orderBy: [{ year: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
-      select: { id: true, title: true, description: true, isFreePreview: true },
+      select: { id: true, title: true, description: true, isFreePreview: true, coFormat: true },
     });
 
     // Tally questions per (set, skill) with one grouped query instead of
@@ -86,6 +86,7 @@ router.get('/', optionalAuth, async (req, res, next) => {
         title: sanitizeExamTitle(s.title),
         description: sanitizeExamDescription(s.description),
         isFreePreview: s.isFreePreview,
+        coFormat: s.coFormat,
         totalQuestions: agg.total,
         countsBySkill: agg.counts,
       };

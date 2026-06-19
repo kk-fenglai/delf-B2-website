@@ -42,6 +42,8 @@ const examSetSchema = z.object({
   description: z.string().optional().nullable(),
   isPublished: z.boolean().default(false),
   isFreePreview: z.boolean().default(false),
+  // CO 听力分类覆盖：long | short | other（为空=按标题自动判定）
+  coFormat: z.enum(['long', 'short', 'other']).optional().nullable(),
 });
 
 const bulkImportSchema = examSetSchema.extend({

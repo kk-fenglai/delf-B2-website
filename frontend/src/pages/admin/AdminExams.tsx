@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Table, Button, Space, Tag, Typography, message, Popconfirm, Select,
-  Modal, Form, Input, Switch, Tabs, Badge, Tooltip,
+  Modal, Form, Input, Switch, Tabs, Badge, Tooltip, Segmented,
 } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -19,6 +19,7 @@ interface ExamRow {
   description?: string;
   isPublished: boolean;
   isFreePreview: boolean;
+  coFormat?: 'long' | 'short' | 'other' | null;
   totalQuestions: number;
   countsBySkill: Record<string, number>;
   createdAt: string;
@@ -35,6 +36,25 @@ function inferSection(row: ExamRow): Section {
   return 'mock'; // 不满足四个 skill 的异常情况也归入全真模拟兜底
 }
 
+type CoGroup = 'long' | 'short' | 'other';
+
+// DELF CO 仅两种类型：documents courts(短)、document long(长)。按标题归类。
+function coGroupOf(title: string): CoGroup {
+  const s = title.toLowerCase();
+  if (/documents?\s*courts?/.test(s) || /短听力/.test(title) || /\bcourts?\b/.test(s)) return 'short';
+  if (
+    /documents?\s*longs?/.test(s) ||
+    /长听力/.test(title) ||
+    /(entretien|d[eé]bat|table\s*ronde|interview|monologue|conf[eé]rence)/.test(s)
+  ) return 'long';
+  return 'other';
+}
+
+// 优先用持久化的 coFormat 覆盖；为空时回退到标题判定。
+function resolveCoGroup(row: ExamRow): CoGroup {
+  return (row.coFormat as CoGroup) ?? coGroupOf(row.title);
+}
+
 const SECTIONS: { key: Section; label: string; icon: React.ReactNode; color: string }[] = [
   { key: 'CO',   label: '听力',     icon: <AudioOutlined />,           color: 'blue'   },
   { key: 'CE',   label: '阅读',     icon: <ReadOutlined />,            color: 'green'  },
@@ -49,6 +69,7 @@ export default function AdminExams() {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState<'all' | 'published' | 'draft'>('all');
   const [activeSection, setActiveSection] = useState<Section>('CO');
+  const [coFilter, setCoFilter] = useState<'all' | CoGroup>('all');
   const [createOpen, setCreateOpen] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [bulkRunning, setBulkRunning] = useState(false);
@@ -101,6 +122,17 @@ export default function AdminExams() {
       fetchData();
     } catch (e: any) {
       message.error(e.response?.data?.error || '更新失败');
+    }
+  };
+
+  // 转换某套 CO 听力的长/短/其他分类（写入 coFormat），本地即时更新无需整页刷新。
+  const changeCoFormat = async (row: ExamRow, coFormat: CoGroup) => {
+    try {
+      await adminApi.put(`/exams/${row.id}`, { coFormat });
+      setRows((prev) => prev.map((r) => (r.id === row.id ? { ...r, coFormat } : r)));
+      message.success('已转换分类');
+    } catch (e: any) {
+      message.error(e.response?.data?.error || '转换失败');
     }
   };
 
@@ -209,7 +241,34 @@ export default function AdminExams() {
     },
   ];
 
+  // 仅听力(CO)模块显示：长/短/其他分类转换下拉。
+  const coFormatColumn = {
+    title: '听力类型',
+    key: 'coFormat',
+    width: 130,
+    render: (_: unknown, row: ExamRow) => (
+      <Select
+        size="small"
+        style={{ width: 110 }}
+        value={resolveCoGroup(row)}
+        onChange={(v) => changeCoFormat(row, v as CoGroup)}
+        options={[
+          { value: 'long', label: '长听力' },
+          { value: 'short', label: '短听力' },
+          { value: 'other', label: '其他' },
+        ]}
+      />
+    ),
+  };
+  const tableColumns = activeSection === 'CO'
+    ? [...columns.slice(0, -1), coFormatColumn, columns[columns.length - 1]]
+    : columns;
+
   const sectionRows = rows.filter((r) => inferSection(r) === activeSection);
+  const coCount = (g: CoGroup) => sectionRows.filter((r) => resolveCoGroup(r) === g).length;
+  const displayRows = activeSection === 'CO' && coFilter !== 'all'
+    ? sectionRows.filter((r) => resolveCoGroup(r) === coFilter)
+    : sectionRows;
 
   const tabItems = SECTIONS.map(({ key, label, icon, color }) => {
     const count = rows.filter((r) => inferSection(r) === key).length;
@@ -268,6 +327,20 @@ export default function AdminExams() {
         className="mb-4"
       />
 
+      {activeSection === 'CO' && (
+        <Segmented
+          className="mb-3"
+          value={coFilter}
+          onChange={(v) => { setCoFilter(v as 'all' | CoGroup); setSelectedKeys([]); }}
+          options={[
+            { label: `全部 (${sectionRows.length})`, value: 'all' },
+            { label: `长听力 (${coCount('long')})`, value: 'long' },
+            { label: `短听力 (${coCount('short')})`, value: 'short' },
+            { label: `其他 (${coCount('other')})`, value: 'other' },
+          ]}
+        />
+      )}
+
       <div className="mb-3 flex items-center gap-2 flex-wrap">
         <span className="text-gray-500">
           {selectedKeys.length > 0 ? `已选 ${selectedKeys.length} 项` : '勾选左侧复选框可批量操作本模块套题'}
@@ -298,8 +371,8 @@ export default function AdminExams() {
       <Table
         rowKey="id"
         loading={loading}
-        columns={columns}
-        dataSource={sectionRows}
+        columns={tableColumns}
+        dataSource={displayRows}
         pagination={{ pageSize: 20 }}
         locale={{ emptyText: `暂无${SECTIONS.find(s => s.key === activeSection)?.label}套题` }}
         rowSelection={{

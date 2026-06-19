@@ -81,6 +81,7 @@ export interface ExamSetBrief {
   year?: number | null;
   description?: string;
   isFreePreview: boolean;
+  coFormat?: 'long' | 'short' | 'other' | null;
   totalQuestions: number;
   countsBySkill: Record<Skill, number>;
 }
