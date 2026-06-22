@@ -6,7 +6,7 @@ import {
 import {
   DashboardOutlined, UserOutlined, FileTextOutlined, LogoutOutlined,
   SafetyCertificateOutlined, HistoryOutlined, BookOutlined, CreditCardOutlined,
-  KeyOutlined, MenuOutlined,
+  KeyOutlined, MenuOutlined, CommentOutlined,
 } from '@ant-design/icons';
 import { Outlet, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -49,6 +49,7 @@ export default function AdminLayout() {
     { key: '/admin/users', icon: <UserOutlined />, label: '用户管理' },
     { key: '/admin/exams', icon: <BookOutlined />, label: '套题管理' },
     { key: '/admin/payments', icon: <CreditCardOutlined />, label: '支付管理' },
+    { key: '/admin/feedback', icon: <CommentOutlined />, label: '意见反馈' },
     { key: '/admin/logs', icon: <FileTextOutlined />, label: '操作审计' },
     { key: '/admin/logins', icon: <HistoryOutlined />, label: '登录历史' },
   ];

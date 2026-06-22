@@ -4,6 +4,77 @@
     "tagline": "DELF B2 Practice Platform",
     "footer": "DELFluent © {{year}} · DELF B2 Practice Platform · All questions are original simulations"
   },
+  "feedback": {
+    "title": "Feedback",
+    "intro": "Tell us your suggestions, the problems you ran into, or content errors — we read every message.",
+    "categoryLabel": "Type",
+    "category": {
+      "suggestion": "Suggestion",
+      "bug": "Problem / Bug",
+      "content": "Content correction",
+      "other": "Other"
+    },
+    "messageLabel": "Message",
+    "messagePlaceholder": "Describe your feedback or the issue you encountered…",
+    "messageRequired": "Please enter your feedback",
+    "emailLabel": "Contact email (optional)",
+    "emailPlaceholder": "So we can reply to you (optional)",
+    "emailInvalid": "Invalid email address",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "success": "Thanks for your feedback!",
+    "error": "Submission failed, please try again later",
+    "beta": "Beta",
+    "nudge": {
+      "title": "🚧 Site in testing",
+      "text": "Hit a problem or have an idea? Drop us a line — it helps us improve.",
+      "cta": "Give feedback",
+      "dismiss": "Not now"
+    }
+  },
+  "examGuide": {
+    "title": "DELF B2 Exam Walkthrough",
+    "subtitle": "Understand the parts of the exam, how long each lasts, their format, and the pass criteria.",
+    "collectiveTitle": "1. Group written tests (run back-to-back in one session)",
+    "collectiveNote": "Listening, reading and writing are completed consecutively in the same session — about 2 hours 30 minutes total, with no separate break.",
+    "individualTitle": "2. Speaking (scheduled separately)",
+    "individualNote": "Speaking is a one-on-one interview with an examiner. You get 30 minutes of preparation time beforehand (for the opinion statement in part three).",
+    "skills": {
+      "CO": {
+        "name": "Listening · Compréhension de l'oral",
+        "time": "~30 min",
+        "format": "Five recordings in total: 3 short documents plus 2 long documents, with multiple-choice / short-answer questions. Short recordings play once, long ones twice, with time to read and answer around each.",
+        "tips": ["Skim the questions before the audio starts", "Catch key facts and linking words — you don't need every word"]
+      },
+      "CE": {
+        "name": "Reading · Compréhension des écrits",
+        "time": "~60 min",
+        "format": "Three texts (informative and argumentative) with multiple-choice and true/false questions; locate the evidence in the text.",
+        "tips": ["Read the questions first, then locate in the text", "For true/false, always find the supporting sentence"]
+      },
+      "PE": {
+        "name": "Writing · Production écrite",
+        "time": "~60 min",
+        "format": "One argumentative text of about 250 words (e.g. a contribution, formal letter, or review) with a clear stance and full structure.",
+        "tips": ["State your stance upfront, argue in paragraphs", "Use connectors for logic; echo your view in the conclusion"]
+      },
+      "PO": {
+        "name": "Speaking · Production orale",
+        "time": "~20 min (plus 30 min prep)",
+        "format": "Two parts: first present your opinion on a drawn article, then debate the topic with the examiner.",
+        "tips": ["Outline your arguments during prep", "In the debate, respond to the examiner first, then add your reasons"]
+      }
+    },
+    "scoringTitle": "3. Scoring & pass criteria",
+    "scoring": [
+      "Listening, reading, writing and speaking are 25 points each — 100 total.",
+      "You need at least 50/100 overall.",
+      "No single skill may fall below 5/25 (below that is a fail).",
+      "The DELF B2 diploma, once earned, is valid for life."
+    ],
+    "ctaStart": "Start practising",
+    "ctaMock": "Full mock exam"
+  },
   "ai": {
     "model": {
       "displayName": "Latest AI model",
@@ -15,6 +86,7 @@
   },
   "nav": {
     "home": "Home",
+    "examGuide": "Exam Guide",
     "practice": "Practice",
     "myExams": "My Question Bank",
     "mistakes": "Mistake Notebook",
@@ -64,7 +136,8 @@
     "examStructure": "DELF B2 Exam Structure",
     "minutes": "min",
     "points": "pts",
-    "passRule": "Pass: total ≥ 50 and each section ≥ 5",
+    "passRule": "Pass: total ≥ 50/100 and each section ≥ 5/25",
+    "examGuideLink": "Read the full exam walkthrough",
     "mockTitle": "Full Mock Exam · All 4 skills",
     "mockDesc": "Simulate the real exam: listening, reading, writing, speaking in sequence",
     "myExamsTitle": "My Question Bank",

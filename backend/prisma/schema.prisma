@@ -55,9 +55,34 @@ model User {
   subscriptions         Subscription[]
   payContracts          PayContract[]
   ownedExamSets         ExamSet[]             @relation("UserOwnedExamSets")
+  feedbacks             Feedback[]
 
   @@index([role, status])
   @@index([plan, subscriptionEnd])
+}
+
+// ---------------- 意见箱 / Feedback ----------------
+// User-submitted feedback collected via the floating widget. Anonymous
+// submissions are allowed (userId null); logged-in users auto-attach their
+// account. `status` drives the admin triage workflow; `adminNote` is an
+// internal field reserved for future AI-客服 reply drafting.
+model Feedback {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email     String?                       // optional contact for anonymous submitters
+  category  String   @default("OTHER")    // SUGGESTION | BUG | CONTENT | OTHER
+  message   String
+  status    String   @default("NEW")      // NEW | READ | RESOLVED
+  adminNote String?                        // internal note / reply draft
+  pageUrl   String?                        // page the user was on when submitting
+  userAgent String?
+  ip        String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([userId])
 }
 
 // ---------------- Payments & Billing ----------------

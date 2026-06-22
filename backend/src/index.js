@@ -26,6 +26,8 @@ const adminStatsRoutes = require('./routes/adminStats');
 const adminExamRoutes = require('./routes/adminExams');
 const examAudioRoutes = require('./routes/examAudio');
 const adminPaymentsRoutes = require('./routes/adminPayments');
+const feedbackRoutes = require('./routes/feedback');
+const adminFeedbackRoutes = require('./routes/adminFeedback');
 const wechatPayRoutes = require('./routes/payments/wechat');
 const alipayRoutes = require('./routes/payments/alipay');
 const stripePayRoutes = require('./routes/payments/stripe');
@@ -134,6 +136,14 @@ const payUserLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: 'Too many payment requests, please retry' },
 });
+// Anti-spam gate for the public feedback widget (anonymous submissions allowed).
+const feedbackLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: '提交过于频繁，请稍后再试' },
+});
 
 // --- Listening audio (token-gated streaming) ---
 // Replaces the previous public express.static mount. Anyone hitting the URL
@@ -181,6 +191,7 @@ if (env.ENABLE_DIRECT_ALIPAY) {
 app.use('/api/pay/stripe', payUserLimiter, stripePayRoutes);
 app.use('/api/pay/orders', payUserLimiter, payOrderRoutes);
 app.use('/api/pay/contracts', payUserLimiter, payContractRoutes);
+app.use('/api/feedback', feedbackLimiter, feedbackRoutes);
 
 // --- Admin APIs ---
 app.use('/api/admin', ipAllowlist);
@@ -188,6 +199,7 @@ app.use('/api/admin/auth', adminLoginLimiter, adminAuthRoutes);
 app.use('/api/admin/users', adminApiLimiter, adminUserRoutes);
 app.use('/api/admin/stats', adminApiLimiter, adminStatsRoutes);
 app.use('/api/admin/exams', adminApiLimiter, adminExamRoutes);
+app.use('/api/admin/feedback', adminApiLimiter, adminFeedbackRoutes);
 app.use('/api/admin', adminApiLimiter, adminPaymentsRoutes);
 
 app.use(notFoundHandler);

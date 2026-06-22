@@ -4,6 +4,77 @@
     "tagline": "Plateforme d'entraînement DELF B2",
     "footer": "DELFluent © {{year}} · Plateforme d'entraînement DELF B2 · Toutes les questions sont des simulations originales"
   },
+  "feedback": {
+    "title": "Votre avis",
+    "intro": "Faites-nous part de vos suggestions, des problèmes rencontrés ou des erreurs de contenu — nous lisons chaque message.",
+    "categoryLabel": "Type",
+    "category": {
+      "suggestion": "Suggestion",
+      "bug": "Problème / Bug",
+      "content": "Correction de contenu",
+      "other": "Autre"
+    },
+    "messageLabel": "Message",
+    "messagePlaceholder": "Décrivez votre avis ou le problème rencontré…",
+    "messageRequired": "Veuillez saisir votre message",
+    "emailLabel": "E-mail de contact (facultatif)",
+    "emailPlaceholder": "Pour que nous puissions vous répondre (facultatif)",
+    "emailInvalid": "Adresse e-mail invalide",
+    "submit": "Envoyer",
+    "cancel": "Annuler",
+    "success": "Merci pour votre retour !",
+    "error": "Échec de l'envoi, veuillez réessayer plus tard",
+    "beta": "Bêta",
+    "nudge": {
+      "title": "🚧 Site en test",
+      "text": "Un problème ou une idée ? Dites-le-nous en un mot, ça nous aide à progresser.",
+      "cta": "Donner mon avis",
+      "dismiss": "Plus tard"
+    }
+  },
+  "examGuide": {
+    "title": "Déroulement de l'examen DELF B2",
+    "subtitle": "Comprenez les parties de l'examen, leur durée, leur format et les critères de réussite.",
+    "collectiveTitle": "1. Épreuves collectives (enchaînées en une session)",
+    "collectiveNote": "La compréhension orale, la compréhension écrite et la production écrite s'enchaînent dans la même session — environ 2 h 30 au total, sans pause distincte.",
+    "individualTitle": "2. Production orale (programmée séparément)",
+    "individualNote": "L'oral est un entretien individuel avec un examinateur. Vous disposez de 30 minutes de préparation au préalable (pour l'exposé de la troisième partie).",
+    "skills": {
+      "CO": {
+        "name": "Compréhension de l'oral",
+        "time": "~30 min",
+        "format": "Cinq enregistrements au total : 3 documents courts et 2 documents longs, avec questions à choix multiples / réponses courtes. Les documents courts sont diffusés une fois, les longs deux fois, avec du temps pour lire et répondre.",
+        "tips": ["Parcourez les questions avant l'écoute", "Repérez les informations clés et les connecteurs — inutile de tout comprendre"]
+      },
+      "CE": {
+        "name": "Compréhension des écrits",
+        "time": "~60 min",
+        "format": "Trois textes (informatifs et argumentatifs) avec QCM et vrai/faux ; repérez la justification dans le texte.",
+        "tips": ["Lisez d'abord les questions, puis repérez dans le texte", "Pour le vrai/faux, trouvez toujours la phrase justificative"]
+      },
+      "PE": {
+        "name": "Production écrite",
+        "time": "~60 min",
+        "format": "Un texte argumentatif d'environ 250 mots (contribution, lettre formelle, critique) avec une position claire et une structure complète.",
+        "tips": ["Annoncez votre position dès l'introduction, argumentez par paragraphes", "Utilisez des connecteurs ; rappelez votre avis en conclusion"]
+      },
+      "PO": {
+        "name": "Production orale",
+        "time": "~20 min (+ 30 min de préparation)",
+        "format": "Deux parties : d'abord un exposé de votre point de vue sur un article tiré au sort, puis un débat avec l'examinateur sur le sujet.",
+        "tips": ["Préparez un plan d'arguments pendant la préparation", "Lors du débat, répondez d'abord à l'examinateur, puis ajoutez vos raisons"]
+      }
+    },
+    "scoringTitle": "3. Notation et critères de réussite",
+    "scoring": [
+      "Les quatre épreuves valent 25 points chacune — 100 au total.",
+      "Il faut au moins 50/100 au total.",
+      "Aucune épreuve ne doit être inférieure à 5/25 (en dessous, c'est un échec).",
+      "Le diplôme DELF B2, une fois obtenu, est valable à vie."
+    ],
+    "ctaStart": "Commencer l'entraînement",
+    "ctaMock": "Examen blanc complet"
+  },
   "ai": {
     "model": {
       "displayName": "Dernier modèle IA",
@@ -15,6 +86,7 @@
   },
   "nav": {
     "home": "Accueil",
+    "examGuide": "Déroulement",
     "practice": "Entraînement",
     "myExams": "Mes exercices",
     "mistakes": "Carnet d'erreurs",
@@ -64,7 +136,8 @@
     "examStructure": "Structure de l'examen DELF B2",
     "minutes": "min",
     "points": "pts",
-    "passRule": "Réussite : total ≥ 50 et chaque épreuve ≥ 5",
+    "passRule": "Réussite : total ≥ 50/100 et chaque épreuve ≥ 5/25",
+    "examGuideLink": "Voir le déroulement complet de l'examen",
     "mockTitle": "Examen blanc complet · 4 compétences",
     "mockDesc": "Reproduit l'examen réel : CO, CE, PE, PO en séquence",
     "myExamsTitle": "Mes exercices",

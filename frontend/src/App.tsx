@@ -21,6 +21,7 @@ const MyExams = lazy(() => import('./pages/MyExams'));
 const MyExamEdit = lazy(() => import('./pages/MyExamEdit'));
 const MistakeNotebook = lazy(() => import('./pages/MistakeNotebook'));
 const Pricing = lazy(() => import('./pages/Pricing'));
+const ExamGuide = lazy(() => import('./pages/ExamGuide'));
 const Orders = lazy(() => import('./pages/Orders'));
 const StripeCheckoutReturn = lazy(() => import('./pages/StripeCheckoutReturn'));
 const StripeEmbeddedCheckout = lazy(() => import('./pages/StripeEmbeddedCheckout'));
@@ -40,6 +41,7 @@ const AdminExams = lazy(() => import('./pages/admin/AdminExams'));
 const AdminExamEdit = lazy(() => import('./pages/admin/AdminExamEdit'));
 const AdminExamImport = lazy(() => import('./pages/admin/AdminExamImport'));
 const AdminPayments = lazy(() => import('./pages/admin/AdminPayments'));
+const AdminFeedback = lazy(() => import('./pages/admin/AdminFeedback'));
 const AdminChangePassword = lazy(() => import('./pages/admin/AdminChangePassword'));
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -72,6 +74,7 @@ export default function App() {
           <Route path="logins" element={<AdminLoginHistory />} />
           <Route path="exams" element={<AdminExams />} />
           <Route path="payments" element={<AdminPayments />} />
+          <Route path="feedback" element={<AdminFeedback />} />
           <Route path="exams/import" element={<AdminExamImport />} />
           <Route path="exams/:id" element={<AdminExamEdit />} />
         </Route>
@@ -79,6 +82,7 @@ export default function App() {
         {/* --- Public + user routes --- */}
         <Route element={<AppLayout />}>
           <Route path="/" element={<Landing />} />
+          <Route path="/exam-guide" element={<ExamGuide />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/checkout/stripe" element={<RequireAuth><StripeEmbeddedCheckout /></RequireAuth>} />
           <Route path="/checkout/stripe/complete" element={<RequireAuth><StripeCheckoutComplete /></RequireAuth>} />

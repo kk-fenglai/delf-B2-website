@@ -4,6 +4,77 @@
     "tagline": "DELF B2 真题训练平台",
     "footer": "DELFluent © {{year}} · DELF B2 真题训练平台 · 本站题目均为原创仿真题"
   },
+  "feedback": {
+    "title": "意见反馈",
+    "intro": "欢迎告诉我们你的建议、遇到的问题或内容纠错，我们会认真查看。",
+    "categoryLabel": "类型",
+    "category": {
+      "suggestion": "功能建议",
+      "bug": "问题/Bug",
+      "content": "内容纠错",
+      "other": "其他"
+    },
+    "messageLabel": "内容",
+    "messagePlaceholder": "请描述你的意见或遇到的问题…",
+    "messageRequired": "请填写反馈内容",
+    "emailLabel": "联系邮箱（选填）",
+    "emailPlaceholder": "方便我们回复你（选填）",
+    "emailInvalid": "邮箱格式不正确",
+    "submit": "提交",
+    "cancel": "取消",
+    "success": "感谢你的反馈！",
+    "error": "提交失败，请稍后再试",
+    "beta": "测试版",
+    "nudge": {
+      "title": "🚧 网站测试中",
+      "text": "遇到问题或有建议？点这里一句话告诉我们，帮助我们做得更好。",
+      "cta": "我要反馈",
+      "dismiss": "暂不"
+    }
+  },
+  "examGuide": {
+    "title": "DELF B2 考试流程说明",
+    "subtitle": "了解考试由哪些部分组成、各部分的时长与形式，以及合格标准。",
+    "collectiveTitle": "一、集体笔试（同一场次连续进行）",
+    "collectiveNote": "听力、阅读、写作在同一场次内连续完成，全程约 2 小时 30 分钟，中途不单独安排休息。",
+    "individualTitle": "二、口语（单独安排时间）",
+    "individualNote": "口语为考官一对一面试，正式开始前有 30 分钟准备时间（用于准备第三部分的观点陈述）。",
+    "skills": {
+      "CO": {
+        "name": "听力 Compréhension de l'oral",
+        "time": "约 30 分钟",
+        "format": "共 5 段录音：3 段短录音（documents courts）+ 2 段长录音（documents longs），单选/简答题。短录音播放一遍、长录音播放两遍，每段前后留有读题与作答时间。",
+        "tips": ["开始播放前先快速浏览题目", "抓关键信息和转折词，不必听懂每个单词"]
+      },
+      "CE": {
+        "name": "阅读 Compréhension des écrits",
+        "time": "约 60 分钟",
+        "format": "三篇文本（信息说明类与论证类），含单选与判断对错题，需在原文中定位依据。",
+        "tips": ["先读题再回到原文定位", "判断对错题务必在文中找到原句支撑"]
+      },
+      "PE": {
+        "name": "写作 Production écrite",
+        "time": "约 60 分钟",
+        "format": "一篇约 250 词的论证性文章（如投稿信、正式信函、评论），要求立场清晰、结构完整。",
+        "tips": ["开头亮明立场，分段展开论证", "用连接词组织逻辑，结尾呼应观点"]
+      },
+      "PO": {
+        "name": "口语 Production orale",
+        "time": "约 20 分钟（另含 30 分钟准备）",
+        "format": "两部分：先就抽到的文章做个人观点陈述，再与考官围绕该主题展开辩论。",
+        "tips": ["准备阶段列出论点提纲", "辩论时先回应考官，再补充己方理由"]
+      }
+    },
+    "scoringTitle": "三、评分与合格标准",
+    "scoring": [
+      "听、读、写、说四项各 25 分，总分 100 分。",
+      "总分须达到 50/100 及以上。",
+      "任一单项不得低于 5/25（低于即不合格）。",
+      "考试合格后获得的 DELF B2 证书终身有效。"
+    ],
+    "ctaStart": "开始专项练习",
+    "ctaMock": "全真模拟连做"
+  },
   "ai": {
     "model": {
       "displayName": "最新 AI 大模型",
@@ -15,6 +86,7 @@
   },
   "nav": {
     "home": "首页",
+    "examGuide": "考试说明",
     "practice": "题库练习",
     "myExams": "我的题库",
     "mistakes": "错题本",
@@ -64,7 +136,8 @@
     "examStructure": "DELF B2 考试结构",
     "minutes": "分钟",
     "points": "分",
-    "passRule": "通过标准：总分 ≥ 50 且每项 ≥ 5 分",
+    "passRule": "通过标准：总分 ≥ 50/100，且每项 ≥ 5/25",
+    "examGuideLink": "查看完整考试流程说明",
     "mockTitle": "全真模拟 · 4 技能连做",
     "mockDesc": "按真实考试流程连续作答听、读、写、说 · 体验完整考场节奏",
     "myExamsTitle": "我的题库",

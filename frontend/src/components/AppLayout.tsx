@@ -5,6 +5,7 @@ import { UserOutlined, MenuOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/auth';
 import LanguageSwitcher from './LanguageSwitcher';
+import FeedbackWidget from './FeedbackWidget';
 
 const { Header, Content, Footer } = Layout;
 const { useBreakpoint } = Grid;
@@ -171,6 +172,7 @@ export default function AppLayout() {
       <Footer className="text-center text-gray-500">
         {t('app.footer', { year: new Date().getFullYear() })}
       </Footer>
+      <FeedbackWidget />
     </Layout>
   );
 }
