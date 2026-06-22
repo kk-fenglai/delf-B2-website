@@ -100,12 +100,15 @@ router.get('/me', requireAuth, async (req, res, next) => {
       }),
     ]);
     const now = Date.now();
-    const effective = effectivePlan(user);
+    // requireAuth elevates req.userPlan for free-country visitors; honour it
+    // so the UI shows their effective (free) access.
+    const effective = req.userPlan || effectivePlan(user);
     const trial = await getTrialStatusForUser(req.userId);
     res.json({
       user: {
         ...user,
         effectivePlan: effective,
+        freeCountry: Boolean(req.freeCountry),
         autoRenewActive: !!activeContract,
         autoRenew: activeContract
           ? { provider: activeContract.provider, nextChargeAt: activeContract.nextChargeAt }

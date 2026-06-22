@@ -3,7 +3,7 @@ const prisma = require('../../prisma');
 const env = require('../../config/env');
 const stripePay = require('../../services/payments/stripe');
 const { trialConfig } = require('../../services/trial');
-const { getBillingPolicy } = require('../../services/billingPolicy');
+const { getBillingPolicy, isFreeCountry } = require('../../services/billingPolicy');
 
 const router = express.Router();
 
@@ -30,19 +30,22 @@ function currencyForCountry(cc) {
 // GET /api/pay/preferred-currency — suggest a default currency based on the
 // CDN-provided country header. The frontend uses this as the initial value
 // in the currency selector; users can still switch manually.
-router.get('/preferred-currency', (req, res) => {
-  // Vercel sets x-vercel-ip-country; Cloudflare sets cf-ipcountry. Express
-  // already lower-cases header names. We don't trust client-set values, but
-  // these come from the edge proxy, not the browser.
-  const cc =
-    req.headers['x-vercel-ip-country'] ||
-    req.headers['cf-ipcountry'] ||
-    req.headers['x-country-code'] ||
-    null;
-  const currency = currencyForCountry(cc);
-  // Cache briefly at the edge: same IP shouldn't keep regenerating.
-  res.setHeader('Cache-Control', 'public, max-age=300');
-  res.json({ currency, country: cc || null });
+router.get('/preferred-currency', async (req, res, next) => {
+  try {
+    // Vercel sets x-vercel-ip-country; Cloudflare sets cf-ipcountry. Express
+    // already lower-cases header names. We don't trust client-set values, but
+    // these come from the edge proxy, not the browser.
+    const cc =
+      req.headers['x-vercel-ip-country'] ||
+      req.headers['cf-ipcountry'] ||
+      req.headers['x-country-code'] ||
+      null;
+    const currency = currencyForCountry(cc);
+    const policy = await getBillingPolicy();
+    // Cache briefly at the edge: same IP shouldn't keep regenerating.
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    res.json({ currency, country: cc || null, freeCountry: isFreeCountry(cc, policy) });
+  } catch (e) { next(e); }
 });
 
 // GET /api/pay/products — public catalog for the Pricing page.

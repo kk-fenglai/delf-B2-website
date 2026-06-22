@@ -101,6 +101,7 @@ const billingPolicySchema = z.object({
   trialDays: z.number().int().min(1).max(365).optional(),
   trialPlan: z.enum(['STANDARD', 'AI', 'AI_UNLIMITED']).optional(),
   paymentsEnabled: z.boolean().optional(),
+  freeCountries: z.array(z.string().max(2)).max(250).optional(),
   paymentsDisabledMessage: z.object({
     zh: z.string().max(500).optional(),
     en: z.string().max(500).optional(),

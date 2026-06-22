@@ -15,7 +15,20 @@ const {
 } = require('../../services/billing');
 const { writeAdminLog } = require('../../middleware/admin');
 const { logger } = require('../../utils/logger');
-const { assertPaymentsEnabled, paymentsDisabledResponse } = require('../../services/billingPolicy');
+const { assertPaymentsEnabled, paymentsDisabledResponse, getBillingPolicy, isFreeCountry } = require('../../services/billingPolicy');
+const { requestCountry } = require('../../utils/requestCountry');
+
+// Free-country visitors (e.g. mainland China) use the platform for free and
+// must never be charged. Reject checkout attempts from those regions.
+async function assertNotFreeCountry(req) {
+  const policy = await getBillingPolicy();
+  if (isFreeCountry(requestCountry(req), policy)) {
+    const e = new Error('您所在地区当前免费使用，无需付费订阅。');
+    e.status = 403;
+    e.code = 'FREE_REGION';
+    throw e;
+  }
+}
 
 const router = express.Router();
 
@@ -119,6 +132,7 @@ function randomProviderOrderNo(prefix = 'cs') {
 router.post('/checkout', requireAuth, async (req, res, next) => {
   try {
     await assertPaymentsEnabled();
+    await assertNotFreeCountry(req);
     if (!stripePay.isEnabled()) {
       return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
     }
@@ -278,6 +292,7 @@ router.post('/checkout', requireAuth, async (req, res, next) => {
     });
   } catch (e) {
     if (e.code === 'PAYMENTS_DISABLED') return paymentsDisabledResponse(e, res);
+    if (e.code === 'FREE_REGION') return res.status(403).json({ error: e.message, code: e.code });
     next(e);
   }
 });
@@ -318,6 +333,7 @@ const upgradeSchema = z.object({
 router.post('/upgrade-checkout', requireAuth, async (req, res, next) => {
   try {
     await assertPaymentsEnabled();
+    await assertNotFreeCountry(req);
     if (!stripePay.isEnabled()) {
       return res.status(503).json({ error: 'Stripe not configured', code: 'PAY_NOT_CONFIGURED' });
     }
@@ -403,6 +419,7 @@ router.post('/upgrade-checkout', requireAuth, async (req, res, next) => {
     });
   } catch (e) {
     if (e.code === 'PAYMENTS_DISABLED') return paymentsDisabledResponse(e, res);
+    if (e.code === 'FREE_REGION') return res.status(403).json({ error: e.message, code: e.code });
     next(e);
   }
 });

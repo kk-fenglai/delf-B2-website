@@ -13,12 +13,24 @@ const DEFAULT_MESSAGES = {
 let cache = { at: 0, policy: null };
 const CACHE_TTL_MS = 15_000;
 
+function parseCountries(value, fallback) {
+  const src = Array.isArray(value)
+    ? value
+    : (typeof value === 'string' ? value.split(',') : null);
+  if (!src) return fallback;
+  const list = src.map((s) => String(s).trim().toUpperCase()).filter(Boolean);
+  return Array.from(new Set(list));
+}
+
 function envDefaults() {
   return {
     trialEnabled: Boolean(env.TRIAL?.ENABLED),
     trialDays: Math.max(1, Number(env.TRIAL?.DAYS || 3)),
     trialPlan: (env.TRIAL?.PLAN || 'AI_UNLIMITED').toUpperCase(),
     paymentsEnabled: process.env.PAYMENTS_ENABLED !== 'false',
+    // Countries that use the platform for free (no paywall, full access).
+    // Visitors from these IPs are never asked to pay. Default: mainland China.
+    freeCountries: parseCountries(process.env.PAYMENTS_FREE_COUNTRIES, ['CN']),
     paymentsDisabledMessage: { ...DEFAULT_MESSAGES },
   };
 }
@@ -37,9 +49,16 @@ function normalizePolicy(raw) {
     trialDays: Math.max(1, Math.min(365, Number(raw.trialDays ?? base.trialDays) || base.trialDays)),
     trialPlan: PLAN_ORDER.includes(trialPlan) && trialPlan !== 'FREE' ? trialPlan : base.trialPlan,
     paymentsEnabled: raw.paymentsEnabled !== undefined ? Boolean(raw.paymentsEnabled) : base.paymentsEnabled,
+    freeCountries: raw.freeCountries !== undefined ? parseCountries(raw.freeCountries, base.freeCountries) : base.freeCountries,
     paymentsDisabledMessage: msg,
     fromDatabase: true,
   };
+}
+
+// True when a visitor's country is on the free list (no paywall, full access).
+function isFreeCountry(country, policy) {
+  if (!country || !policy) return false;
+  return (policy.freeCountries || []).includes(String(country).toUpperCase());
 }
 
 function invalidateBillingPolicyCache() {
@@ -63,6 +82,7 @@ async function saveBillingPolicy(patch, { adminId } = {}) {
     trialDays: patch.trialDays ?? current.trialDays,
     trialPlan: patch.trialPlan ?? current.trialPlan,
     paymentsEnabled: patch.paymentsEnabled ?? current.paymentsEnabled,
+    freeCountries: patch.freeCountries ?? current.freeCountries,
     paymentsDisabledMessage: {
       ...current.paymentsDisabledMessage,
       ...(patch.paymentsDisabledMessage || {}),
@@ -74,6 +94,7 @@ async function saveBillingPolicy(patch, { adminId } = {}) {
     trialDays: next.trialDays,
     trialPlan: next.trialPlan,
     paymentsEnabled: next.paymentsEnabled,
+    freeCountries: next.freeCountries,
     paymentsDisabledMessage: next.paymentsDisabledMessage,
   };
 
@@ -111,6 +132,7 @@ module.exports = {
   invalidateBillingPolicyCache,
   assertPaymentsEnabled,
   paymentsDisabledResponse,
+  isFreeCountry,
   DEFAULT_MESSAGES,
   TEST_PHASE_PRESET: {
     trialEnabled: true,

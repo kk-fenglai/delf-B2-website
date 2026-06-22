@@ -13,6 +13,7 @@ export interface BillingPolicy {
   trialDays: number;
   trialPlan: string;
   paymentsEnabled: boolean;
+  freeCountries?: string[];
   paymentsDisabledMessage: { zh?: string; en?: string; fr?: string };
   fromDatabase?: boolean;
 }
@@ -37,6 +38,7 @@ export default function BillingPolicyCard() {
         trialDays: p.trialDays,
         trialPlan: p.trialPlan,
         paymentsEnabled: p.paymentsEnabled,
+        freeCountries: p.freeCountries || [],
         msgZh: p.paymentsDisabledMessage?.zh || '',
         msgEn: p.paymentsDisabledMessage?.en || '',
         msgFr: p.paymentsDisabledMessage?.fr || '',
@@ -56,6 +58,7 @@ export default function BillingPolicyCard() {
     trialDays: values.trialDays,
     trialPlan: values.trialPlan,
     paymentsEnabled: values.paymentsEnabled,
+    freeCountries: ((values.freeCountries as string[]) || []).map((c) => c.trim().toUpperCase()).filter(Boolean),
     paymentsDisabledMessage: {
       zh: values.msgZh,
       en: values.msgEn,
@@ -137,6 +140,19 @@ export default function BillingPolicyCard() {
             <Select options={PLAN_OPTIONS.map((p) => ({ value: p, label: p }))} />
           </Form.Item>
         </div>
+
+        <Form.Item
+          name="freeCountries"
+          label="免费国家/地区（ISO 两位代码，如 CN）"
+          tooltip="这些国家/地区的访客免费使用、不显示付费入口；其他地区在开启「在线付费」后需订阅。"
+        >
+          <Select
+            mode="tags"
+            tokenSeparators={[',', ' ']}
+            placeholder="CN"
+            options={[{ value: 'CN', label: 'CN · 中国大陆' }]}
+          />
+        </Form.Item>
 
         <Form.Item name="msgZh" label={t('adminPayments.billingPolicy.msgZh')}>
           <Input.TextArea rows={2} maxLength={500} />

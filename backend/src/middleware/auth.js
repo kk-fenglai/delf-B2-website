@@ -9,6 +9,22 @@
 const { verifyAccessToken } = require('../utils/jwt');
 const prisma = require('../prisma');
 const { effectivePlan } = require('./requirePlan');
+const { getBillingPolicy, isFreeCountry } = require('../services/billingPolicy');
+const { requestCountry } = require('../utils/requestCountry');
+
+// Visitors from a free country (e.g. mainland China) use the platform for free.
+// We elevate their request plan to the configured trial plan (full access) so
+// plan gates pass without payment. IP-based and request-scoped — the stored
+// User.plan is untouched. Never throws: on any failure we leave the base plan.
+async function applyFreeCountryAccess(req) {
+  try {
+    const policy = await getBillingPolicy();
+    if (isFreeCountry(requestCountry(req), policy)) {
+      req.freeCountry = true;
+      req.userPlan = policy.trialPlan || 'AI_UNLIMITED';
+    }
+  } catch { /* leave base plan */ }
+}
 
 // Paths that a logged-in but email-unverified user can still hit. Keep tight.
 const EMAIL_UNVERIFIED_ALLOW = new Set([
@@ -68,6 +84,7 @@ async function requireAuth(req, res, next) {
     // plan with a null/expired end resolves to FREE here too — no split brain.
     req.userPlan = effectivePlan(user);
     req.impersonatedBy = decoded.impersonatedBy || null;
+    await applyFreeCountryAccess(req);
     next();
   } catch (e) {
     if (e?.name === 'TokenExpiredError') {
@@ -93,6 +110,7 @@ async function optionalAuth(req, _res, next) {
     req.userId = user.id;
     req.userPlan = effectivePlan(user);
     req.impersonatedBy = decoded.impersonatedBy || null;
+    await applyFreeCountryAccess(req);
   } catch { /* ignore */ }
   next();
 }

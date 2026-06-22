@@ -6,12 +6,18 @@ import { api } from '../api/client';
 // /api/pay/preferred-currency endpoint (no auth required).
 interface GeoState {
   country: string | null;
+  // True when the visitor's country is on the admin-configured free list
+  // (default: mainland China). Such visitors use the platform for free and
+  // see no paid plans. Server-decided (via /pay/preferred-currency) so the
+  // country list stays admin-editable in one place.
+  freeCountry: boolean;
   loaded: boolean;
   fetchGeo: () => Promise<void>;
 }
 
 export const useGeoStore = create<GeoState>((set, get) => ({
   country: null,
+  freeCountry: false,
   loaded: false,
   fetchGeo: async () => {
     if (get().loaded) return;
@@ -22,24 +28,18 @@ export const useGeoStore = create<GeoState>((set, get) => ({
     if (import.meta.env.DEV) {
       const override = new URLSearchParams(window.location.search).get('geo');
       if (override) {
-        set({ country: override.toUpperCase(), loaded: true });
+        const cc = override.toUpperCase();
+        set({ country: cc, freeCountry: cc === 'CN', loaded: true });
         return;
       }
     }
     try {
       const { data } = await api.get('/pay/preferred-currency');
-      set({ country: data?.country ?? null, loaded: true });
+      set({ country: data?.country ?? null, freeCountry: Boolean(data?.freeCountry), loaded: true });
     } catch {
-      // Fail open: if detection fails we leave country null so callers
-      // default to showing the standard (non-restricted) UI.
-      set({ country: null, loaded: true });
+      // Fail open: if detection fails we leave country null / not-free so
+      // callers default to showing the standard (paid) UI.
+      set({ country: null, freeCountry: false, loaded: true });
     }
   },
 }));
-
-// Paid plan tiers are hidden from mainland-China IPs during the beta. The
-// pricing page stays reachable, but those visitors see a "coming soon"
-// notice instead of the paid cards.
-export function isPaidPlansHidden(country: string | null): boolean {
-  return country === 'CN';
-}

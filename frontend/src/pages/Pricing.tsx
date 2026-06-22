@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
-import { useGeoStore, isPaidPlansHidden } from '../stores/geo';
+import { useGeoStore } from '../stores/geo';
 import UpgradeDifferenceCard from '../components/UpgradeDifferenceCard';
 import type { CatalogProduct, CatalogPrice, Plan, TrialPublicConfig, TrialStatus, PaymentsPublicConfig } from '../types';
 
@@ -47,12 +47,11 @@ export default function Pricing() {
   const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
   const fetchMe = useAuthStore((s) => s.fetchMe);
-  // Mainland-China visitors keep access to this page but don't see the paid
-  // (EUR) tiers during the beta — only the Free card and a "coming soon"
-  // notice. Gate the cards on geoLoaded too so the paid tiers never flash.
-  const geoCountry = useGeoStore((s) => s.country);
+  // Free-country visitors (admin-configured, default mainland China) keep
+  // access to this page but don't see the paid tiers — only the Free card and
+  // a "coming soon" notice. Gate on geoLoaded too so paid tiers never flash.
   const geoLoaded = useGeoStore((s) => s.loaded);
-  const hidePaid = isPaidPlansHidden(geoCountry);
+  const hidePaid = useGeoStore((s) => s.freeCountry);
 
   const [products, setProducts] = useState<CatalogProduct[] | null>(null);
   const [trialPublic, setTrialPublic] = useState<TrialPublicConfig | null>(null);
