@@ -33,6 +33,7 @@ model User {
   loginCount        Int       @default(0)
   lastLoginAt       DateTime?
   lastLoginIp       String?
+  lastLoginCountry  String?                       // ISO 3166-1 alpha-2 from CDN header at last login
   failedLoginCount  Int       @default(0)
   lockedUntil       DateTime?
 

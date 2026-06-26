@@ -9,6 +9,7 @@ const {
   revokeByRawToken,
 } = require('../services/refreshTokens');
 const { clientIp } = require('../middleware/admin');
+const { requestCountry } = require('../utils/requestCountry');
 const passwordPolicy = require('../utils/passwordPolicy');
 const { logger } = require('../utils/logger');
 const { startTrial } = require('../services/trial');
@@ -107,6 +108,7 @@ router.post('/login', async (req, res, next) => {
   try {
     const data = loginSchema.parse(req.body);
     const ip = clientIp(req);
+    const country = requestCountry(req); // null when no CDN geo header present
     const ua = req.headers['user-agent'] || '';
     const user = await prisma.user.findUnique({ where: { email: data.email } });
 
@@ -165,6 +167,7 @@ router.post('/login', async (req, res, next) => {
         loginCount: { increment: 1 },
         lastLoginAt: new Date(),
         lastLoginIp: ip,
+        ...(country ? { lastLoginCountry: country } : {}),
         failedLoginCount: 0,
         lockedUntil: null,
       },

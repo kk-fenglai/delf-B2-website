@@ -78,6 +78,7 @@ export default function AdminUserDetail() {
           <Descriptions.Item label="最后登录">
             {u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : '—'} {u.lastLoginIp ? `(${u.lastLoginIp})` : ''}
           </Descriptions.Item>
+          <Descriptions.Item label="登录国家">{u.lastLoginCountry || '—'}</Descriptions.Item>
           <Descriptions.Item label="注册时间">{new Date(u.createdAt).toLocaleString()}</Descriptions.Item>
           <Descriptions.Item label="软删除时间">
             {u.deletedAt ? new Date(u.deletedAt).toLocaleString() : '—'}

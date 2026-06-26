@@ -66,7 +66,7 @@ router.get('/', async (req, res, next) => {
           id: true, email: true, name: true, plan: true, subscriptionEnd: true,
           trialUsedAt: true,
           role: true, status: true, loginCount: true, lastLoginAt: true,
-          lastLoginIp: true, createdAt: true,
+          lastLoginIp: true, lastLoginCountry: true, createdAt: true,
         },
       }),
     ]);
@@ -88,7 +88,7 @@ router.get('/:id', async (req, res, next) => {
         id: true, email: true, name: true, plan: true, subscriptionEnd: true,
         trialUsedAt: true,
         role: true, status: true, loginCount: true, lastLoginAt: true,
-        lastLoginIp: true, failedLoginCount: true, lockedUntil: true,
+        lastLoginIp: true, lastLoginCountry: true, failedLoginCount: true, lockedUntil: true,
         deletedAt: true, createdAt: true, updatedAt: true,
       },
     });

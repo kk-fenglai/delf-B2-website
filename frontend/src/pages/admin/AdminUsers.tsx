@@ -25,6 +25,7 @@ interface UserRow {
   trialUsedAt?: string;
   lastLoginAt?: string;
   lastLoginIp?: string;
+  lastLoginCountry?: string;
   loginCount: number;
   createdAt: string;
 }
@@ -35,6 +36,12 @@ const PLAN_COLORS: Record<string, string> = {
 const STATUS_COLORS: Record<string, string> = {
   ACTIVE: 'green', SUSPENDED: 'orange', DELETED: 'red',
 };
+
+// ISO 3166-1 alpha-2 → flag emoji via regional indicator symbols.
+function countryFlag(cc: string): string {
+  if (!/^[A-Za-z]{2}$/.test(cc)) return '';
+  return cc.toUpperCase().replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
+}
 
 export default function AdminUsers() {
   const { admin } = useAdminAuth();
@@ -240,6 +247,10 @@ export default function AdminUsers() {
     {
       title: '最后登录', dataIndex: 'lastLoginAt',
       render: (d?: string) => d ? new Date(d).toLocaleString() : '—',
+    },
+    {
+      title: '国家', dataIndex: 'lastLoginCountry',
+      render: (c?: string) => c ? `${countryFlag(c)} ${c}` : '—',
     },
     { title: '登录次数', dataIndex: 'loginCount' },
     {
