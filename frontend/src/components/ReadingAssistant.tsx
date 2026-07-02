@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Alert, Button, Card, Divider, Spin, Tag, Typography } from 'antd';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Alert, Button, Card, Divider, Spin, Tag, Typography, message } from 'antd';
 import { CloseOutlined, LockOutlined, TranslationOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -47,12 +47,13 @@ function isWordSelection(text: string) {
 }
 
 /**
- * 划词助手 for CE reading passages, 法语助手 style: select a word to get a
- * dictionary card, select a sentence for translation + grammar notes, or
- * translate the whole passage inline. AI-plan users only; others get an
- * upgrade prompt (server enforces the same gate with 403 upsell).
+ * 划词层: wraps any French content and adds the select-to-lookup popup
+ * (dictionary card for a word, translation + grammar notes for a sentence).
+ * AI-plan users only; others get an upgrade prompt (server enforces the same
+ * gate with 403 upsell). Used on review-page passages, PE/PO subjects and the
+ * essay / model-essay panels — never during the timed exam.
  */
-export default function ReadingAssistant({ text }: { text: string }) {
+export function LookupSelection({ children }: { children: ReactNode }) {
   const { t, i18n } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const plan = user?.effectivePlan || user?.plan || 'FREE';
@@ -63,17 +64,8 @@ export default function ReadingAssistant({ text }: { text: string }) {
   // Floating "look up" trigger next to the current selection.
   const [trigger, setTrigger] = useState<{ x: number; y: number; text: string } | null>(null);
   const [popup, setPopup] = useState<PopupState | null>(null);
-  // Full-passage translation, interleaved per paragraph when counts align.
-  const [fullZh, setFullZh] = useState<string[] | null>(null);
-  const [showFull, setShowFull] = useState(false);
-  const [fullLoading, setFullLoading] = useState(false);
 
-  const paragraphs = text
-    .split(/\n{2,}/)
-    .map((p) => p.replace(/\n/g, ' ').trim())
-    .filter(Boolean);
-
-  // Dismiss trigger/popup when clicking outside the passage panel.
+  // Dismiss trigger/popup when clicking outside the wrapped content.
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (!containerRef.current?.contains(e.target as Node)) {
@@ -98,7 +90,7 @@ export default function ReadingAssistant({ text }: { text: string }) {
       setTrigger(null);
       return;
     }
-    // Only react to selections inside the passage text itself.
+    // Only react to selections inside the wrapped content itself.
     if (!containerRef.current?.contains(sel.anchorNode)) return;
     setPopup(null);
     setTrigger({ ...relativePos(sel.getRangeAt(0).getBoundingClientRect()), text: raw });
@@ -129,29 +121,6 @@ export default function ReadingAssistant({ text }: { text: string }) {
     } catch (e: any) {
       if (e?.response?.status === 403 && e.response.data?.upsell) setPopup({ kind: 'upsell', x, y });
       else setPopup({ kind: 'error', x, y });
-    }
-  };
-
-  const translateFull = async () => {
-    if (!isAiUser) {
-      setPopup({ kind: 'upsell', x: 0, y: 24 });
-      return;
-    }
-    if (fullZh) {
-      setShowFull((v) => !v);
-      return;
-    }
-    setFullLoading(true);
-    try {
-      // Long passages can take a while to translate — well past the 15s default.
-      const { data } = await api.post('/assistant/passage', { text, lang }, { timeout: 120000 });
-      const parts = String(data.translation).split(/\n{2,}/).map((p: string) => p.trim()).filter(Boolean);
-      setFullZh(parts);
-      setShowFull(true);
-    } catch {
-      setPopup({ kind: 'error', x: 0, y: 24 });
-    } finally {
-      setFullLoading(false);
     }
   };
 
@@ -238,6 +207,76 @@ export default function ReadingAssistant({ text }: { text: string }) {
 
   return (
     <div ref={containerRef} style={{ position: 'relative' }} onMouseUp={onMouseUp}>
+      {children}
+      {trigger && (
+        <Button
+          size="small"
+          type="primary"
+          icon={<TranslationOutlined />}
+          style={{
+            position: 'absolute',
+            left: Math.max(0, Math.min(trigger.x - 40, (containerRef.current?.clientWidth || 200) - 90)),
+            top: trigger.y + 4,
+            zIndex: 30,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+          }}
+          onMouseDown={(e) => e.preventDefault() /* keep the text selection */}
+          onClick={lookup}
+        >
+          {t('assistant.lookup')}
+        </Button>
+      )}
+      {popupCard}
+    </div>
+  );
+}
+
+/**
+ * 划词助手 for reading passages, 法语助手 style: LookupSelection over the
+ * paragraphs plus a whole-passage inline translation toggle.
+ */
+export default function ReadingAssistant({ text }: { text: string }) {
+  const { t, i18n } = useTranslation();
+  const user = useAuthStore((s) => s.user);
+  const plan = user?.effectivePlan || user?.plan || 'FREE';
+  const isAiUser = AI_PLANS.includes(plan);
+  const lang = i18n.language?.split('-')[0] || 'zh';
+
+  // Full-passage translation, interleaved per paragraph when counts align.
+  const [fullZh, setFullZh] = useState<string[] | null>(null);
+  const [showFull, setShowFull] = useState(false);
+  const [fullLoading, setFullLoading] = useState(false);
+
+  const paragraphs = text
+    .split(/\n{2,}/)
+    .map((p) => p.replace(/\n/g, ' ').trim())
+    .filter(Boolean);
+
+  const translateFull = async () => {
+    if (!isAiUser) {
+      message.warning(t('assistant.upsellDesc'));
+      return;
+    }
+    if (fullZh) {
+      setShowFull((v) => !v);
+      return;
+    }
+    setFullLoading(true);
+    try {
+      // Long passages can take a while to translate — well past the 15s default.
+      const { data } = await api.post('/assistant/passage', { text, lang }, { timeout: 120000 });
+      const parts = String(data.translation).split(/\n{2,}/).map((p: string) => p.trim()).filter(Boolean);
+      setFullZh(parts);
+      setShowFull(true);
+    } catch {
+      message.error(t('assistant.error'));
+    } finally {
+      setFullLoading(false);
+    }
+  };
+
+  return (
+    <LookupSelection>
       <div className="flex justify-between items-center mb-2 gap-2">
         <Text type="secondary" className="text-xs">{t('assistant.hint')}</Text>
         <Button
@@ -261,25 +300,6 @@ export default function ReadingAssistant({ text }: { text: string }) {
       {showFull && fullZh && fullZh.length !== paragraphs.length && (
         <Alert type="info" className="mt-2" message={<div style={{ whiteSpace: 'pre-wrap' }}>{fullZh.join('\n\n')}</div>} />
       )}
-      {trigger && (
-        <Button
-          size="small"
-          type="primary"
-          icon={<TranslationOutlined />}
-          style={{
-            position: 'absolute',
-            left: Math.max(0, Math.min(trigger.x - 40, (containerRef.current?.clientWidth || 200) - 90)),
-            top: trigger.y + 4,
-            zIndex: 30,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-          }}
-          onMouseDown={(e) => e.preventDefault() /* keep the text selection */}
-          onClick={lookup}
-        >
-          {t('assistant.lookup')}
-        </Button>
-      )}
-      {popupCard}
-    </div>
+    </LookupSelection>
   );
 }

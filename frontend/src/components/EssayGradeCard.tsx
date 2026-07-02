@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import EssayInlineAnnotations from './EssayInlineAnnotations';
+import { LookupSelection } from './ReadingAssistant';
 import TemplateDrawer from './TemplateDrawer';
 import type {
   EssayGrade,
@@ -426,20 +427,27 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
                   <div className="text-sm font-medium text-gray-700 mb-2">{t('essay.grade.myEssay')}</div>
-                  <EssayInlineAnnotations text={essay.content} corrections={essay.corrections ?? []} />
+                  {/* 划词查询 on the learner's own essay text (review only). */}
+                  <LookupSelection>
+                    <EssayInlineAnnotations text={essay.content} corrections={essay.corrections ?? []} />
+                  </LookupSelection>
                 </Col>
                 <Col xs={24} md={12}>
                   <div className="text-sm font-medium text-gray-700 mb-2">{t('essay.grade.modelEssayLabel')}</div>
-                  <div className="whitespace-pre-wrap text-sm leading-relaxed bg-gray-50 rounded p-3">
-                    {essay.modelEssay.replace(/\\n/g, '\n')}
-                  </div>
+                  <LookupSelection>
+                    <div className="whitespace-pre-wrap text-sm leading-relaxed bg-gray-50 rounded p-3">
+                      {essay.modelEssay.replace(/\\n/g, '\n')}
+                    </div>
+                  </LookupSelection>
                 </Col>
               </Row>
             </>
           ) : (
             <>
               <Title level={5}>{t('essay.grade.annotationsTitle')}</Title>
-              <EssayInlineAnnotations text={essay.content} corrections={essay.corrections!} />
+              <LookupSelection>
+                <EssayInlineAnnotations text={essay.content} corrections={essay.corrections!} />
+              </LookupSelection>
             </>
           )}
         </>
