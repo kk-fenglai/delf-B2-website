@@ -8,6 +8,7 @@ import { api } from '../api/client';
 import EssayGradeCard from '../components/EssayGradeCard';
 import OralGradeCard from '../components/OralGradeCard';
 import AiExplanation from '../components/AiExplanation';
+import ReadingAssistant from '../components/ReadingAssistant';
 import { localizeExamTitle } from '../utils/examTitle';
 import type { SubmitResult, ExamSetDetail, Skill } from '../types';
 
@@ -118,6 +119,22 @@ export default function ReviewResult() {
       )
     : [];
 
+  // Show each distinct CE passage once, above its first question, so the
+  // learner can re-read the article with the reading assistant (划词查词 /
+  // 翻译 / 语法讲解) after submitting — never during the timed exam.
+  const passageBeforeQuestion = new Map<string, string>();
+  {
+    const seen = new Set<string>();
+    for (const d of result.details) {
+      const qq = questionMap.get(d.questionId);
+      const p = qq?.skill === 'CE' && qq.passage ? qq.passage.trim() : '';
+      if (p && !seen.has(p)) {
+        seen.add(p);
+        passageBeforeQuestion.set(d.questionId, qq!.passage!);
+      }
+    }
+  }
+
   return (
     <div className="max-w-4xl mx-auto">
       <Card className="mb-4">
@@ -206,13 +223,29 @@ export default function ReviewResult() {
           d.isCorrect === null ? 'pending' : d.isCorrect ? 'correct' : 'wrong';
 
         return (
-          <Card key={d.questionId} className="mb-3">
+          <div key={d.questionId}>
+            {passageBeforeQuestion.has(d.questionId) && (
+              <Card className="mb-3">
+                <div className="passage passage-panel p-4 rounded">
+                  <ReadingAssistant text={passageBeforeQuestion.get(d.questionId)!} />
+                </div>
+              </Card>
+            )}
+          <Card className="mb-3">
             <div className="flex justify-between mb-2">
               <strong>{t('exam.questionN', { n: i + 1 })}</strong>
               {correctness === 'correct' && <Tag color="success">{t('review.correct')}</Tag>}
               {correctness === 'wrong' && <Tag color="error">{t('review.wrong')}</Tag>}
             </div>
-            <Paragraph>{q.prompt}</Paragraph>
+            {/* PE/PO subjects are French too — same reading assistant as CE
+                passages (review only, never during the timed exam). */}
+            {(q.skill === 'PE' || q.skill === 'PO') ? (
+              <div className="passage passage-panel p-4 rounded mb-3">
+                <ReadingAssistant text={[q.passage, q.prompt].filter(Boolean).join('\n\n')} />
+              </div>
+            ) : (
+              <Paragraph>{q.prompt}</Paragraph>
+            )}
             {q.type !== 'ESSAY' && q.type !== 'SPEAKING' && (
               <>
                 <div className="mb-1">
@@ -268,6 +301,7 @@ export default function ReviewResult() {
               <AiExplanation sessionId={sessionId} questionId={d.questionId} />
             )}
           </Card>
+          </div>
         );
       })}
 

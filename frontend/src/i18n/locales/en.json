@@ -381,6 +381,20 @@
       "generic": "Free monthly quota reached. Upgrade to unlock unlimited practice."
     }
   },
+  "assistant": {
+    "hint": "Select a word or sentence in the text to look it up, translate it and get grammar notes",
+    "lookup": "Look up / Translate",
+    "fullTranslate": "Translate text",
+    "hideTranslation": "Hide translation",
+    "loading": "Asking AI…",
+    "error": "Lookup failed, please retry",
+    "tooLong": "Selection too long — please select a single sentence or phrase",
+    "translationTitle": "Translation",
+    "grammarTitle": "Grammar notes",
+    "upsellTitle": "Reading assistant is an AI-plan feature",
+    "upsellDesc": "Upgrade to the AI plan to look up words, translate sentences and get grammar explanations while reading.",
+    "upgrade": "Upgrade to AI plan"
+  },
   "review": {
     "title": "Results",
     "writtenDoneTitle": "Written part completed",

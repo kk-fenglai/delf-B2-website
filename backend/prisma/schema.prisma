@@ -353,6 +353,19 @@ model AppSetting {
   updatedAt DateTime @updatedAt
 }
 
+// ---------------- 划词助手 / Reading assistant ----------------
+// Cached AI dictionary lookups for the reading assistant (划词查询). Keyed by
+// normalized word + explanation language so every user shares one DeepSeek
+// call per word. Sentence/passage translations are not cached (rarely repeat).
+model WordLookup {
+  id        String   @id @default(cuid())
+  key       String   @unique              // `${lang}:${lowercased word}`
+  word      String
+  lang      String   @default("zh")       // zh | en | fr
+  result    String                        // JSON dictionary card from the model
+  createdAt DateTime @default(now())
+}
+
 // ---------------- Existing models (unchanged) ----------------
 
 model ExamSet {

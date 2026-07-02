@@ -381,6 +381,20 @@
       "generic": "Quota gratuit mensuel atteint. Passez à un forfait pour la pratique illimitée."
     }
   },
+  "assistant": {
+    "hint": "Sélectionnez un mot ou une phrase du texte pour le chercher, le traduire et voir des notes de grammaire",
+    "lookup": "Chercher / Traduire",
+    "fullTranslate": "Traduire le texte",
+    "hideTranslation": "Masquer la traduction",
+    "loading": "Recherche IA…",
+    "error": "Échec de la recherche, veuillez réessayer",
+    "tooLong": "Sélection trop longue — choisissez une seule phrase ou expression",
+    "translationTitle": "Traduction",
+    "grammarTitle": "Notes de grammaire",
+    "upsellTitle": "L'assistant de lecture est réservé au plan IA",
+    "upsellDesc": "Passez au plan IA pour chercher des mots, traduire des phrases et obtenir des explications de grammaire pendant la lecture.",
+    "upgrade": "Passer au plan IA"
+  },
   "review": {
     "title": "Résultats",
     "writtenDoneTitle": "Partie écrite terminée",

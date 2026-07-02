@@ -27,6 +27,7 @@ const adminExamRoutes = require('./routes/adminExams');
 const examAudioRoutes = require('./routes/examAudio');
 const adminPaymentsRoutes = require('./routes/adminPayments');
 const feedbackRoutes = require('./routes/feedback');
+const assistantRoutes = require('./routes/assistant');
 const adminFeedbackRoutes = require('./routes/adminFeedback');
 const wechatPayRoutes = require('./routes/payments/wechat');
 const alipayRoutes = require('./routes/payments/alipay');
@@ -136,6 +137,14 @@ const payUserLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: 'Too many payment requests, please retry' },
 });
+// 划词助手: each cache-missing call costs DeepSeek tokens, so cap per IP.
+const assistantLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: '查询过于频繁，请稍后再试' },
+});
 // Anti-spam gate for the public feedback widget (anonymous submissions allowed).
 const feedbackLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -192,6 +201,7 @@ app.use('/api/pay/stripe', payUserLimiter, stripePayRoutes);
 app.use('/api/pay/orders', payUserLimiter, payOrderRoutes);
 app.use('/api/pay/contracts', payUserLimiter, payContractRoutes);
 app.use('/api/feedback', feedbackLimiter, feedbackRoutes);
+app.use('/api/assistant', assistantLimiter, assistantRoutes);
 
 // --- Admin APIs ---
 app.use('/api/admin', ipAllowlist);

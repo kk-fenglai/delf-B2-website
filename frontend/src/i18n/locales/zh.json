@@ -381,6 +381,20 @@
       "generic": "本月免费额度已用完，升级订阅解锁不限次练习。"
     }
   },
+  "assistant": {
+    "hint": "选中文中的单词或句子，即可查词、翻译并讲解语法",
+    "lookup": "查词 / 翻译",
+    "fullTranslate": "翻译全文",
+    "hideTranslation": "收起译文",
+    "loading": "AI 查询中…",
+    "error": "查询失败，请稍后再试",
+    "tooLong": "选择内容过长，请选择单个句子或短语",
+    "translationTitle": "翻译",
+    "grammarTitle": "语法讲解",
+    "upsellTitle": "划词助手为 AI 版专属",
+    "upsellDesc": "升级到 AI 版即可在阅读时查词、翻译句子并获得语法讲解。",
+    "upgrade": "升级到 AI 版"
+  },
   "review": {
     "title": "练习结果",
     "writtenDoneTitle": "笔试部分已完成",
