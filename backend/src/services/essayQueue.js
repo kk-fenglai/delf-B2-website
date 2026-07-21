@@ -16,6 +16,7 @@ const { MODEL_KEYS } = require('../constants/planMatrix');
 
 const CONCURRENCY = 3;
 const POLL_MS = 800;
+const IDLE_MAX_MS = 60 * 1000;     // ceiling for the empty-queue backoff (see nextDelay)
 const STUCK_MS = 5 * 60 * 1000;    // rows in 'grading' older than this are orphaned
 const RETRY_DELAY_MS = 30 * 1000;  // after AI_RATE_LIMITED, re-queue with a short cooldown
 
@@ -23,6 +24,7 @@ let running = false;
 let stopping = false;
 let inFlight = 0;
 let tickTimer = null;
+let idleStreak = 0;  // consecutive ticks that claimed nothing; drives the backoff
 
 // Transient errors → row stays 'queued' for another pass.
 // Terminal errors → row becomes 'error' with errorMessage.
@@ -137,6 +139,9 @@ async function processOne(essayRow) {
             where: { id: essayRow.id, status: 'grading' },
             data: { status: 'queued' },
           })
+          // Wake the worker: with idle backoff the next poll could be a minute
+          // out, and this row is ready now.
+          .then(() => enqueue(essayRow.id))
           .catch(() => {});
       }, RETRY_DELAY_MS).unref();
     } else {
@@ -153,12 +158,14 @@ async function processOne(essayRow) {
 
 async function tick() {
   if (stopping) return scheduleNext();
+  let claimed = 0;
   while (inFlight < CONCURRENCY) {
     const row = await claimOne().catch((err) => {
       logger.error({ err }, 'essayQueue.claim.fail');
       return null;
     });
     if (!row) break;
+    claimed += 1;
     inFlight += 1;
     processOne(row)
       .catch((err) => logger.error({ err, essayId: row.id }, 'essayQueue.process.unhandled'))
@@ -169,13 +176,23 @@ async function tick() {
         if (!stopping) tick();
       });
   }
+  idleStreak = claimed > 0 ? 0 : idleStreak + 1;
   scheduleNext();
+}
+
+// Idle backoff: every tick that claims nothing doubles the next delay, capped
+// at IDLE_MAX_MS. On a serverless Postgres (Neon) an 800ms poll never lets the
+// compute auto-suspend, so an idle site bills 24/7. Latency is unaffected —
+// enqueue() wakes the worker the instant an essay is submitted.
+function nextDelay() {
+  if (idleStreak === 0) return POLL_MS;
+  return Math.min(POLL_MS * 2 ** idleStreak, IDLE_MAX_MS);
 }
 
 function scheduleNext() {
   if (tickTimer) clearTimeout(tickTimer);
   if (stopping && inFlight === 0) return;
-  tickTimer = setTimeout(tick, POLL_MS).unref();
+  tickTimer = setTimeout(tick, nextDelay()).unref();
 }
 
 // On boot: any rows stuck in 'grading' from a previous process belong back in
