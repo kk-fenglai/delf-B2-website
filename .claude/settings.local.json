@@ -1,4 +1,7 @@
 {
+  "env": {
+    "ECC_GATEGUARD": "off"
+  },
   "permissions": {
     "allow": [
       "Bash(pandoc --track-changes=all \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\DELFB2_PRD.docx\" -o \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\DELFB2_PRD_output.md\")",
@@ -32,7 +35,8 @@
       "Bash(timeout 5 node src/index.js)",
       "Bash(node -e \"require\\('./src/config/env'\\); console.log\\('env OK'\\);\")",
       "Bash(npx tsc *)",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "WebSearch"
     ]
   }
 }

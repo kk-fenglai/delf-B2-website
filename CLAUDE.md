@@ -2,7 +2,7 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
 
 Tradeoff: These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
-1. Think Before Coding
+Rule 1. Think Before Coding
 Don't assume. Don't hide confusion. Surface tradeoffs.
 
 Before implementing:
@@ -11,7 +11,8 @@ State your assumptions explicitly. If uncertain, ask.
 If multiple interpretations exist, present them - don't pick silently.
 If a simpler approach exists, say so. Push back when warranted.
 If something is unclear, stop. Name what's confusing. Ask.
-2. Simplicity First
+
+Rule 2. Simplicity First
 Minimum code that solves the problem. Nothing speculative.
 
 No features beyond what was asked.
@@ -21,7 +22,7 @@ No error handling for impossible scenarios.
 If you write 200 lines and it could be 50, rewrite it.
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-3. Surgical Changes
+Rule 3. Surgical Changes
 Touch only what you must. Clean up only your own mess.
 
 When editing existing code:
@@ -36,7 +37,7 @@ Remove imports/variables/functions that YOUR changes made unused.
 Don't remove pre-existing dead code unless asked.
 The test: Every changed line should trace directly to the user's request.
 
-4. Goal-Driven Execution
+Rule 4. Goal-Driven Execution
 Define success criteria. Loop until verified.
 
 Transform tasks into verifiable goals:
@@ -51,7 +52,49 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-5. GitHub & Secrets (project-specific)
+
+Rule 5: Architecture First
+- Do NOT generate a full system from scratch
+- Before writing any code, output your assumed module structure and wait for approval
+- Respect existing boundaries: do not cross layers, do not bypass interfaces
+
+Rule 6: Data Model is Sacred
+- Never change schema without explicit instruction
+- Use enums (not strings) for status fields
+- Use state machines for flows, foreign keys for relations
+- If schema change is needed, propose it first and wait for confirmation
+
+Rule 7: Always Handle Failure
+Every function that involves IO, network, or payment MUST include:
+- [ ] Timeout handling
+- [ ] Retry logic (with idempotency)
+- [ ] Error logging
+- [ ] Rollback or compensation
+
+No exceptions. Do not skip with "// TODO: add error handling"
+
+Rule 8: Security is Mandatory, Not Optional
+Every endpoint that reads or writes data MUST have:
+- [ ] Authentication check
+- [ ] Permission/role validation
+- [ ] User data isolation (user A cannot access user B's data)
+- [ ] Input validation and sanitization
+- [ ] No secrets or sensitive data in logs or responses
+
+If any item is missing, flag it explicitly before proceeding.
+
+Rule 5: Write Code You Can Explain
+- Follow existing naming conventions in the codebase
+- Add a one-line comment for every non-obvious logic
+- Never generate code blocks longer than 50 lines without breaking into named functions
+- If you are unsure about intent, ask — do not assume
+
+---
+
+## When in Doubt
+Stop and ask. A wrong assumption costs more than a clarifying question.
+
+Rule 9. GitHub & Secrets (project-specific)
 This repo may be public on GitHub. Keep internal business docs and secrets local only.
 
 Never commit:
@@ -79,11 +122,11 @@ Limits:
 
 Public README should point to code (`backend/src/constants/pricing.js`, admin UI) instead of internal markdown for pricing/payment details.
 
-6. Exam titles (learner-visible)
+Rule 10. Exam titles (learner-visible)
 Do not put exam session year/month/region in titles shown to users (e.g. avoid `2021年3月（法国）`, `2024-01 法国场`).
 
 - Use `DELF B2 写作 · <topic>` / `DELF B2 阅读 · <topic>` / `DELF B2 口语 · <topic>`.
 - On import, `backend/src/utils/examTitle.js` (`sanitizeExamTitle`) strips date/region; apply via admin import and `scripts/stripExamTitleDates.js` for bulk fixes.
 - Public `/api/exams` does not expose `year`; keep provenance in admin-only fields or question `explanation` if needed.
 
-7.请将md文件统一整理到一个文件夹docs下面
+Rule 11.请将md文件统一整理到一个文件夹docs下面

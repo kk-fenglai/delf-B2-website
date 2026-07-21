@@ -31,6 +31,14 @@ delfB2_exam/
 delfB2_listen/
 delf_B2_reading/
 
+# 题库原题导入数据（真题内容，本地保留，勿提交）
+backend/content/co-sets/
+backend/content/mock-sets/
+backend/content/oral-sets/
+backend/content/pre_set/
+backend/content/fei-samples/**/parsed.json
+backend/content/fei-samples/*.wav
+
 # OS
 Thumbs.db
 
