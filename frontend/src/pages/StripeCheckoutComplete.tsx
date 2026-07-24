@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Alert, Button, Card, Spin, Typography } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
+import { trackPurchaseConversion } from '../utils/gtag';
 
 const { Title, Paragraph } = Typography;
 
@@ -60,6 +61,16 @@ export default function StripeCheckoutComplete() {
 
   const resolvedOrderId = session?.orderId || orderId;
   const success = session?.status === 'complete' && session?.payment_status === 'paid';
+
+  // Fire the Google Ads purchase conversion once, only after payment is
+  // confirmed paid. transaction_id de-dupes against refreshes.
+  const conversionSent = useRef(false);
+  useEffect(() => {
+    if (success && !conversionSent.current) {
+      conversionSent.current = true;
+      trackPurchaseConversion(resolvedOrderId);
+    }
+  }, [success, resolvedOrderId]);
 
   return (
     <div className="max-w-lg mx-auto">

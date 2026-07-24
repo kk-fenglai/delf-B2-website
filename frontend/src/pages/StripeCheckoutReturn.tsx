@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSearchParams, Link as RouterLink } from 'react-router-dom';
 import { Card, Typography, Button, Space, message } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { trackPurchaseConversion } from '../utils/gtag';
 
 const { Title, Paragraph } = Typography;
 
@@ -15,6 +16,14 @@ export default function StripeCheckoutReturn({ mode }: { mode: 'success' | 'canc
       message.warning(t('orders.resume.missingOrderId'));
     }
   }, [orderId, t]);
+
+  // Hosted Checkout redirects here on success. Fire the Google Ads purchase
+  // conversion; transaction_id de-dupes against refreshes.
+  useEffect(() => {
+    if (mode === 'success') {
+      trackPurchaseConversion(orderId);
+    }
+  }, [mode, orderId]);
 
   return (
     <div className="max-w-2xl mx-auto">
