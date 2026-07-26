@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { localizeExamTitle } from '../utils/examTitle';
+import { resolveCoGroup } from '../utils/coGroup';
+import { useLevelStore } from '../stores/level';
 import type { ExamSetBrief, Skill, UserExamSetBrief } from '../types';
 
 const { Title, Paragraph } = Typography;
@@ -20,27 +22,16 @@ const skillToSlug: Record<Skill, string> = {
   PO: 'speaking',
 };
 
-// DELF CO 有两种练习类型：documents courts(短听力)、document long(长听力)。
-// 按标题归类(maxPlays 因导入统一为 2 已不可靠)。无法判定的归入 other。
-function coGroupOf(title: string): 'long' | 'short' | 'other' {
-  const s = title.toLowerCase();
-  if (/documents?\s*courts?/.test(s) || /短听力/.test(title) || /\bcourts?\b/.test(s)) return 'short';
-  if (
-    /documents?\s*longs?/.test(s) ||
-    /长听力/.test(title) ||
-    /(entretien|d[eé]bat|table\s*ronde|interview|monologue|conf[eé]rence)/.test(s)
-  ) return 'long';
-  return 'other';
-}
-
 export default function SkillPractice({ skill, mockMode = false }: Props) {
   const { t } = useTranslation();
+  const level = useLevelStore((s) => s.level);
   const [sets, setSets] = useState<ExamSetBrief[]>([]);
   const [userSets, setUserSets] = useState<UserExamSetBrief[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const params = mockMode ? { mock: 'true' } : skill ? { skill } : {};
+    // Platform catalogue is level-scoped; omitting ?level= would fall back to B2.
+    const params: Record<string, string> = mockMode ? { mock: 'true', level } : skill ? { skill, level } : { level };
     setLoading(true);
 
     const platformReq = api.get('/exams', { params });
@@ -60,7 +51,7 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
         setUserSets([]);
       })
       .finally(() => setLoading(false));
-  }, [skill, mockMode]);
+  }, [skill, mockMode, level]);
 
   const runnerPathFor = (examId: string) => {
     if (mockMode) return `/practice/mock/${examId}`;
@@ -152,7 +143,9 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
           { title: pageTitle },
         ]}
       />
-      <Title level={2}>{pageTitle}</Title>
+      <Title level={2}>
+        {pageTitle} <Tag color="geekblue" className="align-middle">DELF {level}</Tag>
+      </Title>
       <Paragraph className="text-gray-500">{pageSubtitle}</Paragraph>
 
       {loading ? (
@@ -166,7 +159,7 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
           ) : skill === 'CO' && !mockMode ? (
             <div className="mb-8">
               {(['long', 'short', 'other'] as const).map((g) => {
-                const items = sets.filter((s) => (s.coFormat ?? coGroupOf(s.title)) === g);
+                const items = sets.filter((s) => resolveCoGroup(s) === g);
                 if (items.length === 0) return null;
                 return (
                   <div key={g} className="mb-6">

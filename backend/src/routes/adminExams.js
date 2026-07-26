@@ -61,84 +61,18 @@ const audioUpload = multer({
 });
 
 // ---------------------------------------------------------------------
-// Validation schemas
+// Validation schemas — single source of truth in services/examImport.js.
+// (This file previously held a near-identical copy that had already drifted:
+// its examSetSchema lacked coFormat, so the admin UI's coFormat edits were
+// silently stripped by Zod. The shared schema accepts it.)
 // ---------------------------------------------------------------------
-const VALID_SKILLS = ['CO', 'CE', 'PE', 'PO'];
-const VALID_TYPES = ['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'TRUE_FALSE_JUSTIFY', 'FILL', 'ESSAY', 'SPEAKING'];
-
-const optionSchema = z.object({
-  label: z.string().min(1).max(4),
-  text: z.string().min(1),
-  isCorrect: z.boolean().default(false),
-  order: z.number().int().default(0),
-});
-
-const followUpSchema = z.object({
-  order: z.number().int().min(0).default(0),
-  text: z.string().min(1).max(500),
-  audioUrl: z.string().optional().nullable(),
-  expectedAngle: z.string().max(500).optional().nullable(),
-});
-
-const questionSchema = z.object({
-  skill: z.enum(VALID_SKILLS),
-  type: z.enum(VALID_TYPES),
-  order: z.number().int().default(0),
-  prompt: z.string().min(1),
-  passage: z.string().optional().nullable(),
-  audioUrl: z.string().optional().nullable(),
-  // CO-only: link this question to a shared AudioDocument so the runner can
-  // enforce play rules at document granularity. Optional during import; admin
-  // UI sets it after creating the AudioDocument.
-  audioDocumentId: z.string().optional().nullable(),
-  explanation: z.string().optional().nullable(),
-  modelEssay: z.string().optional().nullable(),
-  points: z.number().int().min(1).max(25).default(1),
-  options: z.array(optionSchema).default([]),
-  // SPEAKING-only: follow-up débat questions read by SpeakingExam Partie 2.
-  followUps: z.array(followUpSchema).default([]),
-});
-
-const examSetSchema = z.object({
-  title: z.string().min(1).max(200),
-  year: z.number().int().min(2000).max(2100).optional().nullable(),
-  description: z.string().optional().nullable(),
-  isPublished: z.boolean().default(false),
-  isFreePreview: z.boolean().default(false),
-});
-
-const bulkImportSchema = examSetSchema.extend({
-  questions: z.array(questionSchema).min(1),
-});
-
-// Business-rule validation beyond Zod: enforce exactly-one correct option for
-// SINGLE/TRUE_FALSE, at-least-one for MULTIPLE, zero options for FILL/ESSAY/SPEAKING.
-// Returns null on success, or a string error.
-function validateQuestionShape(q) {
-  const correctCount = q.options.filter((o) => o.isCorrect).length;
-  if (q.type === 'SINGLE' || q.type === 'TRUE_FALSE' || q.type === 'TRUE_FALSE_JUSTIFY') {
-    if (q.options.length < 2) return 'SINGLE/TRUE_FALSE/TRUE_FALSE_JUSTIFY needs ≥2 options';
-    if (correctCount !== 1) return 'SINGLE/TRUE_FALSE/TRUE_FALSE_JUSTIFY needs exactly 1 correct option';
-  }
-  if (q.type === 'MULTIPLE') {
-    if (q.options.length < 2) return 'MULTIPLE needs ≥2 options';
-    if (correctCount < 1) return 'MULTIPLE needs ≥1 correct option';
-  }
-  if ((q.type === 'FILL' || q.type === 'ESSAY' || q.type === 'SPEAKING') && q.options.length > 0) {
-    return `${q.type} must not have options`;
-  }
-  if (q.type === 'SPEAKING') {
-    if (q.skill !== 'PO') return 'SPEAKING questions must have skill = PO';
-    if (!q.followUps || q.followUps.length < 1) {
-      return 'SPEAKING needs ≥1 follow-up question for the débat phase';
-    }
-    if (q.followUps.length > 6) return 'SPEAKING accepts at most 6 follow-ups';
-  }
-  if (q.type !== 'SPEAKING' && q.followUps && q.followUps.length > 0) {
-    return 'follow-ups are only allowed on SPEAKING questions';
-  }
-  return null;
-}
+const {
+  questionSchema,
+  examSetSchema,
+  bulkImportSchema,
+  validateQuestionShape,
+  createExamSetWithQuestions,
+} = require('../services/examImport');
 
 // ---------------------------------------------------------------------
 // GET /api/admin/exams — list all exam sets (draft + published)
@@ -146,9 +80,11 @@ function validateQuestionShape(q) {
 router.get('/', async (req, res, next) => {
   try {
     const status = req.query.status; // 'published' | 'draft' | undefined
+    const level = req.query.level;   // 'B2' | 'B1' | … | undefined (= all levels)
     const where = { source: 'PLATFORM' };
     if (status === 'published') where.isPublished = true;
     else if (status === 'draft') where.isPublished = false;
+    if (level) where.level = String(level).toUpperCase();
 
     const sets = await prisma.examSet.findMany({
       where,
@@ -513,93 +449,15 @@ router.post('/import', async (req, res, next) => {
       }
     }
 
-    const created = await prisma.$transaction(async (tx) => {
-      const skills = [...new Set(data.questions.map((q) => q.skill))];
-      const set = await tx.examSet.create({
-        data: {
-          title: sanitizeExamTitle(data.title),
-          year: resolveExamSetYear({ title: data.title, year: data.year, skills }),
-          description: data.description != null
-            ? sanitizeExamDescription(data.description)
-            : (data.description || null),
-          isPublished: data.isPublished,
-          isFreePreview: data.isFreePreview,
-        },
-      });
-
-      // Pre-create one AudioDocument per distinct CO audio URL. The runner
-      // serves listening audio from audioDocuments[] only (a bare CO
-      // question.audioUrl is ignored), so without this a listening import
-      // would be silent until someone ran scripts/backfillAudioDocuments.
-      // Defaults mirror that script; admins can tune play rules afterward.
-      const coAudioDocId = new Map(); // audioUrl -> generated AudioDocument id
-      const audioDocRows = [];
-      for (const q of data.questions) {
-        if (q.skill === 'CO' && q.audioUrl && !coAudioDocId.has(q.audioUrl)) {
-          const docId = crypto.randomUUID();
-          coAudioDocId.set(q.audioUrl, docId);
-          audioDocRows.push({
-            id: docId,
-            examSetId: set.id,
-            order: audioDocRows.length,
-            title: `Document ${audioDocRows.length + 1}`,
-            audioUrl: q.audioUrl,
-            maxPlays: 2, prepSeconds: 60, gapSeconds: 180, answerSeconds: 0,
-          });
-        }
-      }
-
-      // Bulk-insert via createMany instead of one round-trip per question. The
-      // Fly app (sin) talks to Neon cross-region (~200ms RTT); a 49-question
-      // set doing nested per-question creates ran ~50+ sequential round-trips
-      // and overflowed even a 30s tx timeout (P2028). createMany has no nested
-      // writes, so we pre-generate ids and attach children by questionId.
-      const questionRows = [];
-      const optionRows = [];
-      const followUpRows = [];
-      data.questions.forEach((q, i) => {
-        const qid = crypto.randomUUID();
-        questionRows.push({
-          id: qid,
-          examSetId: set.id,
-          skill: q.skill,
-          type: q.type,
-          order: q.order || i + 1,
-          prompt: q.prompt,
-          passage: q.passage || null,
-          audioUrl: q.audioUrl || null,
-          audioDocumentId: q.skill === 'CO' && q.audioUrl ? coAudioDocId.get(q.audioUrl) : null,
-          explanation: q.explanation || null,
-          modelEssay: q.modelEssay || null,
-          points: q.points,
-        });
-        q.options.forEach((o, j) => optionRows.push({
-          questionId: qid,
-          label: o.label,
-          text: o.text,
-          isCorrect: o.isCorrect,
-          order: o.order || j,
-        }));
-        (q.followUps || []).forEach((f, j) => followUpRows.push({
-          questionId: qid,
-          order: f.order || j,
-          text: f.text,
-          audioUrl: f.audioUrl || null,
-          expectedAngle: f.expectedAngle || null,
-        }));
-      });
-
-      // AudioDocuments first — question.audioDocumentId references them.
-      if (audioDocRows.length) await tx.audioDocument.createMany({ data: audioDocRows });
-      await tx.question.createMany({ data: questionRows });
-      if (optionRows.length) await tx.questionOption.createMany({ data: optionRows });
-      if (followUpRows.length) await tx.oralFollowUp.createMany({ data: followUpRows });
-
-      return set;
-    }, {
-      maxWait: 10000,
-      timeout: 30000,
-    });
+    // Shared implementation (services/examImport.js): sanitises title /
+    // description, resolves year, pre-creates one AudioDocument per distinct
+    // CO audioUrl (so listening imports aren't silent), and bulk-inserts via
+    // createMany — the Fly↔Neon cross-region RTT made nested per-question
+    // creates overflow the tx timeout (P2028).
+    const created = await prisma.$transaction(
+      (tx) => createExamSetWithQuestions(tx, { ...data, questions: data.questions }),
+      { maxWait: 10000, timeout: 30000 }
+    );
 
     await logAction(req, {
       action: 'EXAM_BULK_IMPORT', targetType: 'EXAM', targetId: created.id,

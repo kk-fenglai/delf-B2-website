@@ -1,4 +1,4 @@
-// AI oral grader for DELF B2 Production Orale.
+// AI oral grader for DELF Production Orale (level-aware; defaults to B2).
 //
 // Mirrors aiGrader.js (Production Écrite) but operates on the STT transcript
 // instead of the candidate's typed text. The transcript is segmented into
@@ -21,13 +21,7 @@ const { z } = require('zod');
 const env = require('../config/env');
 const { logger } = require('../utils/logger');
 const { deepseekV4RequestExtras } = require('../utils/deepseekRequest');
-const {
-  DIMENSIONS,
-  DIMENSION_KEYS,
-  TOTAL_MAX,
-  CORRECTION_TYPES,
-  MIN_WORDS,
-} = require('../constants/delfOralRubric');
+const { getLevel, DEFAULT_LEVEL } = require('../constants/levels');
 const {
   MODEL_CATALOG,
   MODEL_KEYS,
@@ -92,15 +86,19 @@ function normaliseLocale(loc) {
 }
 
 // ---- System prompt -------------------------------------------------------
-function buildSystemPrompt() {
+// One stable string PER LEVEL (memoised below) so DeepSeek's prefix cache
+// keeps hitting within a level. For B2 this must reassemble byte-identically
+// to the pre-refactor prompt (locked by test/fixtures/poSystemPrompt.txt).
+function buildSystemPrompt(lvl) {
+  const { DIMENSIONS, TOTAL_MAX, CORRECTION_TYPES } = lvl.po;
   const rubricBlock = DIMENSIONS.map(
     (d) =>
       `  - ${d.key} (max ${d.max} pt) — ${d.labelFr}\n      Critère : ${d.anchor}`
   ).join('\n');
 
-  return `Vous êtes un examinateur DELF B2 certifié par France Éducation International, spécialisé dans la Production Orale (épreuve individuelle, ~20 min après 30 min de préparation). Vous notez selon la GRILLE OFFICIELLE PO (25 points), à partir d'une TRANSCRIPTION AUTOMATIQUE de l'enregistrement du candidat.
+  return `${lvl.poPrompt.persona}
 
-GRILLE D'ÉVALUATION — 9 dimensions, total ${TOTAL_MAX} points :
+GRILLE D'ÉVALUATION — ${DIMENSIONS.length} dimensions, total ${TOTAL_MAX} points :
 ${rubricBlock}
 
 NATURE DE L'INPUT — IMPORTANT :
@@ -109,12 +107,7 @@ La transcription provient d'un système ASR. Elle peut contenir :
  - des disfluences (heu, euh, donc, voilà…) qui sont normales à l'oral et n'affectent l'aisance que si elles dominent ;
  - une ponctuation reconstruite — ne notez pas l'orthographe.
 
-La transcription est segmentée :
- - [MONOLOGUE] : exposé du candidat (Partie 1, 5-7 min après préparation)
- - [DEBAT Q1] / [REPONSE 1] : question du jury et réponse (Partie 2)
- - [DEBAT Q2] / [REPONSE 2] : etc.
-La dimension 'interaction' s'évalue UNIQUEMENT sur les segments [REPONSE i].
-Les autres dimensions s'évaluent sur l'ensemble.
+${lvl.poPrompt.segmentContract}
 
 PROTOCOLE DE NOTATION :
  1. Lisez la transcription en entier avant de noter.
@@ -122,7 +115,7 @@ PROTOCOLE DE NOTATION :
  3. Pour la dimension 'phonologie' : évaluez à partir d'INDICES TEXTUELS uniquement (mots tronqués, fausses reprises, syntaxe brisée signalant l'hésitation). Soyez prudent — la transcription ne reflète pas la prononciation directe ; en cas de doute, restez au milieu de la fourchette.
  4. Un score partiel (0.5, 1, 1.5…) est acceptable, mais toujours ≤ au max de la dimension.
  5. Pour les corrections : citation EXACTE (≤ 10 mots) du transcript original, sans reformulation. Visez les fautes lexicales / morphosyntaxiques claires ; ignorez les disfluences et les artefacts ASR.
- 6. Type de correction : grammar | lexique | syntaxe | register.
+ 6. Type de correction : ${CORRECTION_TYPES.join(' | ')}.
 
 INTERDIT :
  - Ne paraphrasez pas la grille dans les feedbacks.
@@ -134,116 +127,140 @@ INTERDIT :
 L'utilisateur vous demandera l'une de trois tâches ciblées (notation, corrections, ou synthèse). Concentrez-vous UNIQUEMENT sur la tâche demandée et appelez l'outil correspondant une seule fois.`;
 }
 
-let _systemPrompt = null;
-function getSystemPrompt() {
-  if (!_systemPrompt) _systemPrompt = buildSystemPrompt();
-  return _systemPrompt;
+const _systemPrompts = new Map();
+function getSystemPrompt(levelKey = DEFAULT_LEVEL) {
+  const lvl = getLevel(levelKey);
+  if (!_systemPrompts.has(lvl.key)) _systemPrompts.set(lvl.key, buildSystemPrompt(lvl));
+  return _systemPrompts.get(lvl.key);
 }
 
 // ---- Tool schemas --------------------------------------------------------
-const SCORE_TOOL_DEF = {
-  name: 'submit_scores',
-  description:
-    "Soumettre la notation des 9 dimensions de la grille DELF B2 PO. Feedback bref (≤ 25 mots par dimension).",
-  parameters: {
-    type: 'object',
-    properties: {
-      dimensions: {
-        type: 'array',
-        minItems: DIMENSIONS.length,
-        maxItems: DIMENSIONS.length,
-        items: {
-          type: 'object',
-          properties: {
-            key: { type: 'string', enum: DIMENSION_KEYS },
-            score: { type: 'number', minimum: 0 },
-            max: { type: 'number', minimum: 0 },
-            feedback: { type: 'string', minLength: 10, maxLength: 200 },
+// Built per level (dimension count / keys / correction types vary), memoised.
+// PO's Zod is stricter than PE's (z.enum + .length) so a mis-threaded level
+// hard-fails with AI_BAD_OUTPUT instead of silently zeroing scores.
+function buildToolDefs(lvl) {
+  const { DIMENSIONS, DIMENSION_KEYS, CORRECTION_TYPES } = lvl.po;
+  return {
+    scores: {
+      name: 'submit_scores',
+      description:
+        `Soumettre la notation des ${DIMENSIONS.length} dimensions de la grille DELF ${lvl.key} PO. Feedback bref (≤ 25 mots par dimension).`,
+      parameters: {
+        type: 'object',
+        properties: {
+          dimensions: {
+            type: 'array',
+            minItems: DIMENSIONS.length,
+            maxItems: DIMENSIONS.length,
+            items: {
+              type: 'object',
+              properties: {
+                key: { type: 'string', enum: DIMENSION_KEYS },
+                score: { type: 'number', minimum: 0 },
+                max: { type: 'number', minimum: 0 },
+                feedback: { type: 'string', minLength: 10, maxLength: 200 },
+              },
+              required: ['key', 'score', 'max', 'feedback'],
+            },
           },
-          required: ['key', 'score', 'max', 'feedback'],
         },
+        required: ['dimensions'],
       },
     },
-    required: ['dimensions'],
-  },
-};
-
-const CORRECTIONS_TOOL_DEF = {
-  name: 'submit_corrections',
-  description:
-    "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots) du transcript, nature de l'erreur, suggestion, type. Ignorer les disfluences orales.",
-  parameters: {
-    type: 'object',
-    properties: {
-      corrections: {
-        type: 'array',
-        minItems: 0,
-        maxItems: 8,
-        items: {
-          type: 'object',
-          properties: {
-            excerpt: { type: 'string', minLength: 1, maxLength: 200 },
-            issue: { type: 'string', minLength: 5 },
-            suggestion: { type: 'string', minLength: 1 },
-            type: { type: 'string', enum: CORRECTION_TYPES },
+    corrections: {
+      name: 'submit_corrections',
+      description:
+        "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots) du transcript, nature de l'erreur, suggestion, type. Ignorer les disfluences orales.",
+      parameters: {
+        type: 'object',
+        properties: {
+          corrections: {
+            type: 'array',
+            minItems: 0,
+            maxItems: 8,
+            items: {
+              type: 'object',
+              properties: {
+                excerpt: { type: 'string', minLength: 1, maxLength: 200 },
+                issue: { type: 'string', minLength: 5 },
+                suggestion: { type: 'string', minLength: 1 },
+                type: { type: 'string', enum: CORRECTION_TYPES },
+              },
+              required: ['excerpt', 'issue', 'suggestion', 'type'],
+            },
           },
-          required: ['excerpt', 'issue', 'suggestion', 'type'],
         },
+        required: ['corrections'],
       },
     },
-    required: ['corrections'],
-  },
-};
-
-const SUMMARY_TOOL_DEF = {
-  name: 'submit_summary',
-  description:
-    "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
-  parameters: {
-    type: 'object',
-    properties: {
-      strengths: {
-        type: 'array',
-        minItems: 1,
-        maxItems: 4,
-        items: { type: 'string', minLength: 5 },
+    summary: {
+      name: 'submit_summary',
+      description:
+        "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
+      parameters: {
+        type: 'object',
+        properties: {
+          strengths: {
+            type: 'array',
+            minItems: 1,
+            maxItems: 4,
+            items: { type: 'string', minLength: 5 },
+          },
+          globalFeedback: { type: 'string', minLength: 80, maxLength: 1200 },
+        },
+        required: ['strengths', 'globalFeedback'],
       },
-      globalFeedback: { type: 'string', minLength: 80, maxLength: 1200 },
     },
-    required: ['strengths', 'globalFeedback'],
-  },
-};
+  };
+}
 
-const ScoreSchema = z.object({
-  dimensions: z
-    .array(
-      z.object({
-        key: z.enum(DIMENSION_KEYS),
-        score: z.number().min(0),
-        max: z.number().min(0),
-        feedback: z.string().min(10),
-      })
-    )
-    .length(DIMENSIONS.length),
-});
+function buildSchemas(lvl) {
+  const { DIMENSIONS, DIMENSION_KEYS, CORRECTION_TYPES } = lvl.po;
+  return {
+    ScoreSchema: z.object({
+      dimensions: z
+        .array(
+          z.object({
+            key: z.enum(DIMENSION_KEYS),
+            score: z.number().min(0),
+            max: z.number().min(0),
+            feedback: z.string().min(10),
+          })
+        )
+        .length(DIMENSIONS.length),
+    }),
+    CorrectionsSchema: z.object({
+      corrections: z
+        .array(
+          z.object({
+            excerpt: z.string().min(1).max(200),
+            issue: z.string().min(5),
+            suggestion: z.string().min(1),
+            type: z.enum(CORRECTION_TYPES),
+          })
+        )
+        .max(8),
+    }),
+    SummarySchema: z.object({
+      strengths: z.array(z.string().min(5)).min(1).max(4),
+      globalFeedback: z.string().min(80),
+    }),
+  };
+}
 
-const CorrectionsSchema = z.object({
-  corrections: z
-    .array(
-      z.object({
-        excerpt: z.string().min(1).max(200),
-        issue: z.string().min(5),
-        suggestion: z.string().min(1),
-        type: z.enum(CORRECTION_TYPES),
-      })
-    )
-    .max(8),
-});
+const _toolDefs = new Map();
+function getToolDefs(levelKey = DEFAULT_LEVEL) {
+  const lvl = getLevel(levelKey);
+  if (!_toolDefs.has(lvl.key)) _toolDefs.set(lvl.key, buildToolDefs(lvl));
+  return _toolDefs.get(lvl.key);
+}
 
-const SummarySchema = z.object({
-  strengths: z.array(z.string().min(5)).min(1).max(4),
-  globalFeedback: z.string().min(80),
-});
+const _schemas = new Map();
+function getSchemas(levelKey = DEFAULT_LEVEL) {
+  const lvl = getLevel(levelKey);
+  if (!_schemas.has(lvl.key)) _schemas.set(lvl.key, buildSchemas(lvl));
+  return _schemas.get(lvl.key);
+}
 
 // ---- Usage / cost (same as aiGrader) -------------------------------------
 function extractUsage(usage) {
@@ -295,20 +312,18 @@ const SUBCALL_TIMEOUT_MS = {
   'qwen-plus': 12_000,
 };
 
-const TASK_HINTS = {
-  scores:
-    "TÂCHE : notez les 9 dimensions de la grille PO. Pour chaque dimension, un feedback BREF de ≤ 25 mots. Appelez submit_scores une seule fois.",
-  corrections:
-    "TÂCHE : identifiez 3 à 8 erreurs précises dans le transcript (hors disfluences). Pour chaque erreur : citation EXACTE (≤10 mots) du transcript, nature, suggestion, type. Appelez submit_corrections une seule fois.",
-  summary:
-    "TÂCHE : listez 2 à 4 points forts concrets (citez des passages réussis du transcript) et rédigez un retour global de 80 à 150 mots (forces → axes de progrès). Appelez submit_summary une seule fois.",
-};
-
-const TASK_TOOL_DEFS = {
-  scores: SCORE_TOOL_DEF,
-  corrections: CORRECTIONS_TOOL_DEF,
-  summary: SUMMARY_TOOL_DEF,
-};
+function buildTaskHint(task, lvl) {
+  switch (task) {
+    case 'scores':
+      return `TÂCHE : notez les ${lvl.po.DIMENSIONS.length} dimensions de la grille PO. Pour chaque dimension, un feedback BREF de ≤ 25 mots. Appelez submit_scores une seule fois.`;
+    case 'corrections':
+      return "TÂCHE : identifiez 3 à 8 erreurs précises dans le transcript (hors disfluences). Pour chaque erreur : citation EXACTE (≤10 mots) du transcript, nature, suggestion, type. Appelez submit_corrections une seule fois.";
+    case 'summary':
+      return "TÂCHE : listez 2 à 4 points forts concrets (citez des passages réussis du transcript) et rédigez un retour global de 80 à 150 mots (forces → axes de progrès). Appelez submit_summary une seule fois.";
+    default:
+      return '';
+  }
+}
 
 const TASK_MAX_TOKENS = {
   scores: 1500,
@@ -316,7 +331,7 @@ const TASK_MAX_TOKENS = {
   summary: 1000,
 };
 
-function buildUserContent({ transcriptCombined, question, followUps, loc, task }) {
+function buildUserContent({ transcriptCombined, question, followUps, loc, task, lvl }) {
   const followUpsBlock = followUps.length
     ? followUps
         .map((f, i) => `Question ${i + 1} : ${f.text}` + (f.expectedAngle ? `\n  (angle attendu : ${f.expectedAngle})` : ''))
@@ -341,14 +356,14 @@ Transcription automatique de l'enregistrement (segments balisés) :
 ${transcriptCombined.trim()}
 """
 
-${TASK_HINTS[task]}
+${buildTaskHint(task, lvl)}
 
 Langue du retour : ${LOCALES[loc].label}.
 ${LOCALES[loc].instruction}`;
 }
 
-async function runSubCall({ userModelKey, task, transcriptCombined, question, followUps, loc }) {
-  const toolDef = TASK_TOOL_DEFS[task];
+async function runSubCall({ userModelKey, task, transcriptCombined, question, followUps, loc, levelKey }) {
+  const toolDef = getToolDefs(levelKey)[task];
   const taskModel = MODEL_CATALOG[userModelKey];
   const client = getClient(taskModel.provider);
 
@@ -365,10 +380,10 @@ async function runSubCall({ userModelKey, task, transcriptCombined, question, fo
         tools: [{ type: 'function', function: toolDef }],
         ...(forceToolChoice ? { tool_choice: { type: 'function', function: { name: toolDef.name } } } : {}),
         messages: [
-          { role: 'system', content: getSystemPrompt() },
+          { role: 'system', content: getSystemPrompt(levelKey) },
           {
             role: 'user',
-            content: buildUserContent({ transcriptCombined, question, followUps, loc, task }),
+            content: buildUserContent({ transcriptCombined, question, followUps, loc, task, lvl: getLevel(levelKey) }),
           },
         ],
         ...deepseekV4RequestExtras(taskModel),
@@ -438,8 +453,10 @@ function countWords(s) {
  * @param {{ text: string, expectedAngle?: string }[]} args.followUps
  * @param {string} args.modelKey
  * @param {string} args.locale
+ * @param {string} [args.level]  — exam level (B2 | B1 | A2); missing/unknown → B2
  */
-async function gradeOral({ oral, question, followUps = [], modelKey, locale }) {
+async function gradeOral({ oral, question, followUps = [], modelKey, locale, level }) {
+  const lvl = getLevel(level);
   if (!MODEL_KEYS.includes(modelKey)) {
     const e = new Error(`Unknown model key: ${modelKey}`);
     e.code = 'AI_BAD_MODEL';
@@ -447,8 +464,8 @@ async function gradeOral({ oral, question, followUps = [], modelKey, locale }) {
   }
   const transcriptCombined = String(oral?.transcriptCombined || '');
   const wc = countWords(transcriptCombined);
-  if (!transcriptCombined.trim() || wc < MIN_WORDS) {
-    const e = new Error(`Transcript too short (need ≥ ${MIN_WORDS} words, got ${wc})`);
+  if (!transcriptCombined.trim() || wc < lvl.po.MIN_WORDS) {
+    const e = new Error(`Transcript too short (need ≥ ${lvl.po.MIN_WORDS} words, got ${wc})`);
     e.code = 'AI_ORAL_TOO_SHORT';
     throw e;
   }
@@ -466,31 +483,36 @@ async function gradeOral({ oral, question, followUps = [], modelKey, locale }) {
         question,
         followUps,
         loc,
+        levelKey: lvl.key,
       }).catch((err) => { throw wrapProviderError(err, task); })
     )
   );
 
   const [scoreRes, corrRes, sumRes] = results;
+  const { ScoreSchema, CorrectionsSchema, SummarySchema } = getSchemas(lvl.key);
 
   let scoreParsed, corrParsed, sumParsed;
   try { scoreParsed = ScoreSchema.parse(scoreRes.rawInput); }
   catch (err) {
+    logger.error({ task: 'scores', model: modelKey, level: lvl.key, zodError: err.message, raw: scoreRes.rawInput }, 'oralGrader.parse.fail');
     const e = new Error(`scores tool output invalid: ${err.message}`);
     e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }
   try { corrParsed = CorrectionsSchema.parse(corrRes.rawInput); }
   catch (err) {
+    logger.error({ task: 'corrections', model: modelKey, level: lvl.key, zodError: err.message, raw: corrRes.rawInput }, 'oralGrader.parse.fail');
     const e = new Error(`corrections tool output invalid: ${err.message}`);
     e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }
   try { sumParsed = SummarySchema.parse(sumRes.rawInput); }
   catch (err) {
+    logger.error({ task: 'summary', model: modelKey, level: lvl.key, zodError: err.message, raw: sumRes.rawInput }, 'oralGrader.parse.fail');
     const e = new Error(`summary tool output invalid: ${err.message}`);
     e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }
 
   const byKey = new Map(scoreParsed.dimensions.map((d) => [d.key, d]));
-  const canonical = DIMENSIONS.map((ref) => {
+  const canonical = lvl.po.DIMENSIONS.map((ref) => {
     const got = byKey.get(ref.key);
     const score = Math.max(0, Math.min(ref.max, got?.score ?? 0));
     return {
@@ -544,15 +566,20 @@ async function gradeOral({ oral, question, followUps = [], modelKey, locale }) {
 
 module.exports = {
   gradeOral,
+  // exported for tests. Legacy names point at the default-level (B2)
+  // instances so the byte-equality fixtures apply.
   _internal: {
-    ScoreSchema,
-    CorrectionsSchema,
-    SummarySchema,
-    SCORE_TOOL_DEF,
-    CORRECTIONS_TOOL_DEF,
-    SUMMARY_TOOL_DEF,
+    ScoreSchema: getSchemas(DEFAULT_LEVEL).ScoreSchema,
+    CorrectionsSchema: getSchemas(DEFAULT_LEVEL).CorrectionsSchema,
+    SummarySchema: getSchemas(DEFAULT_LEVEL).SummarySchema,
+    SCORE_TOOL_DEF: getToolDefs(DEFAULT_LEVEL).scores,
+    CORRECTIONS_TOOL_DEF: getToolDefs(DEFAULT_LEVEL).corrections,
+    SUMMARY_TOOL_DEF: getToolDefs(DEFAULT_LEVEL).summary,
     computeCostUsd,
     normaliseLocale,
+    getSystemPrompt,
+    getToolDefs,
+    getSchemas,
     SUBCALL_TIMEOUT_MS,
   },
 };

@@ -18,6 +18,7 @@ const TEMPLATE_LISTENING = {
   title: 'DELF B2 仿真题 2024 · 第 1 套',
   year: 2024,
   description: '听力（CO）专项练习',
+  level: 'B2',
   isPublished: false,
   isFreePreview: false,
   questions: [
@@ -103,6 +104,7 @@ const TEMPLATE_MOCK = {
   title: 'DELF B2 仿真题 2024 · 第 1 套（全真模拟）',
   year: 2024,
   description: '听 + 读 + 写 + 口 完整一套（全真模拟）',
+  level: 'B2',
   isPublished: false,
   isFreePreview: false,
   questions: [
@@ -118,6 +120,7 @@ const FIELD_REFERENCE = `
   title           必填，套题标题（勿写考试年月/场次，如「DELF B2 写作 · 主题名」）
   year            可选，仅后台排序用，不会展示给学员
   description     可选，简介
+  level           可选：B2 / B1 / A2，默认 B2（决定学员端归属和 AI 批改评分表）
   isPublished     可选，默认 false（草稿）
   isFreePreview   可选，默认 false
   questions       必填数组，≥1 项

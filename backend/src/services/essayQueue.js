@@ -61,7 +61,10 @@ async function processOne(essayRow) {
   try {
     question = await prisma.question.findUnique({
       where: { id: essayRow.questionId },
-      select: { prompt: true },
+      // Level is DERIVED from the exam set at grade time (never stored on the
+      // Essay row) so a regrade after an admin corrects a set's level is
+      // automatically right.
+      select: { prompt: true, examSet: { select: { level: true } } },
     });
   } catch (err) {
     logger.error({ err, essayId: essayRow.id }, 'essayQueue.loadQuestion.fail');
@@ -90,6 +93,7 @@ async function processOne(essayRow) {
       question,
       modelKey,
       locale,
+      level: question.examSet?.level,
       onPartial: async (task, partial) => {
         const data = {};
         if (task === 'scores') {

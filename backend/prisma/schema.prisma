@@ -375,6 +375,9 @@ model ExamSet {
   description  String?
   isPublished  Boolean    @default(true)
   isFreePreview Boolean   @default(false)
+  // Exam level: B2 | B1 | A2. String + comment (no Prisma enums in this
+  // schema); enforced at the Zod layer via z.enum(LEVEL_KEYS).
+  level        String     @default("B2")
   // USER-owned sets: ownerUserId set, source=USER, primarySkill=CE|PE.
   // Platform catalog: ownerUserId null, source=PLATFORM.
   ownerUserId  String?
@@ -391,6 +394,7 @@ model ExamSet {
 
   @@index([ownerUserId, source])
   @@index([source, isPublished])
+  @@index([level, source, isPublished])
 }
 
 // One DELF B2 listening "document". Each Compréhension de l'Oral section has

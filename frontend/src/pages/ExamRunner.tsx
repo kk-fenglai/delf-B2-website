@@ -14,23 +14,14 @@ import CoSectionRunner from '../components/CoSectionRunner';
 import CoSectionRunnerMock from '../components/CoSectionRunnerMock';
 import TemplateDrawer from '../components/TemplateDrawer';
 import { localizeExamTitle } from '../utils/examTitle';
+import { B2_SECTION_PLAN, B2_SCORING, buildSections } from '../utils/sectionPlan';
+import type { Section } from '../utils/sectionPlan';
+import { useLevelStore } from '../stores/level';
 import type { ExamSetDetail, Question, Skill, EssayQuota, ClaudeModelKey } from '../types';
 
 const { Title, Paragraph, Text } = Typography;
 
 type Props = { skill?: Skill; mockMode?: boolean };
-
-// DELF B2 official time allocation per skill (in minutes)
-const SKILL_MINUTES: Record<Skill, number> = { CO: 30, CE: 30, PE: 60, PO: 20 };
-// In a full mock, Compréhension des écrits + Production écrite are taken as ONE
-// 120-min block the candidate allocates freely. PO is taken separately (its own
-// session) on the speaking page, so it is not a runner section here.
-type SectionSkill = Skill | 'CEPE';
-const SECTION_MINUTES: Record<SectionSkill, number> = {
-  CO: 30, CE: 30, PE: 60, PO: 20, CEPE: 120,
-};
-// Canonical DELF B2 section order.
-const SECTION_ORDER: Skill[] = ['CO', 'CE', 'PE', 'PO'];
 
 // Group questions by their passage text (PDF line-wrap artifacts trimmed) so a
 // reading section can render each passage once with its questions beside it.
@@ -47,11 +38,6 @@ function groupByPassage(questions: Question[]) {
     questions: qs.sort((a, b) => a.order - b.order),
   }));
 }
-// DELF B2 passing standards
-const PASS_TOTAL = 50;          // /100
-const PASS_PER_SKILL = 5;       // /25
-const SKILL_MAX = 25;
-
 // Render passage text: single newlines (PDF line-wrap artifacts) become spaces;
 // double newlines become paragraph breaks.
 function renderPassage(text: string) {
@@ -73,8 +59,6 @@ function formatTime(seconds: number): string {
   return h > 0 ? `${h}:${pad(m)}:${pad(sec)}` : `${pad(m)}:${pad(sec)}`;
 }
 
-type Section = { skill: SectionSkill; questions: Question[] };
-
 export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const { t, i18n } = useTranslation();
   const { examId } = useParams();
@@ -88,6 +72,9 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   // the UI honest (clicking it would just 403).
   const userPlan = useAuthStore((s) => s.user?.plan);
   const canUseOcr = userPlan === 'AI_UNLIMITED';
+  const storeLevel = useLevelStore((s) => s.level);
+  const setStoreLevel = useLevelStore((s) => s.setLevel);
+  const catalogue = useLevelStore((s) => s.catalogue);
   const [exam, setExam] = useState<ExamSetDetail | null>(null);
   const [sectionIdx, setSectionIdx] = useState(0);
   const [current, setCurrent] = useState(0);
@@ -110,26 +97,32 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const isMock = mockMode || !skill;
   const isReadingListMode = !isMock && skill === 'CE';
 
+  // The AUTHORITATIVE level for a loaded exam is exam.level (deep links to
+  // another level's set must follow the exam, never the store) — the store
+  // is reconciled below. Catalogue miss / legacy payload → B2 plan.
+  const levelKey = exam?.level ?? storeLevel;
+  const plan = catalogue?.find((l) => l.key === levelKey)?.sectionPlan ?? B2_SECTION_PLAN;
+
+  useEffect(() => {
+    if (exam?.level && exam.level !== storeLevel) setStoreLevel(exam.level);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exam?.level]);
+
   // Build the ordered section list. In skill-practice mode there's a single
-  // section; in mock mode we group by skill in canonical DELF order so the
-  // candidate takes CO → CE → PE → PO regardless of question `order` fields.
+  // section; in mock mode buildSections applies the level's section plan
+  // (order, per-section minutes, merges like B2's CE+PE block, PO exclusion).
   const sections: Section[] = useMemo(() => {
     if (!exam) return [];
     if (!isMock) {
-      return [{ skill: skill!, questions: exam.questions }];
+      return [{
+        key: skill!,
+        skills: [skill!],
+        minutes: plan.minutes[skill!],
+        questions: exam.questions,
+      }];
     }
-    const grouped: Record<Skill, Question[]> = { CO: [], CE: [], PE: [], PO: [] };
-    exam.questions.forEach((q) => grouped[q.skill].push(q));
-    const result: Section[] = [];
-    if (grouped.CO.length) result.push({ skill: 'CO', questions: grouped.CO });
-    // CE + PE are taken together as one freely-allocated 120-min block.
-    if (grouped.CE.length || grouped.PE.length) {
-      result.push({ skill: 'CEPE', questions: [...grouped.CE, ...grouped.PE] });
-    }
-    // PO is taken on the speaking page as a separate session (3-choose-1), so
-    // it is intentionally NOT a section in the written runner.
-    return result;
-  }, [exam, isMock, skill]);
+    return buildSections(plan, exam.questions);
+  }, [exam, isMock, skill, plan]);
 
   const currentSection: Section | undefined = sections[sectionIdx];
   const sectionQuestions = currentSection?.questions ?? [];
@@ -138,9 +131,9 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   // mode the strict DELF schedule applies, so the full 30 min counts down.
   // sectionSeconds === 0 short-circuits the timer effect below.
   const sectionSeconds = currentSection
-    ? currentSection.skill === 'CO' && !isMock
+    ? currentSection.key === 'CO' && !isMock
       ? 0
-      : SECTION_MINUTES[currentSection.skill] * 60
+      : currentSection.minutes * 60
     : 0;
   const isLastSection = sectionIdx >= sections.length - 1;
 
@@ -155,7 +148,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     [exam]
   );
   // Label a section (handles the synthetic CE+PE block).
-  const sectionLabel = (s: SectionSkill) =>
+  const sectionLabel = (s: string) =>
     s === 'CEPE' ? t('exam.sectionCEPE', '阅读 + 写作') : t(`skill.${s}`);
 
   // Reading list mode: group questions by passage text and render all at once.
@@ -218,7 +211,8 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   useEffect(() => {
     if (!hasEssay) return;
     let cancelled = false;
-    api.get('/user/essays/quota')
+    // Thresholds (word counts, grille) are level-keyed; omitting level → B2.
+    api.get('/user/essays/quota', { params: { level: levelKey } })
       .then((r) => {
         if (cancelled) return;
         setQuota(r.data);
@@ -382,11 +376,11 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
             type="info"
             showIcon
             className="mt-3"
-            message={t('exam.passCriteriaTitle')}
+            message={t('exam.passCriteriaTitle', { level: levelKey })}
             description={
               <ul className="mb-0 pl-4 text-xs">
-                <li>{t('exam.passTotal', { min: PASS_TOTAL })}</li>
-                <li>{t('exam.passPerSkill', { min: PASS_PER_SKILL, max: SKILL_MAX })}</li>
+                <li>{t('exam.passTotal', { min: B2_SCORING.passTotal, totalMax: B2_SCORING.totalMax })}</li>
+                <li>{t('exam.passPerSkill', { min: B2_SCORING.passPerSkill, max: B2_SCORING.skillMax })}</li>
               </ul>
             }
           />
@@ -401,7 +395,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   // "Finish section" prompt — warns that the candidate cannot return to this
   // section once they advance, mirroring the real DELF B2 exam constraint.
   const confirmAdvanceSection = () => {
-    const nextSkill = sections[sectionIdx + 1]?.skill;
+    const nextSection = sections[sectionIdx + 1];
     Modal.confirm({
       title: t('exam.advanceTitle'),
       icon: <LockOutlined />,
@@ -415,12 +409,12 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
             type="warning"
             showIcon
             className="mt-3"
-            message={t('exam.advanceNoReturn')}
+            message={t('exam.advanceNoReturn', { level: levelKey })}
             description={
-              nextSkill
+              nextSection
                 ? t('exam.advanceNext', {
-                    skill: sectionLabel(nextSkill),
-                    minutes: SECTION_MINUTES[nextSkill],
+                    skill: sectionLabel(nextSection.key),
+                    minutes: nextSection.minutes,
                   })
                 : undefined
             }
@@ -756,7 +750,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           type="info"
           showIcon
           className="mb-3"
-          message={t('exam.passCriteriaTitle')}
+          message={t('exam.passCriteriaTitle', { level: levelKey })}
           description={
             <div>
               <div className="text-xs text-gray-600">
@@ -767,10 +761,11 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
               </div>
               <div className="text-xs text-muted mt-1">
                 {t('exam.passCriteriaInline', {
-                  total: PASS_TOTAL,
-                  skillMin: PASS_PER_SKILL,
-                  skillMax: SKILL_MAX,
-                  duration: SKILL_MINUTES.CE,
+                  total: B2_SCORING.passTotal,
+                  totalMax: B2_SCORING.totalMax,
+                  skillMin: B2_SCORING.passPerSkill,
+                  skillMax: B2_SCORING.skillMax,
+                  duration: plan.minutes.CE,
                 })}
               </div>
             </div>
@@ -813,7 +808,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   // one page, sharing a single 120-min countdown the candidate allocates
   // freely. On submit, the written session (/75) is saved and the flow hands
   // off to the speaking page.
-  if (isMock && currentSection.skill === 'CEPE') {
+  if (isMock && currentSection.key === 'CEPE') {
     const ceQs = sectionQuestions.filter((x) => x.skill === 'CE');
     const peQs = sectionQuestions.filter((x) => x.skill === 'PE');
     const groups = groupByPassage(ceQs);
@@ -959,8 +954,8 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           size="small"
           className="mb-4"
           items={sections.map((s, i) => ({
-            title: sectionLabel(s.skill),
-            description: `${SECTION_MINUTES[s.skill]} min`,
+            title: sectionLabel(s.key),
+            description: `${s.minutes} min`,
             icon: i < sectionIdx ? <LockOutlined /> : undefined,
           }))}
         />
@@ -976,25 +971,27 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         message={
           isMock
             ? t('exam.sectionBanner', {
-                skill: sectionLabel(currentSection.skill),
-                minutes: SECTION_MINUTES[currentSection.skill],
+                skill: sectionLabel(currentSection.key),
+                minutes: currentSection.minutes,
                 idx: sectionIdx + 1,
                 total: sections.length,
               })
-            : t('exam.passCriteriaTitle')
+            : t('exam.passCriteriaTitle', { level: levelKey })
         }
         description={
-          currentSection.skill === 'CO' && !isMock
+          currentSection.key === 'CO' && !isMock
             ? t('exam.passCriteriaInlineNoTime', {
-                total: PASS_TOTAL,
-                skillMin: PASS_PER_SKILL,
-                skillMax: SKILL_MAX,
+                total: B2_SCORING.passTotal,
+                totalMax: B2_SCORING.totalMax,
+                skillMin: B2_SCORING.passPerSkill,
+                skillMax: B2_SCORING.skillMax,
               })
             : t('exam.passCriteriaInline', {
-                total: PASS_TOTAL,
-                skillMin: PASS_PER_SKILL,
-                skillMax: SKILL_MAX,
-                duration: SECTION_MINUTES[currentSection.skill],
+                total: B2_SCORING.passTotal,
+                totalMax: B2_SCORING.totalMax,
+                skillMin: B2_SCORING.passPerSkill,
+                skillMax: B2_SCORING.skillMax,
+                duration: currentSection.minutes,
               })
         }
       />
@@ -1008,7 +1005,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         <Progress percent={progressPct} size="small" showInfo={false} />
       </div>
 
-      {currentSection.skill === 'CO' ? (
+      {currentSection.key === 'CO' ? (
         // Listening: pick the runner based on mode.
         //   - Mock exam (isMock=true) → strict DELF timeline (auto-play,
         //     limited plays, prep/gap/answer phases, no pause/replay).
@@ -1082,12 +1079,12 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       )}
 
       <div className="flex justify-between">
-        {currentSection.skill !== 'CO' && (
+        {currentSection.key !== 'CO' && (
           <Button disabled={current === 0} onClick={() => setCurrent(current - 1)}>
             {t('exam.prev')}
           </Button>
         )}
-        {currentSection.skill === 'CO' ? null : !isLastQuestionOfSection ? (
+        {currentSection.key === 'CO' ? null : !isLastQuestionOfSection ? (
           <Button type="primary" onClick={() => setCurrent(current + 1)}>
             {t('exam.next')}
           </Button>

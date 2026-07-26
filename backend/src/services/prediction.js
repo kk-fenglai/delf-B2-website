@@ -8,6 +8,7 @@
 const {
   SKILLS,
   SKILL_MAX_POINTS,
+  TOTAL_MAX,
   PASS_TOTAL_MIN,
   PASS_PER_SKILL_MIN,
   CONFIDENCE_MIN_MEDIUM,
@@ -207,6 +208,7 @@ function predictScore(attempts) {
       passTotal: PASS_TOTAL_MIN,
       passPerSkill: PASS_PER_SKILL_MIN,
       skillMax: SKILL_MAX_POINTS,
+      totalMax: TOTAL_MAX,
     },
   };
 }

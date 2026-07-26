@@ -346,10 +346,10 @@
     "timeUp": "Time is up — submitting your answers automatically.",
     "autoSubmitted": "Your exam was auto-submitted because time expired.",
     "progressLabel": "Answered: {{done}} / {{total}}",
-    "passCriteriaTitle": "DELF B2 passing standards",
-    "passCriteriaInline": "Total ≥ {{total}}/100 · each section ≥ {{skillMin}}/{{skillMax}} · duration {{duration}} min",
-    "passCriteriaInlineNoTime": "Total ≥ {{total}}/100 · each section ≥ {{skillMin}}/{{skillMax}} · no time limit",
-    "passTotal": "Total score must be ≥ {{min}}/100",
+    "passCriteriaTitle": "DELF {{level}} passing standards",
+    "passCriteriaInline": "Total ≥ {{total}}/{{totalMax}} · each section ≥ {{skillMin}}/{{skillMax}} · duration {{duration}} min",
+    "passCriteriaInlineNoTime": "Total ≥ {{total}}/{{totalMax}} · each section ≥ {{skillMin}}/{{skillMax}} · no time limit",
+    "passTotal": "Total score must be ≥ {{min}}/{{totalMax}}",
     "passPerSkill": "Each of the 4 sections must score ≥ {{min}}/{{max}}",
     "confirmTitle": "Submit your exam?",
     "confirmAnswered": "You have answered {{done}} of {{total}} questions.",
@@ -368,7 +368,7 @@
     "advanceSection": "Finish section",
     "advanceTitle": "Finish this section?",
     "advanceAnswered": "You have answered {{done}} of {{total}} questions in this section.",
-    "advanceNoReturn": "Once you move on, you will not be able to return to this section — this mirrors the real DELF B2 exam.",
+    "advanceNoReturn": "Once you move on, you will not be able to return to this section — this mirrors the real DELF {{level}} exam.",
     "advanceNext": "Next section: {{skill}} · {{minutes}} minutes.",
     "advanceOk": "Move to next section",
     "advanceCancel": "Stay on this section"
@@ -902,7 +902,7 @@
   },
   "oral": {
     "exam": {
-      "subtitle": "Full DELF B2 Production Orale simulation: preparation, monologue, examiner débat, then AI scoring.",
+      "subtitle": "Full DELF {{level}} Production Orale simulation: {{prepMin}} min preparation, {{monoMin}} min monologue, examiner questions, then AI scoring.",
       "stepPrep": "Preparation",
       "stepMono": "Monologue",
       "stepDebat": "Débat",

@@ -346,10 +346,10 @@
     "timeUp": "Temps écoulé — soumission automatique de vos réponses.",
     "autoSubmitted": "Votre examen a été soumis automatiquement (temps écoulé).",
     "progressLabel": "Répondues : {{done}} / {{total}}",
-    "passCriteriaTitle": "Critères de réussite DELF B2",
-    "passCriteriaInline": "Total ≥ {{total}}/100 · chaque épreuve ≥ {{skillMin}}/{{skillMax}} · durée {{duration}} min",
-    "passCriteriaInlineNoTime": "Total ≥ {{total}}/100 · chaque épreuve ≥ {{skillMin}}/{{skillMax}} · sans limite de temps",
-    "passTotal": "Score total ≥ {{min}}/100",
+    "passCriteriaTitle": "Critères de réussite DELF {{level}}",
+    "passCriteriaInline": "Total ≥ {{total}}/{{totalMax}} · chaque épreuve ≥ {{skillMin}}/{{skillMax}} · durée {{duration}} min",
+    "passCriteriaInlineNoTime": "Total ≥ {{total}}/{{totalMax}} · chaque épreuve ≥ {{skillMin}}/{{skillMax}} · sans limite de temps",
+    "passTotal": "Score total ≥ {{min}}/{{totalMax}}",
     "passPerSkill": "Chacune des 4 épreuves ≥ {{min}}/{{max}}",
     "confirmTitle": "Soumettre votre examen ?",
     "confirmAnswered": "Vous avez répondu à {{done}} question(s) sur {{total}}.",
@@ -368,7 +368,7 @@
     "advanceSection": "Terminer la section",
     "advanceTitle": "Terminer cette section ?",
     "advanceAnswered": "Vous avez répondu à {{done}} question(s) sur {{total}} dans cette section.",
-    "advanceNoReturn": "Une fois la section terminée, vous ne pourrez plus y revenir — comme à l'examen DELF B2 réel.",
+    "advanceNoReturn": "Une fois la section terminée, vous ne pourrez plus y revenir — comme à l'examen DELF {{level}} réel.",
     "advanceNext": "Section suivante : {{skill}} · {{minutes}} minutes.",
     "advanceOk": "Passer à la section suivante",
     "advanceCancel": "Rester sur cette section"
@@ -900,7 +900,7 @@
   },
   "oral": {
     "exam": {
-      "subtitle": "Simulation complète DELF B2 PO : préparation, monologue, débat avec le jury, puis notation IA.",
+      "subtitle": "Simulation complète DELF {{level}} PO : {{prepMin}} min de préparation, monologue de {{monoMin}} min, questions du jury, puis notation IA.",
       "stepPrep": "Préparation",
       "stepMono": "Monologue",
       "stepDebat": "Débat",

@@ -1,0 +1,271 @@
+{
+  "pe": {
+    "score": {
+      "name": "submit_scores",
+      "description": "Soumettre la notation des 10 dimensions de la grille DELF B2. Feedback bref (≤ 25 mots par dimension).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "dimensions": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "enum": [
+                    "consigne",
+                    "sociolinguistique",
+                    "faits",
+                    "argumentation",
+                    "coherence",
+                    "lexique_etendue",
+                    "lexique_maitrise",
+                    "orthographe",
+                    "morphosyntaxe_etendue",
+                    "morphosyntaxe_maitrise"
+                  ]
+                },
+                "score": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "max": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "feedback": {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 200
+                }
+              },
+              "required": [
+                "key",
+                "score",
+                "max",
+                "feedback"
+              ]
+            }
+          }
+        },
+        "required": [
+          "dimensions"
+        ]
+      }
+    },
+    "corrections": {
+      "name": "submit_corrections",
+      "description": "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots), nature de l'erreur, suggestion, type.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "corrections": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 8,
+            "items": {
+              "type": "object",
+              "properties": {
+                "excerpt": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "issue": {
+                  "type": "string",
+                  "minLength": 5
+                },
+                "suggestion": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "grammar",
+                    "lexique",
+                    "orthographe",
+                    "syntaxe"
+                  ]
+                }
+              },
+              "required": [
+                "excerpt",
+                "issue",
+                "suggestion",
+                "type"
+              ]
+            }
+          }
+        },
+        "required": [
+          "corrections"
+        ]
+      }
+    },
+    "summary": {
+      "name": "submit_summary",
+      "description": "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "strengths": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {
+              "type": "string",
+              "minLength": 5
+            }
+          },
+          "globalFeedback": {
+            "type": "string",
+            "minLength": 80,
+            "maxLength": 1200
+          }
+        },
+        "required": [
+          "strengths",
+          "globalFeedback"
+        ]
+      }
+    }
+  },
+  "po": {
+    "score": {
+      "name": "submit_scores",
+      "description": "Soumettre la notation des 9 dimensions de la grille DELF B2 PO. Feedback bref (≤ 25 mots par dimension).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "dimensions": {
+            "type": "array",
+            "minItems": 9,
+            "maxItems": 9,
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "enum": [
+                    "presentation",
+                    "argumentation",
+                    "interaction",
+                    "aisance",
+                    "lexique_etendue",
+                    "lexique_maitrise",
+                    "morphosyntaxe_etendue",
+                    "morphosyntaxe_maitrise",
+                    "phonologie"
+                  ]
+                },
+                "score": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "max": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "feedback": {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 200
+                }
+              },
+              "required": [
+                "key",
+                "score",
+                "max",
+                "feedback"
+              ]
+            }
+          }
+        },
+        "required": [
+          "dimensions"
+        ]
+      }
+    },
+    "corrections": {
+      "name": "submit_corrections",
+      "description": "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots) du transcript, nature de l'erreur, suggestion, type. Ignorer les disfluences orales.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "corrections": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 8,
+            "items": {
+              "type": "object",
+              "properties": {
+                "excerpt": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "issue": {
+                  "type": "string",
+                  "minLength": 5
+                },
+                "suggestion": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "grammar",
+                    "lexique",
+                    "syntaxe",
+                    "register"
+                  ]
+                }
+              },
+              "required": [
+                "excerpt",
+                "issue",
+                "suggestion",
+                "type"
+              ]
+            }
+          }
+        },
+        "required": [
+          "corrections"
+        ]
+      }
+    },
+    "summary": {
+      "name": "submit_summary",
+      "description": "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "strengths": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {
+              "type": "string",
+              "minLength": 5
+            }
+          },
+          "globalFeedback": {
+            "type": "string",
+            "minLength": 80,
+            "maxLength": 1200
+          }
+        },
+        "required": [
+          "strengths",
+          "globalFeedback"
+        ]
+      }
+    }
+  }
+}

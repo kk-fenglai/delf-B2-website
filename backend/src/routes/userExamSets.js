@@ -88,6 +88,7 @@ function mapUserSetBrief(s) {
     description: s.description,
     primarySkill: s.primarySkill,
     isPublished: s.isPublished,
+    level: s.level,
     questionCount: s._count?.questions ?? 0,
     createdAt: s.createdAt,
   };
@@ -99,6 +100,7 @@ const userSetListSelect = {
   description: true,
   primarySkill: true,
   isPublished: true,
+  level: true,
   createdAt: true,
   _count: { select: { questions: true } },
 };

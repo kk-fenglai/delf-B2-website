@@ -3,6 +3,7 @@ const prisma = require('../prisma');
 const { optionalAuth, requireAuth } = require('../middleware/auth');
 const { signAudioUrl } = require('../utils/audioToken');
 const { sanitizeExamTitle, sanitizeExamDescription } = require('../utils/examTitle');
+const { getLevel } = require('../constants/levels');
 
 const router = express.Router();
 
@@ -56,12 +57,16 @@ router.get('/', optionalAuth, async (req, res, next) => {
   try {
     const skill = req.query.skill; // optional: CO | CE | PE | PO — returns pure single-skill sets only
     const mock  = req.query.mock;  // optional: 'true' — returns sets that have all 4 skills
+    // Level filter defaults to B2 (not "all levels"): a stale cached frontend
+    // bundle that never sends ?level= must keep seeing only B2 sets after
+    // B1 content lands. getLevel() maps unknown values back to B2.
+    const level = getLevel(req.query.level).key;
     const MOCK_SKILLS = ['CO', 'CE', 'PE', 'PO'];
 
     const sets = await prisma.examSet.findMany({
-      where: { isPublished: true, source: 'PLATFORM' },
+      where: { isPublished: true, source: 'PLATFORM', level },
       orderBy: [{ year: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
-      select: { id: true, title: true, description: true, isFreePreview: true, coFormat: true },
+      select: { id: true, title: true, description: true, isFreePreview: true, coFormat: true, level: true },
     });
 
     // Tally questions per (set, skill) with one grouped query instead of
@@ -87,6 +92,7 @@ router.get('/', optionalAuth, async (req, res, next) => {
         description: sanitizeExamDescription(s.description),
         isFreePreview: s.isFreePreview,
         coFormat: s.coFormat,
+        level: s.level,
         totalQuestions: agg.total,
         countsBySkill: agg.counts,
       };
@@ -179,6 +185,9 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
       description: sanitizeExamDescription(set.description),
       source: set.source,
       isUserOwned: set.source === 'USER',
+      // Authoritative level for the runner — the client store must follow
+      // this, not the other way round (deep links to another level's set).
+      level: set.level,
       questions: safeQuestions,
       audioDocuments,
     });

@@ -24,6 +24,38 @@ export interface PaymentsPublicConfig {
 }
 export type Skill = 'CO' | 'CE' | 'PE' | 'PO';
 export type QuestionType = 'SINGLE' | 'MULTIPLE' | 'TRUE_FALSE' | 'TRUE_FALSE_JUSTIFY' | 'FILL' | 'ESSAY' | 'SPEAKING';
+export type Level = 'B2' | 'B1' | 'A2';
+
+// GET /api/levels — public per-level exam structure. The frontend hardcodes
+// none of these numbers; the level store caches this payload per app load.
+export interface LevelPublicConfig {
+  key: Level;
+  titlePrefix: string;
+  sectionPlan: {
+    order: Skill[];
+    minutes: Record<Skill, number>;
+    merges: Array<{ key: string; skills: Skill[]; minutes: number }>;
+    poSeparateSession: boolean;
+  };
+  guide: { collectiveTotalMin: number; individualPrepMin: number };
+  co: { playRules: Record<string, { maxPlays: number; prepSeconds: number; gapSeconds: number; answerSeconds: number }> };
+  pe: {
+    minWords: number;
+    targetWords: number;
+    maxWords: number;
+    tasks: number;
+    dimensions: Array<{ key: string; max: number; labelFr: string }>;
+  };
+  po: {
+    minWords: number;
+    targetWords: number;
+    maxWords: number;
+    prepDefaultSec: number;
+    prepPracticeSec: number;
+    parts: Array<{ key: string; order: number; hasMonologue: boolean; monologueMaxSec: number | null; prepSec: number; followUpMaxSec: number | null }>;
+    dimensions: Array<{ key: string; max: number; labelFr: string }>;
+  };
+}
 
 export interface User {
   id: string;
@@ -82,6 +114,7 @@ export interface ExamSetBrief {
   description?: string;
   isFreePreview: boolean;
   coFormat?: 'long' | 'short' | 'other' | null;
+  level?: Level;
   totalQuestions: number;
   countsBySkill: Record<Skill, number>;
 }
@@ -91,6 +124,9 @@ export interface ExamSetDetail {
   title: string;
   year?: number | null;
   description?: string;
+  // Authoritative level for the runner — reconcile the level store to this,
+  // never the reverse (deep links to another level's set).
+  level?: Level;
   questions: Question[];
   audioDocuments?: AudioDocument[];
 }
@@ -125,6 +161,7 @@ export interface SubmitResult {
     passTotal: number;
     passPerSkill: number;
     skillMax: number;
+    totalMax?: number; // total exam max (100) — optional for older cached payloads
   };
   details: SubmitResultDetail[];
   essays?: SubmitResponseEssay[];
@@ -189,6 +226,7 @@ export interface Prediction {
     passTotal: number;
     passPerSkill: number;
     skillMax: number;
+    totalMax?: number; // total exam max (100) — optional for older cached payloads
   };
   totalAttempts: number;
   uniqueQuestions: number;
@@ -480,6 +518,7 @@ export interface UserExamSetBrief {
   description?: string | null;
   primarySkill: 'CE' | 'PE' | 'CO' | 'PO';
   isPublished: boolean;
+  level?: Level;
   questionCount: number;
   createdAt: string;
 }

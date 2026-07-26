@@ -17,6 +17,7 @@ const { logger } = require('../utils/logger');
 const { transcribeFile } = require('./stt');
 const { gradeOral } = require('./oralGrader');
 const { MODEL_KEYS } = require('../constants/planMatrix');
+const { getLevel } = require('../constants/levels');
 
 const RECORDINGS_DIR = path.resolve(
   __dirname,
@@ -60,18 +61,22 @@ async function claimOne() {
 
 // Build the marker-segmented transcript. Order matters — the LLM relies on
 // these markers to attribute the `interaction` dimension to the débat phase.
-function buildCombinedTranscript({ recordingsByRole, followUps }) {
+// Marker templates come from the level config (levels/<x>.js poPlan.transcript)
+// so the segment vocabulary can differ per level; for B2 the output must stay
+// byte-identical to the pre-refactor version (locked by test/oralTranscript.test.js).
+function buildCombinedTranscript({ recordingsByRole, followUps, levelKey }) {
+  const t = getLevel(levelKey).poPlan.transcript;
   const parts = [];
   if (recordingsByRole.monologue?.transcript) {
-    parts.push('[MONOLOGUE]');
+    parts.push(t.monologueMarker);
     parts.push(recordingsByRole.monologue.transcript.trim());
   }
   for (const f of followUps) {
     const r = recordingsByRole.followUps.get(f.id);
     parts.push('');
-    parts.push(`[DEBAT Q${f.order + 1}] ${f.text}`);
-    parts.push(`[REPONSE ${f.order + 1}]`);
-    parts.push(r?.transcript ? r.transcript.trim() : '(pas de réponse enregistrée)');
+    parts.push(t.followUpQuestion(f.order + 1, f.text));
+    parts.push(t.followUpAnswer(f.order + 1));
+    parts.push(r?.transcript ? r.transcript.trim() : t.missingAnswer);
   }
   return parts.join('\n').trim();
 }
@@ -137,7 +142,8 @@ async function processOne(oralRow) {
   try {
     question = await prisma.question.findUnique({
       where: { id: oralRow.questionId },
-      select: { id: true, prompt: true, passage: true },
+      // Level derived from the exam set at grade time (see essayQueue).
+      select: { id: true, prompt: true, passage: true, examSet: { select: { level: true } } },
     });
   } catch (err) {
     logger.error({ err, oralId: oralRow.id }, 'oralQueue.loadQuestion.fail');
@@ -192,11 +198,12 @@ async function processOne(oralRow) {
   }
 
   // ---- Phase 2: combine transcripts and grade.
+  const levelKey = question.examSet?.level;
   const recordingsByRole = {
     monologue: recordings.find((r) => !r.followUpId) || null,
     followUps: new Map(recordings.filter((r) => r.followUpId).map((r) => [r.followUpId, r])),
   };
-  const transcriptCombined = buildCombinedTranscript({ recordingsByRole, followUps });
+  const transcriptCombined = buildCombinedTranscript({ recordingsByRole, followUps, levelKey });
 
   await prisma.oral.update({
     where: { id: oralRow.id },
@@ -214,6 +221,7 @@ async function processOne(oralRow) {
       followUps: followUps.map((f) => ({ text: f.text, expectedAngle: f.expectedAngle || null })),
       modelKey,
       locale,
+      level: levelKey,
     });
 
     await prisma.oral.update({
@@ -361,4 +369,6 @@ module.exports = {
   drain,
   enqueue,
   RECORDINGS_DIR,
+  // exported for tests (byte-equality fixture on the B2 transcript shape)
+  buildCombinedTranscript,
 };

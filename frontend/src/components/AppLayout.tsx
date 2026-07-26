@@ -5,6 +5,7 @@ import { UserOutlined, MenuOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/auth';
 import LanguageSwitcher from './LanguageSwitcher';
+import LevelSwitcher from './LevelSwitcher';
 import FeedbackWidget from './FeedbackWidget';
 
 const { Header, Content, Footer } = Layout;
@@ -85,6 +86,7 @@ export default function AppLayout() {
               items={navItems}
               style={{ background: 'transparent', flex: 1, borderBottom: 'none' }}
             />
+            <div className="mr-3"><LevelSwitcher /></div>
             <LanguageSwitcher />
             {user ? (
               <div className="flex items-center gap-3 ml-3">
@@ -113,7 +115,8 @@ export default function AppLayout() {
         width={280}
         styles={{ body: { padding: 0 } }}
         title={(
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
+            <LevelSwitcher />
             <LanguageSwitcher />
             {user && (
               <Tag color={planColor[displayPlan || 'FREE']} style={{ marginInlineEnd: 0 }}>

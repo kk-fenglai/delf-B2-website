@@ -346,10 +346,10 @@
     "timeUp": "考试时间已到，系统已自动提交答卷。",
     "autoSubmitted": "考试时间耗尽，答卷已自动提交。",
     "progressLabel": "已作答：{{done}} / {{total}}",
-    "passCriteriaTitle": "DELF B2 合格标准",
-    "passCriteriaInline": "总分 ≥ {{total}}/100 · 单项 ≥ {{skillMin}}/{{skillMax}} · 总时长 {{duration}} 分钟",
-    "passCriteriaInlineNoTime": "总分 ≥ {{total}}/100 · 单项 ≥ {{skillMin}}/{{skillMax}} · 无时间限制",
-    "passTotal": "总分须 ≥ {{min}}/100",
+    "passCriteriaTitle": "DELF {{level}} 合格标准",
+    "passCriteriaInline": "总分 ≥ {{total}}/{{totalMax}} · 单项 ≥ {{skillMin}}/{{skillMax}} · 总时长 {{duration}} 分钟",
+    "passCriteriaInlineNoTime": "总分 ≥ {{total}}/{{totalMax}} · 单项 ≥ {{skillMin}}/{{skillMax}} · 无时间限制",
+    "passTotal": "总分须 ≥ {{min}}/{{totalMax}}",
     "passPerSkill": "听/读/写/说 四项每项须 ≥ {{min}}/{{max}}",
     "confirmTitle": "确认提交答卷？",
     "confirmAnswered": "已作答 {{done}} / {{total}} 题",
@@ -368,7 +368,7 @@
     "advanceSection": "结束本节",
     "advanceTitle": "确认结束本节？",
     "advanceAnswered": "本节已作答 {{done}} / {{total}} 题。",
-    "advanceNoReturn": "进入下一节后无法返回当前节 — 模拟真实 DELF B2 考试规则。",
+    "advanceNoReturn": "进入下一节后无法返回当前节 — 模拟真实 DELF {{level}} 考试规则。",
     "advanceNext": "下一节：{{skill}} · {{minutes}} 分钟。",
     "advanceOk": "进入下一节",
     "advanceCancel": "继续本节"
@@ -902,7 +902,7 @@
   },
   "oral": {
     "exam": {
-      "subtitle": "DELF B2 口语全真模拟：30 分钟准备 → 10 分钟独白 → 与考官辩论 → AI 自动评分。",
+      "subtitle": "DELF {{level}} 口语全真模拟：{{prepMin}} 分钟准备 → {{monoMin}} 分钟独白 → 考官问答 → AI 自动评分。",
       "stepPrep": "准备",
       "stepMono": "独白",
       "stepDebat": "辩论",
