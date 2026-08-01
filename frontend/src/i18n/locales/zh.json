@@ -98,6 +98,10 @@
     "changePassword": "修改密码",
     "logout": "退出登录"
   },
+  "shell": {
+    "startPractice": "开始练习",
+    "exitExam": "退出练习"
+  },
   "plan": {
     "FREE": "免费版",
     "STANDARD": "标准版",
@@ -249,7 +253,15 @@
     "viewDetail": "查看详情",
     "score": "得分",
     "loading": "加载中...",
-    "userOwnedTag": "我的题库"
+    "userOwnedTag": "我的题库",
+    "subGreeting": "已累计完成 {{n}} 道练习题",
+    "skillMastery": "四项能力掌握度",
+    "overall": "综合",
+    "analysis": "强弱项分析",
+    "strengths": "优势项",
+    "focusAreas": "重点提升",
+    "accuracyOf": "正确率 {{n}}%",
+    "analysisEmpty": "练习数据不足，先去完成几组练习吧。"
   },
   "practice": {
     "title": "题库练习",
@@ -282,7 +294,10 @@
       "mockTag": "4 技能连做",
       "comingSoonTag": "即将上线",
       "poDisabledDesc": "AI 口语评分功能暂时下线，敬请期待。",
-      "aiGradedTag": "AI 评分"
+      "aiGradedTag": "AI 评分",
+      "accuracy": "正确率",
+      "mockDuration": "全程 2 小时 30 分",
+      "startSimulation": "开始模拟"
     },
     "po": {
       "backToHub": "返回练习中心",
@@ -437,6 +452,8 @@
   },
   "mistakes": {
     "title": "错题本",
+    "totalMistakes": "错题总数",
+    "bySkill": "按技能分布",
     "totalCount": "共 {{n}} 题待复习",
     "infoTitle": "使用说明",
     "infoDesc": "所有答错的题目会自动收录到此处。重新练习并答对后，题目会自动从错题本中移除。",
@@ -462,6 +479,11 @@
   "myExams": {
     "title": "我的题库",
     "subtitle": "创建并练习你自己的阅读、写作、听力与口语题目。免费用户每种题型可各建 2 套。",
+    "bankOverview": "题库概览",
+    "totalSets": "套题总数",
+    "createEmptySet": "新建空白套题",
+    "filterBySkill": "按题型筛选",
+    "quotaTitle": "创建额度",
     "tabAll": "全部",
     "create": "新建套题",
     "createFirst": "创建第一套题",
@@ -848,6 +870,7 @@
   },
   "orders": {
     "title": "我的订单",
+    "subtitle": "查看历史交易记录与订阅合约",
     "empty": "暂无订单记录",
     "resume": {
       "missingOrderId": "缺少订单号，无法继续查询支付结果",
@@ -914,6 +937,8 @@
       "notesTitle": "我的笔记",
       "notesPlaceholder": "在此整理你的立场、结构、论据和具体例证…",
       "notesAutoSaveHint": "笔记会自动保存在浏览器本地。",
+      "aiTeaserTitle": "包含 AI 智能点评",
+      "aiTeaserBody": "提交后将按 DELF B2 官方评分标准，从流利度、词汇与语音等维度生成 AI 评分与建议。",
       "startMonologue": "开始独白录音",
       "skipPrepTitle": "现在就开始独白？",
       "skipPrepBody": "你还有剩余的准备时间。一旦开始录音，将无法返回此步骤。",

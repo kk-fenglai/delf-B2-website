@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Theme tokens (Scheme v4 restored: Studio blue + cyan + violet, light only) */
+/* Theme tokens — "DELFluent Academic" (M3-style, light only) */
 :root {
   font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
   color-scheme: light;
@@ -10,15 +10,16 @@
   /* Base surfaces */
   --bg: #f6f8ff;
   --bgElevated: rgba(255, 255, 255, 0.86);
-  --text: #0b1220;
-  --textMuted: rgba(11, 18, 32, 0.62);
+  --text: #151b2a;
+  --textMuted: #434655;
   --border: transparent;
 
-  /* Studio accents */
-  --primary: #2563eb;            /* electric blue */
-  --primaryHover: #3b82f6;
-  --accent: #22d3ee;             /* cyan */
-  --accent2: #a78bfa;            /* violet */
+  /* Academic accents */
+  --primary: #004ac6;            /* deep academic blue */
+  --primaryContainer: #2563eb;   /* accent borders / passage panel */
+  --primaryHover: #2563eb;
+  --accent: #2fd9f4;             /* tertiary cyan — progress */
+  --accent2: #674bb5;            /* secondary violet — AI features */
 
   /* Soft primary wash for hover / subtle fill */
   --primarySoftA: rgba(37, 99, 235, 0.10);
@@ -27,20 +28,59 @@
   /* Soft shadows — rounded surfaces separated by shadow, not lines */
   --shadowSm: 0 6px 18px rgba(15, 23, 42, 0.06);
   --shadowMd: 0 14px 44px rgba(15, 23, 42, 0.10);
+
+  /* Fixed top-bar height shared by shells; sticky offsets derive from it */
+  --topbar-h: 80px;
 }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
 }
 
 /* Rounded surfaces — no borders, separation via soft shadow */
 .app-surface {
-  background: var(--bgElevated);
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 16px;
   box-shadow: var(--shadowSm);
+}
+
+/* Frosted glass panel (mockup .glass-panel) */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+/* Dashboard progress rings */
+.progress-ring circle {
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+/* Speaking page — decorative waveform while recording */
+.waveform-bar {
+  width: 4px;
+  border-radius: 999px;
+  background: var(--primaryContainer);
+  animation: sound-wave 1.1s ease-in-out infinite;
+}
+
+@keyframes sound-wave {
+  0%, 100% { height: 8px; }
+  50% { height: 28px; }
+}
+
+.pulse-record {
+  animation: pulse-record 1.6s ease-out infinite;
+}
+
+@keyframes pulse-record {
+  0% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.35); }
+  70% { box-shadow: 0 0 0 14px rgba(186, 26, 26, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0); }
 }
 
 .app-subtle-gradient {
@@ -59,7 +99,7 @@ body {
 }
 
 .passage {
-  font-family: Georgia, 'Songti SC', 'SimSun', serif;
+  font-family: 'Source Serif 4', Georgia, 'Songti SC', 'SimSun', serif;
   font-size: 1.0625rem;
   line-height: 1.8;
 }
@@ -70,8 +110,8 @@ body {
 
 /* Exam reading panel — sticky side-by-side on desktop, tall scroll area on phone */
 .passage-panel {
-  background: var(--bgElevated);
-  border-left: 4px solid var(--primary);
+  background: #ffffff;
+  border-left: 4px solid var(--primaryContainer);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -80,8 +120,8 @@ body {
   .passage-panel {
     flex: 0 0 52%;
     position: sticky;
-    top: 80px;
-    max-height: calc(100vh - 140px);
+    top: calc(var(--topbar-h) + 16px);
+    max-height: calc(100vh - var(--topbar-h) - 60px);
   }
 
   .passage-panel--mock {

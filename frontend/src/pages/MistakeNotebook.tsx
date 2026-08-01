@@ -1,19 +1,24 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  Card, Typography, Tabs, Tag, Button, Empty, Spin, Pagination, Badge, Space, Alert,
+  Card, Typography, Tag, Button, Empty, Spin, Pagination, Alert,
   Radio, Checkbox, Input, message,
 } from 'antd';
 import {
-  BookOutlined, CheckCircleTwoTone, CloseCircleTwoTone, ReloadOutlined,
+  CheckCircleTwoTone, CloseCircleTwoTone, ReloadOutlined,
   EditOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
+import MaterialIcon from '../components/MaterialIcon';
 import type { MistakeItem, MistakesResponse, MistakeStats, Skill } from '../types';
 
-const { Title, Paragraph, Text } = Typography;
+const { Paragraph, Text } = Typography;
 
 const SKILL_KEYS: Array<Skill | 'ALL'> = ['ALL', 'CO', 'CE', 'PE', 'PO'];
+
+const SKILL_ICON: Record<Skill, string> = {
+  CO: 'hearing', CE: 'auto_stories', PE: 'edit_document', PO: 'mic',
+};
 
 function formatAnswer(ans: string | string[]): string {
   if (Array.isArray(ans)) return ans.length ? ans.join(', ') : '—';
@@ -122,15 +127,20 @@ function MistakeCard({
 
   return (
     <Card
-      className="mb-4"
+      className="mb-4 shadow-level-1"
       title={
-        <div className="flex items-center gap-2 flex-wrap">
-          <Tag color="red">{t(`skill.${item.skill}`)}</Tag>
+        <div className="flex items-center gap-3 flex-wrap py-2">
+          <div className="w-9 h-9 rounded-lg bg-error-container/60 text-on-error-container flex items-center justify-center shrink-0">
+            <MaterialIcon name={SKILL_ICON[item.skill]} size={20} fill />
+          </div>
+          <span className="text-label-caps uppercase px-2 py-0.5 rounded text-primary bg-primary-container/10">
+            {t(`skill.${item.skill}`)}
+          </span>
           <Tag>{item.type}</Tag>
           {item.examSet.isUserOwned && (
             <Tag color="cyan">{t('mistakes.userOwnedTag')}</Tag>
           )}
-          <Text type="secondary" className="text-xs">
+          <Text type="secondary" className="text-xs font-normal">
             {item.examSet.title}
           </Text>
         </div>
@@ -142,7 +152,7 @@ function MistakeCard({
       }
     >
       {item.passage && item.skill !== 'CO' && (
-        <div className="bg-gray-50 p-3 rounded mb-3 text-sm border-l-4 border-brand max-h-40 overflow-y-auto">
+        <div className="bg-surface-container-low p-3 rounded mb-3 text-sm border-l-4 border-primary-container max-h-40 overflow-y-auto font-serif">
           {item.passage}
         </div>
       )}
@@ -319,44 +329,55 @@ export default function MistakeNotebook() {
     return stats.bySkill[k] || 0;
   };
 
-  const tabs = useMemo(
-    () =>
-      SKILL_KEYS.map((k) => ({
-        key: k,
-        label: (
-          <Space>
-            <span>{k === 'ALL' ? t('mistakes.tabAll') : t(`skill.${k}`)}</span>
-            <Badge count={totalForTab(k)} showZero={false} overflowCount={99} />
-          </Space>
-        ),
-      })),
-    // eslint-disable-next-line
-    [stats, t]
-  );
-
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-        <Title level={3} className="!mb-0">
-          <BookOutlined className="mr-2" />
-          {t('mistakes.title')}
-        </Title>
-        {stats && (
-          <Tag color={stats.total > 0 ? 'red' : 'green'} className="text-base px-3 py-1">
-            {t('mistakes.totalCount', { n: stats.total })}
-          </Tag>
-        )}
+      <header className="mb-8">
+        <h1 className="text-display-lg text-on-surface mb-2">{t('mistakes.title')}</h1>
+        <p className="text-body-base text-on-surface-variant max-w-2xl">{t('mistakes.infoDesc')}</p>
+      </header>
+
+      {/* Summary cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div className="bg-surface-container-lowest rounded-xl p-6 shadow-level-1 border-l-4 border-primary">
+          <div className="text-label-caps uppercase text-on-surface-variant mb-2">{t('mistakes.totalMistakes')}</div>
+          <div className="flex items-center gap-3">
+            <span className="text-display-lg text-on-surface tabular-nums">{stats?.total ?? '—'}</span>
+            <span className="w-10 h-10 rounded-lg bg-error-container/60 text-on-error-container flex items-center justify-center">
+              <MaterialIcon name="menu_book" size={22} fill />
+            </span>
+          </div>
+        </div>
+        <div className="bg-surface-container-lowest rounded-xl p-6 shadow-level-1">
+          <div className="text-label-caps uppercase text-on-surface-variant mb-3">{t('mistakes.bySkill')}</div>
+          <div className="flex flex-wrap gap-2">
+            {(['CO', 'CE', 'PE', 'PO'] as Skill[]).map((k) => (
+              <span key={k} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-tertiary-container/15 text-tertiary">
+                <MaterialIcon name={SKILL_ICON[k]} size={14} />
+                {t(`skill.${k}`)} · {totalForTab(k)}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <Alert
-        type="info"
-        showIcon
-        className="mb-4"
-        message={t('mistakes.infoTitle')}
-        description={t('mistakes.infoDesc')}
-      />
-
-      <Tabs activeKey={skill} onChange={onSkillChange} items={tabs} />
+      {/* Skill filter pills */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {SKILL_KEYS.map((k) => (
+          <button
+            key={k}
+            type="button"
+            onClick={() => onSkillChange(k)}
+            className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${
+              skill === k
+                ? 'bg-primary text-on-primary'
+                : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+            }`}
+          >
+            {k === 'ALL' ? t('mistakes.tabAll') : t(`skill.${k}`)}
+            {totalForTab(k) > 0 && <span className="ml-1.5 tabular-nums opacity-80">{totalForTab(k)}</span>}
+          </button>
+        ))}
+      </div>
 
       {loading ? (
         <div className="flex justify-center py-20"><Spin size="large" /></div>

@@ -98,6 +98,10 @@
     "changePassword": "Change password",
     "logout": "Sign out"
   },
+  "shell": {
+    "startPractice": "Start Practice",
+    "exitExam": "Exit exercise"
+  },
   "plan": {
     "FREE": "Free",
     "STANDARD": "Standard",
@@ -249,7 +253,15 @@
     "viewDetail": "View details",
     "score": "Score",
     "loading": "Loading...",
-    "userOwnedTag": "My Question Bank"
+    "userOwnedTag": "My Question Bank",
+    "subGreeting": "{{n}} practice questions completed so far",
+    "skillMastery": "Skill Mastery",
+    "overall": "Overall",
+    "analysis": "Strengths & Focus",
+    "strengths": "Strengths",
+    "focusAreas": "Focus Areas",
+    "accuracyOf": "{{n}}% accuracy",
+    "analysisEmpty": "Not enough practice data yet — complete a few exercises first."
   },
   "practice": {
     "title": "Practice Library",
@@ -282,7 +294,10 @@
       "mockTag": "4 skills",
       "comingSoonTag": "Coming soon",
       "poDisabledDesc": "AI speaking evaluation is temporarily unavailable.",
-      "aiGradedTag": "AI graded"
+      "aiGradedTag": "AI graded",
+      "accuracy": "Accuracy",
+      "mockDuration": "2h 30m total time",
+      "startSimulation": "Start Simulation"
     },
     "po": {
       "backToHub": "Back to practice hub",
@@ -437,6 +452,8 @@
   },
   "mistakes": {
     "title": "Mistake Notebook",
+    "totalMistakes": "Total mistakes",
+    "bySkill": "By skill",
     "totalCount": "{{n}} to review",
     "infoTitle": "How it works",
     "infoDesc": "Questions you answered incorrectly are collected here. Re-practice them — once you answer correctly, they are automatically removed.",
@@ -462,6 +479,11 @@
   "myExams": {
     "title": "My Question Bank",
     "subtitle": "Create and practice your own reading, writing, listening and speaking sets. Free users: 2 sets per skill.",
+    "bankOverview": "Bank Overview",
+    "totalSets": "Total sets",
+    "createEmptySet": "Create Empty Set",
+    "filterBySkill": "Filter by skill",
+    "quotaTitle": "Creation quota",
     "tabAll": "All",
     "create": "New set",
     "createFirst": "Create your first set",
@@ -846,6 +868,7 @@
   },
   "orders": {
     "title": "My orders",
+    "subtitle": "View your transaction history and subscriptions",
     "empty": "No orders yet",
     "resume": {
       "missingOrderId": "Missing order id, cannot resume payment status",
@@ -914,6 +937,8 @@
       "notesTitle": "Your notes",
       "notesPlaceholder": "Plan your viewpoint, structure, examples, and counter-arguments…",
       "notesAutoSaveHint": "Notes are auto-saved in this browser.",
+      "aiTeaserTitle": "AI analysis included",
+      "aiTeaserBody": "After submitting, you'll receive AI scoring and feedback on fluency, vocabulary and pronunciation, following the official DELF B2 grid.",
       "startMonologue": "Start monologue",
       "skipPrepTitle": "Start the monologue now?",
       "skipPrepBody": "You still have preparation time left. Once you start, you can't return to this step.",

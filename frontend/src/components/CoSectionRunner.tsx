@@ -16,7 +16,7 @@
 // State machine: just `docIdx`, advanced by a "next document" button.
 
 import { useMemo, useRef, useState } from 'react';
-import { Alert, Button, Card, Steps, Tag, Typography } from 'antd';
+import { Alert, Button, Card, Steps, Typography } from 'antd';
 import { SoundOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import type { AudioDocument, Question } from '../types';
@@ -117,52 +117,72 @@ export default function CoSectionRunner({
       <Steps
         current={docIdx}
         size="small"
-        className="mb-3"
+        className="mb-4"
         items={groups.map((g, i) => ({
           title: g.doc.title || `Doc ${i + 1}`,
           status: i < docIdx ? 'finish' : i === docIdx ? 'process' : 'wait',
         }))}
       />
 
-      {current.doc.audioUrl ? (
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg mb-4 border border-blue-100">
-          <Tag color="blue" icon={<SoundOutlined />} className="mb-2">🎧 Audio</Tag>
-          <audio
-            // `key` forces the element to remount when the doc changes so
-            // the browser fully resets its state (avoids the previous clip
-            // still being buffered/seekable).
-            key={current.doc.id}
-            ref={audioRef}
-            src={current.doc.audioUrl}
-            controls
-            preload="auto"
-            style={{ width: '100%' }}
-          />
+      {/* Mockup split: sticky "Document Sonore" card left, question cards right */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="md:col-span-5 lg:col-span-4 md:sticky md:top-28 self-start">
+          {current.doc.audioUrl ? (
+            <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-label-caps uppercase text-on-surface-variant inline-flex items-center gap-1.5">
+                  <SoundOutlined /> Document Sonore
+                </span>
+                <span className="text-label-caps uppercase px-2 py-0.5 rounded text-primary bg-primary-container/10">
+                  {docIdx + 1} / {groups.length}
+                </span>
+              </div>
+              {current.doc.title && (
+                <div className="text-headline-sm text-on-surface mb-3">{current.doc.title}</div>
+              )}
+              <audio
+                // `key` forces the element to remount when the doc changes so
+                // the browser fully resets its state (avoids the previous clip
+                // still being buffered/seekable).
+                key={current.doc.id}
+                ref={audioRef}
+                src={current.doc.audioUrl}
+                controls
+                preload="auto"
+                style={{ width: '100%' }}
+              />
+            </div>
+          ) : (
+            <Alert
+              type="warning"
+              showIcon
+              className="mb-3"
+              message={t('exam.audioNotUploaded')}
+            />
+          )}
         </div>
-      ) : (
-        <Alert
-          type="warning"
-          showIcon
-          className="mb-3"
-          message={t('exam.audioNotUploaded')}
-        />
-      )}
 
-      <Card bordered={false} className="app-surface">
-        {current.qs.map((q, qi) => (
-          <div key={q.id} className={qi > 0 ? 'mt-5 pt-5 border-t' : ''}>
-            <Paragraph className="text-base font-semibold mb-3">
-              {qi + 1}. {q.prompt}
-            </Paragraph>
-            {renderAnswer(q, false)}
+        <div className="md:col-span-7 lg:col-span-8">
+          <Card bordered={false} className="app-surface">
+            {current.qs.map((q, qi) => (
+              <div key={q.id} className={qi > 0 ? 'mt-5 pt-5 border-t' : ''}>
+                <div className="text-label-caps uppercase text-on-surface-variant mb-1">
+                  Question {qi + 1}
+                </div>
+                <Paragraph className="text-base font-semibold mb-3">
+                  {q.prompt}
+                </Paragraph>
+                {renderAnswer(q, false)}
+              </div>
+            ))}
+          </Card>
+
+          <div className="flex justify-end mt-4">
+            <Button type="primary" size="large" onClick={advance}>
+              {isLast ? t('exam.coFinish') : t('exam.coNextDoc')}
+            </Button>
           </div>
-        ))}
-      </Card>
-
-      <div className="flex justify-end mt-4">
-        <Button type="primary" onClick={advance}>
-          {isLast ? t('exam.coFinish') : t('exam.coNextDoc')}
-        </Button>
+        </div>
       </div>
     </div>
   );

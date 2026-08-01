@@ -293,20 +293,21 @@ export default function AudioRecorder({
       {error && <Alert type="error" showIcon message={error} className="mb-3" />}
 
       {phase === 'idle' && (
-        <Space direction="vertical" style={{ width: '100%' }}>
-          <Button
-            type="primary"
-            size="large"
-            icon={<AudioOutlined />}
+        <div className="flex flex-col items-center gap-3 py-4">
+          <button
+            type="button"
             onClick={start}
             disabled={disabled}
+            aria-label={t('oral.recorder.start')}
+            className="w-16 h-16 rounded-full bg-error text-white flex items-center justify-center shadow-level-2 hover:opacity-90 active:scale-95 transition disabled:opacity-50"
           >
-            {t('oral.recorder.start')}
-          </Button>
+            <AudioOutlined style={{ fontSize: 26 }} />
+          </button>
+          <Text strong>{t('oral.recorder.start')}</Text>
           <Text type="secondary" className="text-xs">
             {t('oral.recorder.maxLengthHint', { sec: maxSeconds })}
           </Text>
-        </Space>
+        </div>
       )}
 
       {phase === 'recording' && (
@@ -323,24 +324,35 @@ export default function AudioRecorder({
               </Text>
             </Text>
           </div>
+          {/* Decorative waveform — animation driven by CSS, mic level sets intensity */}
+          <div className="flex items-end justify-center gap-1 h-8" aria-hidden>
+            {Array.from({ length: 24 }).map((_, i) => (
+              <span
+                key={i}
+                className="waveform-bar"
+                style={{
+                  animationDelay: `${(i % 6) * 0.14}s`,
+                  opacity: 0.35 + level * 0.65,
+                }}
+              />
+            ))}
+          </div>
           <Progress
             percent={pct}
             showInfo={false}
             status={remaining < 10 ? 'exception' : 'active'}
-            strokeColor={remaining < 10 ? '#ff4d4f' : '#1677ff'}
+            strokeColor={remaining < 10 ? '#ba1a1a' : '#2fd9f4'}
           />
-          <div
-            className="h-3 rounded-full bg-gray-200 overflow-hidden"
-            aria-hidden
-          >
-            <div
-              className="h-full bg-green-500 transition-[width] duration-75"
-              style={{ width: `${Math.round(level * 100)}%` }}
-            />
+          <div className="flex justify-center">
+            <button
+              type="button"
+              onClick={stop}
+              aria-label={t('oral.recorder.stop')}
+              className="pulse-record w-14 h-14 rounded-full bg-error text-white flex items-center justify-center shadow-level-2 active:scale-95 transition"
+            >
+              <StopOutlined style={{ fontSize: 22 }} />
+            </button>
           </div>
-          <Button danger icon={<StopOutlined />} onClick={stop}>
-            {t('oral.recorder.stop')}
-          </Button>
         </Space>
       )}
 

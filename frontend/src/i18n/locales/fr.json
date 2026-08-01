@@ -98,6 +98,10 @@
     "changePassword": "Changer le mot de passe",
     "logout": "Déconnexion"
   },
+  "shell": {
+    "startPractice": "Commencer",
+    "exitExam": "Quitter l'exercice"
+  },
   "plan": {
     "FREE": "Gratuit",
     "STANDARD": "Standard",
@@ -249,7 +253,15 @@
     "viewDetail": "Voir les détails",
     "score": "Score",
     "loading": "Chargement...",
-    "userOwnedTag": "Mes exercices"
+    "userOwnedTag": "Mes exercices",
+    "subGreeting": "{{n}} questions d'entraînement complétées",
+    "skillMastery": "Maîtrise des compétences",
+    "overall": "Global",
+    "analysis": "Forces et axes de progrès",
+    "strengths": "Points forts",
+    "focusAreas": "À travailler",
+    "accuracyOf": "{{n}} % de précision",
+    "analysisEmpty": "Pas encore assez de données — commencez par quelques exercices."
   },
   "practice": {
     "title": "Sujets d'examen",
@@ -282,7 +294,10 @@
       "mockTag": "4 compétences",
       "comingSoonTag": "Bientôt",
       "poDisabledDesc": "L'évaluation orale par IA est temporairement indisponible.",
-      "aiGradedTag": "Noté par IA"
+      "aiGradedTag": "Noté par IA",
+      "accuracy": "Précision",
+      "mockDuration": "2 h 30 au total",
+      "startSimulation": "Lancer la simulation"
     },
     "po": {
       "backToHub": "Retour au hub",
@@ -437,6 +452,8 @@
   },
   "mistakes": {
     "title": "Carnet d'erreurs",
+    "totalMistakes": "Total des erreurs",
+    "bySkill": "Par compétence",
     "totalCount": "{{n}} à revoir",
     "infoTitle": "Fonctionnement",
     "infoDesc": "Les questions auxquelles vous avez mal répondu s'accumulent ici. Refaites-les : une fois la bonne réponse donnée, elles disparaissent automatiquement.",
@@ -462,6 +479,11 @@
   "myExams": {
     "title": "Mes exercices",
     "subtitle": "Créez et entraînez-vous avec vos propres séries CE, PE, CO et PO. Gratuit : 2 séries par compétence.",
+    "bankOverview": "Aperçu de la banque",
+    "totalSets": "Nombre de séries",
+    "createEmptySet": "Créer une série vide",
+    "filterBySkill": "Filtrer par compétence",
+    "quotaTitle": "Quota de création",
     "tabAll": "Tout",
     "create": "Nouvelle série",
     "createFirst": "Créer ma première série",
@@ -846,6 +868,7 @@
   },
   "orders": {
     "title": "Mes commandes",
+    "subtitle": "Historique des transactions et abonnements",
     "empty": "Aucune commande",
     "resume": {
       "missingOrderId": "ID de commande manquant — impossible de reprendre le suivi",
@@ -912,6 +935,8 @@
       "notesTitle": "Vos notes",
       "notesPlaceholder": "Préparez votre point de vue, structure, exemples et arguments…",
       "notesAutoSaveHint": "Vos notes sont enregistrées automatiquement dans ce navigateur.",
+      "aiTeaserTitle": "Analyse IA incluse",
+      "aiTeaserBody": "Après soumission, vous recevrez une note et des conseils IA sur la fluidité, le vocabulaire et la prononciation, selon la grille officielle du DELF B2.",
       "startMonologue": "Commencer le monologue",
       "skipPrepTitle": "Démarrer le monologue maintenant ?",
       "skipPrepBody": "Il vous reste encore du temps de préparation. Une fois lancé, vous ne pourrez plus revenir à cette étape.",
