@@ -7,6 +7,14 @@ import MaterialIcon from './MaterialIcon';
 /** Cleared on every login so the notice reappears once per sign-in. */
 export const ANNOUNCEMENT_SEEN_KEY = 'announcement-seen';
 
+/**
+ * The API sends `version: null` until an admin saves for the first time (there
+ * is no AppSetting row yet, so there is no updatedAt to derive it from). An
+ * unset sessionStorage key also reads as null, so comparing the two raw would
+ * mark the default notice as already-seen and it would never show.
+ */
+const DEFAULT_VERSION = 'default';
+
 type Localized = { zh?: string; en?: string; fr?: string };
 
 interface Announcement {
@@ -37,7 +45,7 @@ export default function AnnouncementModal() {
         const a: Announcement | null = r.data?.announcement || null;
         if (cancelled || !a) return;
         // Re-show when the wording changed, even within the same session.
-        if (sessionStorage.getItem(ANNOUNCEMENT_SEEN_KEY) === a.version) return;
+        if (sessionStorage.getItem(ANNOUNCEMENT_SEEN_KEY) === (a.version ?? DEFAULT_VERSION)) return;
         setAnnouncement(a);
         setOpen(true);
       })
@@ -47,8 +55,8 @@ export default function AnnouncementModal() {
   }, []);
 
   const dismiss = () => {
-    if (announcement?.version) {
-      sessionStorage.setItem(ANNOUNCEMENT_SEEN_KEY, announcement.version);
+    if (announcement) {
+      sessionStorage.setItem(ANNOUNCEMENT_SEEN_KEY, announcement.version ?? DEFAULT_VERSION);
     }
     setOpen(false);
   };
