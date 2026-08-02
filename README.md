@@ -78,7 +78,7 @@ npm run dev                       # → http://localhost:5173
 | `ai@delfluent.com` | `demo1234` | AI 版 |
 | `ai-unlimited@delfluent.com` | `demo1234` | AI 无限版 |
 
-> ⚠️ 这些账户在 `NODE_ENV=production` 时**不会被创建**（除非显式设置 `ALLOW_PROD_SEED=true`）。生产部署只会 upsert `alzy1210@163.com` 超级管理员。
+> ⚠️ 这些账户在 `NODE_ENV=production` 时**不会被创建**（除非显式设置 `ALLOW_PROD_SEED=true`）。生产部署只会 upsert `<SUPER_ADMIN_EMAIL>` 超级管理员。
 
 ---
 
