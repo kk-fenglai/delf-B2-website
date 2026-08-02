@@ -17,16 +17,23 @@ async function main() {
   console.log(`🌱 Seeding database (NODE_ENV=${process.env.NODE_ENV || 'development'})...`);
 
   // ---- Super Admin — always ensure exists ----
+  // Identity comes from the environment so the address never lands in the
+  // repo. Refuse to guess: seeding the wrong address would create a second
+  // SUPER_ADMIN rather than update the intended one.
+  const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
+  if (!superAdminEmail) {
+    throw new Error('SUPER_ADMIN_EMAIL is required — set it before seeding.');
+  }
   const adminInitialPwd = process.env.ADMIN_INITIAL_PASSWORD || 'DELFluent$Admin@2026!Prod';
   if (IS_PROD && !process.env.ADMIN_INITIAL_PASSWORD) {
     console.warn('⚠️  ADMIN_INITIAL_PASSWORD not set — using default. Change it immediately after first login.');
   }
   const adminPwdHash = await bcrypt.hash(adminInitialPwd, 12);
   await prisma.user.upsert({
-    where: { email: 'alzy1210@163.com' },
+    where: { email: superAdminEmail },
     update: { role: 'SUPER_ADMIN', status: 'ACTIVE', emailVerified: true },
     create: {
-      email: 'alzy1210@163.com',
+      email: superAdminEmail,
       passwordHash: adminPwdHash,
       name: 'Super Admin',
       plan: 'AI_UNLIMITED',
@@ -36,7 +43,7 @@ async function main() {
       emailVerifiedAt: new Date(),
     },
   });
-  console.log(`✅ Super admin ready: alzy1210@163.com`);
+  console.log(`✅ Super admin ready: ${superAdminEmail}`);
   console.log('⚠️  Change this password IMMEDIATELY after first login!');
 
   // ---- Demo users — dev/staging only ----

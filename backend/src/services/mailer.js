@@ -1,12 +1,16 @@
 // Email service — uses SMTP if configured, otherwise logs to console (dev mode).
 // Configure via env:
 //   SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM
+//   SUPPORT_EMAIL — contact address shown to users in security notices
 // For 163.com:
 //   SMTP_HOST=smtp.163.com SMTP_PORT=465 SMTP_SECURE=true
-//   SMTP_USER=alzy1210@163.com SMTP_PASS=<授权码(not password)>
-//   SMTP_FROM="DELFluent <alzy1210@163.com>"
+//   SMTP_USER=you@163.com SMTP_PASS=<授权码(not password)>
+//   SMTP_FROM="DELFluent <you@163.com>"
 
 const nodemailer = require('nodemailer');
+
+// Falls back to the SMTP account, which is already the address users reply to.
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || process.env.SMTP_USER || '';
 
 let transporter = null;
 let mode = 'console';
@@ -178,11 +182,16 @@ function renderVerifyEmail({ name, verifyUrl, expiresInHours, locale }) {
 function renderAdminPasswordChangedEmail({ name, byAdmin }) {
   const subject = '[DELFluent] 您的密码已被管理员重置';
   const text = `Bonjour ${name || ''},\n\n您的账户密码刚刚被管理员 (${byAdmin}) 重置。若非本人请求，请立即联系我们。\n\n— DELFluent`;
+  // Contact address is configured, not hard-coded. Omit the line entirely when
+  // unset rather than render a broken mailto.
+  const contactLine = SUPPORT_EMAIL
+    ? `<p>若非本人请求，请立即联系我们：<a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a></p>`
+    : '<p>若非本人请求，请立即联系我们。</p>';
   const html = `
     <div style="font-family:system-ui,sans-serif;max-width:540px;margin:0 auto;padding:24px">
       <h2 style="color:#991b1b">⚠️ 密码已被管理员重置</h2>
       <p>Bonjour <b>${name || ''}</b>，您的账户密码刚刚被管理员 <code>${byAdmin}</code> 重置。</p>
-      <p>若非本人请求，请立即联系我们：<a href="mailto:alzy1210@163.com">alzy1210@163.com</a></p>
+      ${contactLine}
     </div>`;
   return { subject, text, html };
 }
