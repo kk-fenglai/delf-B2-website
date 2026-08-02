@@ -1,5 +1,11 @@
 // Seed: sample DELF B2 仿真题 (original questions matching exam format)
 //
+// Required env:
+//   - SUPER_ADMIN_EMAIL — the super admin's address. No default: seeding the
+//     wrong address creates a second SUPER_ADMIN instead of updating the
+//     intended one, so this exits rather than guess.
+//   - ADMIN_INITIAL_PASSWORD — optional, but warns loudly in production.
+//
 // Safety:
 //   - The admin user is always upserted (needed for first deploy on any env).
 //   - Demo/sample user accounts are only created in NON-production environments
