@@ -1,10 +1,9 @@
-import { Form, Input, Button, Card, Typography, message, Modal } from 'antd';
+import { Form, Input, Button, message, Modal } from 'antd';
 import { Link, useLocation, useNavigate, type Location } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/auth';
 import { api } from '../api/client';
-
-const { Title } = Typography;
+import MaterialIcon from '../components/MaterialIcon';
 
 export default function Login() {
   const { t, i18n } = useTranslation();
@@ -50,37 +49,76 @@ export default function Login() {
     }
   };
 
+  const fieldWrap = 'auth-field transition-shadow';
+  const inputClass = 'h-12 rounded-[10px] bg-white';
+
   return (
-    <div className="flex justify-center pt-12">
-      <Card style={{ width: 400 }}>
-        <Title level={3} className="text-center">{t('auth.login')}</Title>
-        <Form layout="vertical" onFinish={onSubmit}>
-          <Form.Item label={t('auth.email')} name="email" rules={[{ required: true, type: 'email' }]}>
-            <Input placeholder="your@email.com" />
+    <div className="flex justify-center">
+      <div className="auth-card glass-panel w-full max-w-[440px] rounded-2xl p-6 sm:p-8 shadow-level-2">
+        <div className="text-center mb-6 space-y-1">
+          <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+            <MaterialIcon name="school" size={30} fill />
+          </div>
+          <h1 className="text-headline-md text-on-surface m-0">{t('auth.login')}</h1>
+          <p className="text-body-base text-on-surface-variant m-0">{t('auth.loginSubtitle')}</p>
+        </div>
+
+        <Form layout="vertical" onFinish={onSubmit} requiredMark={false} size="large">
+          <Form.Item
+            label={<span className="text-label-caps uppercase text-on-surface-variant">{t('auth.email')}</span>}
+            name="email"
+            rules={[{ required: true, type: 'email' }]}
+          >
+            <Input
+              className={inputClass}
+              rootClassName={fieldWrap}
+              prefix={<MaterialIcon name="mail" size={20} className="text-outline mr-1" />}
+              placeholder="your@email.com"
+              autoComplete="email"
+            />
           </Form.Item>
-          <Form.Item label={t('auth.password')} name="password" rules={[{ required: true }]}>
-            <Input.Password />
+
+          <Form.Item
+            label={(
+              <div className="w-full flex items-center justify-between">
+                <span className="text-label-caps uppercase text-on-surface-variant">{t('auth.password')}</span>
+                <Link to="/forgot-password" className="text-[13px] font-semibold text-primary">
+                  {t('auth.forgotPassword')}
+                </Link>
+              </div>
+            )}
+            name="password"
+            rules={[{ required: true }]}
+          >
+            <Input.Password
+              className={inputClass}
+              rootClassName={fieldWrap}
+              prefix={<MaterialIcon name="lock" size={20} className="text-outline mr-1" />}
+              placeholder="••••••••"
+              autoComplete="current-password"
+            />
           </Form.Item>
+
           <Button
             type="primary"
             htmlType="submit"
             block
             loading={loading}
-            style={{ backgroundColor: '#1d4ed8', borderColor: '#1d4ed8', color: '#fff' }}
+            className="h-12 rounded-xl font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
             {t('auth.submitLogin')}
           </Button>
         </Form>
-        <div className="mt-4 text-sm space-y-2">
-          <div className="flex justify-between items-center">
-            <Link to="/register">{t('auth.toRegister')}</Link>
-            <Link to="/forgot-password">{t('auth.forgotPassword')}</Link>
-          </div>
-          <div className="text-center">
-            <Link to="/change-password">{t('auth.changePassword.fromLogin')}</Link>
-          </div>
+
+        <div className="mt-6 pt-5 border-t border-outline-variant/40 text-center space-y-2">
+          <p className="text-body-base text-on-surface-variant m-0">
+            <Link to="/register" className="font-semibold text-primary">{t('auth.toRegister')}</Link>
+          </p>
+          <Link to="/change-password" className="text-[13px] text-on-surface-variant hover:text-primary">
+            {t('auth.changePassword.fromLogin')}
+          </Link>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

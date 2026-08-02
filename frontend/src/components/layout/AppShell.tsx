@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../../stores/auth';
 import LanguageSwitcher from '../LanguageSwitcher';
 import FeedbackWidget from '../FeedbackWidget';
+import AnnouncementModal from '../AnnouncementModal';
 import MaterialIcon from '../MaterialIcon';
 import { SIDEBAR_NAV, MOBILE_NAV, isNavActive } from './SidebarNav';
 
@@ -137,6 +138,7 @@ export default function AppShell() {
         })}
       </nav>
       <FeedbackWidget />
+      <AnnouncementModal />
     </div>
   );
 }

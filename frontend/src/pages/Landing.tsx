@@ -1,12 +1,23 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import MaterialIcon from '../components/MaterialIcon';
+import HeroShowcase from '../components/HeroShowcase';
 
 const FEATURES = [
   { icon: 'headphones', key: 'co', to: '/practice/listening', fr: "Compréhension de l'oral" },
   { icon: 'menu_book', key: 'ce', to: '/practice/reading', fr: 'Compréhension des écrits' },
   { icon: 'edit_document', key: 'pe', to: '/practice/writing', fr: 'Production écrite' },
   { icon: 'record_voice_over', key: 'po', to: '/practice/speaking', fr: 'Production orale' },
+];
+
+// The CEFR ladder the two diplomas cover: DELF A1–B2, DALF C1–C2.
+const DELF_LEVELS = ['A1', 'A2', 'B1', 'B2'] as const;
+const DALF_LEVELS = ['C1', 'C2'] as const;
+
+const CERT_FACTS = [
+  { icon: 'workspace_premium', title: 'factValidity', desc: 'factValidityDesc' },
+  { icon: 'verified', title: 'factOfficial', desc: 'factOfficialDesc' },
+  { icon: 'public', title: 'factGlobal', desc: 'factGlobalDesc' },
 ];
 
 export default function Landing() {
@@ -46,23 +57,7 @@ export default function Landing() {
           </Link>
         </div>
 
-        {/* Visual panel — gradient composition with the four épreuves */}
-        <div className="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-primary via-primary-container to-tertiary-container min-h-[320px] md:min-h-[420px] shadow-level-2 hidden sm:block">
-          <div className="absolute inset-0 opacity-20"
-            style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, #ffffff 0%, transparent 40%), radial-gradient(circle at 80% 90%, #2fd9f4 0%, transparent 45%)' }}
-          />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[120px] font-black text-white/20 select-none">B2</span>
-          </div>
-          <div className="absolute bottom-6 left-6 right-6 glass-panel rounded-2xl p-4 flex items-center justify-between gap-3">
-            {FEATURES.map((f) => (
-              <div key={f.key} className="flex flex-col items-center gap-1 text-primary">
-                <MaterialIcon name={f.icon} size={26} fill />
-                <span className="text-label-caps uppercase">{f.key}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <HeroShowcase />
       </section>
 
       {/* 4-skill bento */}
@@ -86,6 +81,95 @@ export default function Landing() {
               </span>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* DELF / DALF explainer — what the diplomas are and where B2 sits */}
+      <section className="py-8">
+        <div className="text-center max-w-2xl mx-auto mb-8">
+          <h2 className="text-headline-md md:text-3xl font-bold text-on-surface mb-2">
+            {t('landing.certs.title')}
+          </h2>
+          <p className="text-body-base text-on-surface-variant mb-0">
+            {t('landing.certs.subtitle')}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          {CERT_FACTS.map((f) => (
+            <div key={f.title} className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 flex gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary-container/10 text-primary flex items-center justify-center shrink-0">
+                <MaterialIcon name={f.icon} size={22} fill />
+              </div>
+              <div className="min-w-0">
+                <div className="text-headline-sm text-on-surface mb-0.5">{t(`landing.certs.${f.title}`)}</div>
+                <p className="text-sm text-on-surface-variant mb-0">{t(`landing.certs.${f.desc}`)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {[
+            { name: 'delf', levels: DELF_LEVELS, accent: 'text-primary bg-primary-container/10' },
+            { name: 'dalf', levels: DALF_LEVELS, accent: 'text-secondary bg-secondary-container/15' },
+          ].map((group) => (
+            <div key={group.name} className="bg-surface-container-lowest rounded-xl p-6 shadow-level-1">
+              <div className="flex items-baseline gap-3 mb-4">
+                <span className={`px-3 py-1 rounded-lg text-headline-sm font-bold ${group.accent}`}>
+                  {t(`landing.certs.${group.name}Title`)}
+                </span>
+                <span className="text-sm text-on-surface-variant">
+                  {t(`landing.certs.${group.name}Subtitle`)}
+                </span>
+              </div>
+              <ul className="space-y-3">
+                {group.levels.map((lv) => {
+                  const isB2 = lv === 'B2';
+                  return (
+                    <li
+                      key={lv}
+                      className={`flex gap-3 rounded-lg p-3 ${
+                        isB2 ? 'bg-primary-container/10 ring-1 ring-primary/30' : ''
+                      }`}
+                    >
+                      <span
+                        className={`shrink-0 w-11 h-11 rounded-lg flex items-center justify-center font-bold ${
+                          isB2 ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant'
+                        }`}
+                      >
+                        {lv}
+                      </span>
+                      <div className="min-w-0">
+                        {isB2 && (
+                          <span className="inline-block text-label-caps uppercase text-primary mb-0.5">
+                            {t('landing.certs.b2Badge')}
+                          </span>
+                        )}
+                        <p className="text-sm text-on-surface-variant mb-0">
+                          {t(`landing.certs.levels.${lv}`)}
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 glass-panel rounded-xl p-6 flex flex-col md:flex-row md:items-center gap-4">
+          <div className="min-w-0">
+            <p className="text-body-base text-on-surface mb-1">{t('landing.certs.b2Note')}</p>
+            <p className="text-sm text-on-surface-variant mb-0">{t('landing.certs.scoring')}</p>
+          </div>
+          <Link
+            to="/register"
+            className="bg-primary text-on-primary px-6 py-3 rounded-xl text-headline-sm inline-flex items-center gap-2 shrink-0 self-start md:self-auto md:ml-auto"
+          >
+            {t('landing.certs.cta')}
+            <MaterialIcon name="arrow_forward" size={20} />
+          </Link>
         </div>
       </section>
 

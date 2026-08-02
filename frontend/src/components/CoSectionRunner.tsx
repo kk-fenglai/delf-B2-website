@@ -124,9 +124,12 @@ export default function CoSectionRunner({
         }))}
       />
 
-      {/* Mockup split: sticky "Document Sonore" card left, question cards right */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        <div className="md:col-span-5 lg:col-span-4 md:sticky md:top-28 self-start">
+      {/* Audio on top, questions underneath. The player sticks below the top bar
+          so it stays reachable while scrolling a long question list. */}
+      <div className="space-y-6">
+        {/* top-20 == the ExamLayout top bar height, so the card parks flush
+            under it with no gap for content to show through. */}
+        <div className="md:sticky md:top-20 z-10">
           {current.doc.audioUrl ? (
             <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1">
               <div className="flex items-center justify-between mb-3">
@@ -162,7 +165,7 @@ export default function CoSectionRunner({
           )}
         </div>
 
-        <div className="md:col-span-7 lg:col-span-8">
+        <div>
           <Card bordered={false} className="app-surface">
             {current.qs.map((q, qi) => (
               <div key={q.id} className={qi > 0 ? 'mt-5 pt-5 border-t' : ''}>

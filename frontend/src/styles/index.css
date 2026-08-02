@@ -87,6 +87,60 @@ body {
   background: linear-gradient(180deg, var(--primarySoftA) 0%, var(--primarySoftB) 55%);
 }
 
+/* ── Auth pages (student /login, /admin/login) ───────────────────────────── */
+
+.auth-card {
+  animation: auth-card-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes auth-card-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Blue focus halo on the field wrapper. Scoped under .auth-card so it outranks
+   AntD's own :focus-within shadow, which is injected after this stylesheet. */
+.auth-card .auth-field:focus-within {
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+  border-color: var(--primaryContainer);
+}
+
+/* AntD labels are inline by default — stretch them so a label row can put a
+   secondary link (e.g. "forgot password") flush right of the field name. */
+.auth-card .ant-form-item-label {
+  width: 100%;
+  padding-bottom: 6px;
+}
+
+.auth-card .ant-form-item-label > label {
+  width: 100%;
+  height: auto;
+}
+
+.auth-card .ant-form-item-label > label::after {
+  display: none;
+}
+
+/* Admin login canvas — slow drifting navy gradient, no WebGL needed */
+.auth-admin-bg {
+  background: linear-gradient(125deg, #010514 0%, #0a1f4d 35%, #05122f 65%, #010514 100%);
+  background-size: 300% 300%;
+  animation: auth-admin-drift 24s ease-in-out infinite;
+}
+
+@keyframes auth-admin-drift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* Respect users who ask the OS to reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .auth-card,
+  .auth-admin-bg {
+    animation: none;
+  }
+}
+
 .app-glass {
   background: var(--bgElevated);
   border-radius: 14px;

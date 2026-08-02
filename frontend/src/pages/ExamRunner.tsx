@@ -1098,41 +1098,39 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           />
 
           {q.type === 'ESSAY' ? (
-            // PE — mockup split: sticky prompt/timer column left, editor right.
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-4">
-              <div className="md:col-span-5 lg:col-span-4 space-y-4 md:sticky md:top-28 self-start">
-                {sectionSeconds > 0 && (
-                  <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1">
-                    <div className="text-label-caps uppercase text-on-surface-variant mb-1">
+            // PE — prompt (and timer) on top, the writing area underneath.
+            <div className="space-y-4 mb-4">
+              {sectionSeconds > 0 && (
+                <div className="bg-surface-container-lowest rounded-xl p-4 shadow-level-1 flex items-center gap-4">
+                  <div className="shrink-0">
+                    <div className="text-label-caps uppercase text-on-surface-variant">
                       {t(`skill.${q.skill}`)}
                     </div>
-                    <div className={`text-4xl font-bold tabular-nums mb-3 ${timerDanger ? 'text-error' : 'text-on-surface'}`}>
+                    <div className={`text-3xl font-bold tabular-nums ${timerDanger ? 'text-error' : 'text-on-surface'}`}>
                       {formatTime(remaining)}
                     </div>
-                    <div className="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${timerDanger ? 'bg-error' : 'bg-tertiary'}`}
-                        style={{ width: `${Math.max(0, Math.min(100, (remaining / sectionSeconds) * 100))}%` }}
-                      />
-                    </div>
+                  </div>
+                  <div className="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${timerDanger ? 'bg-error' : 'bg-tertiary'}`}
+                      style={{ width: `${Math.max(0, Math.min(100, (remaining / sectionSeconds) * 100))}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 border-l-4 border-primary-container">
+                <div className="text-label-caps uppercase text-primary mb-2">
+                  {current + 1}. {t(`skill.${q.skill}`)}
+                </div>
+                {q.passage && (
+                  <div className="passage text-sm mb-3 max-h-64 overflow-y-auto">
+                    {renderPassage(q.passage)}
                   </div>
                 )}
-                <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 border-l-4 border-primary-container">
-                  <div className="text-label-caps uppercase text-primary mb-2">
-                    {current + 1}. {t(`skill.${q.skill}`)}
-                  </div>
-                  {q.passage && (
-                    <div className="passage text-sm mb-3 max-h-64 overflow-y-auto">
-                      {renderPassage(q.passage)}
-                    </div>
-                  )}
-                  <p className="font-serif text-passage-serif text-on-surface mb-0">{q.prompt}</p>
-                </div>
+                <p className="font-serif text-passage-serif text-on-surface mb-0">{q.prompt}</p>
               </div>
-              <div className="md:col-span-7 lg:col-span-8">
-                <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 focus-within:ring-2 focus-within:ring-primary/30">
-                  {renderAnswerInput()}
-                </div>
+              <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 focus-within:ring-2 focus-within:ring-primary/30">
+                {renderAnswerInput()}
               </div>
             </div>
           ) : (

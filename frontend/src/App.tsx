@@ -44,6 +44,7 @@ const AdminExamEdit = lazy(() => import('./pages/admin/AdminExamEdit'));
 const AdminExamImport = lazy(() => import('./pages/admin/AdminExamImport'));
 const AdminPayments = lazy(() => import('./pages/admin/AdminPayments'));
 const AdminFeedback = lazy(() => import('./pages/admin/AdminFeedback'));
+const AdminAnnouncement = lazy(() => import('./pages/admin/AdminAnnouncement'));
 const AdminChangePassword = lazy(() => import('./pages/admin/AdminChangePassword'));
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -91,6 +92,7 @@ export default function App() {
           <Route path="exams" element={<AdminExams />} />
           <Route path="payments" element={<AdminPayments />} />
           <Route path="feedback" element={<AdminFeedback />} />
+          <Route path="announcement" element={<AdminAnnouncement />} />
           <Route path="exams/import" element={<AdminExamImport />} />
           <Route path="exams/:id" element={<AdminExamEdit />} />
         </Route>

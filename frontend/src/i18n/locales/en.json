@@ -4,6 +4,9 @@
     "tagline": "DELF B2 Practice Platform",
     "footer": "DELFluent © {{year}} · DELF B2 Practice Platform · All questions are original simulations"
   },
+  "announcement": {
+    "gotIt": "Got it"
+  },
   "feedback": {
     "title": "Feedback",
     "intro": "Tell us your suggestions, the problems you ran into, or content errors — we read every message.",
@@ -144,11 +147,47 @@
     "examGuideLink": "Read the full exam walkthrough",
     "mockTitle": "Full Mock Exam · All 4 skills",
     "mockDesc": "Simulate the real exam: listening, reading, writing, speaking in sequence",
+    "showcase": {
+      "alt": "A tablet on a desk showing AI feedback on a DELF B2 essay, next to a workbook and notes",
+      "label": "Score preview",
+      "sample": "Sample",
+      "total": "Total",
+      "passMark": "Pass mark 50",
+      "passed": "Above the pass mark",
+      "tagline": "Train each skill separately, scored on the real B2 scale"
+    },
+    "certs": {
+      "title": "Understanding DELF & DALF",
+      "subtitle": "Official French-language diplomas awarded by the French Ministry of Education. Pass once, valid for life, recognised worldwide.",
+      "factValidity": "Valid for life",
+      "factValidityDesc": "The diploma never expires — no retaking",
+      "factOfficial": "Official diploma",
+      "factOfficialDesc": "Awarded by the French Ministry of Education, papers set by France Éducation international",
+      "factGlobal": "Recognised worldwide",
+      "factGlobalDesc": "Official exam centres in over 170 countries",
+      "delfTitle": "DELF",
+      "delfSubtitle": "Diploma in French Language Studies · beginner to upper-intermediate",
+      "dalfTitle": "DALF",
+      "dalfSubtitle": "Advanced Diploma in French Language · proficiency",
+      "levels": {
+        "A1": "Breakthrough. Handle simple everyday exchanges using the most basic expressions.",
+        "A2": "Waystage. Cope with simple everyday tasks and describe your background and surroundings.",
+        "B1": "Threshold. Handle most situations while travelling or at work, and give reasons for your opinions.",
+        "B2": "Vantage. Argue a complex topic clearly and interact naturally with native speakers.",
+        "C1": "Advanced. Understand long, demanding texts and express yourself fluently in academic and professional settings.",
+        "C2": "Mastery. Near-native command — understand and summarise complex information precisely."
+      },
+      "b2Badge": "Our focus",
+      "b2Note": "B2 is the level most often required for bachelor's and master's admission at French universities — and what this platform trains you for.",
+      "scoring": "Four skills, 25 points each, 100 in total. You pass with 50 overall and at least 5 in every skill.",
+      "cta": "Start B2 practice free"
+    },
     "myExamsTitle": "My Question Bank",
     "myExamsDesc": "Create and practice your own reading, writing, listening and speaking sets · 2 free sets per skill"
   },
   "auth": {
     "login": "Sign in",
+    "loginSubtitle": "Welcome back — pick up your DELF B2 prep where you left off",
     "register": "Sign up",
     "email": "Email",
     "password": "Password",
@@ -261,7 +300,17 @@
     "strengths": "Strengths",
     "focusAreas": "Focus Areas",
     "accuracyOf": "{{n}}% accuracy",
-    "analysisEmpty": "Not enough practice data yet — complete a few exercises first."
+    "analysisEmpty": "Not enough practice data yet — complete a few exercises first.",
+    "adviceTitle": "What to work on next",
+    "practiceNow": "Practise {{skill}}",
+    "strengthAdvice": "{{skill}} is at {{n}}%. One or two sessions a week is enough to keep it sharp — spend the rest of your time on the weaker skills.",
+    "focusAdvice": {
+      "CO": "Listening at {{n}}%. Answer on a single listen first, then replay sentence by sentence against the transcript, noting the liaisons and numbers you missed.",
+      "CE": "Reading at {{n}}%. Underline the keywords in the question before going back to the text, and watch for author-attitude questions and paraphrase traps.",
+      "PE": "Writing at {{n}}%. Outline in four parts — position, evidence, concession, conclusion — then run the AI review to fix grammar and linking words.",
+      "PO": "Speaking at {{n}}%. Record yourself on the real timing (10 min prep, 5 min talk), then replay and mark every hesitation to rehearse."
+    },
+    "focusAdviceGeneric": "{{skill}} is at {{n}}% — make it your priority."
   },
   "practice": {
     "title": "Practice Library",

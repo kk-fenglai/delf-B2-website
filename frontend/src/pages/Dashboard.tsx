@@ -193,6 +193,48 @@ export default function Dashboard() {
               </div>
             </div>
           )}
+
+          {/* Actionable next steps: a concrete drill per weak skill, then a
+              maintenance note for the strongest one. */}
+          {(analysis.focus.length > 0 || analysis.strengths.length > 0) && (
+            <div className="mt-5 pt-5 border-t border-outline-variant/30">
+              <div className="text-label-caps uppercase text-on-surface-variant mb-3 flex items-center gap-1">
+                <MaterialIcon name="lightbulb" size={16} />
+                {t('dashboard.adviceTitle')}
+              </div>
+              <div className="space-y-3">
+                {analysis.focus.map((s) => (
+                  <div key={s.skill} className="rounded-lg bg-surface-container-low p-3">
+                    <p className="text-sm text-on-surface m-0 mb-2">
+                      {t(`dashboard.focusAdvice.${s.skill}`, {
+                        n: Math.round(s.accuracy),
+                        skill: t(`skill.${s.skill}`),
+                        defaultValue: t('dashboard.focusAdviceGeneric', {
+                          skill: t(`skill.${s.skill}`),
+                          n: Math.round(s.accuracy),
+                        }),
+                      })}
+                    </p>
+                    <Link
+                      to={`/practice/${SKILL_PATH[s.skill]}`}
+                      className="text-primary text-sm font-semibold inline-flex items-center gap-1"
+                    >
+                      {t('dashboard.practiceNow', { skill: t(`skill.${s.skill}`) })}
+                      <MaterialIcon name="arrow_forward" size={16} />
+                    </Link>
+                  </div>
+                ))}
+                {analysis.strengths[0] && (
+                  <p className="text-sm text-on-surface-variant m-0">
+                    {t('dashboard.strengthAdvice', {
+                      skill: t(`skill.${analysis.strengths[0].skill}`),
+                      n: Math.round(analysis.strengths[0].accuracy),
+                    })}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Recently practiced */}
@@ -201,7 +243,9 @@ export default function Dashboard() {
           {data.recentSessions.length === 0 ? (
             <div className="text-on-surface-variant text-sm py-6 text-center">{t('dashboard.noSessions')}</div>
           ) : (
-            <ul className="divide-y divide-outline-variant/30">
+            // Capped height + scroll so a long history never stretches the card
+            // past the analysis panel beside it.
+            <ul className="divide-y divide-outline-variant/30 max-h-80 overflow-y-auto pr-1">
               {data.recentSessions.map((s: any) => {
                 const pct = s.maxScore > 0 ? Math.round((s.totalScore / s.maxScore) * 100) : null;
                 return (

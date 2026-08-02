@@ -1,10 +1,36 @@
 import { useState } from 'react';
-import { Card, Form, Input, Button, Typography, Alert, Space, Steps } from 'antd';
-import { LockOutlined, MailOutlined, SafetyOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Alert } from 'antd';
 import { Link, useLocation, useNavigate, type Location } from 'react-router-dom';
 import { useAdminAuth } from '../../stores/adminAuth';
+import MaterialIcon from '../../components/MaterialIcon';
 
-const { Title, Text } = Typography;
+/** Two-dot progress rail: 密码 → 邮箱验证码 */
+function StepRail({ step }: { step: 0 | 1 }) {
+  const dot = (index: 0 | 1, label: string) => {
+    const done = step > index;
+    const active = step === index;
+    return (
+      <div className={`flex items-center gap-2 ${active || done ? '' : 'opacity-40'}`}>
+        <div
+          className={`w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-semibold transition-colors ${
+            active || done ? 'bg-primary text-on-primary' : 'bg-surface-container-highest text-on-surface'
+          }`}
+        >
+          {done ? <MaterialIcon name="check" size={14} /> : index + 1}
+        </div>
+        <span className={`text-label-caps ${active || done ? 'text-primary' : 'text-on-surface'}`}>{label}</span>
+      </div>
+    );
+  };
+
+  return (
+    <nav className="flex items-center justify-between rounded-xl bg-surface-container-low px-4 py-3">
+      {dot(0, '密码')}
+      <div className="h-px flex-grow mx-3 bg-outline-variant/50" />
+      {dot(1, '邮箱验证码')}
+    </nav>
+  );
+}
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -42,58 +68,77 @@ export default function AdminLogin() {
     }
   };
 
+  const fieldWrap = 'auth-field transition-shadow';
+  const inputClass = 'h-12 rounded-[10px]';
+  const submitClass = 'h-12 rounded-xl font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98]';
+
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg,#1e293b 0%,#7f1d1d 100%)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
-    }}>
-      <Card className="w-full max-w-[420px]" style={{ boxShadow: '0 10px 40px rgba(0,0,0,0.3)' }}>
-        <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <SafetyOutlined style={{ fontSize: 48, color: '#dc2626' }} />
-          <Title level={3} style={{ marginTop: 12, marginBottom: 4 }}>管理员登录</Title>
-          <Text type="secondary">DELFluent Admin Console</Text>
-        </div>
+    <div className="auth-admin-bg min-h-screen flex items-center justify-center p-4">
+      <div className="auth-card w-full max-w-[440px] rounded-2xl bg-white/95 backdrop-blur-md border border-white/20 shadow-2xl p-6 sm:p-8">
+        <header className="flex flex-col items-center text-center gap-1 mb-6">
+          <div className="w-14 h-14 mb-3 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+            <MaterialIcon name="admin_panel_settings" size={32} fill />
+          </div>
+          <h1 className="text-headline-md text-on-surface m-0">管理员登录</h1>
+          <p className="text-body-base text-on-surface-variant m-0">DELFluent Admin Console</p>
+        </header>
 
-        <Steps
-          size="small"
-          current={step}
-          style={{ marginBottom: 24 }}
-          items={[{ title: '密码' }, { title: '邮箱验证码' }]}
-        />
+        <StepRail step={step} />
 
-        {error && <Alert type="error" message={error} showIcon style={{ marginBottom: 16 }} />}
+        {error && <Alert type="error" message={error} showIcon className="mt-4" />}
 
         {step === 0 && (
-          <Form layout="vertical" onFinish={onPassword} autoComplete="off">
-            <Form.Item name="email" label="邮箱" rules={[{ required: true, type: 'email' }]}>
-              <Input prefix={<MailOutlined />} placeholder="admin@yourdomain.com" size="large" />
+          <Form layout="vertical" onFinish={onPassword} autoComplete="off" requiredMark={false} size="large" className="mt-5">
+            <Form.Item
+              name="email"
+              label={<span className="text-label-caps uppercase text-on-surface-variant">邮箱</span>}
+              rules={[{ required: true, type: 'email' }]}
+            >
+              <Input
+                className={inputClass}
+                rootClassName={fieldWrap}
+                prefix={<MaterialIcon name="mail" size={20} className="text-outline mr-1" />}
+                placeholder="admin@yourdomain.com"
+              />
             </Form.Item>
-            <Form.Item name="password" label="密码" rules={[{ required: true }]}>
-              <Input.Password prefix={<LockOutlined />} placeholder="Password" size="large" />
+            <Form.Item
+              name="password"
+              label={<span className="text-label-caps uppercase text-on-surface-variant">密码</span>}
+              rules={[{ required: true }]}
+            >
+              <Input.Password
+                className={inputClass}
+                rootClassName={fieldWrap}
+                prefix={<MaterialIcon name="lock" size={20} className="text-outline mr-1" />}
+                placeholder="••••••••"
+              />
             </Form.Item>
-            <Button type="primary" htmlType="submit" block size="large" loading={loading} danger>
+            <Button type="primary" htmlType="submit" block loading={loading} className={submitClass}>
               下一步
             </Button>
-            <div style={{ marginTop: 16, textAlign: 'center' }}>
-              <Link to="/admin/change-password">修改密码（需先登录）</Link>
+            <div className="mt-4 text-center">
+              <Link to="/admin/change-password" className="text-[13px] text-on-surface-variant hover:text-primary">
+                修改密码（需先登录）
+              </Link>
             </div>
           </Form>
         )}
 
         {step === 1 && (
-          <Form layout="vertical" onFinish={onVerify} autoComplete="off">
+          <Form layout="vertical" onFinish={onVerify} autoComplete="off" requiredMark={false} size="large" className="mt-5">
             {emailDelivery === 'console' && (
               <Alert
                 type="warning"
                 showIcon
-                style={{ marginBottom: 16 }}
+                className="mb-4"
                 message="当前未通过 SMTP 发信，邮箱里不会有验证码"
                 description="请在运行后端服务的终端窗口查找以「📧」开头的日志，其中包含 6 位验证码。生产环境请在 backend/.env 配置 SMTP_HOST、SMTP_USER、SMTP_PASS 等变量。"
               />
             )}
             <Alert
-              type="info" showIcon style={{ marginBottom: 16 }}
+              type="info"
+              showIcon
+              className="mb-4"
               message={emailDelivery === 'console'
                 ? '验证码已生成，请按上方说明在服务器日志中查看'
                 : (twoFaMessage || '验证码已发送到您的邮箱')}
@@ -102,27 +147,36 @@ export default function AdminLogin() {
                 : '请查收邮件并输入 6 位验证码，10 分钟内有效。'}
             />
             <Form.Item
-              name="code" label="6 位验证码"
+              name="code"
+              label={<span className="text-label-caps uppercase text-on-surface-variant">6 位验证码</span>}
               rules={[{ required: true, len: 6, pattern: /^\d{6}$/ }]}
             >
-              <Input size="large" maxLength={6} placeholder="123456" autoFocus
-                style={{ letterSpacing: 8, fontSize: 22, textAlign: 'center' }} />
+              <Input
+                className="h-14 rounded-[10px] text-center"
+                rootClassName={fieldWrap}
+                maxLength={6}
+                placeholder="123456"
+                inputMode="numeric"
+                autoFocus
+                style={{ letterSpacing: 10, fontSize: 24, fontWeight: 600 }}
+              />
             </Form.Item>
-            <Space direction="vertical" style={{ width: '100%' }}>
-              <Button type="primary" htmlType="submit" block size="large" loading={loading} danger>
-                验证并登录
-              </Button>
-              <Button block type="link" onClick={() => { clearPending(); setStep(0); }}>
-                返回上一步
-              </Button>
-            </Space>
+            <Button type="primary" htmlType="submit" block loading={loading} className={submitClass}>
+              验证并登录
+            </Button>
+            <Button block type="link" className="mt-2" onClick={() => { clearPending(); setStep(0); }}>
+              返回上一步
+            </Button>
           </Form>
         )}
 
-        <div style={{ marginTop: 24, textAlign: 'center', color: '#9ca3af', fontSize: 12 }}>
-          🔒 所有登录活动均被记录。异常访问将自动锁定账户。
+        <div className="mt-6 pt-5 border-t border-outline-variant/40 flex items-center justify-center gap-2 text-center">
+          <MaterialIcon name="verified_user" size={16} className="text-outline" />
+          <p className="text-[11px] text-on-surface-variant m-0">
+            所有登录活动均被记录 · 异常访问将自动锁定账户
+          </p>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
