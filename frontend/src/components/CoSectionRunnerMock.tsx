@@ -187,26 +187,35 @@ export default function CoSectionRunnerMock({
       />
 
       {current.doc.audioUrl ? (
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg mb-4 border border-blue-100 flex items-center flex-wrap gap-3">
-          <Tag color="blue" icon={<SoundOutlined />}>🎧 Audio</Tag>
-          <span className="text-sm" style={{ color: 'var(--textSecondary)' }}>{hint}</span>
-          {phase === 'IDLE' && remaining > 0 && (
-            <span className="text-xs tabular-nums" style={{ color: 'var(--textSecondary)' }}>
-              <ClockCircleOutlined /> {t('exam.coCountdownHint', { sec: remaining })}
+        <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-label-caps uppercase text-on-surface-variant inline-flex items-center gap-1.5">
+              <SoundOutlined /> Document Sonore
             </span>
-          )}
-          <span className="ml-auto flex items-center gap-2">
-            <span className="text-xs tabular-nums text-muted">
-              {playsDone} / {current.doc.maxPlays}
+            <span className="text-label-caps uppercase px-2 py-0.5 rounded text-primary bg-primary-container/10 tabular-nums">
+              {t('exam.coPlayBtn', { n: Math.min(playsDone + 1, current.doc.maxPlays), total: current.doc.maxPlays })}
             </span>
-            {phase === 'PLAYING' ? (
-              <Tag color="orange">{t('exam.coPlaying')}</Tag>
-            ) : playsLeft > 0 ? (
-              <Button type="primary" icon={<PlayCircleOutlined />} onClick={startPlay}>
-                {t('exam.coPlayBtn', { n: playsDone + 1, total: current.doc.maxPlays })}
-              </Button>
-            ) : null}
-          </span>
+          </div>
+          <div className="flex items-center flex-wrap gap-3">
+            <span className="text-sm text-on-surface-variant">{hint}</span>
+            {phase === 'IDLE' && remaining > 0 && (
+              <span className="text-xs tabular-nums text-on-surface-variant">
+                <ClockCircleOutlined /> {t('exam.coCountdownHint', { sec: remaining })}
+              </span>
+            )}
+            <span className="ml-auto flex items-center gap-2">
+              <span className="text-xs tabular-nums text-muted">
+                {playsDone} / {current.doc.maxPlays}
+              </span>
+              {phase === 'PLAYING' ? (
+                <Tag color="orange">{t('exam.coPlaying')}</Tag>
+              ) : playsLeft > 0 ? (
+                <Button type="primary" shape="round" icon={<PlayCircleOutlined />} onClick={startPlay}>
+                  {t('exam.coPlayBtn', { n: playsDone + 1, total: current.doc.maxPlays })}
+                </Button>
+              ) : null}
+            </span>
+          </div>
         </div>
       ) : (
         <Alert type="warning" showIcon className="mb-3" message={t('exam.audioNotUploaded')} />
@@ -215,8 +224,11 @@ export default function CoSectionRunnerMock({
       <Card bordered={false} className="app-surface">
         {current.qs.map((q, qi) => (
           <div key={q.id} className={qi > 0 ? 'mt-5 pt-5 border-t' : ''}>
+            <div className="text-label-caps uppercase text-on-surface-variant mb-1">
+              Question {qi + 1}
+            </div>
             <Paragraph className="text-base font-semibold mb-3">
-              {qi + 1}. {q.prompt}
+              {q.prompt}
             </Paragraph>
             {renderAnswer(q, false)}
           </div>

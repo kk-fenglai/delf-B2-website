@@ -3,17 +3,18 @@ import {
   Typography, Button, Modal, Segmented, Space, message, Checkbox, Skeleton, Alert,
 } from 'antd';
 import {
-  CheckOutlined, SafetyCertificateOutlined, CreditCardOutlined,
+  SafetyCertificateOutlined, CreditCardOutlined,
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/auth';
 import { useGeoStore } from '../stores/geo';
+import MaterialIcon from '../components/MaterialIcon';
 import UpgradeDifferenceCard from '../components/UpgradeDifferenceCard';
 import type { CatalogProduct, CatalogPrice, Plan, TrialPublicConfig, TrialStatus, PaymentsPublicConfig } from '../types';
 
-const { Title, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 type BillingCycle = 'monthly' | 'yearly';
 type Currency = 'CNY' | 'USD' | 'EUR';
@@ -303,10 +304,8 @@ export default function Pricing() {
   return (
     <div className="max-w-6xl mx-auto">
       <div className="text-center mb-10">
-        <Title level={2} style={{ marginBottom: 8 }}>{t('pricing.title')}</Title>
-        <Paragraph style={{ color: 'var(--textMuted)', marginBottom: 0, fontSize: 16 }}>
-          {t('pricing.subtitle')}
-        </Paragraph>
+        <h1 className="text-display-lg text-on-surface mb-2">{t('pricing.title')}</h1>
+        <p className="text-base text-on-surface-variant mb-0">{t('pricing.subtitle')}</p>
       </div>
 
       {(!paymentsEnabled || showTrialFeature) && (
@@ -457,38 +456,28 @@ export default function Pricing() {
             return (
               <div
                 key={c.key}
-                className="relative rounded-2xl p-7 flex flex-col h-full"
-                style={{
-                  background: highlight
-                    ? 'linear-gradient(180deg, #eff6ff 0%, #ffffff 40%)'
-                    : '#ffffff',
-                  boxShadow: highlight
-                    ? '0 18px 50px rgba(37, 99, 235, 0.18)'
-                    : '0 6px 18px rgba(15, 23, 42, 0.06)',
-                }}
+                className={`relative rounded-2xl p-7 flex flex-col h-full bg-white ${
+                  highlight
+                    ? 'border-l-4 border-primary shadow-level-2 lg:-translate-y-2'
+                    : 'shadow-level-1'
+                }`}
               >
                 {highlight && (
-                  <div
-                    className="absolute top-5 right-5 text-xs font-semibold px-2.5 py-1 rounded-full"
-                    style={{ background: '#2563eb', color: '#ffffff', letterSpacing: '0.02em' }}
-                  >
+                  <div className="absolute top-5 right-5 text-label-caps uppercase px-2.5 py-1 rounded-full bg-primary text-on-primary tracking-wide">
                     {t('pricing.popular')}
                   </div>
                 )}
 
-                <div
-                  className="text-base font-semibold mb-4"
-                  style={{ color: 'var(--text)' }}
-                >
+                <div className="text-base font-semibold mb-4 text-on-surface">
                   {name}
                 </div>
 
                 <div className="mb-6 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold" style={{ color: 'var(--text)' }}>
+                  <span className="text-display-lg text-primary tabular-nums">
                     {priceText}
                   </span>
                   {periodText && (
-                    <span className="text-sm" style={{ color: 'var(--textMuted)' }}>
+                    <span className="text-sm text-on-surface-variant">
                       {periodText}
                     </span>
                   )}
@@ -502,10 +491,8 @@ export default function Pricing() {
                 <div className="space-y-2.5 mb-6 flex-grow">
                   {features.map((f, i) => (
                     <div key={i} className="flex items-start gap-2 text-sm">
-                      <CheckOutlined
-                        style={{ color: '#2563eb', marginTop: 4, fontSize: 12, flexShrink: 0 }}
-                      />
-                      <span style={{ color: 'var(--text)' }}>{f}</span>
+                      <MaterialIcon name="check_circle" size={16} fill className="text-primary mt-0.5 shrink-0" />
+                      <span className="text-on-surface">{f}</span>
                     </div>
                   ))}
                 </div>

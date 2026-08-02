@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { User } from '../types';
 import { api, ACCESS_KEY, REFRESH_KEY } from '../api/client';
 import i18n from '../i18n';
+import { ANNOUNCEMENT_SEEN_KEY } from '../components/AnnouncementModal';
 
 interface RegisterResult {
   email: string;
@@ -30,6 +31,8 @@ export const useAuthStore = create<AuthState>()(
           const { data } = await api.post('/auth/login', { email, password });
           localStorage.setItem(ACCESS_KEY, data.accessToken);
           localStorage.setItem(REFRESH_KEY, data.refreshToken);
+          // Let the site announcement show again for this new sign-in.
+          sessionStorage.removeItem(ANNOUNCEMENT_SEEN_KEY);
           set({ user: data.user });
         } finally {
           set({ loading: false });

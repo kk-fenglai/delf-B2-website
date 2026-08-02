@@ -4,6 +4,9 @@
     "tagline": "DELF B2 真题训练平台",
     "footer": "DELFluent © {{year}} · DELF B2 真题训练平台 · 本站题目均为原创仿真题"
   },
+  "announcement": {
+    "gotIt": "知道了"
+  },
   "feedback": {
     "title": "意见反馈",
     "intro": "欢迎告诉我们你的建议、遇到的问题或内容纠错，我们会认真查看。",
@@ -98,6 +101,10 @@
     "changePassword": "修改密码",
     "logout": "退出登录"
   },
+  "shell": {
+    "startPractice": "开始练习",
+    "exitExam": "退出练习"
+  },
   "plan": {
     "FREE": "免费版",
     "STANDARD": "标准版",
@@ -140,11 +147,47 @@
     "examGuideLink": "查看完整考试流程说明",
     "mockTitle": "全真模拟 · 4 技能连做",
     "mockDesc": "按真实考试流程连续作答听、读、写、说 · 体验完整考场节奏",
+    "showcase": {
+      "alt": "书桌上的平板电脑正显示 DELF B2 作文的 AI 批改结果，旁边是练习册与笔记",
+      "label": "成绩预览",
+      "sample": "示例",
+      "total": "总分",
+      "passMark": "通过线 50",
+      "passed": "已达通过线",
+      "tagline": "四项拆开练，按真实评分标准算分"
+    },
+    "certs": {
+      "title": "认识 DELF 与 DALF",
+      "subtitle": "法国教育部颁发的官方法语文凭，一次通过、终身有效，全球通用。",
+      "factValidity": "终身有效",
+      "factValidityDesc": "证书不设有效期，无需重考",
+      "factOfficial": "官方文凭",
+      "factOfficialDesc": "法国教育部颁发，France Éducation international 统一命题",
+      "factGlobal": "全球认可",
+      "factGlobalDesc": "170 多个国家设有官方考点",
+      "delfTitle": "DELF",
+      "delfSubtitle": "法语学习文凭 · 入门到中高级",
+      "dalfTitle": "DALF",
+      "dalfSubtitle": "法语高级文凭 · 精通级",
+      "levels": {
+        "A1": "入门级。能进行简单的日常交流，理解并使用最基础的表达。",
+        "A2": "初级。能应对日常生活中的简单任务，描述个人经历与周围环境。",
+        "B1": "进阶级。能应对旅行与工作中的多数情境，表达观点并说明理由。",
+        "B2": "中高级。能就复杂话题清晰论证，与母语者自然流畅地交流。",
+        "C1": "高级。能理解长篇复杂文本，在学术与职业场合流利、精准地表达。",
+        "C2": "精通级。接近母语者水平，能准确理解并归纳各类复杂信息。"
+      },
+      "b2Badge": "本平台专注",
+      "b2Note": "B2 是申请法国高校本科与硕士时最常被要求的语言等级，也是本平台的训练重点。",
+      "scoring": "四项技能各 25 分，总分 100 分；总分 ≥ 50 且每项 ≥ 5 即为通过。",
+      "cta": "开始 B2 免费训练"
+    },
     "myExamsTitle": "我的题库",
     "myExamsDesc": "创建并练习你自己的阅读、写作、听力、口语套题 · 免费用户每种题型可各建 2 套"
   },
   "auth": {
     "login": "登录",
+    "loginSubtitle": "欢迎回来，继续你的 DELF B2 备考",
     "register": "免费注册",
     "email": "邮箱",
     "password": "密码",
@@ -249,7 +292,25 @@
     "viewDetail": "查看详情",
     "score": "得分",
     "loading": "加载中...",
-    "userOwnedTag": "我的题库"
+    "userOwnedTag": "我的题库",
+    "subGreeting": "已累计完成 {{n}} 道练习题",
+    "skillMastery": "四项能力掌握度",
+    "overall": "综合",
+    "analysis": "强弱项分析",
+    "strengths": "优势项",
+    "focusAreas": "重点提升",
+    "accuracyOf": "正确率 {{n}}%",
+    "analysisEmpty": "练习数据不足，先去完成几组练习吧。",
+    "adviceTitle": "接下来怎么练",
+    "practiceNow": "去练{{skill}}",
+    "strengthAdvice": "{{skill}}已达 {{n}}%，保持每周 1–2 次练习巩固手感即可，把时间留给弱项。",
+    "focusAdvice": {
+      "CO": "听力 {{n}}%。先只听一遍做题，再逐句回听对照原文，重点记下听漏的连读和数字信息。",
+      "CE": "阅读 {{n}}%。做题时先划出题干关键词再回原文定位，注意作者态度题和同义改写陷阱。",
+      "PE": "写作 {{n}}%。按「立场—论据—让步—结论」四段搭骨架，写完用 AI 批改逐条改语法和连接词。",
+      "PO": "口语 {{n}}%。用 10 分钟提纲 + 5 分钟陈述的真实节奏录音，回听时标出卡顿处补足表达。"
+    },
+    "focusAdviceGeneric": "{{skill}}正确率 {{n}}%，建议优先安排练习。"
   },
   "practice": {
     "title": "题库练习",
@@ -282,7 +343,10 @@
       "mockTag": "4 技能连做",
       "comingSoonTag": "即将上线",
       "poDisabledDesc": "AI 口语评分功能暂时下线，敬请期待。",
-      "aiGradedTag": "AI 评分"
+      "aiGradedTag": "AI 评分",
+      "accuracy": "正确率",
+      "mockDuration": "全程 2 小时 30 分",
+      "startSimulation": "开始模拟"
     },
     "po": {
       "backToHub": "返回练习中心",
@@ -437,6 +501,8 @@
   },
   "mistakes": {
     "title": "错题本",
+    "totalMistakes": "错题总数",
+    "bySkill": "按技能分布",
     "totalCount": "共 {{n}} 题待复习",
     "infoTitle": "使用说明",
     "infoDesc": "所有答错的题目会自动收录到此处。重新练习并答对后，题目会自动从错题本中移除。",
@@ -462,6 +528,11 @@
   "myExams": {
     "title": "我的题库",
     "subtitle": "创建并练习你自己的阅读、写作、听力与口语题目。免费用户每种题型可各建 2 套。",
+    "bankOverview": "题库概览",
+    "totalSets": "套题总数",
+    "createEmptySet": "新建空白套题",
+    "filterBySkill": "按题型筛选",
+    "quotaTitle": "创建额度",
     "tabAll": "全部",
     "create": "新建套题",
     "createFirst": "创建第一套题",
@@ -848,6 +919,7 @@
   },
   "orders": {
     "title": "我的订单",
+    "subtitle": "查看历史交易记录与订阅合约",
     "empty": "暂无订单记录",
     "resume": {
       "missingOrderId": "缺少订单号，无法继续查询支付结果",
@@ -914,6 +986,8 @@
       "notesTitle": "我的笔记",
       "notesPlaceholder": "在此整理你的立场、结构、论据和具体例证…",
       "notesAutoSaveHint": "笔记会自动保存在浏览器本地。",
+      "aiTeaserTitle": "包含 AI 智能点评",
+      "aiTeaserBody": "提交后将按 DELF B2 官方评分标准，从流利度、词汇与语音等维度生成 AI 评分与建议。",
       "startMonologue": "开始独白录音",
       "skipPrepTitle": "现在就开始独白？",
       "skipPrepBody": "你还有剩余的准备时间。一旦开始录音，将无法返回此步骤。",

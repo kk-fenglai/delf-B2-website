@@ -418,16 +418,18 @@ export default function SpeakingExam() {
         ]}
       />
 
-      <Card className="mb-4">
+      <div className="bg-surface-container-lowest rounded-xl p-6 shadow-level-1 mb-4">
         <div className="flex justify-between items-center flex-wrap gap-3">
           <div>
-            <Title level={3} style={{ marginBottom: 4 }}>
+            <h1 className="text-headline-md text-on-surface mb-1">
               {localizeExamTitle(exam.title, t)}
-              <Tag color="orange" className="ml-2">{t('skill.PO')}</Tag>
-            </Title>
-            <Paragraph className="text-gray-500 mb-0">
-              {t('oral.exam.subtitle')}
-            </Paragraph>
+            </h1>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-label-caps uppercase px-2 py-0.5 rounded text-secondary bg-secondary-container/20">
+                {t('skill.PO')}
+              </span>
+              <span className="text-body-base text-on-surface-variant">{t('oral.exam.subtitle')}</span>
+            </div>
           </div>
           <div className="text-right">
             <Text type="secondary" className="text-xs">{t('oral.exam.quotaUsed')}</Text>
@@ -437,7 +439,7 @@ export default function SpeakingExam() {
             </div>
           </div>
         </div>
-      </Card>
+      </div>
 
       <Steps
         size="small"
@@ -458,54 +460,75 @@ export default function SpeakingExam() {
 
       {/* ---------------- Phase 1: PREPARATION ---------------- */}
       {phase === 'preparation' && (
-        <Row gutter={[16, 16]}>
-          <Col xs={24} lg={12}>
-            <Card title={t('oral.exam.materialTitle')}>
-              <Paragraph strong>{question.prompt}</Paragraph>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Left: subject (serif glass panel) + notes */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="glass-panel rounded-xl p-6 shadow-level-1 border-l-4 border-primary-container">
+              <div className="text-label-caps uppercase text-on-surface-variant mb-2">
+                {t('oral.exam.materialTitle')}
+              </div>
+              <p className="font-serif text-passage-serif text-on-surface mb-3">{question.prompt}</p>
               {question.passage && (
-                <div className="border-l-4 border-gray-200 pl-4 whitespace-pre-wrap text-gray-700">
+                <div className="font-serif whitespace-pre-wrap text-on-surface-variant text-[15px] leading-7">
                   {question.passage}
                 </div>
               )}
-            </Card>
-          </Col>
-          <Col xs={24} lg={12}>
-            <Card
-              title={
-                <Space>
-                  {t('oral.exam.notesTitle')}
-                  <Tag color={prepRemaining < 60 ? 'red' : 'blue'}>
-                    {String(Math.floor(prepRemaining / 60)).padStart(2, '0')}:
-                    {String(prepRemaining % 60).padStart(2, '0')}
-                  </Tag>
-                </Space>
-              }
-              extra={
-                <Button
-                  type="primary"
-                  icon={<AudioOutlined />}
-                  onClick={() => {
-                    if (prepRemaining > 60) setSkipPrepOpen(true);
-                    else startMonologue();
-                  }}
-                >
-                  {t('oral.exam.startMonologue')}
-                </Button>
-              }
-            >
+            </div>
+            <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1">
+              <div className="text-label-caps uppercase text-on-surface-variant mb-3">
+                {t('oral.exam.notesTitle')}
+              </div>
               <Input.TextArea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                rows={22}
+                rows={14}
                 placeholder={t('oral.exam.notesPlaceholder')}
                 autoFocus
               />
               <Text type="secondary" className="text-xs mt-2 block">
                 {t('oral.exam.notesAutoSaveHint')}
               </Text>
-            </Card>
-          </Col>
-        </Row>
+            </div>
+          </div>
+
+          {/* Right: big prep timer + start button + AI teaser */}
+          <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-28 self-start">
+            <div className="bg-surface-container-lowest rounded-xl p-6 shadow-level-1 text-center">
+              <div className="text-label-caps uppercase text-on-surface-variant mb-2">
+                {t('oral.exam.stepPrep')}
+              </div>
+              <div className={`text-5xl font-bold tabular-nums mb-4 ${prepRemaining < 60 ? 'text-error' : 'text-on-surface'}`}>
+                {String(Math.floor(prepRemaining / 60)).padStart(2, '0')}:
+                {String(prepRemaining % 60).padStart(2, '0')}
+              </div>
+              <div className="w-full h-2 bg-surface-container-high rounded-full overflow-hidden mb-5">
+                <div
+                  className={`h-full rounded-full transition-all ${prepRemaining < 60 ? 'bg-error' : 'bg-tertiary'}`}
+                  style={{ width: `${Math.max(0, Math.min(100, (prepRemaining / Math.max(1, quota.thresholds.prepDefaultSec)) * 100))}%` }}
+                />
+              </div>
+              <Button
+                type="primary"
+                size="large"
+                block
+                icon={<AudioOutlined />}
+                onClick={() => {
+                  if (prepRemaining > 60) setSkipPrepOpen(true);
+                  else startMonologue();
+                }}
+              >
+                {t('oral.exam.startMonologue')}
+              </Button>
+            </div>
+            <div className="rounded-xl p-5 shadow-level-1 bg-secondary-container/15 border border-secondary-container/40">
+              <div className="flex items-center gap-2 text-secondary mb-2">
+                <span className="material-symbols-outlined text-[20px] leading-none" aria-hidden="true">psychology</span>
+                <span className="text-headline-sm">{t('oral.exam.aiTeaserTitle')}</span>
+              </div>
+              <p className="text-body-base text-on-surface-variant mb-0">{t('oral.exam.aiTeaserBody')}</p>
+            </div>
+          </div>
+        </div>
       )}
 
       <Modal

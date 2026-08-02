@@ -12,8 +12,20 @@ const { PLAN_CAPS } = require('../constants/planMatrix');
 const { getTrialStatusForUser, startTrial, trialConfig } = require('../services/trial');
 const { effectivePlan } = require('../middleware/requirePlan');
 const { sanitizeExamTitle } = require('../utils/examTitle');
+const { getAnnouncement } = require('../services/announcement');
 
 const router = express.Router();
+
+// GET /api/user/announcement
+// Site-wide notice for signed-in users. Returns null while the admin has it
+// switched off so the client has nothing to render.
+router.get('/announcement', requireAuth, async (_req, res, next) => {
+  try {
+    const a = await getAnnouncement();
+    if (!a.enabled) return res.json({ announcement: null });
+    res.json({ announcement: { title: a.title, body: a.body, version: a.version } });
+  } catch (e) { next(e); }
+});
 
 // GET /api/user/sessions/quota
 // FREE-plan monthly session usage by bucket (CE / CO / MOCK). Paid plans
