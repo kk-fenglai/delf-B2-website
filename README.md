@@ -147,18 +147,6 @@ npm run dev                       # → http://localhost:4000
 cd frontend
 npm install
 npm run dev                       # → http://localhost:5173
-```
-
-### 测试账号（仅 `NODE_ENV=development` 下由 seed 创建）
-
-| 邮箱 | 密码 | 套餐 |
-|------|------|------|
-| `free@delfluent.com` | `demo1234` | 免费版 |
-| `demo@delfluent.com` | `demo1234` | 标准版 |
-| `ai@delfluent.com` | `demo1234` | AI 版 |
-| `ai-unlimited@delfluent.com` | `demo1234` | AI 无限版 |
-
-> ⚠️ 这些账户在 `NODE_ENV=production` 时**不会被创建**（除非显式设置 `ALLOW_PROD_SEED=true`）。生产部署只会 upsert `<SUPER_ADMIN_EMAIL>` 超级管理员。
 
 ---
 
