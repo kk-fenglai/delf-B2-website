@@ -4,6 +4,9 @@
     "tagline": "Plateforme d'entraînement DELF B2",
     "footer": "DELFluent © {{year}} · Plateforme d'entraînement DELF B2 · Toutes les questions sont des simulations originales"
   },
+  "announcement": {
+    "gotIt": "J'ai compris"
+  },
   "feedback": {
     "title": "Votre avis",
     "intro": "Faites-nous part de vos suggestions, des problèmes rencontrés ou des erreurs de contenu — nous lisons chaque message.",
@@ -162,6 +165,10 @@
     "changePassword": "Changer le mot de passe",
     "logout": "Déconnexion"
   },
+  "shell": {
+    "startPractice": "Commencer",
+    "exitExam": "Quitter l'exercice"
+  },
   "plan": {
     "FREE": "Gratuit",
     "STANDARD": "Standard",
@@ -204,11 +211,47 @@
     "examGuideLink": "Voir le déroulement complet de l'examen",
     "mockTitle": "Examen blanc complet · 4 compétences",
     "mockDesc": "Reproduit l'examen réel : CO, CE, PE, PO en séquence",
+    "showcase": {
+      "alt": "Une tablette posée sur un bureau affichant la correction IA d'une production écrite DELF B2, à côté d'un cahier et de notes",
+      "label": "Aperçu des résultats",
+      "sample": "Exemple",
+      "total": "Total",
+      "passMark": "Admission 50",
+      "passed": "Au-dessus du seuil",
+      "tagline": "Chaque compétence travaillée à part, notée au barème réel du B2"
+    },
+    "certs": {
+      "title": "Comprendre le DELF et le DALF",
+      "subtitle": "Des diplômes officiels de langue française délivrés par le ministère français de l'Éducation nationale. Obtenus une fois, valables à vie, reconnus dans le monde entier.",
+      "factValidity": "Valables à vie",
+      "factValidityDesc": "Le diplôme n'expire jamais — aucun réexamen",
+      "factOfficial": "Diplôme officiel",
+      "factOfficialDesc": "Délivré par le ministère de l'Éducation nationale, sujets conçus par France Éducation international",
+      "factGlobal": "Reconnus mondialement",
+      "factGlobalDesc": "Des centres d'examen officiels dans plus de 170 pays",
+      "delfTitle": "DELF",
+      "delfSubtitle": "Diplôme d'études en langue française · du débutant à l'intermédiaire supérieur",
+      "dalfTitle": "DALF",
+      "dalfSubtitle": "Diplôme approfondi de langue française · maîtrise",
+      "levels": {
+        "A1": "Découverte. Communiquer de façon simple au quotidien avec les expressions les plus élémentaires.",
+        "A2": "Survie. Accomplir des tâches simples de la vie courante et décrire son environnement.",
+        "B1": "Seuil. Faire face à la plupart des situations en voyage ou au travail et justifier ses opinions.",
+        "B2": "Avancé. Argumenter clairement sur un sujet complexe et échanger avec aisance avec des locuteurs natifs.",
+        "C1": "Autonome. Comprendre des textes longs et exigeants, s'exprimer avec fluidité dans un cadre universitaire ou professionnel.",
+        "C2": "Maîtrise. Niveau proche du locuteur natif — comprendre et synthétiser avec précision des informations complexes."
+      },
+      "b2Badge": "Notre spécialité",
+      "b2Note": "Le B2 est le niveau le plus souvent exigé pour entrer en licence ou en master dans une université française — c'est précisément ce que cette plateforme prépare.",
+      "scoring": "Quatre compétences sur 25 points chacune, 100 au total. Admis à partir de 50/100, avec un minimum de 5/25 par épreuve.",
+      "cta": "Commencer le B2 gratuitement"
+    },
     "myExamsTitle": "Mes exercices",
     "myExamsDesc": "Créez et entraînez-vous avec vos séries CE, PE, CO et PO · 2 séries gratuites par compétence"
   },
   "auth": {
     "login": "Se connecter",
+    "loginSubtitle": "Bon retour — reprenez votre préparation au DELF B2",
     "register": "S'inscrire",
     "email": "E-mail",
     "password": "Mot de passe",
@@ -313,7 +356,25 @@
     "viewDetail": "Voir les détails",
     "score": "Score",
     "loading": "Chargement...",
-    "userOwnedTag": "Mes exercices"
+    "userOwnedTag": "Mes exercices",
+    "subGreeting": "{{n}} questions d'entraînement complétées",
+    "skillMastery": "Maîtrise des compétences",
+    "overall": "Global",
+    "analysis": "Forces et axes de progrès",
+    "strengths": "Points forts",
+    "focusAreas": "À travailler",
+    "accuracyOf": "{{n}} % de précision",
+    "analysisEmpty": "Pas encore assez de données — commencez par quelques exercices.",
+    "adviceTitle": "À travailler ensuite",
+    "practiceNow": "Travailler {{skill}}",
+    "strengthAdvice": "{{skill}} à {{n}} %. Une à deux séances par semaine suffisent pour entretenir le niveau — gardez le reste du temps pour les points faibles.",
+    "focusAdvice": {
+      "CO": "Oral à {{n}} %. Répondez d'abord en une seule écoute, puis réécoutez phrase par phrase avec la transcription en notant les liaisons et les chiffres manqués.",
+      "CE": "Écrits à {{n}} %. Soulignez les mots-clés de la question avant de revenir au texte, et méfiez-vous des questions d'attitude et des reformulations pièges.",
+      "PE": "Production écrite à {{n}} %. Structurez en quatre temps — position, arguments, concession, conclusion — puis lancez la correction IA pour la grammaire et les connecteurs.",
+      "PO": "Production orale à {{n}} %. Enregistrez-vous au vrai rythme (10 min de préparation, 5 min d'exposé), puis réécoutez et repérez chaque hésitation."
+    },
+    "focusAdviceGeneric": "{{skill}} à {{n}} % — à travailler en priorité."
   },
   "practice": {
     "title": "Sujets d'examen",
@@ -346,7 +407,10 @@
       "mockTag": "4 compétences",
       "comingSoonTag": "Bientôt",
       "poDisabledDesc": "L'évaluation orale par IA est temporairement indisponible.",
-      "aiGradedTag": "Noté par IA"
+      "aiGradedTag": "Noté par IA",
+      "accuracy": "Précision",
+      "mockDuration": "2 h 30 au total",
+      "startSimulation": "Lancer la simulation"
     },
     "po": {
       "backToHub": "Retour au hub",
@@ -502,6 +566,8 @@
   },
   "mistakes": {
     "title": "Carnet d'erreurs",
+    "totalMistakes": "Total des erreurs",
+    "bySkill": "Par compétence",
     "totalCount": "{{n}} à revoir",
     "infoTitle": "Fonctionnement",
     "infoDesc": "Les questions auxquelles vous avez mal répondu s'accumulent ici. Refaites-les : une fois la bonne réponse donnée, elles disparaissent automatiquement.",
@@ -527,6 +593,11 @@
   "myExams": {
     "title": "Mes exercices",
     "subtitle": "Créez et entraînez-vous avec vos propres séries CE, PE, CO et PO. Gratuit : 2 séries par compétence.",
+    "bankOverview": "Aperçu de la banque",
+    "totalSets": "Nombre de séries",
+    "createEmptySet": "Créer une série vide",
+    "filterBySkill": "Filtrer par compétence",
+    "quotaTitle": "Quota de création",
     "tabAll": "Tout",
     "create": "Nouvelle série",
     "createFirst": "Créer ma première série",
@@ -911,6 +982,7 @@
   },
   "orders": {
     "title": "Mes commandes",
+    "subtitle": "Historique des transactions et abonnements",
     "empty": "Aucune commande",
     "resume": {
       "missingOrderId": "ID de commande manquant — impossible de reprendre le suivi",
@@ -977,6 +1049,8 @@
       "notesTitle": "Vos notes",
       "notesPlaceholder": "Préparez votre point de vue, structure, exemples et arguments…",
       "notesAutoSaveHint": "Vos notes sont enregistrées automatiquement dans ce navigateur.",
+      "aiTeaserTitle": "Analyse IA incluse",
+      "aiTeaserBody": "Après soumission, vous recevrez une note et des conseils IA sur la fluidité, le vocabulaire et la prononciation, selon la grille officielle du DELF B2.",
       "startMonologue": "Commencer le monologue",
       "skipPrepTitle": "Démarrer le monologue maintenant ?",
       "skipPrepBody": "Il vous reste encore du temps de préparation. Une fois lancé, vous ne pourrez plus revenir à cette étape.",

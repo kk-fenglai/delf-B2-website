@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  Card, Table, Tag, Typography, Space, Button, Modal, QRCode, message, Empty,
+  Card, Table, Tag, Space, Button, Modal, QRCode, message, Empty,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useTranslation } from 'react-i18next';
@@ -9,8 +9,6 @@ import { api } from '../api/client';
 import type {
   PayProvider, OrderStatus, PaymentOrderSummary,
 } from '../types';
-
-const { Title } = Typography;
 
 interface ContractRow {
   id: string;
@@ -49,13 +47,14 @@ interface OrderDetail {
   createdAt: string;
 }
 
-const statusColor: Record<OrderStatus, string> = {
-  CREATED: 'default',
-  PENDING: 'processing',
-  PAID: 'success',
-  CLOSED: 'default',
-  REFUNDED: 'warning',
-  FAILED: 'error',
+// Dot-pill styling per status (mockup: rounded pill with a colored dot)
+const statusPill: Record<OrderStatus, string> = {
+  CREATED: 'bg-surface-container text-on-surface-variant',
+  PENDING: 'bg-primary-container/10 text-primary',
+  PAID: 'bg-tertiary-container/15 text-tertiary',
+  CLOSED: 'bg-surface-container text-on-surface-variant',
+  REFUNDED: 'bg-amber-100 text-amber-700',
+  FAILED: 'bg-error-container text-on-error-container',
 };
 
 const contractStatusColor: Record<ContractRow['status'], string> = {
@@ -262,7 +261,12 @@ export default function Orders() {
     {
       title: t('orders.col.status'),
       dataIndex: 'status',
-      render: (v: OrderStatus) => <Tag color={statusColor[v]}>{t(`orders.status.${v}`)}</Tag>,
+      render: (v: OrderStatus) => (
+        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${statusPill[v]}`}>
+          <span className="w-1.5 h-1.5 rounded-full bg-current" />
+          {t(`orders.status.${v}`)}
+        </span>
+      ),
     },
     {
       title: t('orders.col.action'),
@@ -286,7 +290,10 @@ export default function Orders() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <Title level={3}>{t('orders.title')}</Title>
+      <header className="mb-8">
+        <h1 className="text-display-lg text-on-surface mb-2">{t('orders.title')}</h1>
+        <p className="text-body-base text-on-surface-variant">{t('orders.subtitle')}</p>
+      </header>
 
       {contracts && contracts.length > 0 && (
         <Card className="mb-4" title={t('orders.contracts.title')}>

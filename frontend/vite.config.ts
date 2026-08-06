@@ -6,8 +6,10 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      // Defaults to the local backend; set API_PROXY_TARGET to develop the
+      // frontend against a deployed backend instead.
       '/api': {
-        target: 'http://localhost:4000',
+        target: process.env.API_PROXY_TARGET || 'http://localhost:4000',
         changeOrigin: true,
       },
     },

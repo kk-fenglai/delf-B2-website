@@ -30,6 +30,7 @@ const adminPaymentsRoutes = require('./routes/adminPayments');
 const feedbackRoutes = require('./routes/feedback');
 const assistantRoutes = require('./routes/assistant');
 const adminFeedbackRoutes = require('./routes/adminFeedback');
+const adminAnnouncementRoutes = require('./routes/adminAnnouncement');
 const wechatPayRoutes = require('./routes/payments/wechat');
 const alipayRoutes = require('./routes/payments/alipay');
 const stripePayRoutes = require('./routes/payments/stripe');
@@ -212,6 +213,7 @@ app.use('/api/admin/users', adminApiLimiter, adminUserRoutes);
 app.use('/api/admin/stats', adminApiLimiter, adminStatsRoutes);
 app.use('/api/admin/exams', adminApiLimiter, adminExamRoutes);
 app.use('/api/admin/feedback', adminApiLimiter, adminFeedbackRoutes);
+app.use('/api/admin/announcement', adminApiLimiter, adminAnnouncementRoutes);
 app.use('/api/admin', adminApiLimiter, adminPaymentsRoutes);
 
 app.use(notFoundHandler);

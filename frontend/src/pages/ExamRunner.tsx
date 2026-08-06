@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Card, Typography, Radio, Checkbox, Input, Button, message, Steps, Tag, Spin, Result,
-  Progress, Alert, Modal, Space, Upload, Grid,
+  Card, Typography, Radio, Checkbox, Input, Button, message, Steps, Spin, Result,
+  Progress, Alert, Modal, Upload, Grid,
 } from 'antd';
 import {
-  ClockCircleOutlined, ExclamationCircleFilled, LockOutlined, BookOutlined,
+  ExclamationCircleFilled, LockOutlined, BookOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
@@ -19,7 +19,7 @@ import type { Section } from '../utils/sectionPlan';
 import { useLevelStore } from '../stores/level';
 import type { ExamSetDetail, Question, Skill, EssayQuota, ClaudeModelKey } from '../types';
 
-const { Title, Paragraph, Text } = Typography;
+const { Paragraph, Text } = Typography;
 
 type Props = { skill?: Skill; mockMode?: boolean };
 
@@ -305,6 +305,21 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const timerDanger = remaining > 0 && remaining <= 300;
   const timerWarning = remaining > 300 && remaining <= 600;
 
+  // Mockup-style timer pill (white card, timer icon, tabular digits).
+  const timerPill = sectionSeconds > 0 ? (
+    <span className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-surface-container-lowest shadow-level-1 text-base font-bold tabular-nums ${
+      timerDanger ? 'text-error' : timerWarning ? 'text-amber-600' : 'text-primary'
+    }`}>
+      <span className="material-symbols-outlined text-[20px] leading-none" aria-hidden="true">timer</span>
+      {formatTime(remaining)}
+    </span>
+  ) : (
+    <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-surface-container-lowest shadow-level-1 text-sm font-semibold text-tertiary">
+      <span className="material-symbols-outlined text-[20px] leading-none" aria-hidden="true">timer_off</span>
+      {t('exam.coNoTimeLimit')}
+    </span>
+  );
+
   const updateAnswer = (val: any) => setAnswers({ ...answers, [q.id]: val });
 
   const doSubmit = async (auto = false) => {
@@ -437,6 +452,9 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     const value = answers[qq.id];
     const update = (val: any) => setAnswers((prev) => ({ ...prev, [qq.id]: val }));
     const ocrLang = (i18n.language || 'fr').slice(0, 2);
+    // Live French word count — the DELF B2 essay expects ≥ 250 words.
+    const essayText = String(value || '').trim();
+    const wordCount = essayText ? essayText.split(/\s+/).length : 0;
     return (
       <div>
         {peTasks > 1 && (
@@ -447,7 +465,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
             message={t('exam.peMultiTask', { count: peTasks })}
           />
         )}
-        <div className="flex justify-between items-center mb-2">
+        <div className="flex justify-between items-center mb-2 gap-2 flex-wrap">
           <Button
             size="small"
             icon={<BookOutlined />}
@@ -455,6 +473,11 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           >
             {t('template.drawerTitle')}
           </Button>
+          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold tabular-nums ${
+            wordCount >= 250 ? 'bg-tertiary-container/15 text-tertiary' : 'bg-surface-container text-on-surface-variant'
+          }`}>
+            {wordCount} mots
+          </span>
           {canUseOcr && (
             <Upload
               accept="image/png,image/jpeg,image/webp"
@@ -527,9 +550,15 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
 
     if (q.type === 'SINGLE' || q.type === 'TRUE_FALSE') {
       return (
-        <Radio.Group value={value} onChange={(e) => updateAnswer(e.target.value)} className="flex flex-col gap-2">
+        <Radio.Group value={value} onChange={(e) => updateAnswer(e.target.value)} className="flex flex-col gap-2 w-full">
           {q.options.map((o) => (
-            <Radio key={o.id} value={o.label} className="p-2 hover:bg-surface rounded">
+            <Radio
+              key={o.id}
+              value={o.label}
+              className={`w-full !mr-0 p-3 rounded-lg border bg-white transition-colors ${
+                value === o.label ? 'border-primary font-semibold' : 'border-outline-variant hover:border-primary'
+              }`}
+            >
               <strong>{o.label}.</strong> {o.text}
             </Radio>
           ))}
@@ -568,10 +597,17 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       );
     }
     if (q.type === 'MULTIPLE') {
+      const selected: string[] = value || [];
       return (
-        <Checkbox.Group value={value || []} onChange={(v) => updateAnswer(v)} className="flex flex-col gap-2">
+        <Checkbox.Group value={selected} onChange={(v) => updateAnswer(v)} className="flex flex-col gap-2 w-full">
           {q.options.map((o) => (
-            <Checkbox key={o.id} value={o.label} className="p-2 hover:bg-surface rounded">
+            <Checkbox
+              key={o.id}
+              value={o.label}
+              className={`w-full !ml-0 p-3 rounded-lg border bg-white transition-colors ${
+                selected.includes(o.label) ? 'border-primary font-semibold' : 'border-outline-variant hover:border-primary'
+              }`}
+            >
               <strong>{o.label}.</strong> {o.text}
             </Checkbox>
           ))}
@@ -746,16 +782,16 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
 
     return (
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
-          <Title level={3} className="!mb-0">
-            {localizeExamTitle(exam.title, t)}
-          </Title>
-          <Space>
-            <Tag icon={<ClockCircleOutlined />} color="blue" className="text-base px-3 py-1">
-              {formatTime(remaining)}
-            </Tag>
-            <Tag color="blue">{t('skill.CE')}</Tag>
-          </Space>
+        <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+          <div>
+            <h1 className="text-headline-md text-on-surface mb-1">
+              {localizeExamTitle(exam.title, t)}
+            </h1>
+            <span className="text-label-caps uppercase px-2 py-0.5 rounded text-primary bg-primary-container/10">
+              {t('skill.CE')}
+            </span>
+          </div>
+          {timerPill}
         </div>
 
         <Alert
@@ -838,21 +874,21 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     const isLastPage = pageIdx >= pages.length - 1;
     return (
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
-          <Title level={3} className="!mb-0">
-            {localizeExamTitle(exam.title, t)}
-            <Tag color="purple" className="ml-2">{t('exam.mockBadge')}</Tag>
-          </Title>
-          <Space>
-            <Tag
-              icon={<ClockCircleOutlined />}
-              color={timerDanger ? 'red' : timerWarning ? 'orange' : 'blue'}
-              className="text-base px-3 py-1"
-            >
-              {formatTime(remaining)}
-            </Tag>
-            <Tag color="blue">{sectionLabel('CEPE')}</Tag>
-          </Space>
+        <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+          <div>
+            <h1 className="text-headline-md text-on-surface mb-1">
+              {localizeExamTitle(exam.title, t)}
+            </h1>
+            <div className="flex items-center gap-2">
+              <span className="text-label-caps uppercase px-2 py-0.5 rounded text-secondary bg-secondary-container/20">
+                {t('exam.mockBadge')}
+              </span>
+              <span className="text-label-caps uppercase px-2 py-0.5 rounded text-primary bg-primary-container/10">
+                {sectionLabel('CEPE')}
+              </span>
+            </div>
+          </div>
+          {timerPill}
         </div>
 
         <Alert
@@ -931,29 +967,23 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header — title + live countdown */}
-      <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
-        <Title level={3} className="!mb-0">
-          {localizeExamTitle(exam.title, t)}
-          {isMock && <Tag color="purple" className="ml-2">{t('exam.mockBadge')}</Tag>}
-        </Title>
-        <Space>
-          {sectionSeconds > 0 ? (
-            <Tag
-              icon={<ClockCircleOutlined />}
-              color={timerDanger ? 'red' : timerWarning ? 'orange' : 'blue'}
-              className="text-base px-3 py-1"
-            >
-              {formatTime(remaining)}
-            </Tag>
-          ) : (
-            // CO practice mode — no countdown, just a static "no limit" tag.
-            // Mock CO still uses the countdown branch above.
-            <Tag icon={<ClockCircleOutlined />} color="green" className="text-base px-3 py-1">
-              {t('exam.coNoTimeLimit')}
-            </Tag>
-          )}
-          <Tag color="blue">{t(`skill.${q.skill}`)} · {q.points} {t('exam.points')}</Tag>
-        </Space>
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+        <div>
+          <h1 className="text-headline-md text-on-surface mb-1">
+            {localizeExamTitle(exam.title, t)}
+          </h1>
+          <div className="flex items-center gap-2 flex-wrap">
+            {isMock && (
+              <span className="text-label-caps uppercase px-2 py-0.5 rounded text-secondary bg-secondary-container/20">
+                {t('exam.mockBadge')}
+              </span>
+            )}
+            <span className="text-label-caps uppercase px-2 py-0.5 rounded text-primary bg-primary-container/10">
+              {t(`skill.${q.skill}`)} · {q.points} {t('exam.points')}
+            </span>
+          </div>
+        </div>
+        {timerPill}
       </div>
 
       {/* Section stepper (mock mode only) — visualises CO→CE→PE→PO and locks
@@ -1014,7 +1044,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           <span>{t('exam.progressLabel', { done: answeredInSection, total })}</span>
           <span>{progressPct}%</span>
         </div>
-        <Progress percent={progressPct} size="small" showInfo={false} />
+        <Progress percent={progressPct} size="small" showInfo={false} strokeColor="#2fd9f4" />
       </div>
 
       {currentSection.key === 'CO' ? (
@@ -1076,17 +1106,55 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
             }))}
           />
 
-          <Card bordered={false} className="mb-4 app-surface">
-            {q.passage && (
-              <div className="passage passage-panel p-4 rounded mb-4">
-                {renderPassage(q.passage)}
+          {q.type === 'ESSAY' ? (
+            // PE — prompt (and timer) on top, the writing area underneath.
+            <div className="space-y-4 mb-4">
+              {sectionSeconds > 0 && (
+                <div className="bg-surface-container-lowest rounded-xl p-4 shadow-level-1 flex items-center gap-4">
+                  <div className="shrink-0">
+                    <div className="text-label-caps uppercase text-on-surface-variant">
+                      {t(`skill.${q.skill}`)}
+                    </div>
+                    <div className={`text-3xl font-bold tabular-nums ${timerDanger ? 'text-error' : 'text-on-surface'}`}>
+                      {formatTime(remaining)}
+                    </div>
+                  </div>
+                  <div className="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${timerDanger ? 'bg-error' : 'bg-tertiary'}`}
+                      style={{ width: `${Math.max(0, Math.min(100, (remaining / sectionSeconds) * 100))}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 border-l-4 border-primary-container">
+                <div className="text-label-caps uppercase text-primary mb-2">
+                  {current + 1}. {t(`skill.${q.skill}`)}
+                </div>
+                {q.passage && (
+                  <div className="passage text-sm mb-3 max-h-64 overflow-y-auto">
+                    {renderPassage(q.passage)}
+                  </div>
+                )}
+                <p className="font-serif text-passage-serif text-on-surface mb-0">{q.prompt}</p>
               </div>
-            )}
-            <Paragraph className="text-base font-semibold mb-4">
-              {current + 1}. {q.prompt}
-            </Paragraph>
-            {renderAnswerInput()}
-          </Card>
+              <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 focus-within:ring-2 focus-within:ring-primary/30">
+                {renderAnswerInput()}
+              </div>
+            </div>
+          ) : (
+            <Card bordered={false} className="mb-4 app-surface">
+              {q.passage && (
+                <div className="passage passage-panel p-4 rounded mb-4">
+                  {renderPassage(q.passage)}
+                </div>
+              )}
+              <Paragraph className="text-base font-semibold mb-4">
+                {current + 1}. {q.prompt}
+              </Paragraph>
+              {renderAnswerInput()}
+            </Card>
+          )}
         </>
       )}
 

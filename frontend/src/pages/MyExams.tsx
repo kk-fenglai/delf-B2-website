@@ -1,21 +1,27 @@
 import { useEffect, useState } from 'react';
 import {
-  Card, Typography, Button, Tag, Empty, Tabs, Modal, Form, Input, Select, message, Popconfirm, Space, Alert,
+  Button, Empty, Modal, Form, Input, Select, message, Alert, Dropdown, Card,
 } from 'antd';
-import { PlusOutlined, EditOutlined, PlayCircleOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
+import MaterialIcon from '../components/MaterialIcon';
 import type { UserExamSetBrief, UserExamSetLimits, Skill } from '../types';
-
-const { Title, Paragraph, Text } = Typography;
 
 const SKILL_PATH: Record<string, string> = {
   CE: 'reading', PE: 'writing', CO: 'listening', PO: 'speaking',
 };
 
-const SKILL_TAG_COLOR: Record<string, string> = {
-  CE: 'blue', PE: 'green', CO: 'purple', PO: 'orange',
+// Skill chips: primary (blue) for receptive skills, secondary (violet) for AI-graded productive ones
+const SKILL_CHIP: Record<string, string> = {
+  CE: 'text-primary bg-primary-container/10',
+  CO: 'text-primary bg-primary-container/10',
+  PE: 'text-secondary bg-secondary-container/20',
+  PO: 'text-secondary bg-secondary-container/20',
+};
+
+const SKILL_ICON: Record<string, string> = {
+  CE: 'auto_stories', CO: 'hearing', PE: 'edit_document', PO: 'mic',
 };
 
 const TAB_SKILLS: Skill[] = ['CE', 'PE', 'CO', 'PO'];
@@ -58,6 +64,7 @@ export default function MyExams() {
   useEffect(() => { load(); }, []);
 
   const filtered = tab === 'ALL' ? sets : sets.filter((s) => s.primarySkill === tab);
+  const skillCount = (sk: Skill) => sets.filter((s) => s.primarySkill === sk).length;
 
   const onCreate = async () => {
     try {
@@ -97,91 +104,167 @@ export default function MyExams() {
     navigate(`/practice/${path}/${s.id}`);
   };
 
+  const filterPill = (key: 'ALL' | Skill, label: string) => (
+    <button
+      key={key}
+      type="button"
+      onClick={() => setTab(key)}
+      className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${
+        tab === key
+          ? 'bg-primary text-on-primary'
+          : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+      }`}
+    >
+      {label}
+    </button>
+  );
+
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="flex flex-wrap justify-between items-start gap-3 mb-4">
+    <div>
+      <header className="flex flex-wrap justify-between items-start gap-3 mb-8">
         <div>
-          <Title level={2} className="!mb-1">{t('myExams.title')}</Title>
-          <Paragraph type="secondary" className="!mb-0">{t('myExams.subtitle')}</Paragraph>
+          <h1 className="text-display-lg text-on-surface mb-2">{t('myExams.title')}</h1>
+          <p className="text-body-base text-on-surface-variant max-w-2xl">{t('myExams.subtitle')}</p>
         </div>
-        <Space>
-          <Button icon={<BookOutlined />} onClick={() => navigate('/mistakes')}>
-            {t('nav.mistakes')}
-          </Button>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateOpen(true)}>
+        <Button type="primary" size="large" onClick={() => setCreateOpen(true)}>
+          <span className="inline-flex items-center gap-1">
+            <MaterialIcon name="add" size={20} />
             {t('myExams.create')}
-          </Button>
-        </Space>
-      </div>
+          </span>
+        </Button>
+      </header>
 
       {loadError && (
         <Alert type="error" showIcon message={loadError} className="mb-4" />
       )}
 
-      {limits && (
-        <Card size="small" className="mb-4">
-          <Space wrap>
-            {TAB_SKILLS.map((sk) => (
-              <Text key={sk} type="secondary">
-                {t(`skill.${sk}`)}: {limits[sk]?.used ?? 0} / {limits[sk]?.cap ?? 0}
-              </Text>
-            ))}
-          </Space>
-        </Card>
-      )}
-
-      <Tabs
-        activeKey={tab}
-        onChange={(k) => setTab(k as typeof tab)}
-        items={[
-          { key: 'ALL', label: t('myExams.tabAll') },
-          ...TAB_SKILLS.map((sk) => ({ key: sk, label: t(`skill.${sk}`) })),
-        ]}
-        className="mb-4"
-      />
-
-      {loading ? (
-        <Card loading />
-      ) : filtered.length === 0 && !loadError ? (
-        <Empty description={t('myExams.empty')}>
-          <Button type="primary" onClick={() => setCreateOpen(true)}>{t('myExams.createFirst')}</Button>
-        </Empty>
-      ) : filtered.length === 0 ? null : (
-        <div className="flex flex-col gap-3">
-          {filtered.map((s) => (
-            <Card key={s.id} size="small">
-              <div className="flex flex-wrap justify-between gap-3 items-start">
-                <div>
-                  <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <Text strong>{s.title}</Text>
-                    <Tag color={SKILL_TAG_COLOR[s.primarySkill]}>{t(`skill.${s.primarySkill}`)}</Tag>
-                    <Tag color={s.isPublished ? 'success' : 'default'}>
-                      {s.isPublished ? t('myExams.published') : t('myExams.draft')}
-                    </Tag>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left: custom sets grid */}
+        <div className="lg:col-span-8">
+          {loading ? (
+            <Card loading />
+          ) : filtered.length === 0 && !loadError && sets.length === 0 ? (
+            <div className="bg-surface-container-lowest rounded-xl shadow-level-1 p-12">
+              <Empty description={t('myExams.empty')}>
+                <Button type="primary" onClick={() => setCreateOpen(true)}>{t('myExams.createFirst')}</Button>
+              </Empty>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {filtered.map((s) => (
+                <div
+                  key={s.id}
+                  className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 border-2 border-transparent hover:border-primary hover:shadow-level-2 transition-all flex flex-col"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`w-11 h-11 rounded-lg flex items-center justify-center ${SKILL_CHIP[s.primarySkill]}`}>
+                      <MaterialIcon name={SKILL_ICON[s.primarySkill]} size={22} fill />
+                    </div>
+                    <Dropdown
+                      menu={{
+                        items: [
+                          { key: 'edit', label: t('myExams.edit'), onClick: () => navigate(`/my-exams/${s.id}/edit`) },
+                          {
+                            key: 'delete',
+                            danger: true,
+                            label: t('myExams.removeQ'),
+                            onClick: () => Modal.confirm({
+                              title: t('myExams.confirmDelete'),
+                              okButtonProps: { danger: true },
+                              onOk: () => onDelete(s.id),
+                            }),
+                          },
+                        ],
+                      }}
+                      trigger={['click']}
+                    >
+                      <button type="button" className="p-1 text-on-surface-variant hover:text-on-surface rounded">
+                        <MaterialIcon name="more_vert" size={20} />
+                      </button>
+                    </Dropdown>
                   </div>
-                  {s.description && <Text type="secondary" className="text-sm">{s.description}</Text>}
-                  <div className="text-xs text-gray-400 mt-1">
-                    {t('myExams.questionCount', { n: s.questionCount })}
+                  <h3 className="text-headline-sm text-on-surface mb-1 break-words">{s.title}</h3>
+                  {s.description && (
+                    <p className="text-sm text-on-surface-variant mb-2 line-clamp-2">{s.description}</p>
+                  )}
+                  <div className="flex items-center gap-2 flex-wrap mt-auto pt-3">
+                    <span className={`text-label-caps uppercase px-2 py-0.5 rounded ${SKILL_CHIP[s.primarySkill]}`}>
+                      {t(`skill.${s.primarySkill}`)}
+                    </span>
+                    <span className={`text-label-caps uppercase px-2 py-0.5 rounded ${
+                      s.isPublished ? 'text-tertiary bg-tertiary-container/15' : 'text-on-surface-variant bg-surface-container'
+                    }`}>
+                      {s.isPublished ? t('myExams.published') : t('myExams.draft')}
+                    </span>
+                    <span className="text-xs text-on-surface-variant ml-auto">
+                      {t('myExams.questionCount', { n: s.questionCount })}
+                    </span>
+                  </div>
+                  <div className="flex gap-2 mt-4">
+                    <Button block onClick={() => navigate(`/my-exams/${s.id}/edit`)}>{t('myExams.edit')}</Button>
+                    {s.isPublished && s.questionCount > 0 && (
+                      <Button block type="primary" onClick={() => startPractice(s)}>{t('myExams.practice')}</Button>
+                    )}
                   </div>
                 </div>
-                <Space wrap>
-                  <Button icon={<EditOutlined />} onClick={() => navigate(`/my-exams/${s.id}/edit`)}>
-                    {t('myExams.edit')}
-                  </Button>
-                  {s.isPublished && s.questionCount > 0 && (
-                    <Button type="primary" icon={<PlayCircleOutlined />} onClick={() => startPractice(s)}>
-                      {t('myExams.practice')}
-                    </Button>
-                  )}
-                  <Popconfirm title={t('myExams.confirmDelete')} onConfirm={() => onDelete(s.id)}>
-                    <Button danger icon={<DeleteOutlined />} />
-                  </Popconfirm>
-                </Space>
-              </div>
-            </Card>
-          ))}
+              ))}
+              {/* Dashed create tile */}
+              <button
+                type="button"
+                onClick={() => setCreateOpen(true)}
+                className="min-h-[180px] rounded-xl border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-2 text-on-surface-variant hover:border-primary hover:text-primary transition-colors"
+              >
+                <MaterialIcon name="add_circle" size={32} />
+                <span className="text-sm font-semibold">{t('myExams.createEmptySet')}</span>
+              </button>
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Right: overview + filters */}
+        <div className="lg:col-span-4 space-y-6">
+          <div className="bg-surface-container-lowest rounded-xl p-6 shadow-level-1 border-l-4 border-primary">
+            <h2 className="text-label-caps uppercase text-on-surface-variant mb-4">{t('myExams.bankOverview')}</h2>
+            <div className="flex items-baseline gap-2 mb-4">
+              <span className="text-display-lg text-primary tabular-nums">{sets.length}</span>
+              <span className="text-sm text-on-surface-variant">{t('myExams.totalSets')}</span>
+            </div>
+            <div className="space-y-2">
+              {TAB_SKILLS.map((sk) => (
+                <div key={sk} className="flex items-center justify-between text-sm">
+                  <span className="flex items-center gap-2 text-on-surface-variant">
+                    <MaterialIcon name={SKILL_ICON[sk]} size={18} />
+                    {t(`skill.${sk}`)}
+                  </span>
+                  <span className="font-semibold text-on-surface tabular-nums">{skillCount(sk)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-surface-container-lowest rounded-xl p-6 shadow-level-1">
+            <h2 className="text-label-caps uppercase text-on-surface-variant mb-4">{t('myExams.filterBySkill')}</h2>
+            <div className="flex flex-wrap gap-2">
+              {filterPill('ALL', t('myExams.tabAll'))}
+              {TAB_SKILLS.map((sk) => filterPill(sk, t(`skill.${sk}`)))}
+            </div>
+          </div>
+
+          {limits && (
+            <div className="bg-surface-container-lowest rounded-xl p-6 shadow-level-1">
+              <h2 className="text-label-caps uppercase text-on-surface-variant mb-4">{t('myExams.quotaTitle')}</h2>
+              <div className="space-y-2">
+                {TAB_SKILLS.map((sk) => (
+                  <div key={sk} className="flex items-center justify-between text-sm text-on-surface-variant">
+                    <span>{t(`skill.${sk}`)}</span>
+                    <span className="tabular-nums">{limits[sk]?.used ?? 0} / {limits[sk]?.cap ?? 0}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       <Modal
         open={createOpen}

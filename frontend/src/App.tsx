@@ -1,6 +1,8 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import AppLayout from './components/AppLayout';
+import { Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom';
+import MarketingLayout from './components/layout/MarketingLayout';
+import AppShell from './components/layout/AppShell';
+import ExamLayout from './components/layout/ExamLayout';
 import PageLoader from './components/PageLoader';
 import { useAuthStore } from './stores/auth';
 import { useGeoStore } from './stores/geo';
@@ -43,6 +45,7 @@ const AdminExamEdit = lazy(() => import('./pages/admin/AdminExamEdit'));
 const AdminExamImport = lazy(() => import('./pages/admin/AdminExamImport'));
 const AdminPayments = lazy(() => import('./pages/admin/AdminPayments'));
 const AdminFeedback = lazy(() => import('./pages/admin/AdminFeedback'));
+const AdminAnnouncement = lazy(() => import('./pages/admin/AdminAnnouncement'));
 const AdminChangePassword = lazy(() => import('./pages/admin/AdminChangePassword'));
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -50,6 +53,20 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   const location = useLocation();
   if (!user) return <Navigate to="/login" replace state={{ from: location }} />;
   return children;
+}
+
+// Logged-in users land on the dashboard; ?home=1 (sidebar "Home" link) shows the marketing page.
+function RootGate() {
+  const user = useAuthStore((s) => s.user);
+  const [params] = useSearchParams();
+  if (user && params.get('home') !== '1') return <Navigate to="/dashboard" replace />;
+  return <Landing />;
+}
+
+// Pages that exist in both worlds: sidebar shell when logged in, marketing bar otherwise.
+function ShellByAuth() {
+  const user = useAuthStore((s) => s.user);
+  return user ? <AppShell /> : <MarketingLayout />;
 }
 
 export default function App() {
@@ -78,27 +95,35 @@ export default function App() {
           <Route path="exams" element={<AdminExams />} />
           <Route path="payments" element={<AdminPayments />} />
           <Route path="feedback" element={<AdminFeedback />} />
+          <Route path="announcement" element={<AdminAnnouncement />} />
           <Route path="exams/import" element={<AdminExamImport />} />
           <Route path="exams/:id" element={<AdminExamEdit />} />
         </Route>
 
-        {/* --- Public + user routes --- */}
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<Landing />} />
+        {/* --- Marketing shell: homepage + auth pages --- */}
+        <Route element={<MarketingLayout />}>
+          <Route path="/" element={<RootGate />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/verification-sent" element={<VerificationSent />} />
+        </Route>
+
+        {/* --- Shared pages: sidebar when logged in, marketing bar otherwise --- */}
+        <Route element={<ShellByAuth />}>
           <Route path="/exam-guide" element={<ExamGuide />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/checkout/stripe" element={<RequireAuth><StripeEmbeddedCheckout /></RequireAuth>} />
           <Route path="/checkout/stripe/complete" element={<RequireAuth><StripeCheckoutComplete /></RequireAuth>} />
           <Route path="/checkout/stripe/success" element={<RequireAuth><StripeCheckoutReturn mode="success" /></RequireAuth>} />
           <Route path="/checkout/stripe/cancel" element={<RequireAuth><StripeCheckoutReturn mode="cancel" /></RequireAuth>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/change-password" element={<RequireAuth><ChangePassword /></RequireAuth>} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/verification-sent" element={<VerificationSent />} />
+        </Route>
 
+        {/* --- App shell: logged-in pages with sidebar --- */}
+        <Route element={<AppShell />}>
           <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
 
           {/* Practice hub + per-skill entries */}
@@ -109,7 +134,16 @@ export default function App() {
           <Route path="/practice/speaking" element={<RequireAuth><SkillPractice skill="PO" /></RequireAuth>} />
           <Route path="/practice/mock" element={<RequireAuth><SkillPractice mockMode /></RequireAuth>} />
 
-          {/* Runner routes — skill-scoped and mock */}
+          <Route path="/my-exams" element={<RequireAuth><MyExams /></RequireAuth>} />
+          <Route path="/my-exams/:id/edit" element={<RequireAuth><MyExamEdit /></RequireAuth>} />
+
+          <Route path="/review/:sessionId" element={<RequireAuth><ReviewResult /></RequireAuth>} />
+          <Route path="/mistakes" element={<RequireAuth><MistakeNotebook /></RequireAuth>} />
+          <Route path="/orders" element={<RequireAuth><Orders /></RequireAuth>} />
+        </Route>
+
+        {/* --- Exam shell: distraction-free test taking --- */}
+        <Route element={<ExamLayout />}>
           <Route path="/practice/listening/:examId" element={<RequireAuth><ExamRunner skill="CO" /></RequireAuth>} />
           <Route path="/practice/reading/:examId" element={<RequireAuth><ExamRunner skill="CE" /></RequireAuth>} />
           <Route path="/practice/writing/:examId" element={<RequireAuth><ExamRunner skill="PE" /></RequireAuth>} />
@@ -117,16 +151,9 @@ export default function App() {
           <Route path="/practice/mock/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
           {/* Legacy: /practice/:examId preserved for old session links (full mock) */}
           <Route path="/practice/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />
-
-          <Route path="/my-exams" element={<RequireAuth><MyExams /></RequireAuth>} />
-          <Route path="/my-exams/:id/edit" element={<RequireAuth><MyExamEdit /></RequireAuth>} />
-
-          <Route path="/review/:sessionId" element={<RequireAuth><ReviewResult /></RequireAuth>} />
-          <Route path="/mistakes" element={<RequireAuth><MistakeNotebook /></RequireAuth>} />
-          <Route path="/orders" element={<RequireAuth><Orders /></RequireAuth>} />
-
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
   );
