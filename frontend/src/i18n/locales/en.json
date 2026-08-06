@@ -151,6 +151,9 @@
       "precise": "AI model (precise)"
     }
   },
+  "level": {
+    "switched": "Switched to the DELF {{level}} question bank"
+  },
   "nav": {
     "home": "Home",
     "examGuide": "Exam Guide",

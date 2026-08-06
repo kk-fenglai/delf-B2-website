@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import MaterialIcon from '../components/MaterialIcon';
+import LevelBadge from '../components/LevelBadge';
 import type { Skill } from '../types';
 
 type SkillEntry = {
@@ -40,7 +41,10 @@ export default function PracticeHub() {
   return (
     <div>
       <header className="mb-8">
-        <h1 className="text-display-lg text-on-surface mb-2">{t('practice.hub.title')}</h1>
+        <h1 className="text-display-lg text-on-surface mb-2 flex items-center gap-3 flex-wrap">
+          {t('practice.hub.title')}
+          <LevelBadge />
+        </h1>
         <p className="text-body-base text-on-surface-variant max-w-2xl">{t('practice.hub.subtitle')}</p>
       </header>
 

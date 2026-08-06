@@ -87,6 +87,18 @@ body {
   background: linear-gradient(180deg, var(--primarySoftA) 0%, var(--primarySoftB) 55%);
 }
 
+/* ── Level badge: replays when the badge remounts on a level switch ──────── */
+
+.level-badge-pop {
+  animation: level-badge-pop 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+}
+
+@keyframes level-badge-pop {
+  0%   { transform: scale(0.7); opacity: 0.3; }
+  60%  { transform: scale(1.12); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 /* ── Auth pages (student /login, /admin/login) ───────────────────────────── */
 
 .auth-card {

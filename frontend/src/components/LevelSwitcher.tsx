@@ -1,3 +1,5 @@
+import { message } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { useLevelStore } from '../stores/level';
 import type { Level } from '../types';
 
@@ -11,6 +13,7 @@ const ITEM_W = 44;
 // /api/levels catalogue is loaded with more than one level, so a failed
 // fetch degrades to the pre-level B2-only UI.
 export default function LevelSwitcher() {
+  const { t } = useTranslation();
   const level = useLevelStore((s) => s.level);
   const catalogue = useLevelStore((s) => s.catalogue);
   const setLevel = useLevelStore((s) => s.setLevel);
@@ -41,7 +44,11 @@ export default function LevelSwitcher() {
           type="button"
           role="radio"
           aria-checked={level === l.key}
-          onClick={() => setLevel(l.key)}
+          onClick={() => {
+            if (l.key === level) return;
+            setLevel(l.key);
+            message.success(t('level.switched', { level: l.key }));
+          }}
           className={`relative z-10 h-7 rounded-full text-[13px] font-bold tracking-wide transition-colors duration-200 ${
             level === l.key ? 'text-on-primary' : 'text-on-surface-variant hover:text-primary'
           }`}

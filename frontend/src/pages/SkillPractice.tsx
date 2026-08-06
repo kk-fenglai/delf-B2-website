@@ -6,6 +6,7 @@ import { api } from '../api/client';
 import { localizeExamTitle } from '../utils/examTitle';
 import { resolveCoGroup } from '../utils/coGroup';
 import { useLevelStore } from '../stores/level';
+import LevelBadge from '../components/LevelBadge';
 import type { ExamSetBrief, Skill, UserExamSetBrief } from '../types';
 
 const { Title, Paragraph } = Typography;
@@ -144,7 +145,7 @@ export default function SkillPractice({ skill, mockMode = false }: Props) {
         ]}
       />
       <Title level={2}>
-        {pageTitle} <Tag color="geekblue" className="align-middle">DELF {level}</Tag>
+        {pageTitle} <LevelBadge />
       </Title>
       <Paragraph className="text-gray-500">{pageSubtitle}</Paragraph>
 

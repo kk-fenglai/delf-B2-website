@@ -151,6 +151,9 @@
       "precise": "AI 大模型（精准）"
     }
   },
+  "level": {
+    "switched": "已切换到 DELF {{level}} 题库"
+  },
   "nav": {
     "home": "首页",
     "examGuide": "考试说明",

@@ -151,6 +151,9 @@
       "precise": "Modèle IA (précis)"
     }
   },
+  "level": {
+    "switched": "Banque d'exercices DELF {{level}} activée"
+  },
   "nav": {
     "home": "Accueil",
     "examGuide": "Déroulement",
