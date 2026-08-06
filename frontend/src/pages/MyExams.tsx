@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Card, Typography, Button, Tag, Empty, Tabs, Modal, Form, Input, Select, message, Popconfirm, Space, Alert,
 } from 'antd';
-import { PlusOutlined, EditOutlined, PlayCircleOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, PlayCircleOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
@@ -104,9 +104,14 @@ export default function MyExams() {
           <Title level={2} className="!mb-1">{t('myExams.title')}</Title>
           <Paragraph type="secondary" className="!mb-0">{t('myExams.subtitle')}</Paragraph>
         </div>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateOpen(true)}>
-          {t('myExams.create')}
-        </Button>
+        <Space>
+          <Button icon={<BookOutlined />} onClick={() => navigate('/mistakes')}>
+            {t('nav.mistakes')}
+          </Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateOpen(true)}>
+            {t('myExams.create')}
+          </Button>
+        </Space>
       </div>
 
       {loadError && (

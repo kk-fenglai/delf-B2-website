@@ -40,7 +40,7 @@ export default function AppLayout() {
     { key: '/', label: <Link to="/">{t('nav.home')}</Link> },
     { key: '/practice', label: <Link to="/practice">{t('nav.practice')}</Link> },
     { key: '/my-exams', label: <Link to="/my-exams">{t('nav.myExams')}</Link> },
-    { key: '/mistakes', label: <Link to="/mistakes">{t('nav.mistakes')}</Link> },
+    { key: '/exam-guide', label: <Link to="/exam-guide">{t('nav.examGuide')}</Link> },
     { key: '/dashboard', label: <Link to="/dashboard">{t('nav.dashboard')}</Link> },
     { key: '/pricing', label: <Link to="/pricing">{t('nav.pricing')}</Link> },
     ...(user ? [{ key: '/orders', label: <Link to="/orders">{t('nav.orders')}</Link> }] : []),

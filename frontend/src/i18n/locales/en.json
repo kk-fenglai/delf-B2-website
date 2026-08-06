@@ -33,47 +33,111 @@
     }
   },
   "examGuide": {
-    "title": "DELF B2 Exam Walkthrough",
+    "title": "DELF {{level}} Exam Walkthrough",
     "subtitle": "Understand the parts of the exam, how long each lasts, their format, and the pass criteria.",
     "collectiveTitle": "1. Group written tests (run back-to-back in one session)",
-    "collectiveNote": "Listening, reading and writing are completed consecutively in the same session — about 2 hours 30 minutes total, with no separate break.",
     "individualTitle": "2. Speaking (scheduled separately)",
-    "individualNote": "Speaking is a one-on-one interview with an examiner. You get 30 minutes of preparation time beforehand (for the opinion statement in part three).",
-    "skills": {
-      "CO": {
-        "name": "Listening · Compréhension de l'oral",
-        "time": "~30 min",
-        "format": "Five recordings in total: 3 short documents plus 2 long documents, with multiple-choice / short-answer questions. Short recordings play once, long ones twice, with time to read and answer around each.",
-        "tips": ["Skim the questions before the audio starts", "Catch key facts and linking words — you don't need every word"]
-      },
-      "CE": {
-        "name": "Reading · Compréhension des écrits",
-        "time": "~60 min",
-        "format": "Three texts (informative and argumentative) with multiple-choice and true/false questions; locate the evidence in the text.",
-        "tips": ["Read the questions first, then locate in the text", "For true/false, always find the supporting sentence"]
-      },
-      "PE": {
-        "name": "Writing · Production écrite",
-        "time": "~60 min",
-        "format": "One argumentative text of about 250 words (e.g. a contribution, formal letter, or review) with a clear stance and full structure.",
-        "tips": ["State your stance upfront, argue in paragraphs", "Use connectors for logic; echo your view in the conclusion"]
-      },
-      "PO": {
-        "name": "Speaking · Production orale",
-        "time": "~20 min (plus 30 min prep)",
-        "format": "Two parts: first present your opinion on a drawn article, then debate the topic with the examiner.",
-        "tips": ["Outline your arguments during prep", "In the debate, respond to the examiner first, then add your reasons"]
-      }
-    },
     "scoringTitle": "3. Scoring & pass criteria",
     "scoring": [
       "Listening, reading, writing and speaking are 25 points each — 100 total.",
       "You need at least 50/100 overall.",
       "No single skill may fall below 5/25 (below that is a fail).",
-      "The DELF B2 diploma, once earned, is valid for life."
+      "The DELF {{level}} diploma, once earned, is valid for life."
     ],
     "ctaStart": "Start practising",
-    "ctaMock": "Full mock exam"
+    "ctaMock": "Full mock exam",
+    "levels": {
+      "B2": {
+        "collectiveNote": "Listening, reading and writing are completed consecutively in the same session — about 2 hours 30 minutes total, with no separate break.",
+        "individualNote": "Speaking is a one-on-one interview with an examiner. You get 30 minutes of preparation time beforehand (for the opinion statement in part one).",
+        "skills": {
+          "CO": {
+            "name": "Listening · Compréhension de l'oral",
+            "time": "~30 min",
+            "format": "Five recordings in total: 3 short documents plus 2 long documents, with multiple-choice / short-answer questions. Short recordings play once, long ones twice, with time to read and answer around each.",
+            "tips": ["Skim the questions before the audio starts", "Catch key facts and linking words — you don't need every word"]
+          },
+          "CE": {
+            "name": "Reading · Compréhension des écrits",
+            "time": "~60 min",
+            "format": "Three texts (informative and argumentative) with multiple-choice and true/false questions; locate the evidence in the text.",
+            "tips": ["Read the questions first, then locate in the text", "For true/false, always find the supporting sentence"]
+          },
+          "PE": {
+            "name": "Writing · Production écrite",
+            "time": "~60 min",
+            "format": "One argumentative text of about 250 words (e.g. a contribution, formal letter, or review) with a clear stance and full structure.",
+            "tips": ["State your stance upfront, argue in paragraphs", "Use connectors for logic; echo your view in the conclusion"]
+          },
+          "PO": {
+            "name": "Speaking · Production orale",
+            "time": "~20 min (plus 30 min prep)",
+            "format": "Two parts: first present your opinion on a drawn article, then debate the topic with the examiner.",
+            "tips": ["Outline your arguments during prep", "In the debate, respond to the examiner first, then add your reasons"]
+          }
+        }
+      },
+      "B1": {
+        "collectiveNote": "Listening, reading and writing are completed consecutively in the same session — about 1 hour 55 minutes total, with no separate break.",
+        "individualNote": "Speaking is a one-on-one interview with an examiner, about 15 minutes in total; you get 10 minutes of preparation before part three (expressing a point of view).",
+        "skills": {
+          "CO": {
+            "name": "Listening · Compréhension de l'oral",
+            "time": "~25 min",
+            "format": "Three listening exercises (conversations, interviews, radio programmes on everyday topics). Each recording plays twice; questions are multiple-choice.",
+            "tips": ["Skim the questions and predict the topic before the audio", "Get the gist on the first play, fill the gaps on the second"]
+          },
+          "CE": {
+            "name": "Reading · Compréhension des écrits",
+            "time": "~45 min",
+            "format": "Reading exercises covering \"scanning for what you need\" and \"understanding an opinion piece\"; mostly multiple-choice, with evidence to locate in the text.",
+            "tips": ["Read the questions first, then locate in the text", "Watch for attitude words and contrast connectors"]
+          },
+          "PE": {
+            "name": "Writing · Production écrite",
+            "time": "~45 min",
+            "format": "One text of about 160 words (article, letter, forum post) telling an experience and giving your personal opinion on a familiar topic.",
+            "tips": ["Structure it as intro → facts/experience → opinion → closing", "Link ideas with d'abord, ensuite, enfin"]
+          },
+          "PO": {
+            "name": "Speaking · Production orale",
+            "time": "~15 min (plus 10 min prep)",
+            "format": "Three parts: a guided conversation (introducing yourself) → a role-play interaction → expressing a point of view on a drawn document. The 10 minutes of prep apply to part three only.",
+            "tips": ["In part three, summarise the document before giving your view", "In the role-play, keep talking — fluency matters more than perfect grammar"]
+          }
+        }
+      },
+      "A2": {
+        "collectiveNote": "Listening, reading and writing are completed consecutively in the same session — about 1 hour 40 minutes total, with no separate break.",
+        "individualNote": "Speaking is a one-on-one interview with an examiner, about 6–8 minutes in total, with 10 minutes of preparation beforehand.",
+        "skills": {
+          "CO": {
+            "name": "Listening · Compréhension de l'oral",
+            "time": "~25 min",
+            "format": "Three to four listening exercises on everyday situations (announcements, voice messages, short dialogues). Each recording plays twice; questions are multiple-choice.",
+            "tips": ["Look at pictures and options first to predict the scene", "Focus on concrete details: times, places, numbers"]
+          },
+          "CE": {
+            "name": "Reading · Compréhension des écrits",
+            "time": "~30 min",
+            "format": "Three to four short everyday documents (notices, menus, messages, letters); multiple-choice questions testing your ability to find specific information.",
+            "tips": ["Know what information each question is asking for", "Skip unknown words and guess from context"]
+          },
+          "PE": {
+            "name": "Writing · Production écrite",
+            "time": "~45 min",
+            "format": "Two short texts of 60–80 words each: exercise 1 describes an event or personal experience (diary, message); exercise 2 is a simple letter (inviting, thanking, apologising…).",
+            "tips": ["Write both texts and mind each word count", "In exercise 2, include a greeting and a closing line"]
+          },
+          "PO": {
+            "name": "Speaking · Production orale",
+            "time": "~6–8 min (plus 10 min prep)",
+            "format": "Three parts: a guided conversation (introducing yourself) → a continuous monologue (~2 minutes on a familiar topic) → a role-play (shopping, asking for information…).",
+            "tips": ["Prepare common monologue topics in advance (family, hobbies, daily life)", "In the role-play, use vous and polite formulas"]
+          }
+        }
+      }
+    }
   },
   "ai": {
     "model": {
@@ -111,7 +175,7 @@
     "PO": "Speaking"
   },
   "landing": {
-    "title": "DELF B2 Exam Practice Platform",
+    "title": "DELF {{level}} Exam Practice Platform",
     "subtitle": "Systematic practice for Listening, Reading, Writing, Speaking · AI correction · Real exam simulation",
     "ctaStart": "Start free practice",
     "ctaPricing": "View pricing",
@@ -126,7 +190,7 @@
       },
       "pe": {
         "title": "Writing",
-        "desc": "250-word essays with AI correction (AI plan)"
+        "desc": "Exam-format essays with AI correction (AI plan)"
       },
       "po": {
         "title": "Speaking",
@@ -274,8 +338,8 @@
       "skillListTitle": "Skill drill",
       "coDesc": "Listening drill · Exam-like pacing",
       "ceDesc": "Reading drill · Argumentative long-form",
-      "peDesc": "Writing drill · 250-word essay",
-      "poDesc": "Speaking drill · Monologue + débat with AI scoring",
+      "peDesc": "Writing drill · Exam-format tasks",
+      "poDesc": "Speaking drill · Monologue + examiner questions with AI scoring",
       "mockTitle": "Full mock exam",
       "mockDesc": "All 4 skills in sequence · Full exam flow",
       "mockSectionTitle": "Full mock exam",
@@ -325,7 +389,8 @@
     "coCountdownHint": "Suggested reading time {{sec}}s (hint only — you can play anytime)",
     "coDocPlaysRule": "Played {{n}} time(s)",
     "fillPlaceholder": "Enter your answer",
-    "essayPlaceholder": "Write your essay here (250 words minimum)...",
+    "essayPlaceholder": "Write your essay here...",
+    "peMultiTask": "This task includes {{count}} writing exercises (Exercice 1 + Exercice 2). Write both texts in the box below, separated by a blank line.",
     "essayAITip": "💡 Writing is not auto-graded in MVP. Upgrade to AI plan for AI correction.",
     "unsupported": "This question type requires recording (coming soon)",
     "loadFail": "Load failed",

@@ -1,11 +1,13 @@
 import { Button, Card, Col, Row, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLevelStore } from '../stores/level';
 
 const { Title, Paragraph } = Typography;
 
 export default function Landing() {
   const { t } = useTranslation();
+  const level = useLevelStore((s) => s.level);
 
   const features = [
     { icon: '🎧', title: t('landing.features.co.title'), desc: t('landing.features.co.desc'), to: '/practice/listening' },
@@ -18,7 +20,7 @@ export default function Landing() {
     <div className="max-w-6xl mx-auto">
       <div className="text-center py-16">
         <Title level={1} style={{ color: '#1A3A5C', marginBottom: 8 }}>
-          {t('landing.title')}
+          {t('landing.title', { level })}
         </Title>
         <Paragraph className="text-lg text-gray-600 mb-8">{t('landing.subtitle')}</Paragraph>
         <div className="flex gap-3 justify-center">

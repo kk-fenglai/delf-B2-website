@@ -101,7 +101,11 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   // another level's set must follow the exam, never the store) — the store
   // is reconciled below. Catalogue miss / legacy payload → B2 plan.
   const levelKey = exam?.level ?? storeLevel;
-  const plan = catalogue?.find((l) => l.key === levelKey)?.sectionPlan ?? B2_SECTION_PLAN;
+  const levelConfig = catalogue?.find((l) => l.key === levelKey);
+  const plan = levelConfig?.sectionPlan ?? B2_SECTION_PLAN;
+  // A2's official PE has two exercises answered in one submission (pe.tasks=2);
+  // the editor shows a banner so candidates know to write both texts.
+  const peTasks = levelConfig?.pe.tasks ?? 1;
 
   useEffect(() => {
     if (exam?.level && exam.level !== storeLevel) setStoreLevel(exam.level);
@@ -435,6 +439,14 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     const ocrLang = (i18n.language || 'fr').slice(0, 2);
     return (
       <div>
+        {peTasks > 1 && (
+          <Alert
+            type="info"
+            showIcon
+            className="mb-2"
+            message={t('exam.peMultiTask', { count: peTasks })}
+          />
+        )}
         <div className="flex justify-between items-center mb-2">
           <Button
             size="small"

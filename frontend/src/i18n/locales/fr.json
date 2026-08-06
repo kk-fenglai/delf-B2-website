@@ -33,47 +33,111 @@
     }
   },
   "examGuide": {
-    "title": "Déroulement de l'examen DELF B2",
+    "title": "Déroulement de l'examen DELF {{level}}",
     "subtitle": "Comprenez les parties de l'examen, leur durée, leur format et les critères de réussite.",
     "collectiveTitle": "1. Épreuves collectives (enchaînées en une session)",
-    "collectiveNote": "La compréhension orale, la compréhension écrite et la production écrite s'enchaînent dans la même session — environ 2 h 30 au total, sans pause distincte.",
     "individualTitle": "2. Production orale (programmée séparément)",
-    "individualNote": "L'oral est un entretien individuel avec un examinateur. Vous disposez de 30 minutes de préparation au préalable (pour l'exposé de la troisième partie).",
-    "skills": {
-      "CO": {
-        "name": "Compréhension de l'oral",
-        "time": "~30 min",
-        "format": "Cinq enregistrements au total : 3 documents courts et 2 documents longs, avec questions à choix multiples / réponses courtes. Les documents courts sont diffusés une fois, les longs deux fois, avec du temps pour lire et répondre.",
-        "tips": ["Parcourez les questions avant l'écoute", "Repérez les informations clés et les connecteurs — inutile de tout comprendre"]
-      },
-      "CE": {
-        "name": "Compréhension des écrits",
-        "time": "~60 min",
-        "format": "Trois textes (informatifs et argumentatifs) avec QCM et vrai/faux ; repérez la justification dans le texte.",
-        "tips": ["Lisez d'abord les questions, puis repérez dans le texte", "Pour le vrai/faux, trouvez toujours la phrase justificative"]
-      },
-      "PE": {
-        "name": "Production écrite",
-        "time": "~60 min",
-        "format": "Un texte argumentatif d'environ 250 mots (contribution, lettre formelle, critique) avec une position claire et une structure complète.",
-        "tips": ["Annoncez votre position dès l'introduction, argumentez par paragraphes", "Utilisez des connecteurs ; rappelez votre avis en conclusion"]
-      },
-      "PO": {
-        "name": "Production orale",
-        "time": "~20 min (+ 30 min de préparation)",
-        "format": "Deux parties : d'abord un exposé de votre point de vue sur un article tiré au sort, puis un débat avec l'examinateur sur le sujet.",
-        "tips": ["Préparez un plan d'arguments pendant la préparation", "Lors du débat, répondez d'abord à l'examinateur, puis ajoutez vos raisons"]
-      }
-    },
     "scoringTitle": "3. Notation et critères de réussite",
     "scoring": [
       "Les quatre épreuves valent 25 points chacune — 100 au total.",
       "Il faut au moins 50/100 au total.",
       "Aucune épreuve ne doit être inférieure à 5/25 (en dessous, c'est un échec).",
-      "Le diplôme DELF B2, une fois obtenu, est valable à vie."
+      "Le diplôme DELF {{level}}, une fois obtenu, est valable à vie."
     ],
     "ctaStart": "Commencer l'entraînement",
-    "ctaMock": "Examen blanc complet"
+    "ctaMock": "Examen blanc complet",
+    "levels": {
+      "B2": {
+        "collectiveNote": "La compréhension orale, la compréhension écrite et la production écrite s'enchaînent dans la même session — environ 2 h 30 au total, sans pause distincte.",
+        "individualNote": "L'oral est un entretien individuel avec un examinateur. Vous disposez de 30 minutes de préparation au préalable (pour l'exposé de la première partie).",
+        "skills": {
+          "CO": {
+            "name": "Compréhension de l'oral",
+            "time": "~30 min",
+            "format": "Cinq enregistrements au total : 3 documents courts et 2 documents longs, avec questions à choix multiples / réponses courtes. Les documents courts sont diffusés une fois, les longs deux fois, avec du temps pour lire et répondre.",
+            "tips": ["Parcourez les questions avant l'écoute", "Repérez les informations clés et les connecteurs — inutile de tout comprendre"]
+          },
+          "CE": {
+            "name": "Compréhension des écrits",
+            "time": "~60 min",
+            "format": "Trois textes (informatifs et argumentatifs) avec QCM et vrai/faux ; repérez la justification dans le texte.",
+            "tips": ["Lisez d'abord les questions, puis repérez dans le texte", "Pour le vrai/faux, trouvez toujours la phrase justificative"]
+          },
+          "PE": {
+            "name": "Production écrite",
+            "time": "~60 min",
+            "format": "Un texte argumentatif d'environ 250 mots (contribution, lettre formelle, critique) avec une position claire et une structure complète.",
+            "tips": ["Annoncez votre position dès l'introduction, argumentez par paragraphes", "Utilisez des connecteurs ; rappelez votre avis en conclusion"]
+          },
+          "PO": {
+            "name": "Production orale",
+            "time": "~20 min (+ 30 min de préparation)",
+            "format": "Deux parties : d'abord un exposé de votre point de vue sur un article tiré au sort, puis un débat avec l'examinateur sur le sujet.",
+            "tips": ["Préparez un plan d'arguments pendant la préparation", "Lors du débat, répondez d'abord à l'examinateur, puis ajoutez vos raisons"]
+          }
+        }
+      },
+      "B1": {
+        "collectiveNote": "La compréhension orale, la compréhension écrite et la production écrite s'enchaînent dans la même session — environ 1 h 55 au total, sans pause distincte.",
+        "individualNote": "L'oral est un entretien individuel avec un examinateur, d'environ 15 minutes ; vous disposez de 10 minutes de préparation avant la troisième partie (expression d'un point de vue).",
+        "skills": {
+          "CO": {
+            "name": "Compréhension de l'oral",
+            "time": "~25 min",
+            "format": "Trois exercices d'écoute (dialogues, interviews, émissions de radio sur des sujets du quotidien). Chaque document est diffusé deux fois ; questions à choix multiples.",
+            "tips": ["Parcourez les questions et anticipez le sujet avant l'écoute", "Première écoute pour le sens global, deuxième pour compléter"]
+          },
+          "CE": {
+            "name": "Compréhension des écrits",
+            "time": "~45 min",
+            "format": "Exercices de lecture : « lire pour s'orienter » et « comprendre un texte d'opinion » ; QCM principalement, avec justification à repérer dans le texte.",
+            "tips": ["Lisez d'abord les questions, puis repérez dans le texte", "Attention aux mots d'attitude et aux connecteurs d'opposition"]
+          },
+          "PE": {
+            "name": "Production écrite",
+            "time": "~45 min",
+            "format": "Un texte d'environ 160 mots (article, lettre, message de forum) pour raconter une expérience et exprimer votre opinion sur un sujet familier.",
+            "tips": ["Structurez : introduction → faits/expérience → opinion → conclusion", "Reliez vos idées avec d'abord, ensuite, enfin"]
+          },
+          "PO": {
+            "name": "Production orale",
+            "time": "~15 min (+ 10 min de préparation)",
+            "format": "Trois parties : entretien dirigé (se présenter) → exercice en interaction (jeu de rôle) → expression d'un point de vue à partir d'un document tiré au sort. Les 10 minutes de préparation ne concernent que la troisième partie.",
+            "tips": ["En partie trois, résumez le document avant de donner votre avis", "Dans le jeu de rôle, osez parler — l'aisance compte plus que la perfection grammaticale"]
+          }
+        }
+      },
+      "A2": {
+        "collectiveNote": "La compréhension orale, la compréhension écrite et la production écrite s'enchaînent dans la même session — environ 1 h 40 au total, sans pause distincte.",
+        "individualNote": "L'oral est un entretien individuel avec un examinateur, d'environ 6 à 8 minutes, précédé de 10 minutes de préparation.",
+        "skills": {
+          "CO": {
+            "name": "Compréhension de l'oral",
+            "time": "~25 min",
+            "format": "Trois à quatre exercices d'écoute sur des situations de la vie quotidienne (annonces, messages, courts dialogues). Chaque document est diffusé deux fois ; questions à choix multiples.",
+            "tips": ["Regardez d'abord les images et les options pour anticiper la situation", "Concentrez-vous sur les détails concrets : heures, lieux, nombres"]
+          },
+          "CE": {
+            "name": "Compréhension des écrits",
+            "time": "~30 min",
+            "format": "Trois à quatre documents courts du quotidien (annonces, menus, messages, lettres) ; QCM évaluant la recherche d'informations précises.",
+            "tips": ["Identifiez l'information demandée par chaque question", "Sautez les mots inconnus et devinez par le contexte"]
+          },
+          "PE": {
+            "name": "Production écrite",
+            "time": "~45 min",
+            "format": "Deux textes courts de 60 à 80 mots chacun : exercice 1, décrire un événement ou une expérience personnelle (journal, message) ; exercice 2, une lettre simple (inviter, remercier, s'excuser…).",
+            "tips": ["Rédigez bien les deux textes en respectant le nombre de mots", "Dans l'exercice 2, n'oubliez pas la formule d'appel et de congé"]
+          },
+          "PO": {
+            "name": "Production orale",
+            "time": "~6-8 min (+ 10 min de préparation)",
+            "format": "Trois parties : entretien dirigé (se présenter) → monologue suivi (~2 minutes sur un sujet familier) → exercice en interaction (achats, demande d'information…).",
+            "tips": ["Préparez à l'avance les sujets courants (famille, loisirs, quotidien)", "Dans le jeu de rôle, utilisez « vous » et les formules de politesse"]
+          }
+        }
+      }
+    }
   },
   "ai": {
     "model": {
@@ -111,7 +175,7 @@
     "PO": "Production orale"
   },
   "landing": {
-    "title": "Plateforme d'entraînement DELF B2",
+    "title": "Plateforme d'entraînement DELF {{level}}",
     "subtitle": "Entraînement systématique aux quatre compétences · Correction IA · Simulation d'examen réel",
     "ctaStart": "Commencer gratuitement",
     "ctaPricing": "Voir les tarifs",
@@ -126,7 +190,7 @@
       },
       "pe": {
         "title": "Production écrite",
-        "desc": "Rédaction de 250 mots avec correction IA (plan IA)"
+        "desc": "Rédaction au format de l'examen avec correction IA (plan IA)"
       },
       "po": {
         "title": "Production orale",
@@ -274,8 +338,8 @@
       "skillListTitle": "Entraînement ciblé",
       "coDesc": "CO ciblée · Rythme d'examen",
       "ceDesc": "CE ciblée · Textes argumentatifs longs",
-      "peDesc": "PE ciblée · Rédaction 250 mots",
-      "poDesc": "PO ciblée · Monologue + débat avec notation IA",
+      "peDesc": "PE ciblée · Sujets au format de l'examen",
+      "poDesc": "PO ciblée · Monologue + questions avec notation IA",
       "mockTitle": "Examen blanc complet",
       "mockDesc": "Les 4 compétences en séquence · Flux d'examen complet",
       "mockSectionTitle": "Examen blanc complet",
@@ -325,7 +389,8 @@
     "coCountdownHint": "Temps de lecture conseillé {{sec}} s (indicatif — lecture possible à tout moment)",
     "coDocPlaysRule": "Lu {{n}} fois",
     "fillPlaceholder": "Saisir votre réponse",
-    "essayPlaceholder": "Rédigez votre essai ici (250 mots minimum)...",
+    "essayPlaceholder": "Rédigez votre texte ici...",
+    "peMultiTask": "Ce sujet comporte {{count}} exercices d'écriture (Exercice 1 + Exercice 2). Rédigez les deux textes ci-dessous, séparés par une ligne vide.",
     "essayAITip": "💡 La rédaction n'est pas corrigée automatiquement en MVP. Passez au plan IA pour la correction IA.",
     "unsupported": "Ce type de question nécessite l'enregistrement (bientôt disponible)",
     "loadFail": "Échec du chargement",
