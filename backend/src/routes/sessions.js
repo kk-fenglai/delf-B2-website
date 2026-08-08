@@ -15,6 +15,13 @@ const {
 } = require('../constants/planMatrix');
 const { getOrCreateExplanation } = require('../services/questionExplainer');
 const { MIN_WORDS, MAX_WORDS } = require('../constants/delfRubric');
+const { getLevel } = require('../constants/levels');
+const {
+  TOTAL_MAX: SCORING_TOTAL_MAX,
+  PASS_TOTAL_MIN,
+  PASS_PER_SKILL_MIN,
+  SKILL_MAX_POINTS,
+} = require('../constants/delfScoring');
 const { signAudioUrl } = require('../utils/audioToken');
 
 const router = express.Router();
@@ -199,7 +206,12 @@ async function buildSessionResult({ sessionId, userId }) {
       totalScore,
       maxScore,
       perSkill,
-      thresholds: { passTotal: 50, passPerSkill: 5, skillMax: 25 },
+      thresholds: {
+        passTotal: PASS_TOTAL_MIN,
+        passPerSkill: PASS_PER_SKILL_MIN,
+        skillMax: SKILL_MAX_POINTS,
+        totalMax: SCORING_TOTAL_MAX,
+      },
       details,
       essays: essays.map((e) => ({
         essayId: e.id,
@@ -339,10 +351,14 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
 
     const session = await prisma.examSession.findUnique({
       where: { id: req.params.id },
+      // All questions in a session share one exam set, so one join resolves
+      // the level for the whole submission (word-count gate below).
+      include: { examSet: { select: { level: true } } },
     });
     if (!session || session.userId !== req.userId) {
       return res.status(404).json({ error: 'Session not found' });
     }
+    const sessionLevelPe = getLevel(session.examSet?.level).pe;
 
     const questionIds = answers.map((a) => a.questionId);
     const questions = await prisma.question.findMany({
@@ -408,7 +424,7 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
           questionId: q.id,
           content: a.answer,
           wordCount,
-          tooShort: wordCount < MIN_WORDS,
+          tooShort: wordCount < sessionLevelPe.MIN_WORDS,
         });
       }
 
@@ -575,9 +591,10 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
       maxScore,
       perSkill,
       thresholds: {
-        passTotal: 50,
-        passPerSkill: 5,
-        skillMax: 25,
+        passTotal: PASS_TOTAL_MIN,
+        passPerSkill: PASS_PER_SKILL_MIN,
+        skillMax: SKILL_MAX_POINTS,
+        totalMax: SCORING_TOTAL_MAX,
       },
       details,
       essays: createdEssays.map((e) => ({

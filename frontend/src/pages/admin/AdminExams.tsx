@@ -9,6 +9,8 @@ import {
   AudioOutlined, ReadOutlined, EditFilled, CustomerServiceOutlined, TrophyOutlined,
 } from '@ant-design/icons';
 import { adminApi } from '../../api/adminClient';
+import { resolveCoGroup } from '../../utils/coGroup';
+import type { CoGroup } from '../../utils/coGroup';
 
 const { Title } = Typography;
 
@@ -20,10 +22,14 @@ interface ExamRow {
   isPublished: boolean;
   isFreePreview: boolean;
   coFormat?: 'long' | 'short' | 'other' | null;
+  level?: string;
   totalQuestions: number;
   countsBySkill: Record<string, number>;
   createdAt: string;
 }
+
+const LEVEL_OPTIONS = ['B2', 'B1', 'A2'] as const;
+const LEVEL_COLORS: Record<string, string> = { B2: 'geekblue', B1: 'cyan', A2: 'lime' };
 
 type Section = 'CO' | 'CE' | 'PE' | 'PO' | 'mock';
 
@@ -36,24 +42,7 @@ function inferSection(row: ExamRow): Section {
   return 'mock'; // 不满足四个 skill 的异常情况也归入全真模拟兜底
 }
 
-type CoGroup = 'long' | 'short' | 'other';
-
-// DELF CO 仅两种类型：documents courts(短)、document long(长)。按标题归类。
-function coGroupOf(title: string): CoGroup {
-  const s = title.toLowerCase();
-  if (/documents?\s*courts?/.test(s) || /短听力/.test(title) || /\bcourts?\b/.test(s)) return 'short';
-  if (
-    /documents?\s*longs?/.test(s) ||
-    /长听力/.test(title) ||
-    /(entretien|d[eé]bat|table\s*ronde|interview|monologue|conf[eé]rence)/.test(s)
-  ) return 'long';
-  return 'other';
-}
-
-// 优先用持久化的 coFormat 覆盖；为空时回退到标题判定。
-function resolveCoGroup(row: ExamRow): CoGroup {
-  return (row.coFormat as CoGroup) ?? coGroupOf(row.title);
-}
+// CO 长/短分类逻辑共享自 utils/coGroup（原先此处有一份重复实现）。
 
 const SECTIONS: { key: Section; label: string; icon: React.ReactNode; color: string }[] = [
   { key: 'CO',   label: '听力',     icon: <AudioOutlined />,           color: 'blue'   },
@@ -68,6 +57,7 @@ export default function AdminExams() {
   const [rows, setRows] = useState<ExamRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState<'all' | 'published' | 'draft'>('all');
+  const [levelFilter, setLevelFilter] = useState<'all' | string>('all');
   const [activeSection, setActiveSection] = useState<Section>('CO');
   const [coFilter, setCoFilter] = useState<'all' | CoGroup>('all');
   const [createOpen, setCreateOpen] = useState(false);
@@ -78,7 +68,9 @@ export default function AdminExams() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const params = status === 'all' ? {} : { status };
+      const params: Record<string, string> = {};
+      if (status !== 'all') params.status = status;
+      if (levelFilter !== 'all') params.level = levelFilter;
       const { data } = await adminApi.get('/exams', { params });
       setRows(data.sets);
     } catch (e: any) {
@@ -88,7 +80,7 @@ export default function AdminExams() {
     }
   };
 
-  useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, [status]);
+  useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, [status, levelFilter]);
 
   const createExam = async () => {
     try {
@@ -173,6 +165,14 @@ export default function AdminExams() {
       dataIndex: 'title',
       render: (t: string, row: ExamRow) => (
         <Link to={`/admin/exams/${row.id}`}>{t}</Link>
+      ),
+    },
+    {
+      title: '等级',
+      dataIndex: 'level',
+      width: 80,
+      render: (l?: string) => (
+        <Tag color={LEVEL_COLORS[l || 'B2'] || 'default'}>{l || 'B2'}</Tag>
       ),
     },
     {
@@ -294,6 +294,15 @@ export default function AdminExams() {
         <Title level={3} className="!mb-0">套题管理</Title>
         <Space wrap>
           <Select
+            value={levelFilter}
+            onChange={(v) => { setLevelFilter(v); setSelectedKeys([]); }}
+            style={{ width: 110 }}
+            options={[
+              { value: 'all', label: '全部等级' },
+              ...LEVEL_OPTIONS.map((l) => ({ value: l, label: `DELF ${l}` })),
+            ]}
+          />
+          <Select
             value={status}
             onChange={(v) => setStatus(v)}
             style={{ width: 120 }}
@@ -395,6 +404,7 @@ export default function AdminExams() {
           initialValues={{
             isPublished: false,
             isFreePreview: false,
+            level: 'B2',
           }}
         >
           <Form.Item
@@ -403,6 +413,9 @@ export default function AdminExams() {
             rules={[{ required: true, message: '请输入标题' }]}
           >
             <Input placeholder="如：DELF B2 仿真题 2024 · 第 1 套" />
+          </Form.Item>
+          <Form.Item name="level" label="考试等级" tooltip="创建后不可修改（已批改记录依赖等级评分表）">
+            <Select options={LEVEL_OPTIONS.map((l) => ({ value: l, label: `DELF ${l}` }))} />
           </Form.Item>
           <Form.Item name="description" label="简介">
             <Input.TextArea rows={2} />

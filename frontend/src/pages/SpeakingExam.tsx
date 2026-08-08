@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import AudioRecorder, { type RecordingResult } from '../components/AudioRecorder';
 import { localizeExamTitle } from '../utils/examTitle';
+import { useLevelStore } from '../stores/level';
 import type {
   ExamSetDetail,
   Question,
@@ -38,6 +39,13 @@ export default function SpeakingExam() {
 
   const [exam, setExam] = useState<ExamSetDetail | null>(null);
   const [quota, setQuota] = useState<OralQuota | null>(null);
+  // Deep link to another level's set: follow the exam, reconcile the store.
+  const storeLevel = useLevelStore((s) => s.level);
+  const setStoreLevel = useLevelStore((s) => s.setLevel);
+  useEffect(() => {
+    if (exam?.level && exam.level !== storeLevel) setStoreLevel(exam.level);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exam?.level]);
   const [loading, setLoading] = useState(true);
   const [blocked, setBlocked] = useState<string | null>(null);
   const [phase, setPhase] = useState<Phase>('preparation');
@@ -72,10 +80,13 @@ export default function SpeakingExam() {
     if (!examId) return;
     let cancelled = false;
     setLoading(true);
-    Promise.all([
-      api.get(`/exams/${examId}`, { params: { skill: 'PO' } }),
-      api.get('/user/orals/quota'),
-    ])
+    // Exam first, then quota: the thresholds block (timings, grille) is keyed
+    // by the exam's level, which we only know once the exam payload arrives.
+    api.get(`/exams/${examId}`, { params: { skill: 'PO' } })
+      .then((examRes) =>
+        api.get('/user/orals/quota', { params: { level: (examRes.data as ExamSetDetail).level } })
+          .then((quotaRes) => [examRes, quotaRes] as const)
+      )
       .then(([examRes, quotaRes]) => {
         if (cancelled) return;
         const e: ExamSetDetail = examRes.data;
@@ -100,7 +111,15 @@ export default function SpeakingExam() {
           const saved = localStorage.getItem(noteKey(examId));
           if (saved) setNotes(saved);
         } catch { /* ignore quota errors */ }
-        setPrepRemaining(quotaData.thresholds.prepDefaultSec);
+        // PRACTICE mode uses the shortened prep; only ?mode=exam gets the
+        // official 30 min. (prepPracticeSec was shipped but never read — the
+        // practice flow silently used the EXAM prep time.)
+        const isExamMode = new URLSearchParams(window.location.search).get('mode') === 'exam';
+        setPrepRemaining(
+          isExamMode
+            ? quotaData.thresholds.prepDefaultSec
+            : (quotaData.thresholds.prepPracticeSec ?? quotaData.thresholds.prepDefaultSec)
+        );
       })
       .catch((err) => {
         if (cancelled) return;
@@ -428,7 +447,13 @@ export default function SpeakingExam() {
               <span className="text-label-caps uppercase px-2 py-0.5 rounded text-secondary bg-secondary-container/20">
                 {t('skill.PO')}
               </span>
-              <span className="text-body-base text-on-surface-variant">{t('oral.exam.subtitle')}</span>
+              <span className="text-body-base text-on-surface-variant">
+                {t('oral.exam.subtitle', {
+                  level: exam.level ?? 'B2',
+                  prepMin: Math.round(quota.thresholds.prepDefaultSec / 60),
+                  monoMin: Math.round(quota.thresholds.monologueMaxSec / 60),
+                })}
+              </span>
             </div>
           </div>
           <div className="text-right">

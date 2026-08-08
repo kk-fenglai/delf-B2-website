@@ -4,6 +4,7 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../../stores/auth';
 import LanguageSwitcher from '../LanguageSwitcher';
+import LevelSwitcher from '../LevelSwitcher';
 import FeedbackWidget from '../FeedbackWidget';
 import AnnouncementModal from '../AnnouncementModal';
 import MaterialIcon from '../MaterialIcon';
@@ -87,6 +88,7 @@ export default function AppShell() {
               🇫🇷 {t('app.name')}
             </Link>
             <div className="flex items-center gap-3">
+              <LevelSwitcher />
               <LanguageSwitcher />
               <Tag className="hidden sm:inline-block" color={planColor[displayPlan || 'FREE']} style={{ marginInlineEnd: 0 }}>
                 {t(`plan.${displayPlan || 'FREE'}`)}

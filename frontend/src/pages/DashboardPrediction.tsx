@@ -255,7 +255,7 @@ export default function DashboardPrediction() {
               {
                 title: t('prediction.page.totalScore'),
                 dataIndex: 'total',
-                render: (v) => `${v.toFixed(1)} / ${thresholds.passTotal * 2}`,
+                render: (v) => `${v.toFixed(1)} / ${thresholds.totalMax ?? thresholds.passTotal * 2}`,
               },
               {
                 title: t('prediction.page.passes'),

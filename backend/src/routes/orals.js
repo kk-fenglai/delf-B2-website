@@ -32,6 +32,7 @@ const {
   PREP_DEFAULT_SEC,
   PREP_PRACTICE_SEC,
 } = require('../constants/delfOralRubric');
+const { getLevel } = require('../constants/levels');
 
 const router = express.Router();
 
@@ -138,6 +139,9 @@ router.get('/quota', requireAuth, async (req, res, next) => {
   try {
     const plan = req.userPlan || 'FREE';
     const caps = PLAN_CAPS[plan] || PLAN_CAPS.FREE;
+    // ?level= keys the thresholds block (timings, grille dimensions).
+    // Omitted/unknown → B2, byte-identical to the pre-level payload.
+    const lvlPo = getLevel(req.query.level).po;
     const used = await currentUsage(req.userId);
     const reset = new Date(monthStart());
     reset.setMonth(reset.getMonth() + 1);
@@ -156,15 +160,15 @@ router.get('/quota', requireAuth, async (req, res, next) => {
         tier: MODEL_CATALOG[k].tier,
       })),
       thresholds: {
-        totalMax: TOTAL_MAX,
-        minWords: MIN_WORDS,
-        targetWords: TARGET_WORDS,
-        maxWords: MAX_WORDS,
-        monologueMaxSec: MONOLOGUE_MAX_SEC,
-        followUpMaxSec: FOLLOW_UP_MAX_SEC,
-        prepDefaultSec: PREP_DEFAULT_SEC,
-        prepPracticeSec: PREP_PRACTICE_SEC,
-        dimensions: DIMENSIONS.map((d) => ({
+        totalMax: lvlPo.TOTAL_MAX,
+        minWords: lvlPo.MIN_WORDS,
+        targetWords: lvlPo.TARGET_WORDS,
+        maxWords: lvlPo.MAX_WORDS,
+        monologueMaxSec: lvlPo.MONOLOGUE_MAX_SEC,
+        followUpMaxSec: lvlPo.FOLLOW_UP_MAX_SEC,
+        prepDefaultSec: lvlPo.PREP_DEFAULT_SEC,
+        prepPracticeSec: lvlPo.PREP_PRACTICE_SEC,
+        dimensions: lvlPo.DIMENSIONS.map((d) => ({
           key: d.key,
           max: d.max,
           labelFr: d.labelFr,

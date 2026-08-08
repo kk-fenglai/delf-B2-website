@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const { z } = require('zod');
 const { sanitizeExamTitle, sanitizeExamDescription } = require('../utils/examTitle');
 const { resolveExamSetYear } = require('../utils/examSetYear');
+const { LEVEL_KEYS } = require('../constants/levels');
 
 const VALID_SKILLS = ['CO', 'CE', 'PE', 'PO'];
 const VALID_TYPES = ['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'TRUE_FALSE_JUSTIFY', 'FILL', 'ESSAY', 'SPEAKING'];
@@ -42,6 +43,8 @@ const examSetSchema = z.object({
   description: z.string().optional().nullable(),
   isPublished: z.boolean().default(false),
   isFreePreview: z.boolean().default(false),
+  // 考试等级。缺省 B2 ⇒ 磁盘上所有既存导入文件行为完全不变。
+  level: z.enum(LEVEL_KEYS).default('B2'),
   // CO 听力分类覆盖：long | short | other（为空=按标题自动判定）
   coFormat: z.enum(['long', 'short', 'other']).optional().nullable(),
 });
@@ -160,6 +163,8 @@ async function createExamSetWithQuestions(tx, {
   year,
   isPublished,
   isFreePreview,
+  level,
+  coFormat,
   ownerUserId,
   source,
   primarySkill,
@@ -173,6 +178,8 @@ async function createExamSetWithQuestions(tx, {
       description: description != null ? sanitizeExamDescription(description) : (description || null),
       isPublished: !!isPublished,
       isFreePreview: !!isFreePreview,
+      level: level || 'B2',
+      coFormat: coFormat || null,
       ownerUserId: ownerUserId || null,
       source: source || 'PLATFORM',
       primarySkill: primarySkill || null,

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLevelStore } from '../stores/level';
 import MaterialIcon from '../components/MaterialIcon';
 import HeroShowcase from '../components/HeroShowcase';
 
@@ -22,6 +23,7 @@ const CERT_FACTS = [
 
 export default function Landing() {
   const { t } = useTranslation();
+  const level = useLevelStore((s) => s.level);
 
   return (
     <div>
@@ -29,7 +31,7 @@ export default function Landing() {
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center py-10 md:py-16">
         <div>
           <h1 className="text-4xl md:text-5xl font-bold leading-tight text-on-surface mb-4">
-            {t('landing.title')}
+            {t('landing.title', { level })}
             <svg className="block mt-2" width="220" height="12" viewBox="0 0 220 12" fill="none" aria-hidden="true">
               <path d="M2 9C40 3 120 1 218 6" stroke="#2563eb" strokeWidth="4" strokeLinecap="round" />
             </svg>

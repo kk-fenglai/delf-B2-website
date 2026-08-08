@@ -18,6 +18,7 @@ const TEMPLATE_LISTENING = {
   title: 'DELF B2 仿真题 2024 · 第 1 套',
   year: 2024,
   description: '听力（CO）专项练习',
+  level: 'B2',
   isPublished: false,
   isFreePreview: false,
   questions: [
@@ -103,6 +104,7 @@ const TEMPLATE_MOCK = {
   title: 'DELF B2 仿真题 2024 · 第 1 套（全真模拟）',
   year: 2024,
   description: '听 + 读 + 写 + 口 完整一套（全真模拟）',
+  level: 'B2',
   isPublished: false,
   isFreePreview: false,
   questions: [
@@ -118,6 +120,7 @@ const FIELD_REFERENCE = `
   title           必填，套题标题（勿写考试年月/场次，如「DELF B2 写作 · 主题名」）
   year            可选，仅后台排序用，不会展示给学员
   description     可选，简介
+  level           可选：B2 / B1 / A2，未填时使用页面上方所选级别（决定学员端归属和 AI 批改评分表）
   isPublished     可选，默认 false（草稿）
   isFreePreview   可选，默认 false
   questions       必填数组，≥1 项
@@ -153,10 +156,20 @@ const FIELD_REFERENCE = `
   SPEAKING          : skill 必须为 PO；options 必须为空；followUps 至少 1 条
 `.trim();
 
+type LevelKey = 'B2' | 'B1' | 'A2';
+
+// 把模板换成指定级别（level 字段 + 标题里的级别前缀）
+const withLevel = (tmpl: any, level: LevelKey) => ({
+  ...tmpl,
+  level,
+  title: String(tmpl.title).replace(/^DELF (B2|B1|A2)/, `DELF ${level}`),
+});
+
 export default function AdminExamImport() {
   const navigate = useNavigate();
   const [moduleKey, setModuleKey] = useState<'listening' | 'reading' | 'writing' | 'speaking' | 'mock'>('mock');
-  const moduleTemplate = (() => {
+  const [levelKey, setLevelKey] = useState<LevelKey>('B2');
+  const rawModuleTemplate = (() => {
     switch (moduleKey) {
       case 'listening': return TEMPLATE_LISTENING;
       case 'reading': return TEMPLATE_READING;
@@ -166,6 +179,7 @@ export default function AdminExamImport() {
       default: return TEMPLATE_MOCK;
     }
   })();
+  const moduleTemplate = withLevel(rawModuleTemplate, levelKey);
   const [jsonText, setJsonText] = useState(JSON.stringify(moduleTemplate, null, 2));
   const [submitting, setSubmitting] = useState(false);
   const [parseError, setParseError] = useState<string | null>(null);
@@ -179,7 +193,7 @@ export default function AdminExamImport() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `delf-${moduleKey}-template.json`;
+    a.download = `delf-${levelKey.toLowerCase()}-${moduleKey}-template.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -212,9 +226,16 @@ export default function AdminExamImport() {
         return;
       }
     }
+    // 级别通道：JSON 未写 level 时用页面所选级别；已写则以 JSON 为准
+    const payload: any = { ...(parsed as any) };
+    if (!payload.level) {
+      payload.level = levelKey;
+    } else if (payload.level !== levelKey) {
+      message.warning(`JSON 中已写 level=${payload.level}，以 JSON 为准（当前选择 ${levelKey}）`);
+    }
     setSubmitting(true);
     try {
-      const { data } = await adminApi.post('/exams/import', parsed);
+      const { data } = await adminApi.post('/exams/import', payload);
       message.success(`导入成功：${data.questionCount} 道题`);
       navigate(`/admin/exams/${data.set.id}`);
     } catch (e: any) {
@@ -306,7 +327,8 @@ export default function AdminExamImport() {
         }
         updateItem(it.uid, { status: 'importing', message: undefined });
         try {
-          const { data } = await adminApi.post('/exams/import', it.parsed);
+          // 级别通道：文件未写 level 时按页面所选级别导入
+          const { data } = await adminApi.post('/exams/import', { ...it.parsed, level: it.parsed?.level ?? levelKey });
           existingKeys.add(key); // guard against duplicates within the same batch
           updateItem(it.uid, {
             status: 'success', setId: data.set.id, questionCount: data.questionCount, message: undefined,
@@ -392,7 +414,7 @@ export default function AdminExamImport() {
                     default: return TEMPLATE_MOCK;
                   }
                 })();
-                setJsonText(JSON.stringify(tmpl, null, 2));
+                setJsonText(JSON.stringify(withLevel(tmpl, levelKey), null, 2));
                 setParseError(null);
               }}
               options={[
@@ -401,6 +423,28 @@ export default function AdminExamImport() {
                 { label: '写作', value: 'writing' },
                 { label: '口语', value: 'speaking' },
                 { label: '全真模拟', value: 'mock' },
+              ]}
+            />
+          </div>
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <div>
+              <Text strong>导入级别：</Text>
+              <Text type="secondary" className="ml-2">JSON 内已写 <Text code>level</Text> 的以 JSON 为准；未写的按此级别导入</Text>
+            </div>
+            <Segmented
+              value={levelKey}
+              onChange={(v) => {
+                const next = v as LevelKey;
+                // 编辑器内容还是未改动的模板时，跟随切换级别；已被编辑/粘贴则不动
+                if (jsonText === JSON.stringify(moduleTemplate, null, 2)) {
+                  setJsonText(JSON.stringify(withLevel(rawModuleTemplate, next), null, 2));
+                }
+                setLevelKey(next);
+              }}
+              options={[
+                { label: 'B2', value: 'B2' },
+                { label: 'B1', value: 'B1' },
+                { label: 'A2', value: 'A2' },
               ]}
             />
           </div>
@@ -505,7 +549,7 @@ export default function AdminExamImport() {
                   showIcon
                   className="mb-3"
                   message="一次拖入多个 .json 文件（每个文件 = 一套题）"
-                  description="逐个导入，互不影响；同名（标题）+ 同年份的套题会自动跳过，可安全重跑。导入默认为草稿状态。"
+                  description="逐个导入，互不影响；同名（标题）+ 同年份的套题会自动跳过，可安全重跑。导入默认为草稿状态。文件未写 level 时按页面上方所选级别导入。"
                 />
                 <Dragger {...batchUploadProps} style={{ padding: 24 }} disabled={batchRunning}>
                   <p className="ant-upload-drag-icon">
@@ -546,6 +590,13 @@ export default function AdminExamImport() {
                       columns={[
                         { title: '文件', dataIndex: 'name', ellipsis: true },
                         { title: '标题', dataIndex: 'title', ellipsis: true, render: (v) => v || '—' },
+                        {
+                          title: '级别', dataIndex: 'parsed', width: 70,
+                          render: (parsed: any) => {
+                            const own = parsed?.level as string | undefined;
+                            return <Tag color={own ? 'blue' : 'default'}>{own ?? levelKey}</Tag>;
+                          },
+                        },
                         { title: '年份', dataIndex: 'year', width: 80, render: (v) => v ?? '—' },
                         { title: '题数', dataIndex: 'questionCount', width: 70, render: (v) => v ?? '—' },
                         {

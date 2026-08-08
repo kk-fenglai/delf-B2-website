@@ -130,3 +130,6 @@ Do not put exam session year/month/region in titles shown to users (e.g. avoid `
 - Public `/api/exams` does not expose `year`; keep provenance in admin-only fields or question `explanation` if needed.
 
 Rule 11.请将md文件统一整理到一个文件夹docs下面
+
+Rule 12. Graphify 知识图谱维护
+如果本会话套餐的 token 快消耗完了（临近用量上限/会话即将结束），在收尾前运行 `/graphify . --update` 增量更新知识图谱（graphify-out/），把本次改动沉淀进图谱，避免下次会话丢失上下文。

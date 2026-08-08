@@ -1,4 +1,4 @@
-// AI essay grader for DELF B2 Production Écrite.
+// AI essay grader for DELF Production Écrite (level-aware; defaults to B2).
 //
 // Providers: DeepSeek V4 (api.deepseek.com) + Qwen/DashScope (dashscope.aliyuncs.com).
 // Both expose an OpenAI-compatible chat-completions endpoint, so we use the
@@ -29,13 +29,7 @@ const { z } = require('zod');
 const env = require('../config/env');
 const { logger } = require('../utils/logger');
 const { deepseekV4RequestExtras } = require('../utils/deepseekRequest');
-const {
-  DIMENSIONS,
-  DIMENSION_KEYS,
-  TOTAL_MAX,
-  CORRECTION_TYPES,
-  MIN_WORDS,
-} = require('../constants/delfRubric');
+const { getLevel, DEFAULT_LEVEL } = require('../constants/levels');
 const {
   MODEL_CATALOG,
   MODEL_KEYS,
@@ -102,17 +96,21 @@ function normaliseLocale(loc) {
 }
 
 // ---- System prompt (auto-cached by DeepSeek) -----------------------------
-// Kept stable across all 3 sub-calls so DeepSeek's prefix cache can hit. If
-// you change this string you invalidate the cache — plan rollouts accordingly.
-function buildSystemPrompt() {
+// Kept stable across all 3 sub-calls so DeepSeek's prefix cache can hit. One
+// stable string PER LEVEL (memoised below); changing a level's string
+// invalidates that level's cache — plan rollouts accordingly. For B2 this
+// must reassemble byte-identically to the pre-refactor prompt (locked by
+// test/fixtures/peSystemPrompt.txt).
+function buildSystemPrompt(lvl) {
+  const { DIMENSIONS, TOTAL_MAX, CORRECTION_TYPES } = lvl.pe;
   const rubricBlock = DIMENSIONS.map(
     (d) =>
       `  - ${d.key} (max ${d.max} pt) — ${d.labelFr}\n      Critère : ${d.anchor}`
   ).join('\n');
 
-  return `Vous êtes un examinateur DELF B2 certifié par France Éducation International avec 10 ans d'expérience en correction de la Production Écrite. Vous notez selon la GRILLE OFFICIELLE (25 points), sans clémence ni sévérité excessive.
+  return `${lvl.pePrompt.persona}
 
-GRILLE D'ÉVALUATION — 10 dimensions, total ${TOTAL_MAX} points :
+GRILLE D'ÉVALUATION — ${DIMENSIONS.length} dimensions, total ${TOTAL_MAX} points :
 ${rubricBlock}
 
 PROTOCOLE DE NOTATION :
@@ -120,7 +118,7 @@ PROTOCOLE DE NOTATION :
  2. Notez chaque dimension indépendamment, en vous appuyant sur le critère ci-dessus.
  3. Un score partiel (0.5, 1, 1.5…) est acceptable, mais toujours ≤ au max de la dimension.
  4. Pour les corrections : citation EXACTE (≤ 10 mots) du texte original, sans reformulation.
- 5. Type de correction : grammar | lexique | orthographe | syntaxe.
+ 5. Type de correction : ${CORRECTION_TYPES.join(' | ')}.
 
 INTERDIT :
  - Ne paraphrasez pas la grille dans les feedbacks.
@@ -128,98 +126,104 @@ INTERDIT :
  - N'inventez PAS des citations qui ne sont pas dans le texte.
  - Ne calculez PAS de note globale — le système la recompose.
 
-EXEMPLE — copie solide (18/25) :
-  "Force est de constater que les algorithmes enferment les internautes dans des bulles cognitives…"
-  → consigne 2/2, argumentation 3/4, coherence 3/3, lexique_etendue 2/2, morphosyntaxe_maitrise 1/2.
-
-EXEMPLE — copie limite (12/25) :
-  "Je pense que c'est mal parce que les gens ils regardent leur téléphone."
-  → argumentation 1/4, coherence 1/3, lexique_etendue 0/2, morphosyntaxe_maitrise 0/2.
+${lvl.pePrompt.anchors}
 
 L'utilisateur vous demandera l'une de trois tâches ciblées (notation, corrections, ou synthèse). Concentrez-vous UNIQUEMENT sur la tâche demandée et appelez l'outil correspondant une seule fois.`;
 }
 
-let _systemPrompt = null;
-function getSystemPrompt() {
-  if (!_systemPrompt) _systemPrompt = buildSystemPrompt();
-  return _systemPrompt;
+const _systemPrompts = new Map();
+function getSystemPrompt(levelKey = DEFAULT_LEVEL) {
+  const lvl = getLevel(levelKey);
+  if (!_systemPrompts.has(lvl.key)) _systemPrompts.set(lvl.key, buildSystemPrompt(lvl));
+  return _systemPrompts.get(lvl.key);
 }
 
 // ---- Tool schemas (one per sub-call) -------------------------------------
 // Wrapped in OpenAI function-calling envelope at call time; the `parameters`
-// field below is plain JSON Schema.
-const SCORE_TOOL_DEF = {
-  name: 'submit_scores',
-  description:
-    "Soumettre la notation des 10 dimensions de la grille DELF B2. Feedback bref (≤ 25 mots par dimension).",
-  parameters: {
-    type: 'object',
-    properties: {
-      dimensions: {
-        type: 'array',
-        minItems: DIMENSIONS.length,
-        maxItems: DIMENSIONS.length,
-        items: {
-          type: 'object',
-          properties: {
-            key: { type: 'string', enum: DIMENSION_KEYS },
-            score: { type: 'number', minimum: 0 },
-            max: { type: 'number', minimum: 0 },
-            feedback: { type: 'string', minLength: 10, maxLength: 200 },
+// field is plain JSON Schema. Built per level (dimension count / keys /
+// correction types vary), memoised alongside the system prompt.
+function buildToolDefs(lvl) {
+  const { DIMENSIONS, DIMENSION_KEYS, CORRECTION_TYPES } = lvl.pe;
+  return {
+    scores: {
+      name: 'submit_scores',
+      description:
+        `Soumettre la notation des ${DIMENSIONS.length} dimensions de la grille DELF ${lvl.key}. Feedback bref (≤ 25 mots par dimension).`,
+      parameters: {
+        type: 'object',
+        properties: {
+          dimensions: {
+            type: 'array',
+            minItems: DIMENSIONS.length,
+            maxItems: DIMENSIONS.length,
+            items: {
+              type: 'object',
+              properties: {
+                key: { type: 'string', enum: DIMENSION_KEYS },
+                score: { type: 'number', minimum: 0 },
+                max: { type: 'number', minimum: 0 },
+                feedback: { type: 'string', minLength: 10, maxLength: 200 },
+              },
+              required: ['key', 'score', 'max', 'feedback'],
+            },
           },
-          required: ['key', 'score', 'max', 'feedback'],
         },
+        required: ['dimensions'],
       },
     },
-    required: ['dimensions'],
-  },
-};
-
-const CORRECTIONS_TOOL_DEF = {
-  name: 'submit_corrections',
-  description:
-    "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots), nature de l'erreur, suggestion, type.",
-  parameters: {
-    type: 'object',
-    properties: {
-      corrections: {
-        type: 'array',
-        minItems: 0,
-        maxItems: 8,
-        items: {
-          type: 'object',
-          properties: {
-            excerpt: { type: 'string', minLength: 1, maxLength: 200 },
-            issue: { type: 'string', minLength: 5 },
-            suggestion: { type: 'string', minLength: 1 },
-            type: { type: 'string', enum: CORRECTION_TYPES },
+    corrections: {
+      name: 'submit_corrections',
+      description:
+        "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots), nature de l'erreur, suggestion, type.",
+      parameters: {
+        type: 'object',
+        properties: {
+          corrections: {
+            type: 'array',
+            minItems: 0,
+            maxItems: 8,
+            items: {
+              type: 'object',
+              properties: {
+                excerpt: { type: 'string', minLength: 1, maxLength: 200 },
+                issue: { type: 'string', minLength: 5 },
+                suggestion: { type: 'string', minLength: 1 },
+                type: { type: 'string', enum: CORRECTION_TYPES },
+              },
+              required: ['excerpt', 'issue', 'suggestion', 'type'],
+            },
           },
-          required: ['excerpt', 'issue', 'suggestion', 'type'],
         },
+        required: ['corrections'],
       },
     },
-    required: ['corrections'],
-  },
-};
+    summary: {
+      name: 'submit_summary',
+      description:
+        "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
+      parameters: {
+        type: 'object',
+        properties: {
+          strengths: {
+            type: 'array',
+            minItems: 1,
+            maxItems: 4,
+            items: { type: 'string', minLength: 5 },
+          },
+          globalFeedback: { type: 'string', minLength: 80, maxLength: 1200 },
+        },
+        required: ['strengths', 'globalFeedback'],
+      },
+    },
+  };
+}
 
-const SUMMARY_TOOL_DEF = {
-  name: 'submit_summary',
-  description:
-    "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
-  parameters: {
-    type: 'object',
-    properties: {
-      strengths: {
-        type: 'array',
-        minItems: 1,
-        maxItems: 4,
-        items: { type: 'string', minLength: 5 },
-      },
-      globalFeedback: { type: 'string', minLength: 80, maxLength: 1200 },
-    },
-    required: ['strengths', 'globalFeedback'],
-  },
-};
+const _toolDefs = new Map();
+function getToolDefs(levelKey = DEFAULT_LEVEL) {
+  const lvl = getLevel(levelKey);
+  if (!_toolDefs.has(lvl.key)) _toolDefs.set(lvl.key, buildToolDefs(lvl));
+  return _toolDefs.get(lvl.key);
+}
 
 // Per-task Zod schemas mirror the tool parameters for defence-in-depth.
 // Normalise correction type: AI sometimes returns French variants or wrong case.
@@ -326,24 +330,22 @@ const SUBCALL_TIMEOUT_MS = {
   'qwen-plus': 35_000,
 };
 
-function buildTaskHint(task) {
+// Task hints no longer hardcode "en français" — the response language is now
+// driven by the locale instruction appended in buildUserContent (this was the
+// locale bug: `loc` was computed but never reached the model, so PE feedback
+// was always French regardless of the user's aiLocale).
+function buildTaskHint(task, lvl) {
   switch (task) {
     case 'scores':
-      return "TÂCHE : notez les 10 dimensions de la grille. Chaque champ 'feedback' doit être BREF (≤ 25 mots) en français. Appelez submit_scores une seule fois.";
+      return `TÂCHE : notez les ${lvl.pe.DIMENSIONS.length} dimensions de la grille. Chaque champ 'feedback' doit être BREF (≤ 25 mots). Appelez submit_scores une seule fois.`;
     case 'corrections':
-      return "TÂCHE : identifiez 3 à 8 erreurs précises en français. Citation EXACTE (≤10 mots) du texte original pour 'excerpt'. Appelez submit_corrections une seule fois.";
+      return "TÂCHE : identifiez 3 à 8 erreurs précises. Citation EXACTE (≤10 mots) du texte original pour 'excerpt'. Appelez submit_corrections une seule fois.";
     case 'summary':
-      return "TÂCHE : champ 'strengths' = 2 à 4 points forts en français (≤15 mots chacun). Champ 'globalFeedback' = axes de progrès et conseils (80–150 mots) en français — NE répétez PAS les points forts, n'ajoutez PAS de titre. Appelez submit_summary une seule fois.";
+      return "TÂCHE : champ 'strengths' = 2 à 4 points forts (≤15 mots chacun). Champ 'globalFeedback' = axes de progrès et conseils (80–150 mots) — NE répétez PAS les points forts, n'ajoutez PAS de titre. Appelez submit_summary une seule fois.";
     default:
       return '';
   }
 }
-
-const TASK_TOOL_DEFS = {
-  scores: SCORE_TOOL_DEF,
-  corrections: CORRECTIONS_TOOL_DEF,
-  summary: SUMMARY_TOOL_DEF,
-};
 
 const TASK_MAX_TOKENS = {
   scores: 2400,
@@ -351,94 +353,13 @@ const TASK_MAX_TOKENS = {
   summary: 1800,
 };
 
-// ---- Translation (post-grading, only when locale != 'fr') ----------------
-const TRANSLATE_TOOL_DEF = {
-  name: 'submit_translation',
-  description: 'Submit translated feedback fields.',
-  parameters: {
-    type: 'object',
-    properties: {
-      rubricFeedbacks:      { type: 'array', items: { type: 'string' }, description: 'Translated feedback for each rubric dimension, same order as input.' },
-      correctionIssues:     { type: 'array', items: { type: 'string' }, description: 'Translated issue for each correction.' },
-      correctionSuggestions:{ type: 'array', items: { type: 'string' }, description: 'Translated suggestion for each correction.' },
-      strengths:            { type: 'array', items: { type: 'string' }, description: 'Translated strengths.' },
-      aiFeedback:           { type: 'string', description: 'Translated global feedback paragraph.' },
-    },
-    required: ['rubricFeedbacks', 'correctionIssues', 'correctionSuggestions', 'strengths', 'aiFeedback'],
-  },
-};
-
-const TRANSLATE_LANG_LABEL = { en: 'English', zh: 'Simplified Chinese (简体中文)' };
-
-async function translateResult(result, targetLocale, modelKey) {
-  const langLabel = TRANSLATE_LANG_LABEL[targetLocale] || targetLocale;
-  const taskModel = MODEL_CATALOG[modelKey];
-  const client = getClient(taskModel.provider);
-
-  const input = {
-    rubricFeedbacks:       result.rubric.map((d) => d.feedback),
-    correctionIssues:      result.corrections.map((c) => c.issue),
-    correctionSuggestions: result.corrections.map((c) => c.suggestion),
-    strengths:             result.strengths,
-    aiFeedback:            result.aiFeedback,
-  };
-
-  const userMsg =
-    `Translate the following DELF B2 essay feedback from French into ${langLabel}.\n` +
-    `Rules:\n` +
-    `- Keep technical French grammar terms in French (e.g. subjonctif, accord du participe passé, connecteurs logiques).\n` +
-    `- Do NOT alter numbers, scores, or excerpts.\n` +
-    `- Preserve the tone (constructive, professional).\n\n` +
-    `Input JSON:\n${JSON.stringify(input, null, 2)}`;
-
-  const resp = await client.chat.completions.create(
-    {
-      model: taskModel.providerId,
-      max_tokens: 2000,
-      tools: [{ type: 'function', function: TRANSLATE_TOOL_DEF }],
-      tool_choice: { type: 'function', function: { name: TRANSLATE_TOOL_DEF.name } },
-      messages: [
-        { role: 'system', content: 'You are a professional translator specialising in French language-learning content.' },
-        { role: 'user', content: userMsg },
-      ],
-    },
-    { timeout: 30_000 }
-  );
-
-  const tc = resp.choices?.[0]?.message?.tool_calls?.[0];
-  if (!tc) return; // silent fallback — keep French
-
-  let translated;
-  try { translated = JSON.parse(tc.function.arguments || '{}'); }
-  catch { return; }
-
-  // Merge back into result (in-place mutation is intentional — avoids copying large object)
-  if (Array.isArray(translated.rubricFeedbacks)) {
-    result.rubric.forEach((d, i) => {
-      if (translated.rubricFeedbacks[i]) d.feedback = translated.rubricFeedbacks[i];
-    });
-  }
-  if (Array.isArray(translated.correctionIssues)) {
-    result.corrections.forEach((c, i) => {
-      if (translated.correctionIssues[i]) c.issue = translated.correctionIssues[i];
-    });
-  }
-  if (Array.isArray(translated.correctionSuggestions)) {
-    result.corrections.forEach((c, i) => {
-      if (translated.correctionSuggestions[i]) c.suggestion = translated.correctionSuggestions[i];
-    });
-  }
-  if (Array.isArray(translated.strengths)) result.strengths = translated.strengths;
-  if (translated.aiFeedback) result.aiFeedback = translated.aiFeedback;
-}
-
 // With a single DeepSeek tier, every sub-call uses the same model. Shape kept
 // for when we add deepseek-reasoner (R1) as a premium tier later.
 function modelForTask(_task, userModelKey) {
   return userModelKey;
 }
 
-function buildUserContent(essay, question, task) {
+function buildUserContent(essay, question, task, lvl, loc) {
   return `Consigne (sujet) :
 """
 ${String(question.prompt || '').trim()}
@@ -449,11 +370,14 @@ Copie du candidat (${essay.wordCount} mots) :
 ${essay.content.trim()}
 """
 
-${buildTaskHint(task)}`;
+${buildTaskHint(task, lvl)}
+
+Langue du retour : ${LOCALES[loc].label}.
+${LOCALES[loc].instruction}`;
 }
 
-async function runSubCall({ userModelKey, task, essay, question }) {
-  const toolDef = TASK_TOOL_DEFS[task];
+async function runSubCall({ userModelKey, task, essay, question, levelKey, loc }) {
+  const toolDef = getToolDefs(levelKey)[task];
   const taskModelKey = modelForTask(task, userModelKey);
   const taskModel = MODEL_CATALOG[taskModelKey];
   // Dispatch to the right provider client based on the model's provider tag.
@@ -467,8 +391,8 @@ async function runSubCall({ userModelKey, task, essay, question }) {
         tools: [{ type: 'function', function: toolDef }],
         tool_choice: { type: 'function', function: { name: toolDef.name } },
         messages: [
-          { role: 'system', content: getSystemPrompt() },
-          { role: 'user', content: buildUserContent(essay, question, task) },
+          { role: 'system', content: getSystemPrompt(levelKey) },
+          { role: 'user', content: buildUserContent(essay, question, task, getLevel(levelKey), loc) },
         ],
         ...deepseekV4RequestExtras(taskModel),
       },
@@ -544,16 +468,18 @@ function wrapProviderError(err, task) {
  * @param {{ prompt: string }} args.question
  * @param {string} args.modelKey   — one of MODEL_KEYS
  * @param {string} args.locale     — fr | en | zh
+ * @param {string} [args.level]    — exam level (B2 | B1 | A2); missing/unknown → B2
  * @returns {Promise<{ aiScore, aiFeedback, rubric, corrections, strengths, model, tokensIn, tokensOut, tokensCached, costUsd }>}
  */
-async function gradeEssay({ essay, question, modelKey, locale, onPartial }) {
+async function gradeEssay({ essay, question, modelKey, locale, level, onPartial }) {
+  const lvl = getLevel(level);
   if (!MODEL_KEYS.includes(modelKey)) {
     const e = new Error(`Unknown model key: ${modelKey}`);
     e.code = 'AI_BAD_MODEL';
     throw e;
   }
-  if (!essay?.content || essay.wordCount < MIN_WORDS) {
-    const e = new Error(`Essay too short (need ≥ ${MIN_WORDS} words)`);
+  if (!essay?.content || essay.wordCount < lvl.pe.MIN_WORDS) {
+    const e = new Error(`Essay too short (need ≥ ${lvl.pe.MIN_WORDS} words)`);
     e.code = 'AI_ESSAY_TOO_SHORT';
     throw e;
   }
@@ -568,7 +494,7 @@ async function gradeEssay({ essay, question, modelKey, locale, onPartial }) {
   const tasks = ['scores', 'corrections', 'summary'];
   const results = await Promise.all(
     tasks.map(async (task) => {
-      const res = await runSubCall({ userModelKey: modelKey, task, essay, question, loc })
+      const res = await runSubCall({ userModelKey: modelKey, task, essay, question, levelKey: lvl.key, loc })
         .catch((err) => { throw wrapProviderError(err, task); });
 
       if (onPartial) {
@@ -576,7 +502,7 @@ async function gradeEssay({ essay, question, modelKey, locale, onPartial }) {
           if (task === 'scores') {
             const parsed = ScoreSchema.parse(res.rawInput);
             const byKey = new Map(parsed.dimensions.map((d) => [d.key, d]));
-            const canonical = DIMENSIONS.map((ref) => {
+            const canonical = lvl.pe.DIMENSIONS.map((ref) => {
               const got = byKey.get(ref.key);
               const score = Math.max(0, Math.min(ref.max, got?.score ?? 0));
               return { key: ref.key, score, max: ref.max, feedback: got?.feedback ?? '' };
@@ -604,26 +530,28 @@ async function gradeEssay({ essay, question, modelKey, locale, onPartial }) {
   let scoreParsed, corrParsed, sumParsed;
   try { scoreParsed = ScoreSchema.parse(scoreRes.rawInput); }
   catch (err) {
-    logger.error({ task: 'scores', model: modelKey, zodError: err.message, raw: scoreRes.rawInput }, 'aiGrader.parse.fail');
+    logger.error({ task: 'scores', model: modelKey, level: lvl.key, zodError: err.message, raw: scoreRes.rawInput }, 'aiGrader.parse.fail');
     const e = new Error(`scores tool output invalid: ${err.message}`);
     e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }
   try { corrParsed = CorrectionsSchema.parse(corrRes.rawInput); }
   catch (err) {
-    logger.error({ task: 'corrections', model: modelKey, zodError: err.message, raw: corrRes.rawInput }, 'aiGrader.parse.fail');
+    logger.error({ task: 'corrections', model: modelKey, level: lvl.key, zodError: err.message, raw: corrRes.rawInput }, 'aiGrader.parse.fail');
     const e = new Error(`corrections tool output invalid: ${err.message}`);
     e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }
   try { sumParsed = SummarySchema.parse(sumRes.rawInput); }
   catch (err) {
-    logger.error({ task: 'summary', model: modelKey, zodError: err.message, raw: sumRes.rawInput }, 'aiGrader.parse.fail');
+    logger.error({ task: 'summary', model: modelKey, level: lvl.key, zodError: err.message, raw: sumRes.rawInput }, 'aiGrader.parse.fail');
     const e = new Error(`summary tool output invalid: ${err.message}`);
     e.code = 'AI_BAD_OUTPUT'; e.cause = err; throw e;
   }
 
-  // Per-dim: clamp score to [0, max]; reorder to canonical dimension order.
+  // Per-dim: clamp score to [0, max]; reorder to the LEVEL's canonical
+  // dimension order — using the wrong level here silently returns the other
+  // level's keys with all-zero scores.
   const byKey = new Map(scoreParsed.dimensions.map((d) => [d.key, d]));
-  const canonical = DIMENSIONS.map((ref) => {
+  const canonical = lvl.pe.DIMENSIONS.map((ref) => {
     const got = byKey.get(ref.key);
     const score = Math.max(0, Math.min(ref.max, got?.score ?? 0));
     return {
@@ -690,16 +618,19 @@ async function gradeEssay({ essay, question, modelKey, locale, onPartial }) {
 
 module.exports = {
   gradeEssay,
-  // exported for tests
+  // exported for tests. The *_TOOL_DEF keys keep their legacy names and point
+  // at the default-level (B2) instances so the byte-equality fixtures apply.
   _internal: {
     ScoreSchema,
     CorrectionsSchema,
     SummarySchema,
-    SCORE_TOOL_DEF,
-    CORRECTIONS_TOOL_DEF,
-    SUMMARY_TOOL_DEF,
+    SCORE_TOOL_DEF: getToolDefs(DEFAULT_LEVEL).scores,
+    CORRECTIONS_TOOL_DEF: getToolDefs(DEFAULT_LEVEL).corrections,
+    SUMMARY_TOOL_DEF: getToolDefs(DEFAULT_LEVEL).summary,
     computeCostUsd,
     normaliseLocale,
+    getSystemPrompt,
+    getToolDefs,
     SUBCALL_TIMEOUT_MS,
   },
 };

@@ -6,6 +6,7 @@ import ExamLayout from './components/layout/ExamLayout';
 import PageLoader from './components/PageLoader';
 import { useAuthStore } from './stores/auth';
 import { useGeoStore } from './stores/geo';
+import { useLevelStore } from './stores/level';
 
 const AdminLayout = lazy(() => import('./components/AdminLayout'));
 const RequireAdmin = lazy(() => import('./components/RequireAdmin'));
@@ -71,10 +72,12 @@ function ShellByAuth() {
 export default function App() {
   const fetchMe = useAuthStore((s) => s.fetchMe);
   const fetchGeo = useGeoStore((s) => s.fetchGeo);
+  const fetchCatalogue = useLevelStore((s) => s.fetchCatalogue);
   useEffect(() => {
     if (localStorage.getItem('accessToken')) fetchMe();
     fetchGeo();
-  }, [fetchMe, fetchGeo]);
+    fetchCatalogue();
+  }, [fetchMe, fetchGeo, fetchCatalogue]);
 
   return (
     <Suspense fallback={<PageLoader />}>

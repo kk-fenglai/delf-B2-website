@@ -61,3 +61,23 @@ docs/优化方案.md
 
 # 题库归档（本地复制，~677MB，勿提交）
 题库归档/
+
+# AI 原创题库与音频（产品内容，勿提交公开仓库）
+AI question/
+AI question.rar
+DELF_B2_题库_按类型.zip
+backend/content/listening-sets/
+backend/scripts/_listening-audio/
+backend/scripts/_listening-import/
+backend/scripts/_title-backup.json
+
+# 内部出题文档
+docs/AI题库.md
+docs/DELF_B2_出题指南.md
+docs/题库清单/
+
+# 本地工具产物
+graphify-out/
+.playwright-mcp/
+AGENTS.md
+landing.png

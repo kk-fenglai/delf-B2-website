@@ -13,6 +13,7 @@ export const SIDEBAR_NAV: NavItem[] = [
   { to: '/practice', icon: 'edit_note', labelKey: 'nav.practice' },
   { to: '/mistakes', icon: 'menu_book', labelKey: 'nav.mistakes' },
   { to: '/my-exams', icon: 'inventory_2', labelKey: 'nav.myExams' },
+  { to: '/exam-guide', icon: 'school', labelKey: 'nav.examGuide' },
   { to: '/pricing', icon: 'payments', labelKey: 'nav.pricing' },
   { to: '/orders', icon: 'shopping_bag', labelKey: 'nav.orders' },
 ];

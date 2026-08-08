@@ -1,5 +1,8 @@
 // Strip exam session date / region from titles shown to learners.
 // Admin may keep source metadata in description / explanation fields.
+// The level prefix matches any DELF level (A2/B1/B2) so B1/A2 titles get the
+// same sanitisation — a title that escapes these regexes would leak exam
+// date/region to learners (CLAUDE.md Rule 10).
 
 function sanitizeExamTitle(title) {
   if (!title || typeof title !== 'string') return title;
@@ -7,25 +10,25 @@ function sanitizeExamTitle(title) {
 
   // PE: DELF B2 写作真题 · 2021年3月（法国） — 主题
   t = t.replace(
-    /^(DELF B2\s+)写作真题\s*·\s*\d{4}年\d{1,2}月(?:（[^）]*）)?\s*[—–-]\s*/u,
+    /^(DELF\s+(?:A2|B1|B2)\s+)写作真题\s*·\s*\d{4}年\d{1,2}月(?:（[^）]*）)?\s*[—–-]\s*/u,
     '$1写作 · ',
   );
 
   // CE: DELF B2 阅读 CE · 2024-01 法国场（…  or  · Texte 1（…
   t = t.replace(
-    /^(DELF B2\s+)阅读\s*CE\s*·\s*\d{4}[-/]\d{1,2}\s*(?:法国场|中国场|国内场|越南场|非洲场)?\s*·?\s*(?:Texte\s*\d+\s*（)?/iu,
+    /^(DELF\s+(?:A2|B1|B2)\s+)阅读\s*CE\s*·\s*\d{4}[-/]\d{1,2}\s*(?:法国场|中国场|国内场|越南场|非洲场)?\s*·?\s*(?:Texte\s*\d+\s*（)?/iu,
     '$1阅读 · ',
   );
 
   // CE legacy: DELF B2 CE · Topic (2021-07 法国场)
   t = t.replace(
-    /^(DELF B2\s+)CE\s*·\s*(.+?)\s*\(\d{4}[-/]\d{1,2}\s*[^)]*场\)\s*$/u,
+    /^(DELF\s+(?:A2|B1|B2)\s+)CE\s*·\s*(.+?)\s*\(\d{4}[-/]\d{1,2}\s*[^)]*场\)\s*$/u,
     '$1阅读 · $2',
   );
 
   // Mock bundles: 仿真题 2024 - / 2024-Set
-  t = t.replace(/^(DELF B2\s+)仿真题\s+20\d{2}\s*[-–]\s*/u, '$1仿真题 · ');
-  t = t.replace(/^(DELF B2\s+)仿真题\s+(20\d{2}-Set\s)/u, '$1仿真题 · $2');
+  t = t.replace(/^(DELF\s+(?:A2|B1|B2)\s+)仿真题\s+20\d{2}\s*[-–]\s*/u, '$1仿真题 · ');
+  t = t.replace(/^(DELF\s+(?:A2|B1|B2)\s+)仿真题\s+(20\d{2}-Set\s)/u, '$1仿真题 · $2');
 
   // Normalize stray "真题"
   t = t.replace(/写作真题/g, '写作');

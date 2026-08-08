@@ -5,6 +5,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../../stores/auth';
 import LanguageSwitcher from '../LanguageSwitcher';
+import LevelSwitcher from '../LevelSwitcher';
 import FeedbackWidget from '../FeedbackWidget';
 import MaterialIcon from '../MaterialIcon';
 
@@ -51,6 +52,7 @@ export default function MarketingLayout() {
 
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-3">
+            <LevelSwitcher />
             <LanguageSwitcher />
             {user ? (
               <>
@@ -88,7 +90,8 @@ export default function MarketingLayout() {
         placement="right"
         width={280}
         title={(
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
+            <LevelSwitcher />
             <LanguageSwitcher />
             {user && (
               <Tag color={planColor[displayPlan || 'FREE']} style={{ marginInlineEnd: 0 }}>

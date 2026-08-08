@@ -30,6 +30,7 @@ const {
   TARGET_WORDS,
   MAX_WORDS,
 } = require('../constants/delfRubric');
+const { getLevel } = require('../constants/levels');
 
 const router = express.Router();
 
@@ -143,6 +144,9 @@ router.get('/quota', requireAuth, async (req, res, next) => {
   try {
     const plan = req.userPlan || 'FREE';
     const caps = PLAN_CAPS[plan] || PLAN_CAPS.FREE;
+    // ?level= keys the thresholds block (word counts, grille dimensions).
+    // Omitted/unknown → B2, byte-identical to the pre-level payload.
+    const lvlPe = getLevel(req.query.level).pe;
     const used = await currentUsage(req.userId);
     const reset = new Date(monthStart());
     reset.setMonth(reset.getMonth() + 1);
@@ -161,11 +165,11 @@ router.get('/quota', requireAuth, async (req, res, next) => {
         tier: MODEL_CATALOG[k].tier,
       })),
       thresholds: {
-        totalMax: TOTAL_MAX,
-        minWords: MIN_WORDS,
-        targetWords: TARGET_WORDS,
-        maxWords: MAX_WORDS,
-        dimensions: DIMENSIONS.map((d) => ({
+        totalMax: lvlPe.TOTAL_MAX,
+        minWords: lvlPe.MIN_WORDS,
+        targetWords: lvlPe.TARGET_WORDS,
+        maxWords: lvlPe.MAX_WORDS,
+        dimensions: lvlPe.DIMENSIONS.map((d) => ({
           key: d.key,
           max: d.max,
           labelFr: d.labelFr,
