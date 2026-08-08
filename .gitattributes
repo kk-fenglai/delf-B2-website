@@ -1,0 +1,2 @@
+backend/test/fixtures/*.txt text eol=lf
+backend/test/fixtures/*.json text eol=lf
