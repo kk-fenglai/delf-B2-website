@@ -17,7 +17,7 @@ const { logger } = require('../utils/logger');
 const { transcribeFile } = require('./stt');
 const { gradeOral } = require('./oralGrader');
 const { MODEL_KEYS } = require('../constants/planMatrix');
-const { getLevel } = require('../constants/levels');
+const { resolveLevel } = require('../constants/systems');
 
 const RECORDINGS_DIR = path.resolve(
   __dirname,
@@ -65,7 +65,7 @@ async function claimOne() {
 // so the segment vocabulary can differ per level; for B2 the output must stay
 // byte-identical to the pre-refactor version (locked by test/oralTranscript.test.js).
 function buildCombinedTranscript({ recordingsByRole, followUps, levelKey }) {
-  const t = getLevel(levelKey).poPlan.transcript;
+  const t = resolveLevel(levelKey).poPlan.transcript;
   const parts = [];
   if (recordingsByRole.monologue?.transcript) {
     parts.push(t.monologueMarker);

@@ -32,7 +32,7 @@ const {
   PREP_DEFAULT_SEC,
   PREP_PRACTICE_SEC,
 } = require('../constants/delfOralRubric');
-const { getLevel } = require('../constants/levels');
+const { resolveLevel } = require('../constants/systems');
 
 const router = express.Router();
 
@@ -141,7 +141,7 @@ router.get('/quota', requireAuth, async (req, res, next) => {
     const caps = PLAN_CAPS[plan] || PLAN_CAPS.FREE;
     // ?level= keys the thresholds block (timings, grille dimensions).
     // Omitted/unknown → B2, byte-identical to the pre-level payload.
-    const lvlPo = getLevel(req.query.level).po;
+    const lvlPo = resolveLevel(req.query.level).po;
     const used = await currentUsage(req.userId);
     const reset = new Date(monthStart());
     reset.setMonth(reset.getMonth() + 1);
@@ -160,6 +160,8 @@ router.get('/quota', requireAuth, async (req, res, next) => {
         tier: MODEL_CATALOG[k].tier,
       })),
       thresholds: {
+        // band = IELTS（总分为各维平均的 0-9 band）；points = DELF（求和 sur 25）
+        scoringKind: typeof lvlPo.aggregateScore === 'function' ? 'band' : 'points',
         totalMax: lvlPo.TOTAL_MAX,
         minWords: lvlPo.MIN_WORDS,
         targetWords: lvlPo.TARGET_WORDS,

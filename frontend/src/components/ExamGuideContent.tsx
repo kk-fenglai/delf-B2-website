@@ -5,19 +5,33 @@ import { useLevelStore } from '../stores/level';
 
 const { Title, Paragraph } = Typography;
 
-const SKILLS: { key: string; icon: string }[] = [
-  { key: 'CO', icon: '🎧' },
-  { key: 'CE', icon: '📖' },
-  { key: 'PE', icon: '✍️' },
-  { key: 'PO', icon: '🎙️' },
-];
+// 每个体系的科目列表（图标 + i18n 键）；口语单列在 "individual" 区。
+const SKILLS_BY_SYSTEM: Record<string, { key: string; icon: string }[]> = {
+  DELF: [
+    { key: 'CO', icon: '🎧' },
+    { key: 'CE', icon: '📖' },
+    { key: 'PE', icon: '✍️' },
+    { key: 'PO', icon: '🎙️' },
+  ],
+  IELTS: [
+    { key: 'LISTENING', icon: '🎧' },
+    { key: 'READING', icon: '📖' },
+    { key: 'WRITING', icon: '✍️' },
+    { key: 'SPEAKING', icon: '🎙️' },
+  ],
+};
 
-// Shared body for the DELF exam walkthrough — content follows the level the
-// user is currently browsing (examGuide.levels.<level> in the locale files).
-// Pass showCta={false} to hide the bottom buttons.
+// Shared body for the exam walkthrough — content follows the system + level
+// the user is currently browsing (examGuide.levels.<level> in the locale
+// files; IELTS uses level key IELTS_AC). Pass showCta={false} to hide the
+// bottom buttons.
 export default function ExamGuideContent({ showCta = true }: { showCta?: boolean }) {
   const { t } = useTranslation();
   const level = useLevelStore((s) => s.level);
+  const system = useLevelStore((s) => s.system);
+  const isIelts = system === 'IELTS';
+  const skills = SKILLS_BY_SYSTEM[system] || SKILLS_BY_SYSTEM.DELF;
+  const speakingKey = isIelts ? 'SPEAKING' : 'PO';
 
   const renderSkill = (key: string, icon: string) => {
     const tips = t(`examGuide.levels.${level}.skills.${key}.tips`, { returnObjects: true }) as string[];
@@ -27,11 +41,11 @@ export default function ExamGuideContent({ showCta = true }: { showCta?: boolean
           <span className="text-2xl">{icon}</span>
           <Title level={4} style={{ margin: 0 }}>{t(`examGuide.levels.${level}.skills.${key}.name`)}</Title>
           <Tag color="blue">{t(`examGuide.levels.${level}.skills.${key}.time`)}</Tag>
-          <Tag>25 {t('landing.points')}</Tag>
+          <Tag>{isIelts ? 'Band 0-9' : `25 ${t('landing.points')}`}</Tag>
         </div>
         <Paragraph className="text-gray-600 mb-2">{t(`examGuide.levels.${level}.skills.${key}.format`)}</Paragraph>
         <ul className="text-gray-500 pl-5 mb-0" style={{ listStyle: 'disc' }}>
-          {tips.map((tip, i) => <li key={i}>{tip}</li>)}
+          {Array.isArray(tips) && tips.map((tip, i) => <li key={i}>{tip}</li>)}
         </ul>
       </Card>
     );
@@ -42,24 +56,26 @@ export default function ExamGuideContent({ showCta = true }: { showCta?: boolean
       <Card className="mb-6">
         <Title level={3}>{t('examGuide.collectiveTitle')}</Title>
         <Paragraph className="text-gray-500">{t(`examGuide.levels.${level}.collectiveNote`)}</Paragraph>
-        {SKILLS.filter((s) => s.key !== 'PO').map((s) => renderSkill(s.key, s.icon))}
+        {skills.filter((s) => s.key !== speakingKey).map((s) => renderSkill(s.key, s.icon))}
       </Card>
 
       <Card className="mb-6">
         <Title level={3}>{t('examGuide.individualTitle')}</Title>
         <Paragraph className="text-gray-500">{t(`examGuide.levels.${level}.individualNote`)}</Paragraph>
-        {renderSkill('PO', '🎙️')}
+        {renderSkill(speakingKey, '🎙️')}
       </Card>
 
       <Card className="mb-6">
         <Title level={3}>{t('examGuide.scoringTitle')}</Title>
         <ul className="pl-5" style={{ listStyle: 'disc' }}>
-          {(t('examGuide.scoring', { returnObjects: true, level }) as string[]).map((line, i) => (
+          {(t(isIelts ? 'examGuide.scoringIelts' : 'examGuide.scoring', { returnObjects: true, level }) as string[]).map((line, i) => (
             <li key={i} className="text-gray-700 mb-1">{line}</li>
           ))}
         </ul>
         <Divider />
-        <Paragraph strong style={{ marginBottom: 0 }}>{t('landing.passRule')}</Paragraph>
+        <Paragraph strong style={{ marginBottom: 0 }}>
+          {isIelts ? t('examGuide.ieltsOverallNote') : t('landing.passRule')}
+        </Paragraph>
       </Card>
 
       {showCta && (

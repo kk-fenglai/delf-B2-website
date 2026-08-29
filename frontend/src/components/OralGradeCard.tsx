@@ -239,6 +239,7 @@ export default function OralGradeCard({ oralId, initialStatus, questionPrompt }:
 
   // ---- Done state --------------------------------------------------------
   const totalMax = quota?.thresholds.totalMax ?? 25;
+  const isBand = quota?.thresholds.scoringKind === 'band';
   const rubric: OralRubricDimension[] = oral.rubric || [];
   const pct = Math.round(((oral.aiScore ?? 0) / totalMax) * 100);
 
@@ -263,7 +264,7 @@ export default function OralGradeCard({ oralId, initialStatus, questionPrompt }:
           format={() => (
             <div className="text-center">
               <div className="text-2xl font-bold text-brand">{oral.aiScore}</div>
-              <div className="text-xs text-gray-500">/ {totalMax}</div>
+              <div className="text-xs text-gray-500">{isBand ? 'Band' : `/ ${totalMax}`}</div>
             </div>
           )}
           size={120}

@@ -10,6 +10,8 @@ import OralGradeCard from '../components/OralGradeCard';
 import AiExplanation from '../components/AiExplanation';
 import ReadingAssistant from '../components/ReadingAssistant';
 import { localizeExamTitle } from '../utils/examTitle';
+import { useLevelStore } from '../stores/level';
+import { bandFromRaw } from '../utils/band';
 import type { SubmitResult, ExamSetDetail, Skill } from '../types';
 
 const { Title, Paragraph } = Typography;
@@ -19,6 +21,7 @@ const SKILL_ORDER: Skill[] = ['CO', 'CE', 'PE', 'PO'];
 export default function ReviewResult() {
   const { t, i18n } = useTranslation();
   const { sessionId } = useParams();
+  const systems = useLevelStore((s) => s.systems);
   const [data, setData] = useState<{
     result: SubmitResult;
     exam: ExamSetDetail;
@@ -95,6 +98,24 @@ export default function ReviewResult() {
   const essayByQuestion = new Map((result.essays || []).map((e) => [e.questionId, e]));
   const oralByQuestion = new Map((result.orals || []).map((o) => [o.questionId, o]));
 
+  // IELTS 听力/阅读：按客观题答对数（raw/40）换算 band 展示。
+  const ieltsBand = (() => {
+    if (exam.system !== 'IELTS') return null;
+    const objective = result.details.filter((d) => {
+      const qq = questionMap.get(d.questionId);
+      return qq && qq.type !== 'ESSAY' && qq.type !== 'SPEAKING';
+    });
+    if (!objective.length) return null;
+    const skillKey = questionMap.get(objective[0].questionId)?.skill as string;
+    const bands = systems?.find((s) => s.key === 'IELTS')?.levels?.[0]?.bands?.[skillKey];
+    const raw = objective.filter((d) => d.isCorrect === true).length;
+    const total = objective.length;
+    // 官方换算表按整卷 40 题设计；练习套题不足 40 题时按比例折算后查表（估算）。
+    const raw40 = total === 40 ? raw : Math.round((raw / total) * 40);
+    const band = bandFromRaw(bands, raw40);
+    return band == null ? null : { band, raw, total, skillKey };
+  })();
+
   // Listening (CO) and Reading (CE) are no longer reported as a /25 score —
   // we show the question-level correctness rate instead. The full B2 pass
   // prediction (official gates, correctness-based) lives in the learning
@@ -143,6 +164,22 @@ export default function ReviewResult() {
           {isMock && <Tag color="purple" className="ml-2">{t('exam.mockBadge')}</Tag>}
         </Title>
       </Card>
+
+      {/* IELTS 听力/阅读成绩：Band 大数字 + 答对数。无及格线语义。 */}
+      {ieltsBand && (
+        <Card className="mb-4">
+          <Statistic
+            title={`IELTS Band · ${t(`skill.${ieltsBand.skillKey}`, ieltsBand.skillKey)}`}
+            value={ieltsBand.band}
+            precision={ieltsBand.band % 1 === 0 ? 0 : 1}
+            valueStyle={{ color: '#1677ff', fontWeight: 700 }}
+          />
+          <div className="text-xs text-gray-400 mt-1">
+            {t('review.correctOf', { correct: ieltsBand.raw, total: ieltsBand.total })}
+            {' · '}{t('review.bandEstimate', '按官方换算表估算，仅供参考')}
+          </div>
+        </Card>
+      )}
 
       {/* Written part done — let the candidate review the score below OR
           continue to the speaking exam (separate session, 3-choose-1). */}

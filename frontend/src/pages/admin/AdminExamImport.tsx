@@ -226,11 +226,13 @@ export default function AdminExamImport() {
         return;
       }
     }
-    // 级别通道：JSON 未写 level 时用页面所选级别；已写则以 JSON 为准
+    // 级别通道：JSON 未写 level 时用页面所选级别；已写则以 JSON 为准。
+    // 非 DELF 体系（如 IELTS）的 JSON 必须自带 level，不注入页面选中的 DELF 级别。
     const payload: any = { ...(parsed as any) };
-    if (!payload.level) {
+    const isDelf = !payload.system || payload.system === 'DELF';
+    if (!payload.level && isDelf) {
       payload.level = levelKey;
-    } else if (payload.level !== levelKey) {
+    } else if (payload.level && payload.level !== levelKey && isDelf) {
       message.warning(`JSON 中已写 level=${payload.level}，以 JSON 为准（当前选择 ${levelKey}）`);
     }
     setSubmitting(true);

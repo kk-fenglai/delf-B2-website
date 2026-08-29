@@ -15,21 +15,42 @@ import { apiBaseUrl } from '../../api/baseUrl';
 const { Title } = Typography;
 const { useBreakpoint } = Grid;
 
-const SKILLS = [
-  { value: 'CO', label: 'CO · 听力' },
-  { value: 'CE', label: 'CE · 阅读' },
-  { value: 'PE', label: 'PE · 写作' },
-  { value: 'PO', label: 'PO · 口语' },
-];
+// 按体系区分的科目/题型选项；套题的 system 决定展示哪组（缺省 DELF）。
+const SKILLS_BY_SYSTEM: Record<string, { value: string; label: string }[]> = {
+  DELF: [
+    { value: 'CO', label: 'CO · 听力' },
+    { value: 'CE', label: 'CE · 阅读' },
+    { value: 'PE', label: 'PE · 写作' },
+    { value: 'PO', label: 'PO · 口语' },
+  ],
+  IELTS: [
+    { value: 'LISTENING', label: 'LISTENING · 听力' },
+    { value: 'READING', label: 'READING · 阅读' },
+    { value: 'WRITING', label: 'WRITING · 写作' },
+    { value: 'SPEAKING', label: 'SPEAKING · 口语' },
+  ],
+};
 
-const TYPES = [
-  { value: 'SINGLE', label: 'SINGLE · 单选' },
-  { value: 'MULTIPLE', label: 'MULTIPLE · 多选' },
-  { value: 'TRUE_FALSE', label: 'TRUE_FALSE · 判断' },
-  { value: 'FILL', label: 'FILL · 填空' },
-  { value: 'ESSAY', label: 'ESSAY · 作文' },
-  { value: 'SPEAKING', label: 'SPEAKING · 口语（录音 + débat）' },
-];
+const TYPES_BY_SYSTEM: Record<string, { value: string; label: string }[]> = {
+  DELF: [
+    { value: 'SINGLE', label: 'SINGLE · 单选' },
+    { value: 'MULTIPLE', label: 'MULTIPLE · 多选' },
+    { value: 'TRUE_FALSE', label: 'TRUE_FALSE · 判断' },
+    { value: 'FILL', label: 'FILL · 填空' },
+    { value: 'ESSAY', label: 'ESSAY · 作文' },
+    { value: 'SPEAKING', label: 'SPEAKING · 口语（录音 + débat）' },
+  ],
+  IELTS: [
+    { value: 'SINGLE', label: 'SINGLE · 单选' },
+    { value: 'MULTIPLE', label: 'MULTIPLE · 多选' },
+    { value: 'TFNG', label: 'TFNG · True/False/Not Given' },
+    { value: 'MATCHING', label: 'MATCHING · 匹配' },
+    { value: 'COMPLETION', label: 'COMPLETION · 填空补全' },
+    { value: 'SHORT_ANSWER', label: 'SHORT_ANSWER · 简答' },
+    { value: 'ESSAY', label: 'ESSAY · 写作 Task' },
+    { value: 'SPEAKING', label: 'SPEAKING · 口语' },
+  ],
+};
 
 interface Option {
   id?: string;
@@ -67,6 +88,7 @@ interface ExamSet {
   description?: string;
   isPublished: boolean;
   isFreePreview: boolean;
+  system?: string; // DELF | IELTS（老接口响应可能缺省 → DELF）
   questions: Question[];
 }
 
@@ -352,10 +374,10 @@ export default function AdminExamEdit() {
         <Form form={qForm} layout="vertical">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <Form.Item name="skill" label="技能" rules={[{ required: true }]}>
-              <Select options={SKILLS} disabled={isSpeaking} />
+              <Select options={SKILLS_BY_SYSTEM[exam?.system || 'DELF'] || SKILLS_BY_SYSTEM.DELF} disabled={isSpeaking} />
             </Form.Item>
             <Form.Item name="type" label="题型" rules={[{ required: true }]}>
-              <Select options={TYPES} />
+              <Select options={TYPES_BY_SYSTEM[exam?.system || 'DELF'] || TYPES_BY_SYSTEM.DELF} />
             </Form.Item>
             <Form.Item name="order" label="序号">
               <InputNumber min={1} style={{ width: '100%' }} />

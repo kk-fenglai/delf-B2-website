@@ -23,8 +23,32 @@ export interface PaymentsPublicConfig {
   paymentsDisabledMessage?: { zh?: string; en?: string; fr?: string };
 }
 export type Skill = 'CO' | 'CE' | 'PE' | 'PO';
-export type QuestionType = 'SINGLE' | 'MULTIPLE' | 'TRUE_FALSE' | 'TRUE_FALSE_JUSTIFY' | 'FILL' | 'ESSAY' | 'SPEAKING';
+export type QuestionType =
+  | 'SINGLE' | 'MULTIPLE' | 'TRUE_FALSE' | 'TRUE_FALSE_JUSTIFY' | 'FILL' | 'ESSAY' | 'SPEAKING'
+  // IELTS 专属题型：三值判断 / 匹配池 / 填空族 / 简答
+  | 'TFNG' | 'MATCHING' | 'COMPLETION' | 'SHORT_ANSWER';
 export type Level = 'B2' | 'B1' | 'A2';
+
+// 考试体系 —— level 之上的新维度（PRD 2026-08-29 雅思接入）。
+export type ExamSystem = 'DELF' | 'IELTS';
+
+// GET /api/catalogue — public exam-system tree. DELF's `levels` entries are
+// full LevelPublicConfig; IELTS levels are the M1 skeleton (key/titlePrefix/
+// sectionPlan only) and get their own typed shape when the IELTS UI lands.
+export interface SystemPublicConfig {
+  key: ExamSystem;
+  skills: Array<{ key: string; slug: string }>;
+  scoring:
+    | { kind: 'points'; skillMax: number; totalMax: number; passTotalMin: number; passPerSkillMin: number }
+    | { kind: 'band'; bandMin: number; bandMax: number; bandStep: number };
+  defaultLevel: string;
+  levels: LevelPublicConfig[];
+}
+
+// LevelPublicConfig 的 IELTS 扩展字段：raw(0..40) → band 换算表,按 skill 键分组。
+export interface IeltsBands {
+  [skillKey: string]: Array<{ min: number; band: number }>;
+}
 
 // GET /api/levels — public per-level exam structure. The frontend hardcodes
 // none of these numbers; the level store caches this payload per app load.
@@ -55,6 +79,7 @@ export interface LevelPublicConfig {
     parts: Array<{ key: string; order: number; hasMonologue: boolean; monologueMaxSec: number | null; prepSec: number; followUpMaxSec: number | null }>;
     dimensions: Array<{ key: string; max: number; labelFr: string }>;
   };
+  bands?: IeltsBands; // IELTS only — raw→band conversion tables
 }
 
 export interface User {
@@ -114,6 +139,7 @@ export interface ExamSetBrief {
   description?: string;
   isFreePreview: boolean;
   coFormat?: 'long' | 'short' | 'other' | null;
+  system?: ExamSystem;
   level?: Level;
   totalQuestions: number;
   countsBySkill: Record<Skill, number>;
@@ -124,8 +150,9 @@ export interface ExamSetDetail {
   title: string;
   year?: number | null;
   description?: string;
-  // Authoritative level for the runner — reconcile the level store to this,
-  // never the reverse (deep links to another level's set).
+  // Authoritative system+level for the runner — reconcile the level store to
+  // these, never the reverse (deep links across systems/levels).
+  system?: ExamSystem;
   level?: Level;
   questions: Question[];
   audioDocuments?: AudioDocument[];
@@ -311,6 +338,7 @@ export interface EssayQuota {
   defaultModel: ClaudeModelKey | null;
   models: EssayModelOption[];
   thresholds: {
+    scoringKind?: 'points' | 'band'; // band = IELTS(0-9 平均); points = DELF(求和)
     totalMax: number;
     minWords: number;
     targetWords: number;
@@ -396,6 +424,7 @@ export interface OralQuota {
   defaultModel: ClaudeModelKey | null;
   models: EssayModelOption[];
   thresholds: {
+    scoringKind?: 'points' | 'band'; // band = IELTS(0-9 平均); points = DELF(求和)
     totalMax: number;
     minWords: number;
     targetWords: number;

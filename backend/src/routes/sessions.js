@@ -15,7 +15,7 @@ const {
 } = require('../constants/planMatrix');
 const { getOrCreateExplanation } = require('../services/questionExplainer');
 const { MIN_WORDS, MAX_WORDS } = require('../constants/delfRubric');
-const { getLevel } = require('../constants/levels');
+const { resolveLevel } = require('../constants/systems');
 const {
   TOTAL_MAX: SCORING_TOTAL_MAX,
   PASS_TOTAL_MIN,
@@ -358,7 +358,7 @@ router.post('/:id/submit', requireAuth, async (req, res, next) => {
     if (!session || session.userId !== req.userId) {
       return res.status(404).json({ error: 'Session not found' });
     }
-    const sessionLevelPe = getLevel(session.examSet?.level).pe;
+    const sessionLevelPe = resolveLevel(session.examSet?.level).pe;
 
     const questionIds = answers.map((a) => a.questionId);
     const questions = await prisma.question.findMany({

@@ -21,7 +21,9 @@ const { z } = require('zod');
 const env = require('../config/env');
 const { logger } = require('../utils/logger');
 const { deepseekV4RequestExtras } = require('../utils/deepseekRequest');
-const { getLevel, DEFAULT_LEVEL } = require('../constants/levels');
+const { DEFAULT_LEVEL } = require('../constants/levels');
+// resolveLevel 跨体系查找 level 配置（IELTS_AC 命中 IELTS；未知回落 B2）。
+const { resolveLevel } = require('../constants/systems');
 const {
   MODEL_CATALOG,
   MODEL_KEYS,
@@ -129,8 +131,11 @@ L'utilisateur vous demandera l'une de trois tâches ciblées (notation, correcti
 
 const _systemPrompts = new Map();
 function getSystemPrompt(levelKey = DEFAULT_LEVEL) {
-  const lvl = getLevel(levelKey);
-  if (!_systemPrompts.has(lvl.key)) _systemPrompts.set(lvl.key, buildSystemPrompt(lvl));
+  const lvl = resolveLevel(levelKey);
+  if (!_systemPrompts.has(lvl.key)) {
+    // 级别配置可提供完整 prompt（IELTS 英文骨架）；缺省走共享法语骨架。
+    _systemPrompts.set(lvl.key, lvl.poPrompt.fullPrompt || buildSystemPrompt(lvl));
+  }
   return _systemPrompts.get(lvl.key);
 }
 
@@ -144,7 +149,8 @@ function buildToolDefs(lvl) {
     scores: {
       name: 'submit_scores',
       description:
-        `Soumettre la notation des ${DIMENSIONS.length} dimensions de la grille DELF ${lvl.key} PO. Feedback bref (≤ 25 mots par dimension).`,
+        lvl.poPrompt.toolDescriptions?.scores
+        || `Soumettre la notation des ${DIMENSIONS.length} dimensions de la grille DELF ${lvl.key} PO. Feedback bref (≤ 25 mots par dimension).`,
       parameters: {
         type: 'object',
         properties: {
@@ -170,7 +176,8 @@ function buildToolDefs(lvl) {
     corrections: {
       name: 'submit_corrections',
       description:
-        "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots) du transcript, nature de l'erreur, suggestion, type. Ignorer les disfluences orales.",
+        lvl.poPrompt.toolDescriptions?.corrections
+        || "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots) du transcript, nature de l'erreur, suggestion, type. Ignorer les disfluences orales.",
       parameters: {
         type: 'object',
         properties: {
@@ -196,7 +203,8 @@ function buildToolDefs(lvl) {
     summary: {
       name: 'submit_summary',
       description:
-        "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
+        lvl.poPrompt.toolDescriptions?.summary
+        || "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
       parameters: {
         type: 'object',
         properties: {
@@ -250,14 +258,14 @@ function buildSchemas(lvl) {
 
 const _toolDefs = new Map();
 function getToolDefs(levelKey = DEFAULT_LEVEL) {
-  const lvl = getLevel(levelKey);
+  const lvl = resolveLevel(levelKey);
   if (!_toolDefs.has(lvl.key)) _toolDefs.set(lvl.key, buildToolDefs(lvl));
   return _toolDefs.get(lvl.key);
 }
 
 const _schemas = new Map();
 function getSchemas(levelKey = DEFAULT_LEVEL) {
-  const lvl = getLevel(levelKey);
+  const lvl = resolveLevel(levelKey);
   if (!_schemas.has(lvl.key)) _schemas.set(lvl.key, buildSchemas(lvl));
   return _schemas.get(lvl.key);
 }
@@ -313,6 +321,8 @@ const SUBCALL_TIMEOUT_MS = {
 };
 
 function buildTaskHint(task, lvl) {
+  // 级别配置可提供英文任务提示（IELTS）；缺省走共享法语提示。
+  if (lvl.poPrompt.taskHints?.[task]) return lvl.poPrompt.taskHints[task];
   switch (task) {
     case 'scores':
       return `TÂCHE : notez les ${lvl.po.DIMENSIONS.length} dimensions de la grille PO. Pour chaque dimension, un feedback BREF de ≤ 25 mots. Appelez submit_scores une seule fois.`;
@@ -383,7 +393,7 @@ async function runSubCall({ userModelKey, task, transcriptCombined, question, fo
           { role: 'system', content: getSystemPrompt(levelKey) },
           {
             role: 'user',
-            content: buildUserContent({ transcriptCombined, question, followUps, loc, task, lvl: getLevel(levelKey) }),
+            content: buildUserContent({ transcriptCombined, question, followUps, loc, task, lvl: resolveLevel(levelKey) }),
           },
         ],
         ...deepseekV4RequestExtras(taskModel),
@@ -456,7 +466,7 @@ function countWords(s) {
  * @param {string} [args.level]  — exam level (B2 | B1 | A2); missing/unknown → B2
  */
 async function gradeOral({ oral, question, followUps = [], modelKey, locale, level }) {
-  const lvl = getLevel(level);
+  const lvl = resolveLevel(level);
   if (!MODEL_KEYS.includes(modelKey)) {
     const e = new Error(`Unknown model key: ${modelKey}`);
     e.code = 'AI_BAD_MODEL';
@@ -523,7 +533,10 @@ async function gradeOral({ oral, question, followUps = [], modelKey, locale, lev
     };
   });
 
-  const aiScore = Math.round(canonical.reduce((s, d) => s + d.score, 0));
+  // 总分聚合按级别可配：DELF = 求和取整（sur 25）；IELTS = 等权平均取 0.5 band。
+  const aiScore = typeof lvl.po.aggregateScore === 'function'
+    ? lvl.po.aggregateScore(canonical)
+    : Math.round(canonical.reduce((s, d) => s + d.score, 0));
 
   let tokensIn = 0, tokensOut = 0, tokensCached = 0, costUsd = 0;
   for (let i = 0; i < tasks.length; i++) {

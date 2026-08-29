@@ -1,4 +1,4 @@
-// Auto-grading logic for DELF B2 question types (MVP: objective questions only)
+// Auto-grading logic for objective question types (DELF + IELTS).
 
 function normalize(val) {
   if (Array.isArray(val)) return val.map(String).map((s) => s.trim().toUpperCase()).sort();
@@ -13,7 +13,12 @@ function gradeAnswer(question, userAnswer) {
 
   switch (question.type) {
     case 'SINGLE':
-    case 'TRUE_FALSE': {
+    case 'TRUE_FALSE':
+    // IELTS: TFNG = True/False/Not Given (three fixed options); MATCHING =
+    // one pick from a shared pool (headings/features/…). Both grade exactly
+    // like SINGLE — one correct label.
+    case 'TFNG':
+    case 'MATCHING': {
       const ua = normalize(userAnswer);
       const isCorrect = ua.length === 1 && correctLabels.length === 1 && ua[0] === correctLabels[0];
       return { isCorrect, score: isCorrect ? question.points : 0 };
@@ -24,7 +29,11 @@ function gradeAnswer(question, userAnswer) {
         ua.length === correctLabels.length && ua.every((v, i) => v === correctLabels[i]);
       return { isCorrect: same, score: same ? question.points : 0 };
     }
-    case 'FILL': {
+    case 'FILL':
+    // IELTS: COMPLETION (sentence/summary/note/table gap) and SHORT_ANSWER
+    // grade like FILL — accepted answers live in correct options' text.
+    case 'COMPLETION':
+    case 'SHORT_ANSWER': {
       // Simple case-insensitive match: correct options' text store accepted answers
       const expected = question.options
         .filter((o) => o.isCorrect)

@@ -16,7 +16,7 @@ import TemplateDrawer from '../components/TemplateDrawer';
 import { localizeExamTitle } from '../utils/examTitle';
 import { B2_SECTION_PLAN, B2_SCORING, buildSections } from '../utils/sectionPlan';
 import type { Section } from '../utils/sectionPlan';
-import { useLevelStore } from '../stores/level';
+import { useLevelStore, findLevelConfig } from '../stores/level';
 import type { ExamSetDetail, Question, Skill, EssayQuota, ClaudeModelKey } from '../types';
 
 const { Paragraph, Text } = Typography;
@@ -75,6 +75,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const storeLevel = useLevelStore((s) => s.level);
   const setStoreLevel = useLevelStore((s) => s.setLevel);
   const catalogue = useLevelStore((s) => s.catalogue);
+  const systems = useLevelStore((s) => s.systems);
   const [exam, setExam] = useState<ExamSetDetail | null>(null);
   const [sectionIdx, setSectionIdx] = useState(0);
   const [current, setCurrent] = useState(0);
@@ -101,7 +102,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   // another level's set must follow the exam, never the store) — the store
   // is reconciled below. Catalogue miss / legacy payload → B2 plan.
   const levelKey = exam?.level ?? storeLevel;
-  const levelConfig = catalogue?.find((l) => l.key === levelKey);
+  const levelConfig = findLevelConfig(systems, catalogue, levelKey);
   const plan = levelConfig?.sectionPlan ?? B2_SECTION_PLAN;
   // A2's official PE has two exercises answered in one submission (pe.tasks=2);
   // the editor shows a banner so candidates know to write both texts.
@@ -548,7 +549,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const renderAnswerInput = () => {
     const value = answers[q.id];
 
-    if (q.type === 'SINGLE' || q.type === 'TRUE_FALSE') {
+    if (q.type === 'SINGLE' || q.type === 'TRUE_FALSE' || q.type === 'TFNG' || q.type === 'MATCHING') {
       return (
         <Radio.Group value={value} onChange={(e) => updateAnswer(e.target.value)} className="flex flex-col gap-2 w-full">
           {q.options.map((o) => (
@@ -614,7 +615,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         </Checkbox.Group>
       );
     }
-    if (q.type === 'FILL') {
+    if (q.type === 'FILL' || q.type === 'COMPLETION' || q.type === 'SHORT_ANSWER') {
       return (
         <Input value={value || ''} onChange={(e) => updateAnswer(e.target.value)} placeholder={t('exam.fillPlaceholder')} />
       );
@@ -629,7 +630,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
     const value = answers[qq.id];
     const update = (val: any) => setAnswers((prev) => ({ ...prev, [qq.id]: val }));
 
-    if (qq.type === 'SINGLE' || qq.type === 'TRUE_FALSE') {
+    if (qq.type === 'SINGLE' || qq.type === 'TRUE_FALSE' || qq.type === 'TFNG' || qq.type === 'MATCHING') {
       return (
         <Radio.Group
           value={value}
@@ -734,7 +735,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
         </Checkbox.Group>
       );
     }
-    if (qq.type === 'FILL') {
+    if (qq.type === 'FILL' || qq.type === 'COMPLETION' || qq.type === 'SHORT_ANSWER') {
       return (
         <Input
           value={value || ''}

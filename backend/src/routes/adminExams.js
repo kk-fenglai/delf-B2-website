@@ -71,8 +71,10 @@ const {
   examSetSchema,
   bulkImportSchema,
   validateQuestionShape,
+  validateQuestionForSystem,
   createExamSetWithQuestions,
 } = require('../services/examImport');
+const { validateSystemLevel } = require('../constants/systems');
 
 // ---------------------------------------------------------------------
 // GET /api/admin/exams — list all exam sets (draft + published)
@@ -220,6 +222,8 @@ router.post(
 router.post('/', async (req, res, next) => {
   try {
     const data = examSetSchema.parse(req.body);
+    const sysLevelErr = validateSystemLevel(data.system, data.level);
+    if (sysLevelErr) return res.status(400).json({ error: sysLevelErr });
     const created = await prisma.examSet.create({
       data: {
         ...data,
@@ -244,6 +248,14 @@ router.put('/:id', async (req, res, next) => {
       include: { questions: { select: { skill: true } } },
     });
     if (!current) return res.status(404).json({ error: 'NOT_FOUND' });
+
+    // Partial update: fall back to the row's stored system/level for the
+    // cross-field check, so a level-only edit can't create an invalid combo.
+    const sysLevelErr = validateSystemLevel(
+      data.system !== undefined ? data.system : current.system,
+      data.level !== undefined ? data.level : current.level
+    );
+    if (sysLevelErr) return res.status(400).json({ error: sysLevelErr });
 
     const skills = [...new Set(current.questions.map((q) => q.skill))];
     const patch = { ...data };
@@ -302,6 +314,8 @@ router.post('/:id/questions', async (req, res, next) => {
 
     const existing = await prisma.examSet.findUnique({ where: { id: req.params.id } });
     if (!existing) return res.status(404).json({ error: 'Exam set not found' });
+    const sysErr = validateQuestionForSystem(data, existing.system);
+    if (sysErr) return res.status(400).json({ error: sysErr });
 
     const nextOrder = data.order || (await prisma.question.count({
       where: { examSetId: req.params.id },
@@ -355,6 +369,14 @@ router.put('/questions/:qid', async (req, res, next) => {
     const data = questionSchema.parse(req.body);
     const shapeErr = validateQuestionShape(data);
     if (shapeErr) return res.status(400).json({ error: shapeErr });
+
+    const parent = await prisma.question.findUnique({
+      where: { id: req.params.qid },
+      select: { examSet: { select: { system: true } } },
+    });
+    if (!parent) return res.status(404).json({ error: 'Question not found' });
+    const sysErr = validateQuestionForSystem(data, parent.examSet.system);
+    if (sysErr) return res.status(400).json({ error: sysErr });
 
     // Replace options + follow-ups atomically so stale rows don't linger.
     const updated = await prisma.$transaction(async (tx) => {
@@ -442,8 +464,11 @@ router.post('/import', async (req, res, next) => {
   try {
     const data = bulkImportSchema.parse(req.body);
 
+    const sysLevelErr = validateSystemLevel(data.system, data.level);
+    if (sysLevelErr) return res.status(400).json({ error: sysLevelErr });
+
     for (const [i, q] of data.questions.entries()) {
-      const err = validateQuestionShape(q);
+      const err = validateQuestionShape(q) || validateQuestionForSystem(q, data.system);
       if (err) {
         return res.status(400).json({ error: `Question ${i + 1}: ${err}` });
       }

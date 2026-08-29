@@ -30,7 +30,7 @@ const {
   TARGET_WORDS,
   MAX_WORDS,
 } = require('../constants/delfRubric');
-const { getLevel } = require('../constants/levels');
+const { resolveLevel } = require('../constants/systems');
 
 const router = express.Router();
 
@@ -146,7 +146,7 @@ router.get('/quota', requireAuth, async (req, res, next) => {
     const caps = PLAN_CAPS[plan] || PLAN_CAPS.FREE;
     // ?level= keys the thresholds block (word counts, grille dimensions).
     // Omitted/unknown → B2, byte-identical to the pre-level payload.
-    const lvlPe = getLevel(req.query.level).pe;
+    const lvlPe = resolveLevel(req.query.level).pe;
     const used = await currentUsage(req.userId);
     const reset = new Date(monthStart());
     reset.setMonth(reset.getMonth() + 1);
@@ -165,6 +165,8 @@ router.get('/quota', requireAuth, async (req, res, next) => {
         tier: MODEL_CATALOG[k].tier,
       })),
       thresholds: {
+        // band = IELTS（总分为各维平均的 0-9 band）；points = DELF（求和 sur 25）
+        scoringKind: typeof lvlPe.aggregateScore === 'function' ? 'band' : 'points',
         totalMax: lvlPe.TOTAL_MAX,
         minWords: lvlPe.MIN_WORDS,
         targetWords: lvlPe.TARGET_WORDS,

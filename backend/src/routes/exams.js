@@ -3,7 +3,7 @@ const prisma = require('../prisma');
 const { optionalAuth, requireAuth } = require('../middleware/auth');
 const { signAudioUrl } = require('../utils/audioToken');
 const { sanitizeExamTitle, sanitizeExamDescription } = require('../utils/examTitle');
-const { getLevel } = require('../constants/levels');
+const { resolveLevelKey } = require('../constants/systems');
 
 const router = express.Router();
 
@@ -59,8 +59,9 @@ router.get('/', optionalAuth, async (req, res, next) => {
     const mock  = req.query.mock;  // optional: 'true' — returns sets that have all 4 skills
     // Level filter defaults to B2 (not "all levels"): a stale cached frontend
     // bundle that never sends ?level= must keep seeing only B2 sets after
-    // B1 content lands. getLevel() maps unknown values back to B2.
-    const level = getLevel(req.query.level).key;
+    // B1 content lands. resolveLevelKey 认识所有体系的 level 键（含 IELTS_AC），
+    // 未知值仍回落 B2 —— 不能用 getLevel()，它会把 IELTS_AC 静默映射回 B2。
+    const level = resolveLevelKey(req.query.level);
     const MOCK_SKILLS = ['CO', 'CE', 'PE', 'PO'];
 
     const sets = await prisma.examSet.findMany({
@@ -185,8 +186,9 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
       description: sanitizeExamDescription(set.description),
       source: set.source,
       isUserOwned: set.source === 'USER',
-      // Authoritative level for the runner — the client store must follow
-      // this, not the other way round (deep links to another level's set).
+      // Authoritative system+level for the runner — the client store must
+      // follow these, not the other way round (deep links across systems).
+      system: set.system,
       level: set.level,
       questions: safeQuestions,
       audioDocuments,

@@ -190,6 +190,7 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
 
     // Partial results available — render what we have, skeleton for the rest.
     const totalMax = quota?.thresholds.totalMax ?? 25;
+    const isBand = quota?.thresholds.scoringKind === 'band';
     const pct = essay.aiScore != null ? Math.round((essay.aiScore / totalMax) * 100) : null;
     return (
       <Card className="mb-3">
@@ -204,7 +205,7 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
                 format={() => (
                   <div className="text-center">
                     <div className="text-2xl font-bold text-brand">{essay.aiScore}</div>
-                    <div className="text-xs text-gray-500">/ {totalMax}</div>
+                    <div className="text-xs text-gray-500">{isBand ? 'Band' : `/ ${totalMax}`}</div>
                   </div>
                 )}
                 size={120}
@@ -360,6 +361,7 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
 
   // ---- Done state --------------------------------------------------------
   const totalMax = quota?.thresholds.totalMax ?? 25;
+  const isBand = quota?.thresholds.scoringKind === 'band';
   const rubric: RubricDimension[] = essay.rubric || [];
   const pct = Math.round(((essay.aiScore ?? 0) / totalMax) * 100);
 
@@ -383,7 +385,7 @@ export default function EssayGradeCard({ essayId, initialStatus, questionPrompt 
             format={() => (
               <div className="text-center">
                 <div className="text-2xl font-bold text-brand">{essay.aiScore}</div>
-                <div className="text-xs text-gray-500">/ {totalMax}</div>
+                <div className="text-xs text-gray-500">{isBand ? 'Band' : `/ ${totalMax}`}</div>
               </div>
             )}
             size={120}

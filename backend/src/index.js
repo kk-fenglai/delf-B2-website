@@ -12,6 +12,7 @@ const rateLimit = require('express-rate-limit');
 const prisma = require('./prisma');
 const authRoutes = require('./routes/auth');
 const levelsRoutes = require('./routes/levels');
+const catalogueRoutes = require('./routes/catalogue');
 const examRoutes = require('./routes/exams');
 const sessionRoutes = require('./routes/sessions');
 const userRoutes = require('./routes/user');
@@ -179,6 +180,7 @@ app.get('/api/health', async (_req, res) => {
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/auth', passwordResetLimiter, passwordResetRoutes);
 app.use('/api/levels', levelsRoutes);
+app.use('/api/catalogue', catalogueRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/user', userRoutes);

@@ -29,7 +29,10 @@ const { z } = require('zod');
 const env = require('../config/env');
 const { logger } = require('../utils/logger');
 const { deepseekV4RequestExtras } = require('../utils/deepseekRequest');
-const { getLevel, DEFAULT_LEVEL } = require('../constants/levels');
+const { DEFAULT_LEVEL } = require('../constants/levels');
+// resolveLevel 跨体系查找 level 配置：getLevel('IELTS_AC') 会静默回落 B2（法语
+// grille 批英语作文），resolveLevel 命中 IELTS 自己的配置；B2/B1/A2 行为不变。
+const { resolveLevel } = require('../constants/systems');
 const {
   MODEL_CATALOG,
   MODEL_KEYS,
@@ -133,8 +136,11 @@ L'utilisateur vous demandera l'une de trois tâches ciblées (notation, correcti
 
 const _systemPrompts = new Map();
 function getSystemPrompt(levelKey = DEFAULT_LEVEL) {
-  const lvl = getLevel(levelKey);
-  if (!_systemPrompts.has(lvl.key)) _systemPrompts.set(lvl.key, buildSystemPrompt(lvl));
+  const lvl = resolveLevel(levelKey);
+  if (!_systemPrompts.has(lvl.key)) {
+    // 级别配置可提供完整 prompt（IELTS 英文骨架）；缺省走共享法语骨架。
+    _systemPrompts.set(lvl.key, lvl.pePrompt.fullPrompt || buildSystemPrompt(lvl));
+  }
   return _systemPrompts.get(lvl.key);
 }
 
@@ -148,7 +154,8 @@ function buildToolDefs(lvl) {
     scores: {
       name: 'submit_scores',
       description:
-        `Soumettre la notation des ${DIMENSIONS.length} dimensions de la grille DELF ${lvl.key}. Feedback bref (≤ 25 mots par dimension).`,
+        lvl.pePrompt.toolDescriptions?.scores
+        || `Soumettre la notation des ${DIMENSIONS.length} dimensions de la grille DELF ${lvl.key}. Feedback bref (≤ 25 mots par dimension).`,
       parameters: {
         type: 'object',
         properties: {
@@ -174,7 +181,8 @@ function buildToolDefs(lvl) {
     corrections: {
       name: 'submit_corrections',
       description:
-        "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots), nature de l'erreur, suggestion, type.",
+        lvl.pePrompt.toolDescriptions?.corrections
+        || "Soumettre 3 à 8 corrections concrètes : citation exacte (≤10 mots), nature de l'erreur, suggestion, type.",
       parameters: {
         type: 'object',
         properties: {
@@ -200,7 +208,8 @@ function buildToolDefs(lvl) {
     summary: {
       name: 'submit_summary',
       description:
-        "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
+        lvl.pePrompt.toolDescriptions?.summary
+        || "Soumettre 2 à 4 points forts concrets et un retour global (80-150 mots, hiérarchisé forces → axes de progrès).",
       parameters: {
         type: 'object',
         properties: {
@@ -220,7 +229,7 @@ function buildToolDefs(lvl) {
 
 const _toolDefs = new Map();
 function getToolDefs(levelKey = DEFAULT_LEVEL) {
-  const lvl = getLevel(levelKey);
+  const lvl = resolveLevel(levelKey);
   if (!_toolDefs.has(lvl.key)) _toolDefs.set(lvl.key, buildToolDefs(lvl));
   return _toolDefs.get(lvl.key);
 }
@@ -335,6 +344,8 @@ const SUBCALL_TIMEOUT_MS = {
 // locale bug: `loc` was computed but never reached the model, so PE feedback
 // was always French regardless of the user's aiLocale).
 function buildTaskHint(task, lvl) {
+  // 级别配置可提供英文任务提示（IELTS）；缺省走共享法语提示。
+  if (lvl.pePrompt.taskHints?.[task]) return lvl.pePrompt.taskHints[task];
   switch (task) {
     case 'scores':
       return `TÂCHE : notez les ${lvl.pe.DIMENSIONS.length} dimensions de la grille. Chaque champ 'feedback' doit être BREF (≤ 25 mots). Appelez submit_scores une seule fois.`;
@@ -392,7 +403,7 @@ async function runSubCall({ userModelKey, task, essay, question, levelKey, loc }
         tool_choice: { type: 'function', function: { name: toolDef.name } },
         messages: [
           { role: 'system', content: getSystemPrompt(levelKey) },
-          { role: 'user', content: buildUserContent(essay, question, task, getLevel(levelKey), loc) },
+          { role: 'user', content: buildUserContent(essay, question, task, resolveLevel(levelKey), loc) },
         ],
         ...deepseekV4RequestExtras(taskModel),
       },
@@ -461,6 +472,14 @@ function wrapProviderError(err, task) {
   return wrapped;
 }
 
+// ---- Aggregation ---------------------------------------------------------
+// 总分聚合按级别可配：DELF = 维度求和取整（sur 25，行为不变）；IELTS 级别配置
+// 提供 aggregateScore = 等权平均就近取 0.5 band。
+function aggregateDimScores(lvl, dims) {
+  if (typeof lvl.pe.aggregateScore === 'function') return lvl.pe.aggregateScore(dims);
+  return Math.round(dims.reduce((s, d) => s + d.score, 0));
+}
+
 // ---- Public API ----------------------------------------------------------
 /**
  * @param {Object} args
@@ -472,7 +491,7 @@ function wrapProviderError(err, task) {
  * @returns {Promise<{ aiScore, aiFeedback, rubric, corrections, strengths, model, tokensIn, tokensOut, tokensCached, costUsd }>}
  */
 async function gradeEssay({ essay, question, modelKey, locale, level, onPartial }) {
-  const lvl = getLevel(level);
+  const lvl = resolveLevel(level);
   if (!MODEL_KEYS.includes(modelKey)) {
     const e = new Error(`Unknown model key: ${modelKey}`);
     e.code = 'AI_BAD_MODEL';
@@ -509,7 +528,7 @@ async function gradeEssay({ essay, question, modelKey, locale, level, onPartial 
             });
             await onPartial('scores', {
               rubric: canonical,
-              aiScore: Math.round(canonical.reduce((s, d) => s + d.score, 0)),
+              aiScore: aggregateDimScores(lvl, canonical),
             });
           } else if (task === 'corrections') {
             const parsed = CorrectionsSchema.parse(res.rawInput);
@@ -562,7 +581,7 @@ async function gradeEssay({ essay, question, modelKey, locale, level, onPartial 
     };
   });
 
-  const aiScore = Math.round(canonical.reduce((s, d) => s + d.score, 0));
+  const aiScore = aggregateDimScores(lvl, canonical);
 
   // Aggregate usage across sub-calls. Each provider's usage shape differs;
   // extractUsage normalises to { promptTotal, outTotal, cached, fresh }.

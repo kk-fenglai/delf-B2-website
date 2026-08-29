@@ -41,6 +41,13 @@
     "collectiveTitle": "1. Group written tests (run back-to-back in one session)",
     "individualTitle": "2. Speaking (scheduled separately)",
     "scoringTitle": "3. Scoring & pass criteria",
+    "scoringIelts": [
+      "Each of the four skills is banded 0-9, with half bands (e.g. 6.5).",
+      "Listening and Reading have 40 questions each; your raw score converts to a band via the official table.",
+      "Writing and Speaking are assessed on four official criteria, equally weighted (our AI Speaking score excludes pronunciation — transcript input).",
+      "Your overall band is the mean of the four skills, rounded to the nearest 0.5."
+    ],
+    "ieltsOverallNote": "There is no pass mark in IELTS — aim for the band your university or visa requires. Platform scores are AI estimates, for guidance only.",
     "scoring": [
       "Listening, reading, writing and speaking are 25 points each — 100 total.",
       "You need at least 50/100 overall.",
@@ -139,6 +146,36 @@
             "tips": ["Prepare common monologue topics in advance (family, hobbies, daily life)", "In the role-play, use vous and polite formulas"]
           }
         }
+      },
+      "IELTS_AC": {
+        "collectiveNote": "Listening, Reading and Writing run back-to-back on the same day — about 2 hours 30 minutes with no break.",
+        "individualNote": "Speaking is a one-to-one interview with an examiner, 11-14 minutes, scheduled on the test day or up to a week before/after.",
+        "skills": {
+          "LISTENING": {
+            "name": "Listening",
+            "time": "~30 min",
+            "format": "4 recordings (everyday conversation, monologue, academic discussion, academic lecture), 40 questions, with a mix of accents (UK, Australia, US…). Each recording is played ONCE.",
+            "tips": ["Use the reading time to predict what type of word fits each gap", "Write as you listen — if you miss one, let it go and keep up with the audio"]
+          },
+          "READING": {
+            "name": "Reading",
+            "time": "60 min",
+            "format": "3 academic passages, 40 questions: multiple choice, True/False/Not Given, matching headings, summary completion and more.",
+            "tips": ["Read the questions first, then locate — budget 20 minutes per passage", "For T/F/NG: if the text simply doesn't say it, that's Not Given, not False"]
+          },
+          "WRITING": {
+            "name": "Writing",
+            "time": "60 min",
+            "format": "Task 1: describe a chart/process/map, 150+ words (~20 min). Task 2: an essay, 250+ words (~40 min — it carries more weight).",
+            "tips": ["Task 1 needs a clear overview sentence — don't just list the data", "Task 2: one main idea per paragraph; keep 3 minutes to check your grammar"]
+          },
+          "SPEAKING": {
+            "name": "Speaking",
+            "time": "11-14 min",
+            "format": "Three parts: Part 1 everyday questions (4-5 min) → Part 2 cue-card talk (1 min prep + 1-2 min) → Part 3 discussion (4-5 min).",
+            "tips": ["Use the Part 2 minute to jot 3-4 keyword prompts", "In Part 3, extend your answers: opinion + reason + example"]
+          }
+        }
       }
     }
   },
@@ -153,6 +190,9 @@
   },
   "level": {
     "switched": "Switched to the DELF {{level}} question bank"
+  },
+  "system": {
+    "switched": "Switched to the {{system}} question bank"
   },
   "nav": {
     "home": "Home",
@@ -182,7 +222,11 @@
     "CO": "Listening",
     "CE": "Reading",
     "PE": "Writing",
-    "PO": "Speaking"
+    "PO": "Speaking",
+    "LISTENING": "Listening",
+    "READING": "Reading",
+    "WRITING": "Writing",
+    "SPEAKING": "Speaking"
   },
   "landing": {
     "title": "DELF {{level}} Exam Practice Platform",
@@ -536,6 +580,7 @@
     "correctnessHint": "Listening and Reading are not scored — only the correctness rate is shown.",
     "predictionHint": "The full B2 pass prediction (by correctness rate, with official gates) is in the learning centre.",
     "correctOf": "{{correct}} / {{total}} correct",
+    "bandEstimate": "Estimated from the official conversion table — indicative only",
     "correct": "✓ Correct",
     "wrong": "✗ Wrong",
     "pendingAI": "Pending AI review",

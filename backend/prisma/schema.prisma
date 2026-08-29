@@ -375,8 +375,12 @@ model ExamSet {
   description  String?
   isPublished  Boolean    @default(true)
   isFreePreview Boolean   @default(false)
-  // Exam level: B2 | B1 | A2. String + comment (no Prisma enums in this
-  // schema); enforced at the Zod layer via z.enum(LEVEL_KEYS).
+  // Exam system: DELF | IELTS — the dimension above level. String + comment
+  // (no Prisma enums in this schema); enforced at the Zod layer via
+  // z.enum(SYSTEM_KEYS) + validateSystemLevel().
+  system       String     @default("DELF")
+  // Exam level: DELF → B2 | B1 | A2; IELTS → IELTS_AC. String + comment (no
+  // Prisma enums in this schema); enforced at the Zod layer.
   level        String     @default("B2")
   // USER-owned sets: ownerUserId set, source=USER, primarySkill=CE|PE.
   // Platform catalog: ownerUserId null, source=PLATFORM.
@@ -395,6 +399,7 @@ model ExamSet {
   @@index([ownerUserId, source])
   @@index([source, isPublished])
   @@index([level, source, isPublished])
+  @@index([system, level, source, isPublished])
 }
 
 // One DELF B2 listening "document". Each Compréhension de l'Oral section has
@@ -495,8 +500,10 @@ model ExamSession {
   skill        String?
   startedAt    DateTime   @default(now())
   completedAt  DateTime?
-  totalScore   Int?
-  maxScore     Int?
+  // Float since M2 (IELTS bands are half-points). DELF writes stay integer —
+  // grader/aiGrader round at the source, so existing display is unchanged.
+  totalScore   Float?
+  maxScore     Float?
 
   attempts     UserAttempt[]
 
@@ -514,7 +521,7 @@ model UserAttempt {
   question    Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
   answer      String
   isCorrect   Boolean?
-  score       Int?
+  score       Float? // Float since M2 (IELTS); DELF values remain integers
   timeSpent   Int?
   createdAt   DateTime     @default(now())
 
@@ -539,7 +546,7 @@ model Essay {
   status        String   @default("queued")
   model         String?                      // haiku-4-5 | sonnet-4-6 | opus-4-7
   locale        String?                      // fr | en | zh — feedback language chosen at submit
-  aiScore       Int?                         // 0..25, recomputed server-side from rubric
+  aiScore       Float?                       // DELF 0..25 (integer) | IELTS band; recomputed server-side from rubric
   aiFeedback    String?                      // global narrative feedback
   rubric        String?                      // JSON: [{ key, score, max, feedback }] × 10
   corrections   String?                      // JSON: [{ excerpt, issue, suggestion, type }]
@@ -614,7 +621,7 @@ model Oral {
   status       String   @default("queued")
   model        String?
   locale       String?
-  aiScore      Int?                          // 0..25 recomputed server-side
+  aiScore      Float?                        // DELF 0..25 (integer) | IELTS band; recomputed server-side
   aiFeedback   String?
   rubric       String?                       // JSON: [{key, score, max, feedback}]
   corrections  String?                       // JSON: [{excerpt, issue, suggestion, type}]

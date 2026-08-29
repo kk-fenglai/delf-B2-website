@@ -15,9 +15,12 @@ const ITEM_W = 44;
 export default function LevelSwitcher() {
   const { t } = useTranslation();
   const level = useLevelStore((s) => s.level);
+  const system = useLevelStore((s) => s.system);
   const catalogue = useLevelStore((s) => s.catalogue);
   const setLevel = useLevelStore((s) => s.setLevel);
 
+  // catalogue 只含 DELF 级别；IELTS（单级别）下整个组件隐藏。
+  if (system !== 'DELF') return null;
   if (!catalogue || catalogue.length <= 1) return null;
 
   const ordered = [...catalogue].sort(

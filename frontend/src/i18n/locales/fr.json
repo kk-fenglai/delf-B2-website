@@ -41,6 +41,13 @@
     "collectiveTitle": "1. Épreuves collectives (enchaînées en une session)",
     "individualTitle": "2. Production orale (programmée séparément)",
     "scoringTitle": "3. Notation et critères de réussite",
+    "scoringIelts": [
+      "Chaque compétence est notée sur une échelle de bands 0-9, demi-bands possibles (ex. 6.5).",
+      "Listening et Reading : 40 questions chacun ; le score brut est converti en band via le barème officiel.",
+      "Writing et Speaking : quatre critères officiels à poids égal (notre note IA de Speaking exclut la prononciation — entrée transcrite).",
+      "Le score global est la moyenne des quatre bands, arrondie au 0.5 le plus proche."
+    ],
+    "ieltsOverallNote": "Il n'y a pas de seuil de réussite à l'IELTS — visez le band exigé par votre université ou votre visa. Les scores de la plateforme sont des estimations IA, à titre indicatif.",
     "scoring": [
       "Les quatre épreuves valent 25 points chacune — 100 au total.",
       "Il faut au moins 50/100 au total.",
@@ -139,6 +146,36 @@
             "tips": ["Préparez à l'avance les sujets courants (famille, loisirs, quotidien)", "Dans le jeu de rôle, utilisez « vous » et les formules de politesse"]
           }
         }
+      },
+      "IELTS_AC": {
+        "collectiveNote": "Listening, Reading et Writing s'enchaînent le même jour — environ 2 h 30 sans pause.",
+        "individualNote": "Le Speaking est un entretien individuel avec un examinateur (11-14 minutes), le jour de l'épreuve ou dans la semaine qui précède/suit.",
+        "skills": {
+          "LISTENING": {
+            "name": "Listening",
+            "time": "~30 min",
+            "format": "4 enregistrements (conversation, monologue, discussion et cours académiques), 40 questions, accents variés. Chaque enregistrement n'est diffusé qu'UNE fois.",
+            "tips": ["Utilisez le temps de lecture pour prédire le type de mot attendu", "Écrivez en écoutant — si vous ratez une question, passez et suivez l'audio"]
+          },
+          "READING": {
+            "name": "Reading",
+            "time": "60 min",
+            "format": "3 textes académiques, 40 questions : QCM, True/False/Not Given, appariement de titres, textes à compléter…",
+            "tips": ["Lisez d'abord les questions, puis localisez — 20 minutes par texte", "T/F/NG : si le texte n'en parle pas, c'est Not Given, pas False"]
+          },
+          "WRITING": {
+            "name": "Writing",
+            "time": "60 min",
+            "format": "Task 1 : décrire un graphique/processus/plan, 150+ mots (~20 min). Task 2 : essai argumenté, 250+ mots (~40 min — coefficient plus élevé).",
+            "tips": ["Task 1 : une phrase d'overview obligatoire, ne listez pas les données", "Task 2 : une idée par paragraphe ; gardez 3 minutes pour relire la grammaire"]
+          },
+          "SPEAKING": {
+            "name": "Speaking",
+            "time": "11-14 min",
+            "format": "Trois parties : Part 1 questions quotidiennes (4-5 min) → Part 2 exposé sur carte-sujet (1 min de préparation + 1-2 min) → Part 3 discussion (4-5 min).",
+            "tips": ["Part 2 : notez 3-4 mots-clés pendant la minute de préparation", "Part 3 : développez — opinion + raison + exemple"]
+          }
+        }
       }
     }
   },
@@ -153,6 +190,9 @@
   },
   "level": {
     "switched": "Banque d'exercices DELF {{level}} activée"
+  },
+  "system": {
+    "switched": "Banque d'exercices {{system}} activée"
   },
   "nav": {
     "home": "Accueil",
@@ -182,7 +222,11 @@
     "CO": "Compréhension orale",
     "CE": "Compréhension écrite",
     "PE": "Production écrite",
-    "PO": "Production orale"
+    "PO": "Production orale",
+    "LISTENING": "Listening",
+    "READING": "Reading",
+    "WRITING": "Writing",
+    "SPEAKING": "Speaking"
   },
   "landing": {
     "title": "Plateforme d'entraînement DELF {{level}}",
@@ -536,6 +580,7 @@
     "correctnessHint": "La compréhension orale et écrite n'est pas notée — seul le taux de réussite est affiché.",
     "predictionHint": "La prédiction complète de réussite au B2 (selon le taux de réussite, avec les seuils officiels) se trouve dans l'espace d'apprentissage.",
     "correctOf": "{{correct}} / {{total}} correct",
+    "bandEstimate": "Estimation selon le barème officiel — à titre indicatif",
     "correct": "✓ Correct",
     "wrong": "✗ Incorrect",
     "pendingAI": "Correction IA en attente",
