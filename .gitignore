@@ -83,3 +83,6 @@ graphify-out/
 .playwright-mcp/
 AGENTS.md
 landing.png
+
+# TCF (TV5Monde) 题库素材与导入数据（版权内容，本地保留，勿提交）
+backend/content/tcf-sets/

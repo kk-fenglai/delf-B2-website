@@ -130,6 +130,8 @@ export default function App() {
           <Route path="/practice" element={<RequireAuth><PracticeHub /></RequireAuth>} />
           <Route path="/practice/listening" element={<RequireAuth><SkillPractice skill="CO" /></RequireAuth>} />
           <Route path="/practice/reading" element={<RequireAuth><SkillPractice skill="CE" /></RequireAuth>} />
+          {/* TCF only: Structures de la langue（语法） */}
+          <Route path="/practice/grammar" element={<RequireAuth><SkillPractice skill="SL" /></RequireAuth>} />
           <Route path="/practice/writing" element={<RequireAuth><SkillPractice skill="PE" /></RequireAuth>} />
           <Route path="/practice/speaking" element={<RequireAuth><SkillPractice skill="PO" /></RequireAuth>} />
           <Route path="/practice/mock" element={<RequireAuth><SkillPractice mockMode /></RequireAuth>} />
@@ -146,6 +148,7 @@ export default function App() {
         <Route element={<ExamLayout />}>
           <Route path="/practice/listening/:examId" element={<RequireAuth><ExamRunner skill="CO" /></RequireAuth>} />
           <Route path="/practice/reading/:examId" element={<RequireAuth><ExamRunner skill="CE" /></RequireAuth>} />
+          <Route path="/practice/grammar/:examId" element={<RequireAuth><ExamRunner skill="SL" /></RequireAuth>} />
           <Route path="/practice/writing/:examId" element={<RequireAuth><ExamRunner skill="PE" /></RequireAuth>} />
           <Route path="/practice/speaking/:examId" element={<RequireAuth><SpeakingExam /></RequireAuth>} />
           <Route path="/practice/mock/:examId" element={<RequireAuth><ExamRunner /></RequireAuth>} />

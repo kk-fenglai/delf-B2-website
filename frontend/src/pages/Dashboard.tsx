@@ -13,11 +13,11 @@ import type { Skill } from '../types';
 const SKILLS: Skill[] = ['CO', 'CE', 'PE', 'PO'];
 
 const SKILL_ICON: Record<Skill, string> = {
-  CO: 'hearing', CE: 'auto_stories', PE: 'edit_document', PO: 'mic',
+  CO: 'hearing', CE: 'auto_stories', PE: 'edit_document', PO: 'mic', SL: 'spellcheck',
 };
 
 const SKILL_PATH: Record<Skill, string> = {
-  CO: 'listening', CE: 'reading', PE: 'writing', PO: 'speaking',
+  CO: 'listening', CE: 'reading', PE: 'writing', PO: 'speaking', SL: 'grammar',
 };
 
 const SKILL_FR: Record<Skill, string> = {
@@ -25,6 +25,7 @@ const SKILL_FR: Record<Skill, string> = {
   CE: 'Compréhension des écrits',
   PE: 'Production écrite',
   PO: 'Production orale',
+  SL: 'Structures de la langue',
 };
 
 type SkillStat = { skill: Skill; total: number; correct: number; accuracy: number };

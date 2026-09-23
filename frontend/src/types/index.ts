@@ -22,15 +22,16 @@ export interface PaymentsPublicConfig {
   paymentsEnabled: boolean;
   paymentsDisabledMessage?: { zh?: string; en?: string; fr?: string };
 }
-export type Skill = 'CO' | 'CE' | 'PE' | 'PO';
+// SL = TCF « Structures de la langue »（语法）; only exists under system TCF.
+export type Skill = 'CO' | 'CE' | 'PE' | 'PO' | 'SL';
 export type QuestionType =
   | 'SINGLE' | 'MULTIPLE' | 'TRUE_FALSE' | 'TRUE_FALSE_JUSTIFY' | 'FILL' | 'ESSAY' | 'SPEAKING'
   // IELTS 专属题型：三值判断 / 匹配池 / 填空族 / 简答
   | 'TFNG' | 'MATCHING' | 'COMPLETION' | 'SHORT_ANSWER';
-export type Level = 'B2' | 'B1' | 'A2';
+export type Level = 'B2' | 'B1' | 'A2' | 'TCF_TP';
 
 // 考试体系 —— level 之上的新维度（PRD 2026-08-29 雅思接入）。
-export type ExamSystem = 'DELF' | 'IELTS';
+export type ExamSystem = 'DELF' | 'IELTS' | 'TCF';
 
 // GET /api/catalogue — public exam-system tree. DELF's `levels` entries are
 // full LevelPublicConfig; IELTS levels are the M1 skeleton (key/titlePrefix/
@@ -40,7 +41,9 @@ export interface SystemPublicConfig {
   skills: Array<{ key: string; slug: string }>;
   scoring:
     | { kind: 'points'; skillMax: number; totalMax: number; passTotalMin: number; passPerSkillMin: number }
-    | { kind: 'band'; bandMin: number; bandMax: number; bandStep: number };
+    | { kind: 'band'; bandMin: number; bandMax: number; bandStep: number }
+    // TCF：每题 1 分，按正确率估算 CEFR 等级（升序阈值，最后一个 minPct ≤ pct 者命中）
+    | { kind: 'cefr'; cefrBands: Array<{ minPct: number; level: string }> };
   defaultLevel: string;
   levels: LevelPublicConfig[];
 }
@@ -57,20 +60,21 @@ export interface LevelPublicConfig {
   titlePrefix: string;
   sectionPlan: {
     order: Skill[];
-    minutes: Record<Skill, number>;
+    minutes: Partial<Record<Skill, number>>;
     merges: Array<{ key: string; skills: Skill[]; minutes: number }>;
     poSeparateSession: boolean;
   };
   guide: { collectiveTotalMin: number; individualPrepMin: number };
   co: { playRules: Record<string, { maxPlays: number; prepSeconds: number; gapSeconds: number; answerSeconds: number }> };
-  pe: {
+  // pe/po are absent for systems without writing/speaking (TCF).
+  pe?: {
     minWords: number;
     targetWords: number;
     maxWords: number;
     tasks: number;
     dimensions: Array<{ key: string; max: number; labelFr: string }>;
   };
-  po: {
+  po?: {
     minWords: number;
     targetWords: number;
     maxWords: number;

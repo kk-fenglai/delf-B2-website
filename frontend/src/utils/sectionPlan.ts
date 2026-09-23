@@ -8,7 +8,7 @@ export type SectionMerge = { key: string; skills: Skill[]; minutes: number };
 
 export type LevelSectionPlan = {
   order: Skill[];
-  minutes: Record<Skill, number>;
+  minutes: Partial<Record<Skill, number>>;
   // B2-only quirk: CE+PE run as ONE freely-allocated 120-min block. Levels
   // without merged sections set merges: [].
   merges: SectionMerge[];
@@ -53,7 +53,9 @@ export type Section = {
  * exactly: [CO] then [CEPE] (when CE or PE questions exist), PO excluded.
  */
 export function buildSections(plan: LevelSectionPlan, questions: Question[]): Section[] {
-  const grouped: Record<Skill, Question[]> = { CO: [], CE: [], PE: [], PO: [] };
+  // Buckets follow the plan's own skill list (DELF CO/CE/PE/PO, TCF CO/SL/CE…).
+  const grouped: Partial<Record<Skill, Question[]>> = {};
+  plan.order.forEach((s) => { grouped[s] = []; });
   questions.forEach((q) => grouped[q.skill]?.push(q));
 
   const consumed = new Set<Skill>();
@@ -71,8 +73,9 @@ export function buildSections(plan: LevelSectionPlan, questions: Question[]): Se
       continue;
     }
     consumed.add(s);
-    if (grouped[s].length) {
-      sections.push({ key: s, skills: [s], minutes: plan.minutes[s], questions: grouped[s] });
+    const qs = grouped[s] ?? [];
+    if (qs.length) {
+      sections.push({ key: s, skills: [s], minutes: plan.minutes[s] ?? 0, questions: qs });
     }
   }
   return sections;

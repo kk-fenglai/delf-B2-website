@@ -5,6 +5,7 @@ import { api } from '../api/client';
 import MaterialIcon from '../components/MaterialIcon';
 import LevelBadge from '../components/LevelBadge';
 import type { Skill } from '../types';
+import { useLevelStore } from '../stores/level';
 
 type SkillEntry = {
   skill: Skill;
@@ -19,6 +20,8 @@ type SkillEntry = {
 const entries: SkillEntry[] = [
   { skill: 'CO', frName: "Compréhension de l'oral", icon: 'hearing', watermark: 'headphones', descKey: 'practice.hub.coDesc', to: '/practice/listening' },
   { skill: 'CE', frName: 'Compréhension des écrits', icon: 'auto_stories', watermark: 'menu_book', descKey: 'practice.hub.ceDesc', to: '/practice/reading' },
+  // TCF only（语法结构）— filtered out for systems whose skill list has no 'grammar' slug.
+  { skill: 'SL', frName: 'Structures de la langue', icon: 'spellcheck', watermark: 'rule', descKey: 'practice.hub.slDesc', to: '/practice/grammar' },
   { skill: 'PE', frName: 'Production écrite', icon: 'edit_document', watermark: 'edit', descKey: 'practice.hub.peDesc', to: '/practice/writing', ai: true },
   { skill: 'PO', frName: 'Production orale', icon: 'mic', watermark: 'record_voice_over', descKey: 'practice.hub.poDesc', to: '/practice/speaking', ai: true },
 ];
@@ -29,6 +32,16 @@ export default function PracticeHub() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [stats, setStats] = useState<Record<string, SkillStat>>({});
+  const system = useLevelStore((s) => s.system);
+  const systems = useLevelStore((s) => s.systems);
+  // Cards follow the current system's skill slugs, in its order (DELF/IELTS:
+  // listening/reading/writing/speaking; TCF: listening/grammar/reading).
+  const slugs = systems?.find((s) => s.key === system)?.skills.map((s) => s.slug)
+    ?? ['listening', 'reading', 'writing', 'speaking'];
+  const visibleEntries = slugs
+    .map((slug) => entries.find((e) => e.to === `/practice/${slug}`))
+    .filter((e): e is SkillEntry => !!e);
+  const isTcf = system === 'TCF';
 
   useEffect(() => {
     api.get('/user/progress').then((r) => {
@@ -50,7 +63,7 @@ export default function PracticeHub() {
 
       {/* 2×2 skill grid — CO / CE / PE / PO */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {entries.map((e) => {
+        {visibleEntries.map((e) => {
           const stat = stats[e.skill];
           const accuracy = stat && stat.total > 0 ? Math.round(stat.accuracy) : null;
           const tone = e.ai
@@ -124,10 +137,10 @@ export default function PracticeHub() {
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 mb-2 text-primary">
               <MaterialIcon name="timer" size={20} fill />
-              <span className="text-label-caps uppercase">{t('practice.hub.mockDuration')}</span>
+              <span className="text-label-caps uppercase">{t(isTcf ? 'practice.hub.tcfMockDuration' : 'practice.hub.mockDuration')}</span>
             </div>
             <h2 className="text-display-lg text-on-surface mb-2">{t('practice.hub.mockTitle')}</h2>
-            <p className="text-body-base text-on-surface-variant">{t('practice.hub.mockDesc')} · {t('practice.hub.mockTag')}</p>
+            <p className="text-body-base text-on-surface-variant">{t(isTcf ? 'practice.hub.tcfMockDesc' : 'practice.hub.mockDesc')} · {t(isTcf ? 'practice.hub.tcfMockTag' : 'practice.hub.mockTag')}</p>
           </div>
           <button
             type="button"

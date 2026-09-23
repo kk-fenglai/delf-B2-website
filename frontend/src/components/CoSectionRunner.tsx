@@ -20,6 +20,7 @@ import { Alert, Button, Card, Steps, Typography } from 'antd';
 import { SoundOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import type { AudioDocument, Question } from '../types';
+import { renderInline } from '../utils/richText';
 
 const { Title, Paragraph } = Typography;
 
@@ -173,7 +174,7 @@ export default function CoSectionRunner({
                   Question {qi + 1}
                 </div>
                 <Paragraph className="text-base font-semibold mb-3">
-                  {q.prompt}
+                  {renderInline(q.prompt)}
                 </Paragraph>
                 {renderAnswer(q, false)}
               </div>

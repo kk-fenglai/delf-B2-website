@@ -21,6 +21,7 @@ const skillToSlug: Record<Skill, string> = {
   CE: 'reading',
   PE: 'writing',
   PO: 'speaking',
+  SL: 'grammar',
 };
 
 export default function SkillPractice({ skill, mockMode = false }: Props) {

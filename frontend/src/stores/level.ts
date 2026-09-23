@@ -39,7 +39,7 @@ function storedLevel(): Level {
 function storedSystem(): ExamSystem {
   try {
     const v = localStorage.getItem(SYSTEM_STORAGE_KEY);
-    if (v === 'DELF' || v === 'IELTS') return v;
+    if (v === 'DELF' || v === 'IELTS' || v === 'TCF') return v;
   } catch { /* private mode etc. */ }
   return 'DELF';
 }

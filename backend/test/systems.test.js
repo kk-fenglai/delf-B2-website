@@ -29,8 +29,8 @@ test('DELF system wraps the existing level registry unchanged', () => {
   });
 });
 
-test('both systems expose the same four semantic slugs', () => {
-  for (const key of SYSTEM_KEYS) {
+test('DELF and IELTS expose the same four semantic slugs (TCF has its own set, see tcf.test.js)', () => {
+  for (const key of ['DELF', 'IELTS']) {
     assert.deepStrictEqual(
       SYSTEMS[key].skills.map((s) => s.slug),
       ['listening', 'reading', 'writing', 'speaking'],

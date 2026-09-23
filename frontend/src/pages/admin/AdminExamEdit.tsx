@@ -29,6 +29,11 @@ const SKILLS_BY_SYSTEM: Record<string, { value: string; label: string }[]> = {
     { value: 'WRITING', label: 'WRITING · 写作' },
     { value: 'SPEAKING', label: 'SPEAKING · 口语' },
   ],
+  TCF: [
+    { value: 'CO', label: 'CO · 听力' },
+    { value: 'SL', label: 'SL · 语法结构' },
+    { value: 'CE', label: 'CE · 阅读' },
+  ],
 };
 
 const TYPES_BY_SYSTEM: Record<string, { value: string; label: string }[]> = {
@@ -49,6 +54,9 @@ const TYPES_BY_SYSTEM: Record<string, { value: string; label: string }[]> = {
     { value: 'SHORT_ANSWER', label: 'SHORT_ANSWER · 简答' },
     { value: 'ESSAY', label: 'ESSAY · 写作 Task' },
     { value: 'SPEAKING', label: 'SPEAKING · 口语' },
+  ],
+  TCF: [
+    { value: 'SINGLE', label: 'SINGLE · 单选' },
   ],
 };
 

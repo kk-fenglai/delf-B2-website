@@ -41,6 +41,14 @@
     "collectiveTitle": "一、集体笔试（同一场次连续进行）",
     "individualTitle": "二、口语（单独安排时间）",
     "scoringTitle": "三、评分与合格标准",
+    "scoringTcf": [
+      "TCF 三项必考（听力、语法结构、阅读）全部为四选一单选，每题 1 分，答错不倒扣。",
+      "正式考试每项按 IRT 换算为 100–699 分，对应 A1 至 C2；本平台按正确率给出估算等级。",
+      "本题库来自 TV5MONDE 的 TCF 训练册，为半长度练习卷（15 + 10 + 15 题）。"
+    ],
+    "tcfOverallNote": "TCF 没有及格线——等级由分数区间决定。平台等级为估算值，仅供参考。",
+    "tcfItemTag": "每题 1 分",
+    "tcfTitle": "TCF 考试流程说明",
     "scoringIelts": [
       "听、读、写、说四项各按 0-9 分 band 评定，可出现 0.5 分。",
       "听力与阅读各 40 题，按答对题数对照官方换算表得出 band。",
@@ -147,6 +155,30 @@
           }
         }
       },
+      "TCF_TP": {
+        "collectiveNote": "三项必考连续完成，约 50 分钟（练习卷）；正式考试约 1 小时 25 分钟。",
+        "individualNote": "",
+        "skills": {
+          "CO": {
+            "name": "听力 Compréhension orale",
+            "time": "约 15 分钟",
+            "format": "15 道四选一，录音只播放一遍：前 4 题看图听选项（选项仅在音频中），其余为短新闻、访谈、公告等。",
+            "tips": ["音频只放一遍，先看图/读题再听", "题目由易到难，前几题快速作答，把注意力留给后半段"]
+          },
+          "SL": {
+            "name": "语法结构 Structures de la langue",
+            "time": "约 10 分钟",
+            "format": "10 道四选一，补全句子（时态、连词、介词、词汇搭配等）。",
+            "tips": ["先看空格前后的固定搭配再选", "拿不准时排除语法上明显不通的选项"]
+          },
+          "CE": {
+            "name": "阅读 Compréhension écrite",
+            "time": "约 25 分钟",
+            "format": "15 道四选一：广告、通知、短文、报刊摘录，每题一篇短文档。",
+            "tips": ["先读题干再定位文档关键信息", "注意同义改写，选项很少原文照抄"]
+          }
+        }
+      },
       "IELTS_AC": {
         "collectiveNote": "听力、阅读、写作在同一天连续完成，约 2 小时 30 分钟，中途没有休息。",
         "individualNote": "口语为考官一对一面试，共 11-14 分钟，可能安排在笔试当天或前后一周内。",
@@ -219,6 +251,7 @@
     "AI_UNLIMITED": "AI无限版"
   },
   "skill": {
+    "SL": "语法",
     "CO": "听力",
     "CE": "阅读",
     "PE": "写作",
@@ -441,6 +474,10 @@
     "manageMyExams": "管理我的题库",
     "year": "年份",
     "hub": {
+      "slDesc": "语法结构 · 四选一补全句子",
+      "tcfMockDesc": "听力 15 题 + 语法 10 题 + 阅读 15 题连续作答",
+      "tcfMockTag": "3 项连做",
+      "tcfMockDuration": "全程约 50 分钟",
       "title": "选择练习模式",
       "subtitle": "四项专项训练分开练习，或选择全真模拟体验完整考场节奏。",
       "skillListTitle": "单项练习",
@@ -523,6 +560,9 @@
     "autoSubmitted": "考试时间耗尽，答卷已自动提交。",
     "progressLabel": "已作答：{{done}} / {{total}}",
     "passCriteriaTitle": "DELF {{level}} 合格标准",
+    "tcfBannerTitle": "TCF 练习说明",
+    "tcfBannerInline": "四选一 · 每题 1 分 · 本节 {{duration}} 分钟",
+    "tcfBannerInlineNoTime": "四选一 · 每题 1 分 · 录音只播放一遍",
     "passCriteriaInline": "总分 ≥ {{total}}/{{totalMax}} · 单项 ≥ {{skillMin}}/{{skillMax}} · 总时长 {{duration}} 分钟",
     "passCriteriaInlineNoTime": "总分 ≥ {{total}}/{{totalMax}} · 单项 ≥ {{skillMin}}/{{skillMax}} · 无时间限制",
     "passTotal": "总分须 ≥ {{min}}/{{totalMax}}",
@@ -581,6 +621,9 @@
     "predictionHint": "完整的 B2 通过预测（按正确率，含官方及格线）请见学习中心。",
     "correctOf": "答对 {{correct}} / {{total}} 题",
     "bandEstimate": "按官方换算表估算，仅供参考",
+    "tcfTitle": "TCF 估算等级",
+    "tcfSkillLevel": "{{skill}} · 估算 {{level}}",
+    "tcfLevelEstimate": "按正确率估算的 CEFR 等级，非官方 TCF 分数，仅供参考。",
     "correct": "✓ 正确",
     "wrong": "✗ 错误",
     "pendingAI": "待AI批改",

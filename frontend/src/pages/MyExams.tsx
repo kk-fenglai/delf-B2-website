@@ -24,7 +24,8 @@ const SKILL_ICON: Record<string, string> = {
   CE: 'auto_stories', CO: 'hearing', PE: 'edit_document', PO: 'mic',
 };
 
-const TAB_SKILLS: Skill[] = ['CE', 'PE', 'CO', 'PO'];
+// User-owned sets exist for the four DELF skills only (quota keys).
+const TAB_SKILLS: Array<keyof UserExamSetLimits> = ['CE', 'PE', 'CO', 'PO'];
 
 export default function MyExams() {
   const { t } = useTranslation();

@@ -17,6 +17,7 @@ import { localizeExamTitle } from '../utils/examTitle';
 import { B2_SECTION_PLAN, B2_SCORING, buildSections } from '../utils/sectionPlan';
 import type { Section } from '../utils/sectionPlan';
 import { useLevelStore, findLevelConfig } from '../stores/level';
+import { renderInline, renderPassage } from '../utils/richText';
 import type { ExamSetDetail, Question, Skill, EssayQuota, ClaudeModelKey } from '../types';
 
 const { Paragraph, Text } = Typography;
@@ -38,18 +39,6 @@ function groupByPassage(questions: Question[]) {
     questions: qs.sort((a, b) => a.order - b.order),
   }));
 }
-// Render passage text: single newlines (PDF line-wrap artifacts) become spaces;
-// double newlines become paragraph breaks.
-function renderPassage(text: string) {
-  return text
-    .split(/\n{2,}/)
-    .map((para) => para.replace(/\n/g, ' ').trim())
-    .filter(Boolean)
-    .map((para, i) => (
-      <p key={i}>{para}</p>
-    ));
-}
-
 function formatTime(seconds: number): string {
   const s = Math.max(0, Math.floor(seconds));
   const h = Math.floor(s / 3600);
@@ -106,7 +95,10 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
   const plan = levelConfig?.sectionPlan ?? B2_SECTION_PLAN;
   // A2's official PE has two exercises answered in one submission (pe.tasks=2);
   // the editor shows a banner so candidates know to write both texts.
-  const peTasks = levelConfig?.pe.tasks ?? 1;
+  const peTasks = levelConfig?.pe?.tasks ?? 1;
+  // TCF: 1 point per MCQ item, no DELF pass thresholds — banners/modals below
+  // swap the DELF wording for the TCF one.
+  const isTcf = exam?.system === 'TCF';
 
   useEffect(() => {
     if (exam?.level && exam.level !== storeLevel) setStoreLevel(exam.level);
@@ -122,7 +114,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
       return [{
         key: skill!,
         skills: [skill!],
-        minutes: plan.minutes[skill!],
+        minutes: plan.minutes[skill!] ?? 0,
         questions: exam.questions,
       }];
     }
@@ -396,12 +388,14 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
             type="info"
             showIcon
             className="mt-3"
-            message={t('exam.passCriteriaTitle', { level: levelKey })}
+            message={isTcf ? t('exam.tcfBannerTitle') : t('exam.passCriteriaTitle', { level: levelKey })}
             description={
-              <ul className="mb-0 pl-4 text-xs">
-                <li>{t('exam.passTotal', { min: B2_SCORING.passTotal, totalMax: B2_SCORING.totalMax })}</li>
-                <li>{t('exam.passPerSkill', { min: B2_SCORING.passPerSkill, max: B2_SCORING.skillMax })}</li>
-              </ul>
+              isTcf ? t('review.tcfLevelEstimate') : (
+                <ul className="mb-0 pl-4 text-xs">
+                  <li>{t('exam.passTotal', { min: B2_SCORING.passTotal, totalMax: B2_SCORING.totalMax })}</li>
+                  <li>{t('exam.passPerSkill', { min: B2_SCORING.passPerSkill, max: B2_SCORING.skillMax })}</li>
+                </ul>
+              )
             }
           />
         </div>
@@ -1019,10 +1013,16 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
                 idx: sectionIdx + 1,
                 total: sections.length,
               })
-            : t('exam.passCriteriaTitle', { level: levelKey })
+            : isTcf
+              ? t('exam.tcfBannerTitle')
+              : t('exam.passCriteriaTitle', { level: levelKey })
         }
         description={
-          currentSection.key === 'CO' && !isMock
+          isTcf
+            ? (currentSection.key === 'CO' && !isMock
+                ? t('exam.tcfBannerInlineNoTime')
+                : t('exam.tcfBannerInline', { duration: currentSection.minutes }))
+            : currentSection.key === 'CO' && !isMock
             ? t('exam.passCriteriaInlineNoTime', {
                 total: B2_SCORING.passTotal,
                 totalMax: B2_SCORING.totalMax,
@@ -1137,7 +1137,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
                     {renderPassage(q.passage)}
                   </div>
                 )}
-                <p className="font-serif text-passage-serif text-on-surface mb-0">{q.prompt}</p>
+                <p className="font-serif text-passage-serif text-on-surface mb-0">{renderInline(q.prompt)}</p>
               </div>
               <div className="bg-surface-container-lowest rounded-xl p-5 shadow-level-1 focus-within:ring-2 focus-within:ring-primary/30">
                 {renderAnswerInput()}
@@ -1151,7 +1151,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
                 </div>
               )}
               <Paragraph className="text-base font-semibold mb-4">
-                {current + 1}. {q.prompt}
+                {current + 1}. {renderInline(q.prompt)}
               </Paragraph>
               {renderAnswerInput()}
             </Card>

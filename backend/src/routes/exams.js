@@ -3,7 +3,7 @@ const prisma = require('../prisma');
 const { optionalAuth, requireAuth } = require('../middleware/auth');
 const { signAudioUrl } = require('../utils/audioToken');
 const { sanitizeExamTitle, sanitizeExamDescription } = require('../utils/examTitle');
-const { resolveLevelKey } = require('../constants/systems');
+const { resolveLevelKey, resolveSystem } = require('../constants/systems');
 
 const router = express.Router();
 
@@ -62,7 +62,8 @@ router.get('/', optionalAuth, async (req, res, next) => {
     // B1 content lands. resolveLevelKey 认识所有体系的 level 键（含 IELTS_AC），
     // 未知值仍回落 B2 —— 不能用 getLevel()，它会把 IELTS_AC 静默映射回 B2。
     const level = resolveLevelKey(req.query.level);
-    const MOCK_SKILLS = ['CO', 'CE', 'PE', 'PO'];
+    // 全真模拟 = 含该 level 所属体系的全部 skill（DELF 四项、TCF 三项…）。
+    const MOCK_SKILLS = resolveSystem(level).skills.map((s) => s.key);
 
     const sets = await prisma.examSet.findMany({
       where: { isPublished: true, source: 'PLATFORM', level },
@@ -107,7 +108,7 @@ router.get('/', optionalAuth, async (req, res, next) => {
         return skills.length === 1 && skills[0] === skill;
       });
     } else if (mock === 'true') {
-      // 全真模拟：必须包含全部四个 skill
+      // 全真模拟：必须包含该体系的全部 skill
       filtered = result.filter((s) =>
         MOCK_SKILLS.every((k) => (s.countsBySkill[k] || 0) > 0),
       );

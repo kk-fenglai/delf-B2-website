@@ -15,6 +15,8 @@ const VALID_SKILLS = ['CO', 'CE', 'PE', 'PO'];
 const SYSTEM_TYPES = {
   DELF: ['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'TRUE_FALSE_JUSTIFY', 'FILL', 'ESSAY', 'SPEAKING'],
   IELTS: ['SINGLE', 'MULTIPLE', 'TFNG', 'MATCHING', 'COMPLETION', 'SHORT_ANSWER', 'ESSAY', 'SPEAKING'],
+  // TCF 三项必考全为四选一单选（题库来源 TV5Monde 训练册）；无 PE/PO。
+  TCF: ['SINGLE'],
 };
 const VALID_TYPES = [...new Set(Object.values(SYSTEM_TYPES).flat())];
 const ALL_SKILL_KEYS = [...new Set(SYSTEM_KEYS.flatMap((k) => getSystem(k).skills.map((s) => s.key)))];
@@ -239,6 +241,7 @@ async function createExamSetWithQuestions(tx, {
 
 module.exports = {
   VALID_SKILLS,
+  ALL_SKILL_KEYS,
   VALID_TYPES,
   USER_SKILLS,
   optionSchema,

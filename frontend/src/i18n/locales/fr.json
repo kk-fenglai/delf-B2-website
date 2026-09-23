@@ -41,6 +41,14 @@
     "collectiveTitle": "1. Épreuves collectives (enchaînées en une session)",
     "individualTitle": "2. Production orale (programmée séparément)",
     "scoringTitle": "3. Notation et critères de réussite",
+    "scoringTcf": [
+      "Les trois épreuves obligatoires du TCF (compréhension orale, structures de la langue, compréhension écrite) sont des QCM à 4 choix, 1 point par item, sans point négatif.",
+      "À l’examen officiel, chaque épreuve est convertie en score IRT de 100 à 699 correspondant aux niveaux A1 à C2 ; la plateforme estime un niveau d’après votre taux de réussite.",
+      "Cette banque provient des livrets d’entraînement TCF de TV5MONDE — épreuves de demi-longueur (15 + 10 + 15 items)."
+    ],
+    "tcfOverallNote": "Le TCF n’a pas de seuil de réussite : le niveau dépend de la tranche de score. Les niveaux de la plateforme sont des estimations, à titre indicatif.",
+    "tcfItemTag": "1 pt / item",
+    "tcfTitle": "Déroulement de l’examen TCF",
     "scoringIelts": [
       "Chaque compétence est notée sur une échelle de bands 0-9, demi-bands possibles (ex. 6.5).",
       "Listening et Reading : 40 questions chacun ; le score brut est converti en band via le barème officiel.",
@@ -147,6 +155,30 @@
           }
         }
       },
+      "TCF_TP": {
+        "collectiveNote": "Trois épreuves obligatoires à la suite, environ 50 min (livret d’entraînement) ; l’examen officiel dure environ 1 h 25.",
+        "individualNote": "",
+        "skills": {
+          "CO": {
+            "name": "Compréhension orale",
+            "time": "Environ 15 min",
+            "format": "15 items à 4 choix, enregistrement diffusé une seule fois : items 1 à 4 avec image et réponses uniquement à l’oral ; puis brèves, interviews et annonces.",
+            "tips": ["Une seule écoute : regardez l’image / lisez l’item avant le début", "La difficulté augmente : répondez vite aux premiers items et gardez votre attention pour la suite"]
+          },
+          "SL": {
+            "name": "Structures de la langue",
+            "time": "Environ 10 min",
+            "format": "10 items à 4 choix pour compléter une phrase (temps, connecteurs, prépositions, collocations).",
+            "tips": ["Observez d’abord les mots juste avant et après le trou", "Éliminez les options grammaticalement impossibles"]
+          },
+          "CE": {
+            "name": "Compréhension écrite",
+            "time": "Environ 25 min",
+            "format": "15 items à 4 choix : publicités, avis, courts textes, extraits de presse — un document court par item.",
+            "tips": ["Lisez la question avant de repérer l’information", "Attention aux reformulations : les options reprennent rarement le texte mot pour mot"]
+          }
+        }
+      },
       "IELTS_AC": {
         "collectiveNote": "Listening, Reading et Writing s'enchaînent le même jour — environ 2 h 30 sans pause.",
         "individualNote": "Le Speaking est un entretien individuel avec un examinateur (11-14 minutes), le jour de l'épreuve ou dans la semaine qui précède/suit.",
@@ -219,6 +251,7 @@
     "AI_UNLIMITED": "IA Illimité"
   },
   "skill": {
+    "SL": "Structures de la langue",
     "CO": "Compréhension orale",
     "CE": "Compréhension écrite",
     "PE": "Production écrite",
@@ -441,6 +474,10 @@
     "manageMyExams": "Gérer mes séries",
     "year": "Année",
     "hub": {
+      "slDesc": "Structures de la langue · Complétez la phrase (4 choix)",
+      "tcfMockDesc": "CO 15 items + SL 10 + CE 15 à la suite",
+      "tcfMockTag": "3 épreuves",
+      "tcfMockDuration": "Environ 50 min au total",
       "title": "Choisir un mode d'entraînement",
       "subtitle": "Entraînez-vous compétence par compétence, ou passez un examen blanc complet.",
       "skillListTitle": "Entraînement ciblé",
@@ -523,6 +560,9 @@
     "autoSubmitted": "Votre examen a été soumis automatiquement (temps écoulé).",
     "progressLabel": "Répondues : {{done}} / {{total}}",
     "passCriteriaTitle": "Critères de réussite DELF {{level}}",
+    "tcfBannerTitle": "Entraînement TCF",
+    "tcfBannerInline": "4 choix · 1 point par item · cette épreuve {{duration}} min",
+    "tcfBannerInlineNoTime": "4 choix · 1 point par item · enregistrement diffusé une seule fois",
     "passCriteriaInline": "Total ≥ {{total}}/{{totalMax}} · chaque épreuve ≥ {{skillMin}}/{{skillMax}} · durée {{duration}} min",
     "passCriteriaInlineNoTime": "Total ≥ {{total}}/{{totalMax}} · chaque épreuve ≥ {{skillMin}}/{{skillMax}} · sans limite de temps",
     "passTotal": "Score total ≥ {{min}}/{{totalMax}}",
@@ -581,6 +621,9 @@
     "predictionHint": "La prédiction complète de réussite au B2 (selon le taux de réussite, avec les seuils officiels) se trouve dans l'espace d'apprentissage.",
     "correctOf": "{{correct}} / {{total}} correct",
     "bandEstimate": "Estimation selon le barème officiel — à titre indicatif",
+    "tcfTitle": "Niveau TCF estimé",
+    "tcfSkillLevel": "{{skill}} · estimation {{level}}",
+    "tcfLevelEstimate": "Niveau CECRL estimé d’après votre taux de réussite — pas un score TCF officiel, à titre indicatif.",
     "correct": "✓ Correct",
     "wrong": "✗ Incorrect",
     "pendingAI": "Correction IA en attente",

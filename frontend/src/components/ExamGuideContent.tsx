@@ -19,6 +19,12 @@ const SKILLS_BY_SYSTEM: Record<string, { key: string; icon: string }[]> = {
     { key: 'WRITING', icon: '✍️' },
     { key: 'SPEAKING', icon: '🎙️' },
   ],
+  // TCF 三项必考，无口语单列区。
+  TCF: [
+    { key: 'CO', icon: '🎧' },
+    { key: 'SL', icon: '🧩' },
+    { key: 'CE', icon: '📖' },
+  ],
 };
 
 // Shared body for the exam walkthrough — content follows the system + level
@@ -30,8 +36,10 @@ export default function ExamGuideContent({ showCta = true }: { showCta?: boolean
   const level = useLevelStore((s) => s.level);
   const system = useLevelStore((s) => s.system);
   const isIelts = system === 'IELTS';
+  const isTcf = system === 'TCF';
   const skills = SKILLS_BY_SYSTEM[system] || SKILLS_BY_SYSTEM.DELF;
   const speakingKey = isIelts ? 'SPEAKING' : 'PO';
+  const hasSpeaking = skills.some((s) => s.key === speakingKey);
 
   const renderSkill = (key: string, icon: string) => {
     const tips = t(`examGuide.levels.${level}.skills.${key}.tips`, { returnObjects: true }) as string[];
@@ -41,7 +49,7 @@ export default function ExamGuideContent({ showCta = true }: { showCta?: boolean
           <span className="text-2xl">{icon}</span>
           <Title level={4} style={{ margin: 0 }}>{t(`examGuide.levels.${level}.skills.${key}.name`)}</Title>
           <Tag color="blue">{t(`examGuide.levels.${level}.skills.${key}.time`)}</Tag>
-          <Tag>{isIelts ? 'Band 0-9' : `25 ${t('landing.points')}`}</Tag>
+          <Tag>{isIelts ? 'Band 0-9' : isTcf ? t('examGuide.tcfItemTag') : `25 ${t('landing.points')}`}</Tag>
         </div>
         <Paragraph className="text-gray-600 mb-2">{t(`examGuide.levels.${level}.skills.${key}.format`)}</Paragraph>
         <ul className="text-gray-500 pl-5 mb-0" style={{ listStyle: 'disc' }}>
@@ -59,22 +67,24 @@ export default function ExamGuideContent({ showCta = true }: { showCta?: boolean
         {skills.filter((s) => s.key !== speakingKey).map((s) => renderSkill(s.key, s.icon))}
       </Card>
 
-      <Card className="mb-6">
-        <Title level={3}>{t('examGuide.individualTitle')}</Title>
-        <Paragraph className="text-gray-500">{t(`examGuide.levels.${level}.individualNote`)}</Paragraph>
-        {renderSkill(speakingKey, '🎙️')}
-      </Card>
+      {hasSpeaking && (
+        <Card className="mb-6">
+          <Title level={3}>{t('examGuide.individualTitle')}</Title>
+          <Paragraph className="text-gray-500">{t(`examGuide.levels.${level}.individualNote`)}</Paragraph>
+          {renderSkill(speakingKey, '🎙️')}
+        </Card>
+      )}
 
       <Card className="mb-6">
         <Title level={3}>{t('examGuide.scoringTitle')}</Title>
         <ul className="pl-5" style={{ listStyle: 'disc' }}>
-          {(t(isIelts ? 'examGuide.scoringIelts' : 'examGuide.scoring', { returnObjects: true, level }) as string[]).map((line, i) => (
+          {(t(isIelts ? 'examGuide.scoringIelts' : isTcf ? 'examGuide.scoringTcf' : 'examGuide.scoring', { returnObjects: true, level }) as string[]).map((line, i) => (
             <li key={i} className="text-gray-700 mb-1">{line}</li>
           ))}
         </ul>
         <Divider />
         <Paragraph strong style={{ marginBottom: 0 }}>
-          {isIelts ? t('examGuide.ieltsOverallNote') : t('landing.passRule')}
+          {isIelts ? t('examGuide.ieltsOverallNote') : isTcf ? t('examGuide.tcfOverallNote') : t('landing.passRule')}
         </Paragraph>
       </Card>
 

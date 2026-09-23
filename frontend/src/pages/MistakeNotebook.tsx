@@ -17,7 +17,7 @@ const { Paragraph, Text } = Typography;
 const SKILL_KEYS: Array<Skill | 'ALL'> = ['ALL', 'CO', 'CE', 'PE', 'PO'];
 
 const SKILL_ICON: Record<Skill, string> = {
-  CO: 'hearing', CE: 'auto_stories', PE: 'edit_document', PO: 'mic',
+  CO: 'hearing', CE: 'auto_stories', PE: 'edit_document', PO: 'mic', SL: 'spellcheck',
 };
 
 function formatAnswer(ans: string | string[]): string {

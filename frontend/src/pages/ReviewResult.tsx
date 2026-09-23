@@ -11,12 +11,13 @@ import AiExplanation from '../components/AiExplanation';
 import ReadingAssistant from '../components/ReadingAssistant';
 import { localizeExamTitle } from '../utils/examTitle';
 import { useLevelStore } from '../stores/level';
-import { bandFromRaw } from '../utils/band';
+import { bandFromRaw, cefrFromPct } from '../utils/band';
+import { renderInline } from '../utils/richText';
 import type { SubmitResult, ExamSetDetail, Skill } from '../types';
 
 const { Title, Paragraph } = Typography;
 
-const SKILL_ORDER: Skill[] = ['CO', 'CE', 'PE', 'PO'];
+const SKILL_ORDER: Skill[] = ['CO', 'CE', 'PE', 'PO', 'SL'];
 
 export default function ReviewResult() {
   const { t, i18n } = useTranslation();
@@ -116,6 +117,21 @@ export default function ReviewResult() {
     return band == null ? null : { band, raw, total, skillKey };
   })();
 
+  // TCF：每项按答对数展示 + 按正确率估算 CEFR 等级（非官方分数）。
+  const tcfLevels = (() => {
+    if (exam.system !== 'TCF') return null;
+    const scoring = systems?.find((s) => s.key === 'TCF')?.scoring;
+    const bands = scoring?.kind === 'cefr' ? scoring.cefrBands : null;
+    const rows = (['CO', 'SL', 'CE'] as Skill[]).map((s) => {
+      const ds = result.details.filter((d) => questionMap.get(d.questionId)?.skill === s);
+      const total = ds.length;
+      const correct = ds.filter((d) => d.isCorrect === true).length;
+      const pct = total ? Math.round((correct / total) * 100) : 0;
+      return { skill: s, total, correct, pct, level: total ? cefrFromPct(bands, pct) : null };
+    }).filter((r) => r.total > 0);
+    return rows.length ? rows : null;
+  })();
+
   // Listening (CO) and Reading (CE) are no longer reported as a /25 score —
   // we show the question-level correctness rate instead. The full B2 pass
   // prediction (official gates, correctness-based) lives in the learning
@@ -178,6 +194,29 @@ export default function ReviewResult() {
             {t('review.correctOf', { correct: ieltsBand.raw, total: ieltsBand.total })}
             {' · '}{t('review.bandEstimate', '按官方换算表估算，仅供参考')}
           </div>
+        </Card>
+      )}
+
+      {/* TCF：每项答对数 + 估算等级 */}
+      {tcfLevels && (
+        <Card className="mb-4" title={t('review.tcfTitle')}>
+          <Row gutter={[16, 16]}>
+            {tcfLevels.map((r) => (
+              <Col key={r.skill} xs={12} sm={8}>
+                <Card size="small" className="border-blue-300" style={{ borderWidth: 2 }}>
+                  <Statistic
+                    title={t(`skill.${r.skill}`)}
+                    value={r.level ?? '—'}
+                    valueStyle={{ color: '#1677ff', fontWeight: 700 }}
+                  />
+                  <div className="text-xs text-gray-400 mt-1">
+                    {t('review.correctOf', { correct: r.correct, total: r.total })} · {r.pct}%
+                  </div>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+          <div className="text-xs text-gray-400 mt-3">{t('review.tcfLevelEstimate')}</div>
         </Card>
       )}
 
@@ -281,7 +320,7 @@ export default function ReviewResult() {
                 <ReadingAssistant text={[q.passage, q.prompt].filter(Boolean).join('\n\n')} />
               </div>
             ) : (
-              <Paragraph>{q.prompt}</Paragraph>
+              <Paragraph>{renderInline(q.prompt)}</Paragraph>
             )}
             {q.type !== 'ESSAY' && q.type !== 'SPEAKING' && (
               <>

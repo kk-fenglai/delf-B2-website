@@ -41,6 +41,14 @@
     "collectiveTitle": "1. Group written tests (run back-to-back in one session)",
     "individualTitle": "2. Speaking (scheduled separately)",
     "scoringTitle": "3. Scoring & pass criteria",
+    "scoringTcf": [
+      "The three compulsory TCF sections (listening, language structures, reading) are all 4-option multiple choice, 1 point each, no negative marking.",
+      "The official test converts each section to a 100–699 IRT score mapped to A1–C2; this platform estimates a level from your correctness rate.",
+      "This bank comes from the TV5MONDE TCF practice booklets — half-length papers (15 + 10 + 15 items)."
+    ],
+    "tcfOverallNote": "TCF has no pass mark — your level follows the score range. Platform levels are estimates, for guidance only.",
+    "tcfItemTag": "1 pt / item",
+    "tcfTitle": "TCF exam walkthrough",
     "scoringIelts": [
       "Each of the four skills is banded 0-9, with half bands (e.g. 6.5).",
       "Listening and Reading have 40 questions each; your raw score converts to a band via the official table.",
@@ -147,6 +155,30 @@
           }
         }
       },
+      "TCF_TP": {
+        "collectiveNote": "Three compulsory sections in a row, about 50 min (practice paper); the official test takes about 1 h 25.",
+        "individualNote": "",
+        "skills": {
+          "CO": {
+            "name": "Listening · Compréhension orale",
+            "time": "About 15 min",
+            "format": "15 four-option items, recording played once: items 1–4 show a picture and the options are spoken only; then short news, interviews and announcements.",
+            "tips": ["One play only — look at the picture / read the item before it starts", "Items get harder; answer the early ones fast and save focus for the second half"]
+          },
+          "SL": {
+            "name": "Language structures · Structures de la langue",
+            "time": "About 10 min",
+            "format": "10 four-option items completing a sentence (tenses, connectors, prepositions, collocations).",
+            "tips": ["Check the words right before and after the gap first", "Eliminate options that are grammatically impossible"]
+          },
+          "CE": {
+            "name": "Reading · Compréhension écrite",
+            "time": "About 25 min",
+            "format": "15 four-option items: adverts, notices, short texts and press extracts — one short document per item.",
+            "tips": ["Read the question first, then locate the key information", "Watch for paraphrases — options rarely repeat the text word for word"]
+          }
+        }
+      },
       "IELTS_AC": {
         "collectiveNote": "Listening, Reading and Writing run back-to-back on the same day — about 2 hours 30 minutes with no break.",
         "individualNote": "Speaking is a one-to-one interview with an examiner, 11-14 minutes, scheduled on the test day or up to a week before/after.",
@@ -219,6 +251,7 @@
     "AI_UNLIMITED": "AI Unlimited"
   },
   "skill": {
+    "SL": "Grammar",
     "CO": "Listening",
     "CE": "Reading",
     "PE": "Writing",
@@ -441,6 +474,10 @@
     "manageMyExams": "Manage my sets",
     "year": "Year",
     "hub": {
+      "slDesc": "Language structures · Complete the sentence (4 options)",
+      "tcfMockDesc": "Listening 15 + Grammar 10 + Reading 15 in sequence",
+      "tcfMockTag": "3 sections",
+      "tcfMockDuration": "About 50 min total",
       "title": "Choose practice mode",
       "subtitle": "Practice each skill on its own, or take a full mock exam.",
       "skillListTitle": "Skill drill",
@@ -523,6 +560,9 @@
     "autoSubmitted": "Your exam was auto-submitted because time expired.",
     "progressLabel": "Answered: {{done}} / {{total}}",
     "passCriteriaTitle": "DELF {{level}} passing standards",
+    "tcfBannerTitle": "TCF practice",
+    "tcfBannerInline": "4 options · 1 point per item · this section {{duration}} min",
+    "tcfBannerInlineNoTime": "4 options · 1 point per item · recording played once",
     "passCriteriaInline": "Total ≥ {{total}}/{{totalMax}} · each section ≥ {{skillMin}}/{{skillMax}} · duration {{duration}} min",
     "passCriteriaInlineNoTime": "Total ≥ {{total}}/{{totalMax}} · each section ≥ {{skillMin}}/{{skillMax}} · no time limit",
     "passTotal": "Total score must be ≥ {{min}}/{{totalMax}}",
@@ -581,6 +621,9 @@
     "predictionHint": "The full B2 pass prediction (by correctness rate, with official gates) is in the learning centre.",
     "correctOf": "{{correct}} / {{total}} correct",
     "bandEstimate": "Estimated from the official conversion table — indicative only",
+    "tcfTitle": "TCF estimated level",
+    "tcfSkillLevel": "{{skill}} · est. {{level}}",
+    "tcfLevelEstimate": "CEFR level estimated from your correctness rate — not an official TCF score, indicative only.",
     "correct": "✓ Correct",
     "wrong": "✗ Wrong",
     "pendingAI": "Pending AI review",

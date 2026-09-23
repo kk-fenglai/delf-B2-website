@@ -7,8 +7,9 @@
 // with DELF rubrics, the exact failure mode this layer exists to prevent.
 const delf = require('./delf');
 const ielts = require('./ielts');
+const tcf = require('./tcf');
 
-const SYSTEMS = { DELF: delf, IELTS: ielts };
+const SYSTEMS = { DELF: delf, IELTS: ielts, TCF: tcf };
 const SYSTEM_KEYS = Object.keys(SYSTEMS);
 const DEFAULT_SYSTEM = 'DELF';
 
@@ -59,6 +60,18 @@ function resolveLevel(levelKey) {
   return SYSTEMS.DELF.getLevel(levelKey);
 }
 
+/**
+ * level key → 拥有该 level 的体系。未知/缺省回落 DELF（与 resolveLevel 同一
+ * 兜底口径）。用于按 level 查询时反推体系，例如全真模拟需要哪些 skill。
+ */
+function resolveSystem(levelKey) {
+  const k = String(levelKey || '').toUpperCase();
+  for (const sys of Object.values(SYSTEMS)) {
+    if (sys.LEVELS[k]) return sys;
+  }
+  return SYSTEMS[DEFAULT_SYSTEM];
+}
+
 /** Public projection for GET /api/catalogue (safe to cache client-side). */
 function toPublicSystem(sys) {
   return {
@@ -78,5 +91,6 @@ module.exports = {
   validateSystemLevel,
   resolveLevelKey,
   resolveLevel,
+  resolveSystem,
   toPublicSystem,
 };

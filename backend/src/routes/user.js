@@ -235,7 +235,8 @@ router.get('/prediction', requireAuth, async (req, res, next) => {
 // right/wrong, and already live in the Essay grading UI.
 
 const OBJECTIVE_TYPES = ['SINGLE', 'MULTIPLE', 'TRUE_FALSE', 'FILL'];
-const VALID_SKILLS = ['CO', 'CE', 'PE', 'PO'];
+// 全体系 skill 键并集（DELF CO/CE/PE/PO、IELTS、TCF SL…），错题本按 skill 筛选用。
+const { ALL_SKILL_KEYS: VALID_SKILLS } = require('../services/examImport');
 
 // Collect the latest wrong attempt per question for the current user.
 // Returns a Map<questionId, attempt> plus the ordered list (newest first).
