@@ -101,6 +101,12 @@ export const useLevelStore = create<LevelState>((set, get) => ({
       if (effectiveSystem === 'DELF' && catalogue.length && !catalogue.some((l) => l.key === get().level)) {
         patch.level = defaultLevel;
       }
+      // Non-DELF system restored from localStorage: the initial level came from
+      // storedLevel() (a DELF key), so land on that system's default level.
+      const sys = systems.find((s) => s.key === effectiveSystem);
+      if (effectiveSystem !== 'DELF' && sys && !sys.levels.some((l) => l.key === get().level)) {
+        patch.level = sys.defaultLevel as Level;
+      }
       set(patch);
     } catch {
       try {

@@ -793,7 +793,7 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
           type="info"
           showIcon
           className="mb-3"
-          message={t('exam.passCriteriaTitle', { level: levelKey })}
+          message={isTcf ? t('exam.tcfBannerTitle') : t('exam.passCriteriaTitle', { level: levelKey })}
           description={
             <div>
               <div className="text-xs text-gray-600">
@@ -803,13 +803,16 @@ export default function ExamRunner({ skill, mockMode }: Props = {}) {
                 )}
               </div>
               <div className="text-xs text-muted mt-1">
-                {t('exam.passCriteriaInline', {
-                  total: B2_SCORING.passTotal,
-                  totalMax: B2_SCORING.totalMax,
-                  skillMin: B2_SCORING.passPerSkill,
-                  skillMax: B2_SCORING.skillMax,
-                  duration: plan.minutes.CE,
-                })}
+                {/* TCF has no pass mark — same banner as the section view. */}
+                {isTcf
+                  ? t('exam.tcfBannerInline', { duration: plan.minutes.CE })
+                  : t('exam.passCriteriaInline', {
+                    total: B2_SCORING.passTotal,
+                    totalMax: B2_SCORING.totalMax,
+                    skillMin: B2_SCORING.passPerSkill,
+                    skillMax: B2_SCORING.skillMax,
+                    duration: plan.minutes.CE,
+                  })}
               </div>
             </div>
           }
