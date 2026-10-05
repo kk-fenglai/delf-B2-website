@@ -24,7 +24,7 @@ const { settleOrder: wechatSettle } = require('../../routes/payments/wechat');
 const { settleOrder: alipaySettle } = require('../../routes/payments/alipay');
 const { settleOrder: stripeSettle } = require('../../routes/payments/stripe');
 
-const TICK_MS = Number(process.env.PAY_RECONCILE_INTERVAL_MS || 10 * 60 * 1000); // 10 min
+const TICK_MS = Number(process.env.PAY_RECONCILE_INTERVAL_MS || 30 * 60 * 1000); // 30 min — 10 min woke Neon every cycle, keeping it ~50% awake
 
 let running = false;
 let timer = null;

@@ -16,7 +16,7 @@ const { MODEL_KEYS } = require('../constants/planMatrix');
 
 const CONCURRENCY = 3;
 const POLL_MS = 800;
-const IDLE_MAX_MS = 60 * 1000;     // ceiling for the empty-queue backoff (see nextDelay)
+const IDLE_MAX_MS = 30 * 60 * 1000; // ceiling for the empty-queue backoff (see nextDelay); > Neon's 5-min suspend window
 const STUCK_MS = 5 * 60 * 1000;    // rows in 'grading' older than this are orphaned
 const RETRY_DELAY_MS = 30 * 1000;  // after AI_RATE_LIMITED, re-queue with a short cooldown
 

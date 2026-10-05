@@ -164,7 +164,14 @@ const feedbackLimiter = rateLimit({
 app.use('/api/audio/fei', examAudioRoutes);
 
 // --- Health ---
-app.get('/api/health', async (_req, res) => {
+// Liveness only — Fly polls this every 30s, and touching the DB here kept
+// Neon from ever auto-suspending (compute billed 24/7). DB check is below.
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'ok', service: 'delfluent-backend', ts: Date.now() });
+});
+
+// Manual / monitoring DB connectivity check. Don't point frequent probes here.
+app.get('/api/health/db', async (_req, res) => {
   const health = { status: 'ok', service: 'delfluent-backend', ts: Date.now(), db: 'unknown' };
   try {
     await prisma.$queryRaw`SELECT 1`;

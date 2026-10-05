@@ -29,7 +29,7 @@ const RECORDINGS_DIR = path.resolve(
 
 const CONCURRENCY = 2;
 const POLL_MS = 1000;
-const IDLE_MAX_MS = 60 * 1000;  // ceiling for the empty-queue backoff (see nextDelay)
+const IDLE_MAX_MS = 30 * 60 * 1000;  // ceiling for the empty-queue backoff (see nextDelay); > Neon's 5-min suspend window
 const STUCK_MS = 5 * 60 * 1000;
 const RETRY_DELAY_MS = 30 * 1000;
 

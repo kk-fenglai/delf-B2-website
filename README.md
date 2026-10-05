@@ -195,7 +195,7 @@ delf-b2-website/
 | **Helmet CSP + HSTS** | 生产自动开启 HSTS（2 年 + includeSubDomains + preload） |
 | **软删除优先** | 默认软删除（可恢复）；硬删除仅超管 + 密码二次确认 |
 | **Graceful shutdown** | SIGTERM/SIGINT 触发 Prisma 断连再 exit，15s 安全保底 |
-| **健康探活** | `GET /api/health` 含 DB 连通检查（503 on failure） |
+| **健康探活** | `GET /api/health` 存活检查（不查库）；`GET /api/health/db` 含 DB 连通检查（503 on failure） |
 | **审计日志** | 所有管理员动作写入 `AdminLog` 表，前端可查 |
 
 ### 部署前 Checklist
